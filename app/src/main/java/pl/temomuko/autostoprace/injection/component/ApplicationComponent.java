@@ -6,6 +6,7 @@ import android.content.Context;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
 
@@ -20,4 +21,6 @@ public interface ApplicationComponent {
     Context context();
 
     Application application();
+
+    DataManager dataManager();
 }

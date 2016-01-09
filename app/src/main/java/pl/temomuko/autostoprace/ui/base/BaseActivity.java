@@ -3,6 +3,7 @@ package pl.temomuko.autostoprace.ui.base;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.injection.component.ActivityComponent;
 import pl.temomuko.autostoprace.injection.component.DaggerActivityComponent;
@@ -19,6 +20,12 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivityComponent().inject(this);
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        ButterKnife.bind(this);
     }
 
     public ActivityComponent getActivityComponent() {
