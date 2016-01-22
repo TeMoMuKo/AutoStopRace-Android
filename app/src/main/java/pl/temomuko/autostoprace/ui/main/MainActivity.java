@@ -2,9 +2,12 @@ package pl.temomuko.autostoprace.ui.main;
 
 import android.os.Bundle;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 
 /**
@@ -13,6 +16,7 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
 public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Inject MainPresenter mMainPresenter;
+    private String TAG = "MainActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,6 +24,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         setContentView(R.layout.activity_main);
         getActivityComponent().inject(this);
         mMainPresenter.attachView(this);
+        mMainPresenter.loadLocationsFromApi();
     }
 
     @Override
@@ -29,12 +34,12 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     @Override
-    public void updateLocationsList() {
-        //TODO
+    public void updateLocationsList(List<Location> locations) {
+        //TODO Log.i(TAG, locations.toString());
     }
 
     @Override
-    public void showError() {
-        //TODO
+    public void showError(Throwable throwable) {
+        //TODO Log.e(TAG, throwable.toString());
     }
 }

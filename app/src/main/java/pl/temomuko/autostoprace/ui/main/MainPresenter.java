@@ -5,6 +5,8 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by szymen on 2016-01-09.
@@ -31,6 +33,14 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     }
 
     public void loadLocationsFromApi() {
-        //TODO
+        mSubscription = mDataManager.getCurrentUserTeamLocations()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.newThread())
+                .subscribe(locations -> {
+                    getMvpView().updateLocationsList(locations);
+                }, throwable -> {
+                    getMvpView().showError(throwable);
+                });
     }
 }

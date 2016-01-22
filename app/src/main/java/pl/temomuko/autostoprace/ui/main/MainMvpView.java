@@ -1,5 +1,8 @@
 package pl.temomuko.autostoprace.ui.main;
 
+import java.util.List;
+
+import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.MvpView;
 
 /**
@@ -7,7 +10,7 @@ import pl.temomuko.autostoprace.ui.base.MvpView;
  */
 public interface MainMvpView extends MvpView {
 
-    void updateLocationsList();
+    void updateLocationsList(List<Location> locations);
 
-    void showError();
+    void showError(Throwable throwable);
 }
