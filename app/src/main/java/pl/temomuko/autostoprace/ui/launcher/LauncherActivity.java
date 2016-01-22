@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.login;
+package pl.temomuko.autostoprace.ui.launcher;
 
 import android.os.Bundle;
 
@@ -8,11 +8,11 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
 /**
  * Created by szymen on 2016-01-22.
  */
-public class LoginActivity extends BaseActivity implements LoginMvpView {
+public class LauncherActivity extends BaseActivity implements LauncherMvpView {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_launcher);
     }
 }

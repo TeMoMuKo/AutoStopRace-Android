@@ -3,12 +3,12 @@ package pl.temomuko.autostoprace.ui.base;
 /**
  * Created by szymen on 2016-01-09.
  */
-public class BasePresenter<V extends MvpView> implements Presenter<V> {
+public class BasePresenter<T extends MvpView> implements Presenter<T> {
 
-    private V mMvpView;
+    private T mMvpView;
 
     @Override
-    public void attachView(V mvpView) {
+    public void attachView(T mvpView) {
         mMvpView = mvpView;
     }
 
@@ -21,7 +21,7 @@ public class BasePresenter<V extends MvpView> implements Presenter<V> {
         return mMvpView != null;
     }
 
-    public V getMvpView() {
+    public T getMvpView() {
         return mMvpView;
     }
 }

@@ -1,14 +1,17 @@
 package pl.temomuko.autostoprace.ui.main;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.data.model.ApiErrorResponse;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.util.ApiResponseUtil;
 
 /**
  * Created by szymen on 2016-01-06.
@@ -35,11 +38,12 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Override
     public void updateLocationsList(List<Location> locations) {
-        //TODO Log.i(TAG, locations.toString());
+        Log.i(TAG, locations.toString());
     }
 
     @Override
     public void showError(Throwable throwable) {
-        //TODO Log.e(TAG, throwable.toString());
+        ApiErrorResponse response = ApiResponseUtil.getErrorResponse(this, throwable);
+        Log.e(TAG, response.getErrorMessage());
     }
 }
