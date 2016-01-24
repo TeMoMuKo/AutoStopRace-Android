@@ -1,8 +1,12 @@
 package pl.temomuko.autostoprace.ui.main;
 
+import android.content.Context;
+
 import javax.inject.Inject;
 
+import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.model.ApiErrorResponse;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -39,8 +43,24 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 .unsubscribeOn(Schedulers.newThread())
                 .subscribe(locations -> {
                     getMvpView().updateLocationsList(locations);
-                }, throwable -> {
-                    getMvpView().showError(throwable);
-                });
+                }, this::handleLoadLocationsError);
+    }
+
+    public void handleLoadLocationsError(Throwable throwable) {
+        ApiErrorResponse response = ApiErrorResponse.create(throwable);
+        Context context = (Context) getMvpView();
+        switch (response.getStatus()) {
+            case 404:
+                getMvpView().showError(context.getString(R.string.error_404));
+                break;
+            case 403:
+                getMvpView().showError(context.getString(R.string.error_403));
+                break;
+            case 500:
+                getMvpView().showError(context.getString(R.string.error_500));
+                break;
+            default:
+                getMvpView().showError(context.getString(R.string.error_unknown));
+        }
     }
 }

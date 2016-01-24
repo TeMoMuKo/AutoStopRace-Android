@@ -8,10 +8,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.ApiErrorResponse;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
-import pl.temomuko.autostoprace.util.ApiResponseUtil;
 
 /**
  * Created by szymen on 2016-01-06.
@@ -42,8 +40,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     @Override
-    public void showError(Throwable throwable) {
-        ApiErrorResponse response = ApiResponseUtil.getErrorResponse(this, throwable);
-        Log.e(TAG, response.getErrorMessage());
+    public void showError(String message) {
+        Log.e(TAG, message);
     }
 }

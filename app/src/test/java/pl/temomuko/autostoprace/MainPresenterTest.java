@@ -20,7 +20,6 @@ import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import rx.Observable;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -59,17 +58,6 @@ public class MainPresenterTest {
 
         mMainPresenter.loadLocationsFromApi();
         verify(mMockMainMvpView).updateLocationsList(locations);
-        verify(mMockMainMvpView, never()).showError(any(Throwable.class));
-    }
-
-    @Test
-    public void testLoadLocationsFromApiReturnsError() throws Exception {
-        Throwable throwable = new Throwable();
-        when(mMockDataManager.getCurrentUserTeamLocations())
-                .thenReturn(Observable.<List<Location>>error(throwable));
-
-        mMainPresenter.loadLocationsFromApi();
-        verify(mMockMainMvpView).showError(throwable);
-        verify(mMockMainMvpView, never()).updateLocationsList(anyListOf(Location.class));
+        verify(mMockMainMvpView, never()).showError(any(String.class));
     }
 }

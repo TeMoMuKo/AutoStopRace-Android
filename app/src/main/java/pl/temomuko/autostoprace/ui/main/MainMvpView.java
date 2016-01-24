@@ -12,5 +12,6 @@ public interface MainMvpView extends MvpView {
 
     void updateLocationsList(List<Location> locations);
 
-    void showError(Throwable throwable);
+    void showError(String message);
+
 }
