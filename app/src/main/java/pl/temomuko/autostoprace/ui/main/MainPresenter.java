@@ -28,7 +28,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     }
 
     @Override
-    public void attachView(MainMvpView mvpView) {
+         public void attachView(MainMvpView mvpView) {
         super.attachView(mvpView);
     }
 

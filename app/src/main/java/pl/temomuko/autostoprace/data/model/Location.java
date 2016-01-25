@@ -19,16 +19,10 @@ public class Location {
 
     private boolean mIsOnServer = true;
 
-    public Location(int locationId, int teamId, double latitude, double longitude, String message,
-                    Date createdDate, Date updatedDate, boolean isOnServer) {
-        mLocationId = locationId;
-        mTeamId = teamId;
+    public Location(double latitude, double longitude, String message) {
         mLatitude = latitude;
         mLongitude = longitude;
         mMessage = message;
-        mCreatedDate = createdDate;
-        mUpdatedDate = updatedDate;
-        mIsOnServer = isOnServer;
     }
 
     public int getLocationId() {
@@ -65,5 +59,9 @@ public class Location {
 
     public void setIsSent(boolean isSent) {
         mIsOnServer = isSent;
+    }
+
+    public String toString() {
+        return "(" + getLatitude() + ", " + getLongitude() + ")";
     }
 }

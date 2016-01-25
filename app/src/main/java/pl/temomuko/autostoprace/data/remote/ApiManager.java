@@ -18,7 +18,9 @@ import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.data.model.User;
+import pl.temomuko.autostoprace.data.model.request.CreateLocationRequest;
 import retrofit.GsonConverterFactory;
+import retrofit.Response;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 import rx.Observable;
@@ -60,7 +62,7 @@ public class ApiManager {
         okhttp.interceptors().add(interceptor);
         okhttp.networkInterceptors().add(chain -> {
             Request request = chain.request().newBuilder()
-                    .addHeader("Accept", Constants.ACCEPT_CONTENT_TYPE)
+                    .addHeader("Accept", Constants.HEADER_ACCEPT_JSON)
                     .build();
             return chain.proceed(request);
         });
@@ -81,5 +83,18 @@ public class ApiManager {
 
     public Observable<List<Location>> getLocationsWithObservable(int teamId) {
         return mAsrService.getLocationsWithObservable(teamId);
+    }
+
+    public Observable<Response> signInWithObservable(String email, String password) {
+        return mAsrService.signInWithObservable(email, password);
+    }
+
+    public Observable<Response> postLocationWithObservable(
+            String accessToken,
+            String client,
+            String uid,
+            CreateLocationRequest request
+    ) {
+        return mAsrService.postLocationWithObservable(accessToken, client, uid, request);
     }
 }
