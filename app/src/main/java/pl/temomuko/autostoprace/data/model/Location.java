@@ -17,6 +17,8 @@ public class Location {
     @SerializedName("created_at") private Date mCreatedDate;
     @SerializedName("updated_at") private Date mUpdatedDate;
 
+    private boolean mIsSent = true;
+
     public Location(int locationId, int teamId, double latitude, double longitude, String message,
                     Date createdDate, Date updatedDate) {
         mLocationId = locationId;
@@ -54,5 +56,13 @@ public class Location {
 
     public Date getUpdatedDate() {
         return mUpdatedDate;
+    }
+
+    public boolean isSent() {
+        return mIsSent;
+    }
+
+    public void setIsSent(boolean isSent) {
+        mIsSent = isSent;
     }
 }

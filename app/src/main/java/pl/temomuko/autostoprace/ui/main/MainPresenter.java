@@ -2,6 +2,8 @@ package pl.temomuko.autostoprace.ui.main;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
@@ -36,31 +38,37 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
     }
 
-    public void loadLocationsFromApi() {
-        mSubscription = mDataManager.getCurrentUserTeamLocations()
+    public void loadLocations() {
+        mSubscription = mDataManager.getTeamLocationsFromServer()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.newThread())
+                .onErrorReturn(throwable -> {
+                    handleLoadLocationsError(throwable);
+                    return new ArrayList<>();
+                })
+                .switchMap(mDataManager::saveLocationsToDatabase)
                 .subscribe(locations -> {
-                    getMvpView().updateLocationsList(locations);
+                    if(locations.isEmpty()) getMvpView().showEmptyInfo();
+                    else getMvpView().updateLocationsList(locations);
                 }, this::handleLoadLocationsError);
     }
 
-    public void handleLoadLocationsError(Throwable throwable) {
+    private void handleLoadLocationsError(Throwable throwable) {
         ApiErrorResponse response = ApiErrorResponse.create(throwable);
         Context context = (Context) getMvpView();
         switch (response.getStatus()) {
             case 404:
-                getMvpView().showError(context.getString(R.string.error_404));
+                getMvpView().showApiError(context.getString(R.string.error_404));
                 break;
             case 403:
-                getMvpView().showError(context.getString(R.string.error_403));
+                getMvpView().showApiError(context.getString(R.string.error_403));
                 break;
             case 500:
-                getMvpView().showError(context.getString(R.string.error_500));
+                getMvpView().showApiError(context.getString(R.string.error_500));
                 break;
             default:
-                getMvpView().showError(context.getString(R.string.error_unknown));
+                getMvpView().showApiError(context.getString(R.string.error_unknown));
         }
     }
 }

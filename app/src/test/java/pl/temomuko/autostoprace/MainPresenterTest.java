@@ -53,11 +53,34 @@ public class MainPresenterTest {
     public void testLoadLocationsFromApiReturnsLocations() throws Exception {
         List<Location> locations = new ArrayList<>();
         locations.add(new Location(1, 1, 12.34, 43.21, "", new Date(), new Date()));
-        when(mMockDataManager.getCurrentUserTeamLocations())
+        when(mMockDataManager.getTeamLocationsFromServer())
                 .thenReturn(Observable.just(locations));
 
-        mMainPresenter.loadLocationsFromApi();
-        verify(mMockMainMvpView).updateLocationsList(locations);
-        verify(mMockMainMvpView, never()).showError(any(String.class));
+        List<Location> locationsFromDatabase = new ArrayList<>();
+        locationsFromDatabase.add(new Location(1, 1, 99.99, 99.99, "", new Date(), new Date()));
+        when(mMockDataManager.saveLocationsToDatabase(locations))
+                .thenReturn(Observable.just(locationsFromDatabase));
+
+        mMainPresenter.loadLocations();
+        verify(mMockDataManager).saveLocationsToDatabase(locations);
+        verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
+        verify(mMockMainMvpView, never()).showApiError(any(String.class));
+    }
+
+    @Test
+    public void testLoadLocationsFromApiReturnsEmptyList() throws Exception {
+        List<Location> locations = new ArrayList<>();
+        when(mMockDataManager.getTeamLocationsFromServer())
+                .thenReturn(Observable.just(locations));
+
+        List<Location> locationsFromDatabase = new ArrayList<>();
+        when(mMockDataManager.saveLocationsToDatabase(locations))
+                .thenReturn(Observable.just(locationsFromDatabase));
+
+        mMainPresenter.loadLocations();
+        verify(mMockDataManager).saveLocationsToDatabase(locations);
+        verify(mMockMainMvpView).showEmptyInfo();
+        verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
+        verify(mMockMainMvpView, never()).showApiError(any(String.class));
     }
 }

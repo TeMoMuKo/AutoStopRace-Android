@@ -25,7 +25,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         setContentView(R.layout.activity_main);
         getActivityComponent().inject(this);
         mMainPresenter.attachView(this);
-        mMainPresenter.loadLocationsFromApi();
+        mMainPresenter.loadLocations();
     }
 
     @Override
@@ -40,7 +40,12 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     @Override
-    public void showError(String message) {
+    public void showApiError(String message) {
         Log.e(TAG, message);
+    }
+
+    @Override
+    public void showEmptyInfo() {
+        Log.e(TAG, getString(R.string.msg_empty_locations_list));
     }
 }

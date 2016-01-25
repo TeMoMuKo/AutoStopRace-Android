@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.data;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,7 +24,15 @@ public class DataManager {
         mApiManager = apiManager;
     }
 
-    public Observable<List<Location>> getCurrentUserTeamLocations() {
-        return mApiManager.getLocationsWithObservable(1);
+    public Observable<List<Location>> getTeamLocationsFromServer() {
+        //TODO get current user team ID from API, if offline get form DB
+        int teamId = 1;
+        return mApiManager.getLocationsWithObservable(teamId);
+    }
+
+    public Observable<List<Location>> saveLocationsToDatabase(List<Location> locations) {
+        locations.add(new Location(1, 1, 12.34, 43.21, "", new Date(), new Date()));
+        //TODO save locations from server to DB with DatabaseHelper and return Observable with locations from DB.
+        return Observable.just(locations);
     }
 }
