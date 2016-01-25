@@ -25,7 +25,8 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         setContentView(R.layout.activity_main);
         getActivityComponent().inject(this);
         mMainPresenter.attachView(this);
-        mMainPresenter.loadLocations();
+        mMainPresenter.loadLocationsFromDatabase();
+        mMainPresenter.loadLocationsFromServer();
     }
 
     @Override

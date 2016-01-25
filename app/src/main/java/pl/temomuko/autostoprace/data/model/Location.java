@@ -17,10 +17,10 @@ public class Location {
     @SerializedName("created_at") private Date mCreatedDate;
     @SerializedName("updated_at") private Date mUpdatedDate;
 
-    private boolean mIsSent = true;
+    private boolean mIsOnServer = true;
 
     public Location(int locationId, int teamId, double latitude, double longitude, String message,
-                    Date createdDate, Date updatedDate) {
+                    Date createdDate, Date updatedDate, boolean isOnServer) {
         mLocationId = locationId;
         mTeamId = teamId;
         mLatitude = latitude;
@@ -28,6 +28,7 @@ public class Location {
         mMessage = message;
         mCreatedDate = createdDate;
         mUpdatedDate = updatedDate;
+        mIsOnServer = isOnServer;
     }
 
     public int getLocationId() {
@@ -58,11 +59,11 @@ public class Location {
         return mUpdatedDate;
     }
 
-    public boolean isSent() {
-        return mIsSent;
+    public boolean isOnServer() {
+        return mIsOnServer;
     }
 
     public void setIsSent(boolean isSent) {
-        mIsSent = isSent;
+        mIsOnServer = isSent;
     }
 }

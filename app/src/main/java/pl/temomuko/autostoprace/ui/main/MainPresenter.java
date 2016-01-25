@@ -38,7 +38,11 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
     }
 
-    public void loadLocations() {
+    public void loadLocationsFromDatabase() {
+        //TODO
+    }
+
+    public void loadLocationsFromServer() {
         mSubscription = mDataManager.getTeamLocationsFromServer()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -51,7 +55,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 .subscribe(locations -> {
                     if(locations.isEmpty()) getMvpView().showEmptyInfo();
                     else getMvpView().updateLocationsList(locations);
-                }, this::handleLoadLocationsError);
+                });
     }
 
     private void handleLoadLocationsError(Throwable throwable) {

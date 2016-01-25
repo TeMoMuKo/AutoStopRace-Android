@@ -52,16 +52,16 @@ public class MainPresenterTest {
     @Test
     public void testLoadLocationsFromApiReturnsLocations() throws Exception {
         List<Location> locations = new ArrayList<>();
-        locations.add(new Location(1, 1, 12.34, 43.21, "", new Date(), new Date()));
+        locations.add(new Location(1, 1, 12.34, 43.21, "", new Date(), new Date(), true));
         when(mMockDataManager.getTeamLocationsFromServer())
                 .thenReturn(Observable.just(locations));
 
         List<Location> locationsFromDatabase = new ArrayList<>();
-        locationsFromDatabase.add(new Location(1, 1, 99.99, 99.99, "", new Date(), new Date()));
+        locationsFromDatabase.add(new Location(1, 1, 99.99, 99.99, "", new Date(), new Date(), true));
         when(mMockDataManager.saveLocationsToDatabase(locations))
                 .thenReturn(Observable.just(locationsFromDatabase));
 
-        mMainPresenter.loadLocations();
+        mMainPresenter.loadLocationsFromServer();
         verify(mMockDataManager).saveLocationsToDatabase(locations);
         verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
         verify(mMockMainMvpView, never()).showEmptyInfo();
@@ -78,7 +78,7 @@ public class MainPresenterTest {
         when(mMockDataManager.saveLocationsToDatabase(locations))
                 .thenReturn(Observable.just(locationsFromDatabase));
 
-        mMainPresenter.loadLocations();
+        mMainPresenter.loadLocationsFromServer();
         verify(mMockDataManager).saveLocationsToDatabase(locations);
         verify(mMockMainMvpView).showEmptyInfo();
         verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
