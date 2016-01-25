@@ -64,6 +64,7 @@ public class MainPresenterTest {
         mMainPresenter.loadLocations();
         verify(mMockDataManager).saveLocationsToDatabase(locations);
         verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
+        verify(mMockMainMvpView, never()).showEmptyInfo();
         verify(mMockMainMvpView, never()).showApiError(any(String.class));
     }
 
