@@ -14,11 +14,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.Constants;
-import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
 import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.SignInResponse;
+import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.data.model.User;
-import pl.temomuko.autostoprace.data.model.request.CreateLocationRequest;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -32,12 +33,10 @@ import rx.Observable;
 @Singleton
 public class ApiManager {
 
-    private PrefsHelper mPrefsHelper;
     private AsrService mAsrService;
 
     @Inject
-    public ApiManager(PrefsHelper prefsHelper) {
-        mPrefsHelper = prefsHelper;
+    public ApiManager() {
         mAsrService = getRetrofit().create(AsrService.class);
     }
 
@@ -85,16 +84,17 @@ public class ApiManager {
         return mAsrService.getLocationsWithObservable(teamId);
     }
 
-    public Observable<Response> signInWithObservable(String email, String password) {
+    public Observable<Response<SignInResponse>> signInWithObservable(String email, String password) {
         return mAsrService.signInWithObservable(email, password);
     }
 
-    public Observable<Response> postLocationWithObservable(
-            String accessToken,
-            String client,
-            String uid,
-            CreateLocationRequest request
-    ) {
+    public Observable<Response<SignOutResponse>> signOutWithObservable(
+            String accessToken, String client, String uid) {
+        return mAsrService.signOutWithObservable(accessToken, client, uid);
+    }
+
+    public Observable<Location> postLocationWithObservable(
+            String accessToken, String client, String uid, CreateLocationRequest request) {
         return mAsrService.postLocationWithObservable(accessToken, client, uid, request);
     }
 }

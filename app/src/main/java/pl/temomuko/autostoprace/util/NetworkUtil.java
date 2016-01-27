@@ -21,4 +21,8 @@ public class NetworkUtil {
     public static boolean isHttpException(Throwable throwable, int statusCode) {
         return throwable instanceof HttpException && ((HttpException) throwable).code() == statusCode;
     }
+
+    public static boolean isHttpOk(int statusCode) {
+        return statusCode == HttpStatus.OK;
+    }
 }

@@ -1,8 +1,6 @@
-package pl.temomuko.autostoprace.data.model.request;
+package pl.temomuko.autostoprace.data.model;
 
 import com.google.gson.annotations.SerializedName;
-
-import pl.temomuko.autostoprace.data.model.Location;
 
 /**
  * Created by szymen on 2016-01-25.

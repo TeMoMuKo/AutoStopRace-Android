@@ -3,6 +3,7 @@ package pl.temomuko.autostoprace.ui.main;
 import java.util.List;
 
 import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.ui.base.MvpView;
 
 /**
@@ -14,5 +15,11 @@ public interface MainMvpView extends MvpView {
 
     void showEmptyInfo();
 
+    void showUser(User user);
+
     void showApiError(String message);
+
+    void goToLauncherActivity();
+
+    void showLogoutMessage();
 }

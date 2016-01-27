@@ -9,5 +9,5 @@ public interface LoginMvpView extends MvpView {
 
     void goToMainActivity();
 
-    void showError();
+    void showApiError(String message);
 }

@@ -13,6 +13,14 @@ public class User {
     @SerializedName("last_name") private String mLastName;
     @SerializedName("email") private String mEmail;
 
+    public User(int id, int teamId, String firstName, String lastName, String email) {
+        mId = id;
+        mTeamId = teamId;
+        mFirstName = firstName;
+        mLastName = lastName;
+        mEmail = email;
+    }
+
     public int getId() {
         return mId;
     }

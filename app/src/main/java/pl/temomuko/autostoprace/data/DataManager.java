@@ -1,12 +1,17 @@
 package pl.temomuko.autostoprace.data;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.SignInResponse;
+import pl.temomuko.autostoprace.data.model.SignOutResponse;
+import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.ApiManager;
 import retrofit.Response;
 import rx.Observable;
@@ -27,10 +32,23 @@ public class DataManager {
         mPrefsHelper = prefsHelper;
     }
 
+    public Observable<Response<SignInResponse>> signIn(String login, String password) {
+        return mApiManager.signInWithObservable(login, password);
+    }
+
+    public Observable<Response<SignOutResponse>> signOut() {
+        String accessToken = mPrefsHelper.getAuthAccessToken();
+        String client = mPrefsHelper.getAuthClient();
+        String uid = mPrefsHelper.getAuthUid();
+        return mApiManager.signOutWithObservable(accessToken, client, uid);
+    }
+
+    public void clearAuth() {
+        mPrefsHelper.clearAuth();
+    }
+
     public Observable<List<Location>> getTeamLocationsFromServer() {
-        //TODO get current user team ID from API, if offline get form DB
-        int teamId = 1;
-        return mApiManager.getLocationsWithObservable(teamId);
+        return mApiManager.getLocationsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
     }
 
     public Observable<List<Location>> saveLocationsToDatabase(List<Location> locations) {
@@ -38,11 +56,19 @@ public class DataManager {
         return Observable.just(locations);
     }
 
-    public Observable<Response> signIn(String login, String password) {
-        return mApiManager.signInWithObservable(login, password);
+    public void saveAuthorizationResponse(Response<SignInResponse> response) {
+        Map<String, List<String>> headers = response.headers().toMultimap();
+        mPrefsHelper.setAuthAccessToken(headers.get(Constants.HEADER_ACCESS_TOKEN).get(0));
+        mPrefsHelper.setAuthClient(headers.get(Constants.HEADER_CLIENT).get(0));
+        mPrefsHelper.setAuthUid(headers.get(Constants.HEADER_UID).get(0));
+        mPrefsHelper.setCurrentUser(response.body().getUser());
     }
 
-    public void saveAuthorizationResponse(Response response) {
-        //TODO save headers with access-token, client, uid to prefs.
+    public boolean isLoggedWithToken() {
+        return !mPrefsHelper.getAuthAccessToken().equals("");
+    }
+
+    public User getCurrentUser() {
+        return mPrefsHelper.getCurrentUser();
     }
 }

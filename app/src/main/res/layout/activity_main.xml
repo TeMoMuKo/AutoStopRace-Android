@@ -12,4 +12,20 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <TextView
+        android:id="@+id/tv_current_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:text="@string/msg_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_current_team_locations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

@@ -5,4 +5,14 @@
     <string name="error_500">Błąd połączenia z serwerem</string>
     <string name="error_403">Brak uprawnień</string>
     <string name="msg_empty_locations_list">Brak lokalizacji do wyświetlenia.</string>
+    <string name="hint_email">Adres e-mail</string>
+    <string name="hint_password">Hasło</string>
+    <string name="action_login">Zaloguj</string>
+    <string name="msg_go_to_login">Przejdź do logowania</string>
+    <string name="error_401">Nieprawidłowe dane logowania</string>
+    <string name="msg_logout_success">Wylogowano</string>
+    <string name="msg_logout">Wyloguj</string>
+    <string name="error_502">Spróbuj ponownie za chwilę.</string>
+    <string name="error_400">Nieprawidłowe żądanie</string>
+    <string name="msg_welcome">Witamy w Auto Stop Race!</string>
 </resources>

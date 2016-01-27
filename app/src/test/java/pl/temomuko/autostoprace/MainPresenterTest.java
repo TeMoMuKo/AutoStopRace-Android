@@ -9,14 +9,16 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.SignOutResponse;
+import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.ui.main.MainMvpView;
 import pl.temomuko.autostoprace.ui.main.MainPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
+import retrofit.Response;
 import rx.Observable;
 
 import static org.mockito.Matchers.any;
@@ -52,12 +54,12 @@ public class MainPresenterTest {
     @Test
     public void testLoadLocationsFromApiReturnsLocations() throws Exception {
         List<Location> locations = new ArrayList<>();
-        locations.add(new Location(1, 1, 12.34, 43.21, "", new Date(), new Date(), true));
+        locations.add(new Location(12.34, 43.21, ""));
         when(mMockDataManager.getTeamLocationsFromServer())
                 .thenReturn(Observable.just(locations));
 
         List<Location> locationsFromDatabase = new ArrayList<>();
-        locationsFromDatabase.add(new Location(1, 1, 99.99, 99.99, "", new Date(), new Date(), true));
+        locationsFromDatabase.add(new Location(99.99, 99.99, ""));
         when(mMockDataManager.saveLocationsToDatabase(locations))
                 .thenReturn(Observable.just(locationsFromDatabase));
 
@@ -83,5 +85,22 @@ public class MainPresenterTest {
         verify(mMockMainMvpView).showEmptyInfo();
         verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
         verify(mMockMainMvpView, never()).showApiError(any(String.class));
+    }
+
+    @Test
+    public void testSetupUserInfo() throws Exception {
+        User fakeUser = new User(1, 1, "Jan", "Kowalski", "jan@kow.pl");
+        when(mMockDataManager.getCurrentUser()).thenReturn(fakeUser);
+        mMainPresenter.setupUserInfo();
+        verify(mMockMainMvpView).showUser(fakeUser);
+    }
+
+    @Test
+    public void logout() throws Exception {
+        when(mMockDataManager.signOut()).thenReturn(Observable.<Response<SignOutResponse>>empty());
+        mMainPresenter.logout();
+        verify(mMockDataManager).clearAuth();
+        verify(mMockMainMvpView).showLogoutMessage();
+        verify(mMockMainMvpView).goToLauncherActivity();
     }
 }
