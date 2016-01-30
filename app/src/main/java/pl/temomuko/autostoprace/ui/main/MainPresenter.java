@@ -3,6 +3,7 @@ package pl.temomuko.autostoprace.ui.main;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
+import pl.temomuko.autostoprace.util.NetworkUtil;
 import retrofit.Response;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -99,8 +101,12 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     }
 
     private void handleError(Throwable throwable) {
-        Log.e(TAG, throwable.getMessage());
         Context context = (Context) getMvpView();
-        getMvpView().showApiError(context.getString(R.string.error_unknown));
+        if((throwable instanceof IOException) && !NetworkUtil.isConnected(context)) {
+            getMvpView().showApiError(context.getString(R.string.error_no_internet_connection));
+        } else {
+            Log.e(TAG, throwable.getMessage());
+            getMvpView().showApiError(context.getString(R.string.error_unknown));
+        }
     }
 }

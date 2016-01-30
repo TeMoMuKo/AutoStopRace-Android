@@ -11,7 +11,7 @@ import retrofit.HttpException;
  */
 public class NetworkUtil {
 
-    public static boolean isOnline(Context context) {
+    public static boolean isConnected(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -20,9 +20,5 @@ public class NetworkUtil {
 
     public static boolean isHttpException(Throwable throwable, int statusCode) {
         return throwable instanceof HttpException && ((HttpException) throwable).code() == statusCode;
-    }
-
-    public static boolean isHttpOk(int statusCode) {
-        return statusCode == HttpStatus.OK;
     }
 }
