@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     @Override
-    public void showApiError(String message) {
+    public void showError(String message) {
         mCurrentLocationsTextView.setText(message);
     }
 

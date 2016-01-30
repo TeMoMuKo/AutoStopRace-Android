@@ -21,7 +21,7 @@ public class BasePresenter<T extends MvpView> implements Presenter<T> {
         return mMvpView != null;
     }
 
-    public T getMvpView() {
+    protected T getMvpView() {
         return mMvpView;
     }
 }

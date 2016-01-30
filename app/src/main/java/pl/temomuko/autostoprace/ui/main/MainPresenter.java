@@ -1,20 +1,15 @@
 package pl.temomuko.autostoprace.ui.main;
 
-import android.content.Context;
 import android.util.Log;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.Location;
-import pl.temomuko.autostoprace.ui.base.BasePresenter;
-import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
 import pl.temomuko.autostoprace.util.HttpStatus;
-import pl.temomuko.autostoprace.util.NetworkUtil;
 import retrofit.Response;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -23,7 +18,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by szymen on 2016-01-09.
  */
-public class MainPresenter extends BasePresenter<MainMvpView> {
+public class MainPresenter extends ContentPresenter<MainMvpView> {
 
     private DataManager mDataManager;
     private Subscription mSubscription;
@@ -91,22 +86,6 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                     });
         } else {
             handleResponseError(response);
-        }
-    }
-
-    private void handleResponseError(Response response) {
-        Context context = (Context) getMvpView();
-        ErrorHandler handler = new ErrorHandler(context, response);
-        getMvpView().showApiError(handler.getMessage());
-    }
-
-    private void handleError(Throwable throwable) {
-        Context context = (Context) getMvpView();
-        if((throwable instanceof IOException) && !NetworkUtil.isConnected(context)) {
-            getMvpView().showApiError(context.getString(R.string.error_no_internet_connection));
-        } else {
-            Log.e(TAG, throwable.getMessage());
-            getMvpView().showApiError(context.getString(R.string.error_unknown));
         }
     }
 }

@@ -38,5 +38,4 @@ public class ErrorHandler {
                 return mContext.getString(R.string.error_unknown);
         }
     }
-
 }
