@@ -13,9 +13,10 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.login.LoginMvpView;
 import pl.temomuko.autostoprace.ui.login.LoginPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
-import retrofit.Response;
 import rx.Observable;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,8 +30,8 @@ public class LoginPresenterTest {
     @Mock LoginMvpView mMockLoginMvpView;
     @Mock DataManager mMockDataManager;
     private LoginPresenter mLoginPresenter;
-    private static String FAKE_LOGIN = "fake";
-    private static String FAKE_PASS = "fake";
+    private static String FAKE_EMAIL = "fake_email";
+    private static String FAKE_PASS = "fake_pass";
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();
@@ -49,11 +50,12 @@ public class LoginPresenterTest {
     @Test
     public void testSignInSuccess() throws Exception {
         SignInResponse signInResponse = new SignInResponse();
-        Response<SignInResponse> response = Response.success(signInResponse);
-        when(mMockDataManager.signIn(FAKE_LOGIN, FAKE_PASS))
+        retrofit.Response<SignInResponse> response = retrofit.Response.success(signInResponse);
+        when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS))
                 .thenReturn(Observable.just(response));
-        mLoginPresenter.signIn(FAKE_LOGIN, FAKE_PASS);
+        mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
         verify(mMockDataManager).saveAuthorizationResponse(response);
         verify(mMockLoginMvpView).goToMainActivity();
+        verify(mMockLoginMvpView, never()).showError(any(String.class));
     }
 }

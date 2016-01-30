@@ -68,7 +68,7 @@ public class MainPresenterTest {
         verify(mMockDataManager).saveLocationsToDatabase(locations);
         verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
         verify(mMockMainMvpView, never()).showEmptyInfo();
-        verify(mMockMainMvpView, never()).showApiError(any(String.class));
+        verify(mMockMainMvpView, never()).showError(any(String.class));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class MainPresenterTest {
         verify(mMockDataManager).saveLocationsToDatabase(locations);
         verify(mMockMainMvpView).showEmptyInfo();
         verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
-        verify(mMockMainMvpView, never()).showApiError(any(String.class));
+        verify(mMockMainMvpView, never()).showError(any(String.class));
     }
 
     @Test

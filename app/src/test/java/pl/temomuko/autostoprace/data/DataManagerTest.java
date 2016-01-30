@@ -41,7 +41,7 @@ public class DataManagerTest {
     @Mock PrefsHelper mMockPrefsHelper;
     @Mock ApiManager mMockApiManager;
     private DataManager mDataManager;
-    private static String FAKE_LOGIN = "fake_login";
+    private static String FAKE_EMAIL = "fake_email";
     private static String FAKE_PASS = "fake_pass";
     private static String FAKE_ACCESS_TOKEN = "fake_access_token";
     private static String FAKE_CLIENT = "fake_client";
@@ -83,11 +83,11 @@ public class DataManagerTest {
 
     @Test
     public void testSignIn() throws Exception {
-        when(mMockApiManager.signInWithObservable(FAKE_LOGIN, FAKE_PASS))
+        when(mMockApiManager.signInWithObservable(FAKE_EMAIL, FAKE_PASS))
                 .thenReturn(Observable.<Response<SignInResponse>>empty());
         Observable<Response<SignInResponse>> expectedObservable
-                = mMockApiManager.signInWithObservable(FAKE_LOGIN, FAKE_PASS);
-        Observable<Response<SignInResponse>> actualObservable = mDataManager.signIn(FAKE_LOGIN, FAKE_PASS);
+                = mMockApiManager.signInWithObservable(FAKE_EMAIL, FAKE_PASS);
+        Observable<Response<SignInResponse>> actualObservable = mDataManager.signIn(FAKE_EMAIL, FAKE_PASS);
         assertEquals(expectedObservable, actualObservable);
     }
 
