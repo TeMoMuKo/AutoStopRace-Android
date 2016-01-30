@@ -12,25 +12,24 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:id="@+id/tv_current_user"
+    <EditText
+        android:id="@+id/et_message"
+        android:hint="@string/hint_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLength="160"
+        />
+
+    <Button
+        android:id="@+id/btn_send_location"
+        android:text="@string/action_save_and_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/btn_logout"
-        android:text="@string/msg_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/btn_go_to_post"
-        android:text="@string/action_add_new_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/tv_current_team_locations"
+        android:id="@+id/btn_cancel_send_location"
+        android:text="@string/action_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

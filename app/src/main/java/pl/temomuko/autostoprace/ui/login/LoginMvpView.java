@@ -7,5 +7,5 @@ import pl.temomuko.autostoprace.ui.base.content.ContentMvpView;
  */
 public interface LoginMvpView extends ContentMvpView {
 
-    void goToMainActivity();
+    void startMainActivity();
 }

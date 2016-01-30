@@ -17,7 +17,9 @@ public interface MainMvpView extends ContentMvpView {
 
     void showUser(User user);
 
-    void goToLauncherActivity();
+    void startLauncherActivity();
 
     void showLogoutMessage();
+
+    void startPostActivity();
 }

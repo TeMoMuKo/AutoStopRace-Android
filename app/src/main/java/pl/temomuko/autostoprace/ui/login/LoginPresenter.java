@@ -47,7 +47,7 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
     private void processLoginResponse(Response<SignInResponse> response) {
         if (response.code() == HttpStatus.OK) {
             mDataManager.saveAuthorizationResponse(response);
-            getMvpView().goToMainActivity();
+            getMvpView().startMainActivity();
         } else {
             handleResponseError(response);
         }

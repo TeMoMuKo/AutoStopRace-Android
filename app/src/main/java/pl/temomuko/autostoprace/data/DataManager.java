@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
@@ -56,11 +57,22 @@ public class DataManager {
         return Observable.just(locations);
     }
 
+    public void saveLocationToDatabase(Location location) {
+        //TODO
+    }
+
+    public Observable<Response<Location>> postLocationToServer(CreateLocationRequest request) {
+        String accessToken = mPrefsHelper.getAuthAccessToken();
+        String client = mPrefsHelper.getAuthClient();
+        String uid = mPrefsHelper.getAuthUid();
+        return mApiManager.postLocationWithObservable(accessToken, client, uid, request);
+    }
+
     public void saveAuthorizationResponse(Response<SignInResponse> response) {
         Map<String, List<String>> headers = response.headers().toMultimap();
-        mPrefsHelper.setAuthAccessToken(headers.get(Constants.HEADER_ACCESS_TOKEN).get(0));
-        mPrefsHelper.setAuthClient(headers.get(Constants.HEADER_CLIENT).get(0));
-        mPrefsHelper.setAuthUid(headers.get(Constants.HEADER_UID).get(0));
+        mPrefsHelper.setAuthAccessToken(headers.get(Constants.HEADER_FIELD_TOKEN).get(0));
+        mPrefsHelper.setAuthClient(headers.get(Constants.HEADER_FIELD_CLIENT).get(0));
+        mPrefsHelper.setAuthUid(headers.get(Constants.HEADER_FIELD_UID).get(0));
         mPrefsHelper.setCurrentUser(response.body().getUser());
     }
 

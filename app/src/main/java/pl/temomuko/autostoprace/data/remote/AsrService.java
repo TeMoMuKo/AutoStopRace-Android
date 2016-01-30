@@ -43,17 +43,17 @@ public interface AsrService {
 
     @DELETE("auth/sign_out")
     Observable<Response<SignOutResponse>> signOutWithObservable(
-            @Header(Constants.HEADER_ACCESS_TOKEN) String accessToken,
-            @Header(Constants.HEADER_CLIENT) String client,
-            @Header(Constants.HEADER_UID) String uid
+            @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
+            @Header(Constants.HEADER_FIELD_CLIENT) String client,
+            @Header(Constants.HEADER_FIELD_UID) String uid
     );
 
     @Headers("Content-Type: " + Constants.HEADER_CONTENT_TYPE_JSON)
-    @POST("location")
+    @POST("locations")
     Observable<Response<Location>> postLocationWithObservable (
-            @Header(Constants.HEADER_ACCESS_TOKEN) String accessToken,
-            @Header(Constants.HEADER_CLIENT) String client,
-            @Header(Constants.HEADER_UID) String uid,
+            @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
+            @Header(Constants.HEADER_FIELD_CLIENT) String client,
+            @Header(Constants.HEADER_FIELD_UID) String uid,
             @Body CreateLocationRequest request
     );
 }

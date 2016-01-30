@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
 /**
  * Created by szymen on 2016-01-27.
  */
-
 @RunWith(MockitoJUnitRunner.class)
 public class LoginPresenterTest {
 
@@ -55,7 +54,7 @@ public class LoginPresenterTest {
                 .thenReturn(Observable.just(response));
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
         verify(mMockDataManager).saveAuthorizationResponse(response);
-        verify(mMockLoginMvpView).goToMainActivity();
+        verify(mMockLoginMvpView).startMainActivity();
         verify(mMockLoginMvpView, never()).showError(any(String.class));
     }
 }

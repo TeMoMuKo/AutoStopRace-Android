@@ -29,7 +29,6 @@ import static org.mockito.Mockito.when;
 /**
  * Created by szymen on 2016-01-22.
  */
-
 @RunWith(MockitoJUnitRunner.class)
 public class MainPresenterTest {
 
@@ -72,7 +71,7 @@ public class MainPresenterTest {
     }
 
     @Test
-         public void testLoadLocationsFromApiReturnsEmptyList() throws Exception {
+    public void testLoadLocationsFromApiReturnsEmptyList() throws Exception {
         List<Location> locations = new ArrayList<>();
         Response<List<Location>> response = Response.success(locations);
         when(mMockDataManager.getTeamLocationsFromServer())
@@ -98,11 +97,11 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void logout() throws Exception {
+    public void testLogout() throws Exception {
         when(mMockDataManager.signOut()).thenReturn(Observable.<Response<SignOutResponse>>empty());
         mMainPresenter.logout();
         verify(mMockDataManager).clearAuth();
         verify(mMockMainMvpView).showLogoutMessage();
-        verify(mMockMainMvpView).goToLauncherActivity();
+        verify(mMockMainMvpView).startLauncherActivity();
     }
 }

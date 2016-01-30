@@ -16,4 +16,11 @@
     <string name="error_400">Nieprawidłowe żądanie</string>
     <string name="msg_welcome">Witamy w Auto Stop Race!</string>
     <string name="error_no_internet_connection">Brak połączenia z Internetem.</string>
+    <string name="hint_message">Krótka relacja (max 160 znaków)</string>
+    <string name="action_save_and_send">Zapisz i wyślij</string>
+    <string name="action_cancel">Anuluj</string>
+    <string name="title_activity_login">Logowanie</string>
+    <string name="title_post_location">Wysyłanie lokalizacji</string>
+    <string name="action_add_new_location">Dodaj nową lokalizacje</string>
+    <string name="msg_sent_location">Wysłano lokalizację na serwer</string>
 </resources>

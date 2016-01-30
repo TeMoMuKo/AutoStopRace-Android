@@ -7,6 +7,7 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
+import pl.temomuko.autostoprace.ui.post.PostActivity;
 
 /**
  * Created by szymen on 2016-01-06.
@@ -22,4 +23,6 @@ public interface ActivityComponent {
     void inject(LoginActivity loginActivity);
 
     void inject(LauncherActivity launcherActivity);
+
+    void inject(PostActivity postActivity);
 }

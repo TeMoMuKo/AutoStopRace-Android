@@ -7,5 +7,5 @@ import pl.temomuko.autostoprace.ui.base.MvpView;
  */
 public interface LauncherMvpView extends MvpView {
 
-    void goToLoginActivity();
+    void startLoginActivity();
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import javax.inject.Inject;
 
@@ -19,6 +20,7 @@ import pl.temomuko.autostoprace.ui.main.MainActivity;
 public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @Inject LoginPresenter mLoginPresenter;
+    @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(R.id.et_email) EditText mEmailEditText;
     @Bind(R.id.et_password) EditText mPasswordEditText;
     @Bind(R.id.btn_login) Button mLoginButton;
@@ -29,7 +31,12 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         setContentView(R.layout.activity_login);
         getActivityComponent().inject(this);
         mLoginPresenter.attachView(this);
+        setupToolbar();
         setListeners();
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(mToolbar);
     }
 
     private void setListeners() {
@@ -41,7 +48,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     }
 
     @Override
-    public void goToMainActivity() {
+    public void startMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

@@ -21,9 +21,9 @@ public class ContentPresenter<T extends ContentMvpView> extends BasePresenter<T>
         getMvpView().showError(handler.getMessage());
     }
 
-    protected void handleError(Throwable throwable) {
+    public void handleError(Throwable throwable) {
         Context context = (Context) getMvpView();
-        if((throwable instanceof IOException) && !NetworkUtil.isConnected(context)) {
+        if ((throwable instanceof IOException) && !NetworkUtil.isConnected(context)) {
             getMvpView().showError(context.getString(R.string.error_no_internet_connection));
         } else {
             getMvpView().showError(context.getString(R.string.error_unknown));

@@ -10,7 +10,7 @@ public class Constants {
 
     public final static String HEADER_ACCEPT_JSON = "application/json";
     public final static String HEADER_CONTENT_TYPE_JSON = "application/json";
-    public final static String HEADER_ACCESS_TOKEN = "access-token";
-    public final static String HEADER_CLIENT = "client";
-    public final static String HEADER_UID = "uid";
+    public final static String HEADER_FIELD_TOKEN = "access-token";
+    public final static String HEADER_FIELD_CLIENT = "client";
+    public final static String HEADER_FIELD_UID = "uid";
 }

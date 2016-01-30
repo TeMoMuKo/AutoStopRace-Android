@@ -21,7 +21,8 @@ import rx.schedulers.Schedulers;
 public class MainPresenter extends ContentPresenter<MainMvpView> {
 
     private DataManager mDataManager;
-    private Subscription mSubscription;
+    private Subscription mLoadSubscription;
+    private Subscription mLogoutSubscription;
     private final static String TAG = "MainPresenter";
 
     @Inject
@@ -37,12 +38,13 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
     @Override
     public void detachView() {
         super.detachView();
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
+        if (mLoadSubscription != null && !mLoadSubscription.isUnsubscribed()) mLoadSubscription.unsubscribe();
+        if (mLogoutSubscription != null && !mLogoutSubscription.isUnsubscribed()) mLogoutSubscription.unsubscribe();
     }
 
     public void checkAuth() {
         if (!mDataManager.isLoggedWithToken()) {
-            getMvpView().goToLauncherActivity();
+            getMvpView().startLauncherActivity();
         }
     }
 
@@ -55,7 +57,7 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
     }
 
     public void logout() {
-        mDataManager.signOut()
+        mLogoutSubscription = mDataManager.signOut()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.newThread())
@@ -66,11 +68,15 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
                 });
         mDataManager.clearAuth();
         getMvpView().showLogoutMessage();
-        getMvpView().goToLauncherActivity();
+        getMvpView().startLauncherActivity();
+    }
+
+    public void goToPostLocation() {
+        getMvpView().startPostActivity();
     }
 
     public void loadLocationsFromServer() {
-        mSubscription = mDataManager.getTeamLocationsFromServer()
+        mLoadSubscription = mDataManager.getTeamLocationsFromServer()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.newThread())
