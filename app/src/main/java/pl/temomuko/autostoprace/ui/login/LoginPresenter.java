@@ -7,9 +7,10 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
-import pl.temomuko.autostoprace.util.NetworkUtil;
+import pl.temomuko.autostoprace.util.HttpStatus;
 import retrofit.Response;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -22,6 +23,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     private Subscription mSubscription;
     private DataManager mDataManager;
+    private final static String TAG = "LoginPresenter";
 
     @Inject
     public LoginPresenter(DataManager dataManager) {
@@ -44,14 +46,16 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.newThread())
-                .subscribe(response -> {
-                    if (NetworkUtil.isHttpOk(response.code())) {
-                        mDataManager.saveAuthorizationResponse(response);
-                        getMvpView().goToMainActivity();
-                    } else {
-                        handleResponseError(response);
-                    }
-                }, this::handleError);
+                .subscribe(this::processLoginResponse, this::handleError);
+    }
+
+    private void processLoginResponse(Response<SignInResponse> response) {
+        if (response.code() == HttpStatus.OK) {
+            mDataManager.saveAuthorizationResponse(response);
+            getMvpView().goToMainActivity();
+        } else {
+            handleResponseError(response);
+        }
     }
 
     private void handleResponseError(Response response) {
@@ -61,7 +65,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     }
 
     private void handleError(Throwable throwable) {
-        Log.e("LoginPresenter", throwable.getMessage());
+        Log.e(TAG, throwable.getMessage());
         Context context = (Context) getMvpView();
         getMvpView().showApiError(context.getString(R.string.error_unknown));
     }

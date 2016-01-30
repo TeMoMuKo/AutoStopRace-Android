@@ -47,7 +47,7 @@ public class DataManager {
         mPrefsHelper.clearAuth();
     }
 
-    public Observable<List<Location>> getTeamLocationsFromServer() {
+    public Observable<Response<List<Location>>> getTeamLocationsFromServer() {
         return mApiManager.getLocationsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
     }
 

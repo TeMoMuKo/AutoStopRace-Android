@@ -13,6 +13,7 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.login.LoginMvpView;
 import pl.temomuko.autostoprace.ui.login.LoginPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
+import retrofit.Response;
 import rx.Observable;
 
 import static org.mockito.Mockito.verify;
@@ -48,7 +49,7 @@ public class LoginPresenterTest {
     @Test
     public void testSignInSuccess() throws Exception {
         SignInResponse signInResponse = new SignInResponse();
-        retrofit.Response<SignInResponse> response = retrofit.Response.success(signInResponse);
+        Response<SignInResponse> response = Response.success(signInResponse);
         when(mMockDataManager.signIn(FAKE_LOGIN, FAKE_PASS))
                 .thenReturn(Observable.just(response));
         mLoginPresenter.signIn(FAKE_LOGIN, FAKE_PASS);

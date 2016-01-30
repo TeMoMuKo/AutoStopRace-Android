@@ -66,11 +66,13 @@ public class DataManagerTest {
     @Test
     public void testGetTeamLocationsFromServer() throws Exception {
         List<Location> locations = new ArrayList<>();
+        Response<List<Location>> response = Response.success(locations);
         when(mMockPrefsHelper.getCurrentUser()).thenReturn(new User(1, 1, "Janek", "Kowalski", "jan@kow.pl"));
-        when(mMockApiManager.getLocationsWithObservable(1)).thenReturn(Observable.just(locations));
-        Observable<List<Location>> expectedObservable =
+        when(mMockApiManager.getLocationsWithObservable(1)).thenReturn(Observable.just(response));
+        Observable<Response<List<Location>>> expectedObservable =
                 mMockApiManager.getLocationsWithObservable(mMockPrefsHelper.getCurrentUser().getTeamId());
-        Observable<List<Location>> actualObservable = mDataManager.getTeamLocationsFromServer();
+        Observable<Response<List<Location>>> actualObservable =
+                mDataManager.getTeamLocationsFromServer();
         assertEquals(expectedObservable, actualObservable);
     }
 

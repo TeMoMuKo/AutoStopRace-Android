@@ -55,8 +55,9 @@ public class MainPresenterTest {
     public void testLoadLocationsFromApiReturnsLocations() throws Exception {
         List<Location> locations = new ArrayList<>();
         locations.add(new Location(12.34, 43.21, ""));
+        Response<List<Location>> response = Response.success(locations);
         when(mMockDataManager.getTeamLocationsFromServer())
-                .thenReturn(Observable.just(locations));
+                .thenReturn(Observable.just(response));
 
         List<Location> locationsFromDatabase = new ArrayList<>();
         locationsFromDatabase.add(new Location(99.99, 99.99, ""));
@@ -71,10 +72,11 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void testLoadLocationsFromApiReturnsEmptyList() throws Exception {
+         public void testLoadLocationsFromApiReturnsEmptyList() throws Exception {
         List<Location> locations = new ArrayList<>();
+        Response<List<Location>> response = Response.success(locations);
         when(mMockDataManager.getTeamLocationsFromServer())
-                .thenReturn(Observable.just(locations));
+                .thenReturn(Observable.just(response));
 
         List<Location> locationsFromDatabase = new ArrayList<>();
         when(mMockDataManager.saveLocationsToDatabase(locations))

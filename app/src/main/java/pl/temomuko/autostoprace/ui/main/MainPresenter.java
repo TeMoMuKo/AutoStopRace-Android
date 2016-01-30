@@ -3,14 +3,17 @@ package pl.temomuko.autostoprace.ui.main;
 import android.content.Context;
 import android.util.Log;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.util.HttpStatus;
+import retrofit.Response;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -22,7 +25,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     private DataManager mDataManager;
     private Subscription mSubscription;
-    private static String TAG = "MainPresenter";
+    private final static String TAG = "MainPresenter";
 
     @Inject
     public MainPresenter(DataManager dataManager) {
@@ -74,25 +77,29 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.newThread())
-                .onErrorReturn(throwable -> {
-                    handleRetrofitError(throwable);
-                    return new ArrayList<>();
-                })
-                .switchMap(mDataManager::saveLocationsToDatabase)
-                .subscribe(locations -> {
-                    if (locations.isEmpty()) getMvpView().showEmptyInfo();
-                    else getMvpView().updateLocationsList(locations);
-                }, throwable -> {
-                    handleError();
-                });
+                .subscribe(this::processLocationsResponse, this::handleError);
     }
 
-    private void handleRetrofitError(Throwable throwable) {
+    private void processLocationsResponse(Response<List<Location>> response) {
+        if (response.code() == HttpStatus.OK) {
+            mDataManager.saveLocationsToDatabase(response.body())
+                    .subscribe(locations -> {
+                        if (locations.isEmpty()) getMvpView().showEmptyInfo();
+                        else getMvpView().updateLocationsList(locations);
+                    });
+        } else {
+            handleResponseError(response);
+        }
+    }
+
+    private void handleResponseError(Response response) {
         Context context = (Context) getMvpView();
-        getMvpView().showApiError(new ErrorHandler(context, throwable).getMessage());
+        ErrorHandler handler = new ErrorHandler(context, response);
+        getMvpView().showApiError(handler.getMessage());
     }
 
-    private void handleError() {
+    private void handleError(Throwable throwable) {
+        Log.e(TAG, throwable.getMessage());
         Context context = (Context) getMvpView();
         getMvpView().showApiError(context.getString(R.string.error_unknown));
     }

@@ -8,7 +8,6 @@ import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.Team;
-import pl.temomuko.autostoprace.data.model.User;
 import retrofit.Response;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
@@ -26,9 +25,6 @@ import rx.Observable;
  */
 public interface AsrService {
 
-    @GET("user")
-    Observable<User> getCurrentUserWithObservable();
-
     @GET("teams")
     Observable<List<Team>> getTeamsWithObservable();
 
@@ -36,7 +32,7 @@ public interface AsrService {
     Observable<Team> getTeamWithObservable(@Path("team_id") int teamId);
 
     @GET("teams/{team_id}/locations")
-    Observable<List<Location>> getLocationsWithObservable(@Path("team_id") int teamId);
+    Observable<Response<List<Location>>> getLocationsWithObservable(@Path("team_id") int teamId);
 
     @FormUrlEncoded
     @POST("auth/sign_in")
@@ -54,11 +50,10 @@ public interface AsrService {
 
     @Headers("Content-Type: " + Constants.HEADER_CONTENT_TYPE_JSON)
     @POST("location")
-    Observable<Location> postLocationWithObservable (
+    Observable<Response<Location>> postLocationWithObservable (
             @Header(Constants.HEADER_ACCESS_TOKEN) String accessToken,
             @Header(Constants.HEADER_CLIENT) String client,
             @Header(Constants.HEADER_UID) String uid,
             @Body CreateLocationRequest request
     );
-
 }

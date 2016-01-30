@@ -18,8 +18,6 @@ import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
-import pl.temomuko.autostoprace.data.model.Team;
-import pl.temomuko.autostoprace.data.model.User;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -68,19 +66,7 @@ public class ApiManager {
         return okhttp;
     }
 
-    public Observable<User> getCurrentUserWithObservable() {
-        return mAsrService.getCurrentUserWithObservable();
-    }
-
-    public Observable<List<Team>> getTeamsWithObservable() {
-        return mAsrService.getTeamsWithObservable();
-    }
-
-    public Observable<Team> getTeamWithObservable(int teamId) {
-        return mAsrService.getTeamWithObservable(teamId);
-    }
-
-    public Observable<List<Location>> getLocationsWithObservable(int teamId) {
+    public Observable<Response<List<Location>>> getLocationsWithObservable(int teamId) {
         return mAsrService.getLocationsWithObservable(teamId);
     }
 
@@ -93,7 +79,7 @@ public class ApiManager {
         return mAsrService.signOutWithObservable(accessToken, client, uid);
     }
 
-    public Observable<Location> postLocationWithObservable(
+    public Observable<Response<Location>> postLocationWithObservable(
             String accessToken, String client, String uid, CreateLocationRequest request) {
         return mAsrService.postLocationWithObservable(accessToken, client, uid, request);
     }

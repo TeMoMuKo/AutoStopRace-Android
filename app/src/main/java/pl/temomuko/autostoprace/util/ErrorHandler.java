@@ -13,20 +13,15 @@ import retrofit.Response;
 public class ErrorHandler {
 
     private Context mContext;
-    private ApiError mResponse;
-
-    public ErrorHandler(Context context, Throwable throwable) {
-        mContext = context;
-        mResponse = ApiError.create(throwable);
-    }
+    private ApiError mApiError;
 
     public ErrorHandler(Context context, Response<?> response) {
         mContext = context;
-        mResponse = new ApiError(response);
+        mApiError = new ApiError(response);
     }
 
     public String getMessage() {
-        switch (mResponse.getStatus()) {
+        switch (mApiError.getStatus()) {
             case HttpStatus.NOT_FOUND:
                 return mContext.getString(R.string.error_404);
             case HttpStatus.FORBIDDEN:

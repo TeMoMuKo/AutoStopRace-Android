@@ -1,6 +1,5 @@
 package pl.temomuko.autostoprace.data.model;
 
-import retrofit.HttpException;
 import retrofit.Response;
 
 /**
@@ -18,19 +17,6 @@ public class ApiError {
 
     public ApiError(Response response) {
         this(response.code(), response.message());
-    }
-
-    public ApiError() {
-        this(0, "");
-    }
-
-    public static ApiError create(Throwable throwable) {
-        ApiError response = new ApiError();
-        if (throwable instanceof HttpException) {
-            HttpException httpException = (HttpException) throwable;
-            response = new ApiError(httpException.code(), httpException.message());
-        }
-        return response;
     }
 
     public String getErrorMessage() {
