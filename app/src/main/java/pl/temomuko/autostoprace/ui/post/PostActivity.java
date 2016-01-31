@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
 
 /**
@@ -58,6 +59,18 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     public void showSuccessInfo() {
         Toast.makeText(this, R.string.msg_sent_location, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showSessionExpiredError() {
+        Toast.makeText(this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void startLoginActivity() {
+        Intent intent = new Intent(this, LauncherActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

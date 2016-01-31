@@ -26,10 +26,10 @@ import rx.Observable;
 public interface AsrService {
 
     @GET("teams")
-    Observable<List<Team>> getTeamsWithObservable();
+    Observable<Response<List<Team>>> getTeamsWithObservable();
 
     @GET("teams/{team_id}")
-    Observable<Team> getTeamWithObservable(@Path("team_id") int teamId);
+    Observable<Response<Team>> getTeamWithObservable(@Path("team_id") int teamId);
 
     @GET("teams/{team_id}/locations")
     Observable<Response<List<Location>>> getLocationsWithObservable(@Path("team_id") int teamId);
@@ -43,6 +43,13 @@ public interface AsrService {
 
     @DELETE("auth/sign_out")
     Observable<Response<SignOutResponse>> signOutWithObservable(
+            @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
+            @Header(Constants.HEADER_FIELD_CLIENT) String client,
+            @Header(Constants.HEADER_FIELD_UID) String uid
+    );
+
+    @GET("auth/validate_token")
+    Observable<Response<SignInResponse>> validateTokenWithObservable(
             @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
             @Header(Constants.HEADER_FIELD_CLIENT) String client,
             @Header(Constants.HEADER_FIELD_UID) String uid

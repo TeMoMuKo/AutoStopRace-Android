@@ -48,6 +48,13 @@ public class DataManager {
         mPrefsHelper.clearAuth();
     }
 
+    public Observable<Response<SignInResponse>> validateToken() {
+        String accessToken = mPrefsHelper.getAuthAccessToken();
+        String client = mPrefsHelper.getAuthClient();
+        String uid = mPrefsHelper.getAuthUid();
+        return mApiManager.validateTokenWithObservable(accessToken, client, uid);
+    }
+
     public Observable<Response<List<Location>>> getTeamLocationsFromServer() {
         return mApiManager.getLocationsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
     }

@@ -22,4 +22,8 @@ public interface MainMvpView extends ContentMvpView {
     void showLogoutMessage();
 
     void startPostActivity();
+
+    void startLoginActivity();
+
+    void showSessionExpiredError();
 }

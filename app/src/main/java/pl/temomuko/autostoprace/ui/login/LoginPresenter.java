@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
+import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
 import retrofit.Response;
 import rx.Subscription;
@@ -17,12 +18,11 @@ import rx.schedulers.Schedulers;
 public class LoginPresenter extends ContentPresenter<LoginMvpView> {
 
     private Subscription mSubscription;
-    private DataManager mDataManager;
     private final static String TAG = "LoginPresenter";
 
     @Inject
-    public LoginPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public LoginPresenter(DataManager dataManager, ErrorHandler errorHandler) {
+        super(errorHandler, dataManager);
     }
 
     @Override
@@ -32,8 +32,10 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
 
     @Override
     public void detachView() {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
         super.detachView();
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
     }
 
     public void signIn(String email, String password) {
@@ -49,7 +51,7 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
             mDataManager.saveAuthorizationResponse(response);
             getMvpView().startMainActivity();
         } else {
-            handleResponseError(response);
+            handleStandardResponseError(response);
         }
     }
 }

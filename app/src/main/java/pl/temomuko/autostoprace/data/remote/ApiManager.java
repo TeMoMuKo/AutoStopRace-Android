@@ -79,6 +79,11 @@ public class ApiManager {
         return mAsrService.signOutWithObservable(accessToken, client, uid);
     }
 
+    public Observable<Response<SignInResponse>> validateTokenWithObservable(
+            String accessToken, String client, String uid) {
+        return mAsrService.validateTokenWithObservable(accessToken, client, uid);
+    }
+
     public Observable<Response<Location>> postLocationWithObservable(
             String accessToken, String client, String uid, CreateLocationRequest request) {
         return mAsrService.postLocationWithObservable(accessToken, client, uid, request);

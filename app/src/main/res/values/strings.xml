@@ -23,4 +23,5 @@
     <string name="title_post_location">Wysyłanie lokalizacji</string>
     <string name="action_add_new_location">Dodaj nową lokalizacje</string>
     <string name="msg_sent_location">Wysłano lokalizację na serwer</string>
+    <string name="error_session_expired">Sesja wygasła, zaloguj się ponownie</string>
 </resources>

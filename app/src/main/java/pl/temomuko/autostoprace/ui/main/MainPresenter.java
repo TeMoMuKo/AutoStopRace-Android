@@ -8,26 +8,27 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
+import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
 import retrofit.Response;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by szymen on 2016-01-09.
  */
 public class MainPresenter extends ContentPresenter<MainMvpView> {
 
-    private DataManager mDataManager;
-    private Subscription mLoadSubscription;
-    private Subscription mLogoutSubscription;
     private final static String TAG = "MainPresenter";
+    private CompositeSubscription mSubscriptions;
 
     @Inject
-    public MainPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public MainPresenter(DataManager dataManager, ErrorHandler errorHandler) {
+        super(errorHandler, dataManager);
+        mSubscriptions = new CompositeSubscription();
     }
 
     @Override
@@ -37,19 +38,36 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
 
     @Override
     public void detachView() {
+        if (mSubscriptions != null && !mSubscriptions.isUnsubscribed()) {
+            mSubscriptions.unsubscribe();
+        }
         super.detachView();
-        if (mLoadSubscription != null && !mLoadSubscription.isUnsubscribed()) mLoadSubscription.unsubscribe();
-        if (mLogoutSubscription != null && !mLogoutSubscription.isUnsubscribed()) mLogoutSubscription.unsubscribe();
     }
 
     public void checkAuth() {
         if (!mDataManager.isLoggedWithToken()) {
             getMvpView().startLauncherActivity();
+        } else {
+            validateToken();
         }
     }
 
-    public void loadLocationsFromDatabase() {
-        //TODO
+    private void validateToken() {
+        mSubscriptions.add(mDataManager.validateToken()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.newThread())
+                .subscribe(this::processValidateTokenResponse, this::handleError));
+    }
+
+    private void processValidateTokenResponse(Response<SignInResponse> response) {
+        if (response.code() == HttpStatus.OK) {
+            mDataManager.saveAuthorizationResponse(response);
+        } else if (response.code() == HttpStatus.UNAUTHORIZED) {
+            mDataManager.clearAuth();
+            getMvpView().showSessionExpiredError();
+            getMvpView().startLoginActivity();
+        }
     }
 
     public void setupUserInfo() {
@@ -57,7 +75,7 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
     }
 
     public void logout() {
-        mLogoutSubscription = mDataManager.signOut()
+        mSubscriptions.add(mDataManager.signOut()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.newThread())
@@ -65,22 +83,22 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
                     Log.i(TAG, response.body().toString());
                 }, throwable -> {
                     Log.i(TAG, throwable.getMessage());
-                });
+                }));
         mDataManager.clearAuth();
         getMvpView().showLogoutMessage();
         getMvpView().startLauncherActivity();
     }
 
-    public void goToPostLocation() {
-        getMvpView().startPostActivity();
+    public void loadLocationsFromDatabase() {
+        //TODO
     }
 
     public void loadLocationsFromServer() {
-        mLoadSubscription = mDataManager.getTeamLocationsFromServer()
+        mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.newThread())
-                .subscribe(this::processLocationsResponse, this::handleError);
+                .subscribe(this::processLocationsResponse, this::handleError));
     }
 
     private void processLocationsResponse(Response<List<Location>> response) {
@@ -91,7 +109,11 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
                         else getMvpView().updateLocationsList(locations);
                     });
         } else {
-            handleResponseError(response);
+            handleStandardResponseError(response);
         }
+    }
+
+    public void goToPostLocation() {
+        getMvpView().startPostActivity();
     }
 }

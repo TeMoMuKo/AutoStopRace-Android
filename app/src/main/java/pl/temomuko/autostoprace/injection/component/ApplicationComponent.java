@@ -9,6 +9,7 @@ import dagger.Component;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
+import pl.temomuko.autostoprace.util.ErrorHandler;
 
 /**
  * Created by szymen on 2016-01-06.
@@ -23,4 +24,6 @@ public interface ApplicationComponent {
     Application application();
 
     DataManager dataManager();
+
+    ErrorHandler errorHandler();
 }

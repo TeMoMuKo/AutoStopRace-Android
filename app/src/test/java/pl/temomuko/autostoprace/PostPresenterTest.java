@@ -11,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.ui.post.PostMvpView;
 import pl.temomuko.autostoprace.ui.post.PostPresenter;
+import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 
 /**
@@ -21,6 +22,7 @@ public class PostPresenterTest {
 
     @Mock PostMvpView mMockPostMvpView;
     @Mock DataManager mMockDataManager;
+    @Mock ErrorHandler mMockErrorHandler;
     private PostPresenter mPostPresenter;
 
     @Rule
@@ -28,7 +30,7 @@ public class PostPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mPostPresenter = new PostPresenter(mMockDataManager);
+        mPostPresenter = new PostPresenter(mMockDataManager, mMockErrorHandler);
         mPostPresenter.attachView(mMockPostMvpView);
     }
 

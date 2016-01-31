@@ -17,6 +17,7 @@ import java.util.List;
 
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
@@ -46,6 +47,9 @@ public class DataManagerTest {
     private static String FAKE_ACCESS_TOKEN = "fake_access_token";
     private static String FAKE_CLIENT = "fake_client";
     private static String FAKE_UID = "fake_uid";
+    private static String FAKE_FIRST_NAME = "fake_first_name";
+    private static String FAKE_LAST_NAME = "fake_last_name";
+
     private com.squareup.okhttp.Response.Builder mOkHttpResponseBuilder;
 
     @Before
@@ -67,7 +71,7 @@ public class DataManagerTest {
     public void testGetTeamLocationsFromServer() throws Exception {
         List<Location> locations = new ArrayList<>();
         Response<List<Location>> response = Response.success(locations);
-        when(mMockPrefsHelper.getCurrentUser()).thenReturn(new User(1, 1, "Janek", "Kowalski", "jan@kow.pl"));
+        when(mMockPrefsHelper.getCurrentUser()).thenReturn(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
         when(mMockApiManager.getLocationsWithObservable(1)).thenReturn(Observable.just(response));
         Observable<Response<List<Location>>> expectedObservable =
                 mMockApiManager.getLocationsWithObservable(mMockPrefsHelper.getCurrentUser().getTeamId());
@@ -77,8 +81,46 @@ public class DataManagerTest {
     }
 
     @Test
+    public void testValidateToken() throws Exception {
+        SignInResponse signInResponse = new SignInResponse();
+        when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
+        when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
+        when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
+        when(mMockApiManager.validateTokenWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID))
+                .thenReturn(Observable.just(Response.success(signInResponse)));
+        mDataManager.validateToken();
+        verify(mMockApiManager).validateTokenWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
+    }
+
+    @Test
+    public void testClearAuth() throws Exception {
+        mDataManager.clearAuth();
+        verify(mMockPrefsHelper).clearAuth();
+    }
+
+    @Test
     public void testSaveLocationsToDatabase() throws Exception {
         //TODO
+    }
+
+    @Test
+    public void testSaveLocationToDatabase() throws Exception {
+        //TODO
+    }
+
+    @Test
+    public void testPostLocationToServer() throws Exception {
+        Location locationToSend = new Location(12.34, 56.78, "");
+        CreateLocationRequest request = new CreateLocationRequest(locationToSend);
+        when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
+        when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
+        when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
+        when(mMockApiManager.postLocationWithObservable(
+                FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID, request))
+                .thenReturn(Observable.just(Response.success(locationToSend)));
+        mDataManager.postLocationToServer(request);
+        verify(mMockApiManager).postLocationWithObservable(
+                FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID, request);
     }
 
     @Test
@@ -112,7 +154,7 @@ public class DataManagerTest {
                 .build();
 
         SignInResponse signInResponse = new SignInResponse();
-        signInResponse.setUser(new User(1, 1, "Janek", "Kowalski", "jan@kow.pl"));
+        signInResponse.setUser(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
         Response<SignInResponse> response = Response.success(signInResponse, okHttpResponse);
         mDataManager.saveAuthorizationResponse(response);
         verify(mMockPrefsHelper).setAuthAccessToken(FAKE_ACCESS_TOKEN);
@@ -131,7 +173,7 @@ public class DataManagerTest {
 
     @Test
     public void testGetCurrentUser() throws Exception {
-        User fakeUser = new User(1, 1, "Janek", "Kowalski", "jan@kow.pl");
+        User fakeUser = new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL);
         when(mMockPrefsHelper.getCurrentUser())
                 .thenReturn(fakeUser);
         Assert.assertEquals(fakeUser, mDataManager.getCurrentUser());

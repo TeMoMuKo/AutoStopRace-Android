@@ -4,7 +4,10 @@ import android.content.Context;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.NetworkUtil;
@@ -15,10 +18,17 @@ import retrofit.Response;
  */
 public class ContentPresenter<T extends ContentMvpView> extends BasePresenter<T> {
 
-    protected void handleResponseError(Response response) {
-        Context context = (Context) getMvpView();
-        ErrorHandler handler = new ErrorHandler(context, response);
-        getMvpView().showError(handler.getMessage());
+    protected ErrorHandler mErrorHandler;
+    protected DataManager mDataManager;
+
+    @Inject
+    public ContentPresenter(ErrorHandler errorHandler, DataManager dataManager) {
+        mErrorHandler = errorHandler;
+        mDataManager = dataManager;
+    }
+
+    protected void handleStandardResponseError(Response response) {
+        getMvpView().showError(mErrorHandler.getMessage(response));
     }
 
     public void handleError(Throwable throwable) {

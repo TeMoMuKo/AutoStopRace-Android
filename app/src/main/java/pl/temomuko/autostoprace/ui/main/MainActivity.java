@@ -94,8 +94,20 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     @Override
+    public void startLoginActivity() {
+        Intent intent = new Intent(this, LauncherActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
     public void startPostActivity() {
         Intent intent = new Intent(this, PostActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void showSessionExpiredError() {
+        Toast.makeText(this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
     }
 }

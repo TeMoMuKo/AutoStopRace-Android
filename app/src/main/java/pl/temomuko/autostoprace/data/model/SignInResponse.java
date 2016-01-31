@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class SignInResponse {
 
+    @SerializedName("success") private boolean mSuccess;
     @SerializedName("data") private User mUserData;
 
     public User getUser() {

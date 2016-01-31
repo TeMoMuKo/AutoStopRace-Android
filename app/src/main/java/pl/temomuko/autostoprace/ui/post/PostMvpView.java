@@ -9,7 +9,11 @@ public interface PostMvpView extends ContentMvpView {
 
     void startMainActivity();
 
+    void startLoginActivity();
+
     void showSuccessInfo();
 
     void onBackPressed();
+
+    void showSessionExpiredError();
 }

@@ -2,26 +2,31 @@ package pl.temomuko.autostoprace.util;
 
 import android.content.Context;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.ApiError;
+import pl.temomuko.autostoprace.injection.AppContext;
 import retrofit.Response;
 
 /**
  * Created by szymen on 2016-01-27.
  */
 
+@Singleton
 public class ErrorHandler {
 
     private Context mContext;
-    private ApiError mApiError;
 
-    public ErrorHandler(Context context, Response<?> response) {
+    @Inject
+    public ErrorHandler(@AppContext Context context) {
         mContext = context;
-        mApiError = new ApiError(response);
     }
 
-    public String getMessage() {
-        switch (mApiError.getStatus()) {
+    public String getMessage(Response<?> response) {
+        ApiError apiError = new ApiError(response);
+        switch (apiError.getStatus()) {
             case HttpStatus.NOT_FOUND:
                 return mContext.getString(R.string.error_404);
             case HttpStatus.FORBIDDEN:

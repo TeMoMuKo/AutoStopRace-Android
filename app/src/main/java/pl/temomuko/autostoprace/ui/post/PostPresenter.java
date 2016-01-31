@@ -6,6 +6,7 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
+import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
 import retrofit.Response;
 import rx.Subscription;
@@ -17,13 +18,12 @@ import rx.schedulers.Schedulers;
  */
 public class PostPresenter extends ContentPresenter<PostMvpView> {
 
-    private DataManager mDataManager;
     private Subscription mSubscription;
     private final static String TAG = "PostPresenter";
 
     @Inject
-    public PostPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public PostPresenter(DataManager dataManager, ErrorHandler errorHandler) {
+        super(errorHandler, dataManager);
     }
 
     @Override
@@ -33,8 +33,8 @@ public class PostPresenter extends ContentPresenter<PostMvpView> {
 
     @Override
     public void detachView() {
-        super.detachView();
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
+        super.detachView();
     }
 
     public void backToMain() {
@@ -58,8 +58,11 @@ public class PostPresenter extends ContentPresenter<PostMvpView> {
         if (response.code() == HttpStatus.CREATED) {
             getMvpView().showSuccessInfo();
             getMvpView().startMainActivity();
+        } else if (response.code() == HttpStatus.UNAUTHORIZED) {
+            getMvpView().showSessionExpiredError();
+            getMvpView().startLoginActivity();
         } else {
-            handleResponseError(response);
+            handleStandardResponseError(response);
         }
     }
 }
