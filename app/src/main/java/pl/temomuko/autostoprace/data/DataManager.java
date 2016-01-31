@@ -13,7 +13,7 @@ import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
-import pl.temomuko.autostoprace.data.remote.ApiManager;
+import pl.temomuko.autostoprace.data.remote.AsrService;
 import retrofit.Response;
 import rx.Observable;
 
@@ -24,24 +24,24 @@ import rx.Observable;
 @Singleton
 public class DataManager {
 
-    private ApiManager mApiManager;
+    private AsrService mAsrService;
     private PrefsHelper mPrefsHelper;
 
     @Inject
-    public DataManager(ApiManager apiManager, PrefsHelper prefsHelper) {
-        mApiManager = apiManager;
+    public DataManager(AsrService asrService, PrefsHelper prefsHelper) {
+        mAsrService = asrService;
         mPrefsHelper = prefsHelper;
     }
 
     public Observable<Response<SignInResponse>> signIn(String login, String password) {
-        return mApiManager.signInWithObservable(login, password);
+        return mAsrService.signInWithObservable(login, password);
     }
 
     public Observable<Response<SignOutResponse>> signOut() {
         String accessToken = mPrefsHelper.getAuthAccessToken();
         String client = mPrefsHelper.getAuthClient();
         String uid = mPrefsHelper.getAuthUid();
-        return mApiManager.signOutWithObservable(accessToken, client, uid);
+        return mAsrService.signOutWithObservable(accessToken, client, uid);
     }
 
     public void clearAuth() {
@@ -52,11 +52,11 @@ public class DataManager {
         String accessToken = mPrefsHelper.getAuthAccessToken();
         String client = mPrefsHelper.getAuthClient();
         String uid = mPrefsHelper.getAuthUid();
-        return mApiManager.validateTokenWithObservable(accessToken, client, uid);
+        return mAsrService.validateTokenWithObservable(accessToken, client, uid);
     }
 
     public Observable<Response<List<Location>>> getTeamLocationsFromServer() {
-        return mApiManager.getLocationsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
+        return mAsrService.getLocationsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
     }
 
     public Observable<List<Location>> saveLocationsToDatabase(List<Location> locations) {
@@ -72,7 +72,7 @@ public class DataManager {
         String accessToken = mPrefsHelper.getAuthAccessToken();
         String client = mPrefsHelper.getAuthClient();
         String uid = mPrefsHelper.getAuthUid();
-        return mApiManager.postLocationWithObservable(accessToken, client, uid, request);
+        return mAsrService.postLocationWithObservable(accessToken, client, uid, request);
     }
 
     public void saveAuthorizationResponse(Response<SignInResponse> response) {

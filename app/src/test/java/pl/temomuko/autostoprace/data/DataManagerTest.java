@@ -22,7 +22,7 @@ import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
-import pl.temomuko.autostoprace.data.remote.ApiManager;
+import pl.temomuko.autostoprace.data.remote.AsrService;
 import retrofit.Response;
 import rx.Observable;
 
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 public class DataManagerTest {
 
     @Mock PrefsHelper mMockPrefsHelper;
-    @Mock ApiManager mMockApiManager;
+    @Mock AsrService mMockAsrService;
     private DataManager mDataManager;
     private static String FAKE_EMAIL = "fake_email";
     private static String FAKE_PASS = "fake_pass";
@@ -54,7 +54,7 @@ public class DataManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        mDataManager = new DataManager(mMockApiManager, mMockPrefsHelper);
+        mDataManager = new DataManager(mMockAsrService, mMockPrefsHelper);
         setupFakeResponseBuilder();
     }
 
@@ -72,9 +72,9 @@ public class DataManagerTest {
         List<Location> locations = new ArrayList<>();
         Response<List<Location>> response = Response.success(locations);
         when(mMockPrefsHelper.getCurrentUser()).thenReturn(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
-        when(mMockApiManager.getLocationsWithObservable(1)).thenReturn(Observable.just(response));
+        when(mMockAsrService.getLocationsWithObservable(1)).thenReturn(Observable.just(response));
         Observable<Response<List<Location>>> expectedObservable =
-                mMockApiManager.getLocationsWithObservable(mMockPrefsHelper.getCurrentUser().getTeamId());
+                mMockAsrService.getLocationsWithObservable(mMockPrefsHelper.getCurrentUser().getTeamId());
         Observable<Response<List<Location>>> actualObservable =
                 mDataManager.getTeamLocationsFromServer();
         assertEquals(expectedObservable, actualObservable);
@@ -86,10 +86,10 @@ public class DataManagerTest {
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
         when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
         when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
-        when(mMockApiManager.validateTokenWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID))
+        when(mMockAsrService.validateTokenWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID))
                 .thenReturn(Observable.just(Response.success(signInResponse)));
         mDataManager.validateToken();
-        verify(mMockApiManager).validateTokenWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
+        verify(mMockAsrService).validateTokenWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
     }
 
     @Test
@@ -115,20 +115,20 @@ public class DataManagerTest {
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
         when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
         when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
-        when(mMockApiManager.postLocationWithObservable(
+        when(mMockAsrService.postLocationWithObservable(
                 FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID, request))
                 .thenReturn(Observable.just(Response.success(locationToSend)));
         mDataManager.postLocationToServer(request);
-        verify(mMockApiManager).postLocationWithObservable(
+        verify(mMockAsrService).postLocationWithObservable(
                 FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID, request);
     }
 
     @Test
     public void testSignIn() throws Exception {
-        when(mMockApiManager.signInWithObservable(FAKE_EMAIL, FAKE_PASS))
+        when(mMockAsrService.signInWithObservable(FAKE_EMAIL, FAKE_PASS))
                 .thenReturn(Observable.<Response<SignInResponse>>empty());
         Observable<Response<SignInResponse>> expectedObservable
-                = mMockApiManager.signInWithObservable(FAKE_EMAIL, FAKE_PASS);
+                = mMockAsrService.signInWithObservable(FAKE_EMAIL, FAKE_PASS);
         Observable<Response<SignInResponse>> actualObservable = mDataManager.signIn(FAKE_EMAIL, FAKE_PASS);
         assertEquals(expectedObservable, actualObservable);
     }
@@ -139,10 +139,10 @@ public class DataManagerTest {
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
         when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
         when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
-        when(mMockApiManager.signOutWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID))
+        when(mMockAsrService.signOutWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID))
                 .thenReturn(Observable.just(Response.success(signOutResponse)));
         mDataManager.signOut();
-        verify(mMockApiManager).signOutWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
+        verify(mMockAsrService).signOutWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
     }
 
     @Test

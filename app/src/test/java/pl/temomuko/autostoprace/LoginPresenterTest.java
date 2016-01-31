@@ -39,6 +39,8 @@ public class LoginPresenterTest {
     private static final String FAKE_EMAIL = "fake_email";
     private static final String FAKE_PASS = "fake_pass";
     private static final String FAKE_ERROR_MESSAGE = "fake_error_message";
+    private static final String UNAUTHORIZED_RESPONSE =
+            "{ \"errors\": [ \"Invalid login credentials. Please try again.\" ] }";
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();
@@ -70,8 +72,7 @@ public class LoginPresenterTest {
     public void testSignInFails() throws Exception {
         Response<SignInResponse> response = Response.error(HttpStatus.UNAUTHORIZED,
                 ResponseBody.create(
-                        MediaType.parse("application/json"),
-                        "{ \"errors\": [ \"Invalid login credentials. Please try again.\" ] }"
+                        MediaType.parse(Constants.HEADER_ACCEPT_JSON), UNAUTHORIZED_RESPONSE
                 ));
         when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(Observable.just(response));
         when(mMockErrorHandler.getMessage(response)).thenReturn(FAKE_ERROR_MESSAGE);

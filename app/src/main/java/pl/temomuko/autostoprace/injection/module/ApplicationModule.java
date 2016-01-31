@@ -3,8 +3,11 @@ package pl.temomuko.autostoprace.injection.module;
 import android.app.Application;
 import android.content.Context;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
+import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.injection.AppContext;
 
 /**
@@ -29,5 +32,11 @@ public class ApplicationModule {
     @AppContext
     Context providesContext() {
         return mApplication;
+    }
+
+    @Provides
+    @Singleton
+    AsrService provideAsrService() {
+        return AsrService.Factory.createAsrService();
     }
 }

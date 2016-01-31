@@ -142,7 +142,7 @@ public class MainPresenterTest {
         when(mMockDataManager.isLoggedWithToken()).thenReturn(true);
         Response<SignInResponse> response = Response.error(HttpStatus.UNAUTHORIZED,
                 ResponseBody.create(
-                        MediaType.parse("application/json"), UNAUTHORIZED_RESPONSE
+                        MediaType.parse(Constants.HEADER_ACCEPT_JSON), UNAUTHORIZED_RESPONSE
                 ));
         when(mMockDataManager.validateToken()).thenReturn(Observable.just(response));
         mMainPresenter.checkAuth();
@@ -164,7 +164,6 @@ public class MainPresenterTest {
         verify(mMockMainMvpView, never()).startLoginActivity();
         verify(mMockMainMvpView, never()).startLauncherActivity();
         verify(mMockMainMvpView, never()).showSessionExpiredError();
-
     }
 
     @Test
