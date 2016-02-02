@@ -32,6 +32,7 @@ public class ContentPresenter<T extends ContentMvpView> extends BasePresenter<T>
     }
 
     public void handleError(Throwable throwable) {
+        getMvpView().setProgress(false);
         Context context = (Context) getMvpView();
         if ((throwable instanceof IOException) && !NetworkUtil.isConnected(context)) {
             getMvpView().showError(context.getString(R.string.error_no_internet_connection));

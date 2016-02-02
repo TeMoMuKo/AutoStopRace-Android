@@ -8,4 +8,6 @@ import pl.temomuko.autostoprace.ui.base.MvpView;
 public interface ContentMvpView extends MvpView {
 
     void showError(String message);
+
+    void setProgress(boolean status);
 }

@@ -8,4 +8,8 @@
     <style name="GoToLoginButton" parent="Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/primary</item>
     </style>
+
+    <style name="LoginButton" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/primary</item>
+    </style>
 </resources>

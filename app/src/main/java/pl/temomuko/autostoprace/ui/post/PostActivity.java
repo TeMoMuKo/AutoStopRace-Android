@@ -57,6 +57,11 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
+    public void setProgress(boolean status) {
+        //TODO
+    }
+
+    @Override
     public void showSuccessInfo() {
         Toast.makeText(this, R.string.msg_sent_location, Toast.LENGTH_SHORT).show();
     }

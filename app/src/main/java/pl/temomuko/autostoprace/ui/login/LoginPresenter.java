@@ -39,11 +39,26 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
     }
 
     public void signIn(String email, String password) {
-        mSubscription = mDataManager.signIn(email, password)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.newThread())
-                .subscribe(this::processLoginResponse, this::handleError);
+        if (!mErrorHandler.isFormValid(email, password)) {
+            getMvpView().showError(mErrorHandler.getValidErrorMessage(email, password));
+        } else {
+            getMvpView().setProgress(true);
+            mSubscription = mDataManager.signIn(email, password)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.newThread())
+                    .subscribe(this::processLoginResponse, this::handleError, this::stopProgress);
+        }
+    }
+
+    public void cancelSignInRequest() {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+    }
+
+    private void stopProgress() {
+        getMvpView().setProgress(false);
     }
 
     private void processLoginResponse(Response<SignInResponse> response) {

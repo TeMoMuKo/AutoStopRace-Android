@@ -72,6 +72,11 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     @Override
+    public void setProgress(boolean status) {
+        //TODO
+    }
+
+    @Override
     public void showEmptyInfo() {
         mCurrentLocationsTextView.setText(R.string.msg_empty_locations_list);
     }

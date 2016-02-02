@@ -25,4 +25,9 @@
     <string name="msg_sent_location">Wysłano lokalizację na serwer</string>
     <string name="error_session_expired">Sesja wygasła, zaloguj się ponownie</string>
     <string name="msg_show_contact">Kontakt do organizatorów</string>
+    <string name="msg_login_info">Zaloguj się za pomocą danych ustalonych przy aktywacji swojego konta. Instrukcje znajdują się w mailu od organizatorów.</string>
+    <string name="msg_logging">Logowanie...</string>
+    <string name="please_wait">Proszę czekać.</string>
+    <string name="error_invalid_email">Niepoprawny adres email.</string>
+    <string name="error_empty_pass">Wpisz hasło.</string>
 </resources>

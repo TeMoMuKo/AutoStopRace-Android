@@ -1,6 +1,7 @@
 package pl.temomuko.autostoprace.util;
 
 import android.content.Context;
+import android.util.Patterns;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -42,5 +43,19 @@ public class ErrorHandler {
             default:
                 return mContext.getString(R.string.error_unknown);
         }
+    }
+
+    public boolean isFormValid(String email, String password) {
+        return getValidErrorMessage(email, password).isEmpty();
+    }
+
+    public String getValidErrorMessage(String email, String password) {
+        if (!isEmailValid(email)) return mContext.getString(R.string.error_invalid_email);
+        else if (password.isEmpty()) return mContext.getString(R.string.error_empty_pass);
+        return "";
+    }
+
+    private boolean isEmailValid(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }
