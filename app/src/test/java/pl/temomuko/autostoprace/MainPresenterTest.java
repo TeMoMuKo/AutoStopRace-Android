@@ -1,7 +1,7 @@
 package pl.temomuko.autostoprace;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.ResponseBody;
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +24,7 @@ import pl.temomuko.autostoprace.ui.main.MainPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
-import retrofit.Response;
+import retrofit2.Response;
 import rx.Observable;
 
 import static org.mockito.Matchers.any;

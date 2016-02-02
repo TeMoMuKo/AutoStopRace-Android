@@ -1,8 +1,8 @@
 package pl.temomuko.autostoprace.data;
 
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.Protocol;
-import com.squareup.okhttp.Request;
+import okhttp3.HttpUrl;
+import okhttp3.Protocol;
+import okhttp3.Request;
 
 import junit.framework.Assert;
 
@@ -23,7 +23,7 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
-import retrofit.Response;
+import retrofit2.Response;
 import rx.Observable;
 
 import static junit.framework.Assert.assertFalse;
@@ -50,7 +50,7 @@ public class DataManagerTest {
     private static String FAKE_FIRST_NAME = "fake_first_name";
     private static String FAKE_LAST_NAME = "fake_last_name";
 
-    private com.squareup.okhttp.Response.Builder mOkHttpResponseBuilder;
+    private okhttp3.Response.Builder mOkHttpResponseBuilder;
 
     @Before
     public void setUp() throws Exception {
@@ -61,7 +61,7 @@ public class DataManagerTest {
     private void setupFakeResponseBuilder() {
         HttpUrl httpUrl = new HttpUrl.Builder().scheme("https").host("api.autostoprace.pl").build();
         Request request = new Request.Builder().url(httpUrl).build();
-        mOkHttpResponseBuilder = new com.squareup.okhttp.Response.Builder()
+        mOkHttpResponseBuilder = new okhttp3.Response.Builder()
                 .request(request)
                 .protocol(Protocol.HTTP_1_1)
                 .code(200);
@@ -147,7 +147,7 @@ public class DataManagerTest {
 
     @Test
     public void testSaveAuthorizationResponse() throws Exception {
-        com.squareup.okhttp.Response okHttpResponse = mOkHttpResponseBuilder
+        okhttp3.Response okHttpResponse = mOkHttpResponseBuilder
                 .addHeader(Constants.HEADER_FIELD_TOKEN, FAKE_ACCESS_TOKEN)
                 .addHeader(Constants.HEADER_FIELD_CLIENT, FAKE_CLIENT)
                 .addHeader(Constants.HEADER_FIELD_UID, FAKE_UID)

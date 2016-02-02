@@ -1,6 +1,6 @@
 package pl.temomuko.autostoprace.data.model;
 
-import retrofit.Response;
+import retrofit2.Response;
 
 /**
  * Created by szymen on 2016-01-22.

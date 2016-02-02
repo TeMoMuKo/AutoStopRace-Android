@@ -8,7 +8,7 @@ import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
-import retrofit.Response;
+import retrofit2.Response;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

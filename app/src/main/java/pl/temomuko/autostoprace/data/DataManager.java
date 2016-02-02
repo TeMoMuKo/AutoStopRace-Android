@@ -14,7 +14,7 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
-import retrofit.Response;
+import retrofit2.Response;
 import rx.Observable;
 
 /**

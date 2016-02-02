@@ -11,7 +11,7 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.NetworkUtil;
-import retrofit.Response;
+import retrofit2.Response;
 
 /**
  * Created by szymen on 2016-01-30.

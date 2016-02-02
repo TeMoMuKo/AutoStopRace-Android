@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.ApiError;
 import pl.temomuko.autostoprace.injection.AppContext;
-import retrofit.Response;
+import retrofit2.Response;
 
 /**
  * Created by szymen on 2016-01-27.

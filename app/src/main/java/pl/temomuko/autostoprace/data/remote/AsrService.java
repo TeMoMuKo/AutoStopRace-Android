@@ -1,13 +1,15 @@
 package pl.temomuko.autostoprace.data.remote;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import pl.temomuko.autostoprace.BuildConfig;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
@@ -15,19 +17,19 @@ import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.Team;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
-import retrofit.http.Body;
-import retrofit.http.DELETE;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
-import retrofit.http.Header;
-import retrofit.http.Headers;
-import retrofit.http.POST;
-import retrofit.http.Path;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.RxJavaCallAdapterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -90,18 +92,21 @@ public interface AsrService {
         }
 
         private static OkHttpClient getOkHttpClient() {
-            OkHttpClient okhttp = new OkHttpClient();
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
-                    : HttpLoggingInterceptor.Level.NONE);
-            okhttp.interceptors().add(logging);
-            okhttp.networkInterceptors().add(chain -> {
-                Request request = chain.request().newBuilder()
-                        .addHeader("Accept", Constants.HEADER_ACCEPT_JSON)
-                        .build();
-                return chain.proceed(request);
-            });
-            return okhttp;
+            return new OkHttpClient.Builder()
+                    .addInterceptor(getLoggingInterceptor())
+                    .addNetworkInterceptor(chain -> {
+                        Request request = chain.request().newBuilder()
+                                .addHeader("Accept", Constants.HEADER_ACCEPT_JSON)
+                                .build();
+                        return chain.proceed(request);
+                    })
+                    .build();
+        }
+
+        private static HttpLoggingInterceptor getLoggingInterceptor() {
+            return new HttpLoggingInterceptor()
+                    .setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
+                            : HttpLoggingInterceptor.Level.NONE);
         }
     }
 }
