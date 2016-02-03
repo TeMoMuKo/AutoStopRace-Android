@@ -69,6 +69,16 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
         subscribeCurrentRequestObservable();
     }
 
+    private void processLoginResponse(Response<SignInResponse> response) {
+        clearCurrentRequestObservable();
+        if (response.code() == HttpStatus.OK) {
+            mDataManager.saveAuthorizationResponse(response);
+            getMvpView().startMainActivity();
+        } else {
+            handleStandardResponseError(response);
+        }
+    }
+
     private void subscribeCurrentRequestObservable() {
         mSubscription = mCurrentRequestObservable
                 .subscribe(this::processLoginResponse, this::handleError, this::stopProgress);
@@ -108,16 +118,6 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
 
     private void stopProgress() {
         getMvpView().setProgress(false);
-    }
-
-    private void processLoginResponse(Response<SignInResponse> response) {
-        clearCurrentRequestObservable();
-        if (response.code() == HttpStatus.OK) {
-            mDataManager.saveAuthorizationResponse(response);
-            getMvpView().startMainActivity();
-        } else {
-            handleStandardResponseError(response);
-        }
     }
 
     @Override
