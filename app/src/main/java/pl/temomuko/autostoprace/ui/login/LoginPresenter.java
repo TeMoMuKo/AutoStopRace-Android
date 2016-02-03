@@ -7,11 +7,10 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
+import pl.temomuko.autostoprace.util.RxUtil;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by szymen on 2016-01-22.
@@ -62,10 +61,8 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
 
     private void requestSignIn(String email, String password) {
         mCurrentRequestObservable = mDataManager.signIn(email, password)
-                .cache()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.newThread());
+                .compose(RxUtil.applySchedulers())
+                .cache();
         subscribeCurrentRequestObservable();
     }
 

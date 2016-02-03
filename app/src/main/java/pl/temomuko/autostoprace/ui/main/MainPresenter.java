@@ -12,9 +12,8 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
+import pl.temomuko.autostoprace.util.RxUtil;
 import retrofit2.Response;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -54,9 +53,7 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
 
     private void validateToken() {
         mSubscriptions.add(mDataManager.validateToken()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.newThread())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(this::processValidateTokenResponse, this::handleError));
     }
 
@@ -76,9 +73,7 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
 
     public void logout() {
         mSubscriptions.add(mDataManager.signOut()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.newThread())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(response -> {
                     Log.i(TAG, response.body().toString());
                 }, throwable -> {
@@ -95,9 +90,7 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
 
     public void loadLocationsFromServer() {
         mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.newThread())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(this::processLocationsResponse, this::handleError));
     }
 

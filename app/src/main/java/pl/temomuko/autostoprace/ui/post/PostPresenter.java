@@ -8,10 +8,9 @@ import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
+import pl.temomuko.autostoprace.util.RxUtil;
 import retrofit2.Response;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by szymen on 2016-01-30.
@@ -48,9 +47,7 @@ public class PostPresenter extends ContentPresenter<PostMvpView> {
         mDataManager.saveLocationToDatabase(locationToSend);
         CreateLocationRequest request = new CreateLocationRequest(locationToSend);
         mSubscription = mDataManager.postLocationToServer(request)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.newThread())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(this::processLocationsResponse, this::handleError);
     }
 

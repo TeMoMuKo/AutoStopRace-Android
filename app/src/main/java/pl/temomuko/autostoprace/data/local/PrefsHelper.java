@@ -2,7 +2,6 @@ package pl.temomuko.autostoprace.data.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,6 +17,8 @@ import pl.temomuko.autostoprace.injection.AppContext;
 public class PrefsHelper {
 
     private SharedPreferences mPrefs;
+    public final static String PREF_FILE_NAME = "asr_pref_file";
+
     public final static String AUTH_TOKEN = "auth_token";
     public final static String AUTH_CLIENT = "auth_client";
     public final static String AUTH_UID = "auth_uid";
@@ -30,7 +31,7 @@ public class PrefsHelper {
 
     @Inject
     public PrefsHelper(@AppContext Context context) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        mPrefs = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
     }
 
     public void setAuthAccessToken(String token) {
