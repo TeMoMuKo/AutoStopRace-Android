@@ -69,6 +69,11 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
         subscribeCurrentRequestObservable();
     }
 
+    private void subscribeCurrentRequestObservable() {
+        mSubscription = mCurrentRequestObservable
+                .subscribe(this::processLoginResponse, this::handleError, this::stopProgress);
+    }
+
     private void processLoginResponse(Response<SignInResponse> response) {
         clearCurrentRequestObservable();
         if (response.code() == HttpStatus.OK) {
@@ -79,9 +84,14 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
         }
     }
 
-    private void subscribeCurrentRequestObservable() {
-        mSubscription = mCurrentRequestObservable
-                .subscribe(this::processLoginResponse, this::handleError, this::stopProgress);
+    @Override
+    public void handleError(Throwable throwable) {
+        super.handleError(throwable);
+        clearCurrentRequestObservable();
+    }
+
+    private void stopProgress() {
+        getMvpView().setProgress(false);
     }
 
     public void cancelSignInRequest() {
@@ -114,16 +124,6 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
         } else {
             getMvpView().hideEmailValidationError();
         }
-    }
-
-    private void stopProgress() {
-        getMvpView().setProgress(false);
-    }
-
-    @Override
-    public void handleError(Throwable throwable) {
-        super.handleError(throwable);
-        clearCurrentRequestObservable();
     }
 
     private void clearCurrentRequestObservable() {

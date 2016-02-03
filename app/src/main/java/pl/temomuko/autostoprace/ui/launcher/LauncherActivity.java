@@ -31,6 +31,12 @@ public class LauncherActivity extends BaseActivity implements LauncherMvpView {
         setListeners();
     }
 
+    @Override
+    protected void onDestroy() {
+        mLauncherPresenter.detachView();
+        super.onDestroy();
+    }
+
     private void setupToolbar() {
         setSupportActionBar(mToolbar);
     }

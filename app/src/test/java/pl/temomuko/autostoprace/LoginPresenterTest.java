@@ -79,9 +79,9 @@ public class LoginPresenterTest {
         when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(Observable.just(response));
         when(mMockErrorHandler.isEmailValid(FAKE_EMAIL)).thenReturn(true);
         when(mMockErrorHandler.isPasswordValid(FAKE_PASS)).thenReturn(true);
-        when(mMockErrorHandler.getMessage(response)).thenReturn(FAKE_ERROR_MESSAGE);
+        when(mMockErrorHandler.getMessageFromResponse(response)).thenReturn(FAKE_ERROR_MESSAGE);
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
-        verify(mMockLoginMvpView).showError(mMockErrorHandler.getMessage(response));
+        verify(mMockLoginMvpView).showError(mMockErrorHandler.getMessageFromResponse(response));
         verify(mMockDataManager, never()).saveAuthorizationResponse(response);
         verify(mMockLoginMvpView, never()).startMainActivity();
     }

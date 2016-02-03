@@ -1,8 +1,5 @@
 package pl.temomuko.autostoprace;
 
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,6 +11,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
@@ -115,10 +114,10 @@ public class MainPresenterTest {
         locationsFromDatabase.add(new Location(99.99, 99.99, ""));
         when(mMockDataManager.saveLocationsToDatabase(locations))
                 .thenReturn(Observable.just(locationsFromDatabase));
-        when(mMockErrorHandler.getMessage(response)).thenReturn(FAKE_ERROR_MESSAGE);
+        when(mMockErrorHandler.getMessageFromResponse(response)).thenReturn(FAKE_ERROR_MESSAGE);
 
         mMainPresenter.loadLocationsFromServer();
-        verify(mMockMainMvpView).showError(mMockErrorHandler.getMessage(response));
+        verify(mMockMainMvpView).showError(mMockErrorHandler.getMessageFromResponse(response));
         verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
         verify(mMockDataManager, never()).saveLocationsToDatabase(locations);
         verify(mMockMainMvpView, never()).showEmptyInfo();

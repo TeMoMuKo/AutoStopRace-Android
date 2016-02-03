@@ -29,7 +29,7 @@ public class ContentPresenter<T extends ContentMvpView> extends BasePresenter<T>
     }
 
     protected void handleStandardResponseError(Response response) {
-        getMvpView().showError(mErrorHandler.getMessage(response));
+        getMvpView().showError(mErrorHandler.getMessageFromResponse(response));
     }
 
     public void handleError(Throwable throwable) {

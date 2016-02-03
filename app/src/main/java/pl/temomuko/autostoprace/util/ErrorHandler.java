@@ -25,7 +25,7 @@ public class ErrorHandler {
         mContext = context;
     }
 
-    public String getMessage(Response<?> response) {
+    public String getMessageFromResponse(Response<?> response) {
         ApiError apiError = new ApiError(response);
         switch (apiError.getStatus()) {
             case HttpStatus.NOT_FOUND:
