@@ -45,17 +45,20 @@ public class ErrorHandler {
         }
     }
 
-    public boolean isFormValid(String email, String password) {
-        return getValidErrorMessage(email, password).isEmpty();
+    public boolean isEmailValid(String email) {
+        return getEmailValidErrorMessage(email).isEmpty();
     }
 
-    public String getValidErrorMessage(String email, String password) {
-        if (!isEmailValid(email)) return mContext.getString(R.string.error_invalid_email);
-        else if (password.isEmpty()) return mContext.getString(R.string.error_empty_pass);
-        return "";
+    public boolean isPasswordValid(String password) {
+        return getPasswordValidErrorMessage(password).isEmpty();
     }
 
-    private boolean isEmailValid(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    public String getEmailValidErrorMessage(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches() ?
+                "" : mContext.getString(R.string.error_invalid_email);
+    }
+
+    public String getPasswordValidErrorMessage(String password) {
+        return !password.isEmpty() ? "" : mContext.getString(R.string.error_empty_pass);
     }
 }

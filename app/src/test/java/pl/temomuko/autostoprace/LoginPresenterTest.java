@@ -63,7 +63,7 @@ public class LoginPresenterTest {
         SignInResponse signInResponse = new SignInResponse();
         Response<SignInResponse> response = Response.success(signInResponse);
         when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(Observable.just(response));
-        when(mMockErrorHandler.isFormValid(FAKE_EMAIL, FAKE_PASS)).thenReturn(true);
+        when(mMockErrorHandler.isEmailValid(FAKE_EMAIL, FAKE_PASS)).thenReturn(true);
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
         verify(mMockDataManager).saveAuthorizationResponse(response);
         verify(mMockLoginMvpView).startMainActivity();
@@ -77,7 +77,7 @@ public class LoginPresenterTest {
                         MediaType.parse(Constants.HEADER_ACCEPT_JSON), UNAUTHORIZED_RESPONSE
                 ));
         when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(Observable.just(response));
-        when(mMockErrorHandler.isFormValid(FAKE_EMAIL, FAKE_PASS)).thenReturn(true);
+        when(mMockErrorHandler.isEmailValid(FAKE_EMAIL, FAKE_PASS)).thenReturn(true);
         when(mMockErrorHandler.getMessage(response)).thenReturn(FAKE_ERROR_MESSAGE);
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
         verify(mMockLoginMvpView).showError(mMockErrorHandler.getMessage(response));
@@ -87,7 +87,7 @@ public class LoginPresenterTest {
 
     @Test
     public void testSignInInvalidForm() throws Exception {
-        when(mMockErrorHandler.isFormValid(FAKE_EMAIL, FAKE_PASS)).thenReturn(false);
+        when(mMockErrorHandler.isEmailValid(FAKE_EMAIL, FAKE_PASS)).thenReturn(false);
         when(mMockErrorHandler.getValidErrorMessage(FAKE_EMAIL, FAKE_PASS))
                 .thenReturn(FAKE_VALIDATION_MESSAGE);
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);

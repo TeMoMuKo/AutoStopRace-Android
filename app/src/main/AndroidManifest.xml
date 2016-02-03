@@ -23,6 +23,9 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.launcher.LauncherActivity"/>
         </activity>
         <activity
             android:name=".ui.launcher.LauncherActivity"

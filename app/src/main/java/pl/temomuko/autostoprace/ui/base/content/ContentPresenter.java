@@ -3,6 +3,7 @@ package pl.temomuko.autostoprace.ui.base.content;
 import android.content.Context;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import javax.inject.Inject;
 
@@ -34,7 +35,9 @@ public class ContentPresenter<T extends ContentMvpView> extends BasePresenter<T>
     public void handleError(Throwable throwable) {
         getMvpView().setProgress(false);
         Context context = (Context) getMvpView();
-        if ((throwable instanceof IOException) && !NetworkUtil.isConnected(context)) {
+        if((throwable instanceof SocketTimeoutException)) {
+            getMvpView().showError(context.getString(R.string.error_timeout));
+        } else if ((throwable instanceof IOException) && !NetworkUtil.isConnected(context)) {
             getMvpView().showError(context.getString(R.string.error_no_internet_connection));
         } else {
             getMvpView().showError(context.getString(R.string.error_unknown));

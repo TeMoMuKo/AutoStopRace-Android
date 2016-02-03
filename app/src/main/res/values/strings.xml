@@ -30,4 +30,5 @@
     <string name="please_wait">Proszę czekać.</string>
     <string name="error_invalid_email">Niepoprawny adres email.</string>
     <string name="error_empty_pass">Wpisz hasło.</string>
+    <string name="error_timeout">Serwer zbyt długo nie odpowiada, spróbuj ponownie za chwilę.</string>
 </resources>

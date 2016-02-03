@@ -36,6 +36,12 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         setListeners();
     }
 
+    @Override
+    protected void onDestroy() {
+        mPostPresenter.detachView();
+        super.onDestroy();
+    }
+
     private void setupToolbar() {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {

@@ -46,14 +46,14 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         setListeners();
     }
 
-    private void setupToolbar() {
-        setSupportActionBar(mToolbar);
-    }
-
     @Override
     protected void onDestroy() {
         mMainPresenter.detachView();
         super.onDestroy();
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(mToolbar);
     }
 
     private void setListeners() {
