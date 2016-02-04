@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.ui.base;
 /**
  * Created by szymen on 2016-01-09.
  */
-public class BasePresenter<T extends MvpView> implements Presenter<T> {
+public abstract class BasePresenter<T extends MvpView> implements Presenter<T> {
 
     private T mMvpView;
 

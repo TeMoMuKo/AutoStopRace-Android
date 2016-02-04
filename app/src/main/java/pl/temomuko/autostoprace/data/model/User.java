@@ -40,4 +40,8 @@ public class User {
     public String getEmail() {
         return mEmail;
     }
+
+    public String getUsername() {
+        return getFirstName().concat(" ").concat(getLastName());
+    }
 }

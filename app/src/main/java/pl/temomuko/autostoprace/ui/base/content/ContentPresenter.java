@@ -5,8 +5,6 @@ import android.content.Context;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
-import javax.inject.Inject;
-
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
@@ -17,12 +15,11 @@ import retrofit2.Response;
 /**
  * Created by szymen on 2016-01-30.
  */
-public class ContentPresenter<T extends ContentMvpView> extends BasePresenter<T> {
+public abstract class ContentPresenter<T extends ContentMvpView> extends BasePresenter<T> {
 
     protected ErrorHandler mErrorHandler;
     protected DataManager mDataManager;
 
-    @Inject
     public ContentPresenter(ErrorHandler errorHandler, DataManager dataManager) {
         mErrorHandler = errorHandler;
         mDataManager = dataManager;

@@ -99,7 +99,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     private void buildProgressDialog() {
         mProgressDialog = new MaterialDialog.Builder(this)
-                .title(R.string.msg_logging)
+                .title(R.string.title_logging)
                 .content(R.string.please_wait)
                 .cancelListener(dialog -> mLoginPresenter.cancelSignInRequest())
                 .progress(true, 0)

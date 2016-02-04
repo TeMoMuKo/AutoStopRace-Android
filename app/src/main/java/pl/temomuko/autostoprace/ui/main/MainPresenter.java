@@ -9,7 +9,9 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
+import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
+import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
 import pl.temomuko.autostoprace.util.RxUtil;
@@ -68,7 +70,9 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
     }
 
     public void setupUserInfo() {
-        getMvpView().showUser(mDataManager.getCurrentUser());
+        User currentUser = mDataManager.getCurrentUser();
+        ((DrawerMvpView) getMvpView()).setHeaderUsername(currentUser.getUsername());
+        ((DrawerMvpView) getMvpView()).setHeaderEmail(currentUser.getEmail());
     }
 
     public void logout() {

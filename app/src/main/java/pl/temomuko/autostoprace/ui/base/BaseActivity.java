@@ -12,7 +12,7 @@ import pl.temomuko.autostoprace.injection.module.ActivityModule;
 /**
  * Created by szymen on 2016-01-06.
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private ActivityComponent mActivityComponent;
 
