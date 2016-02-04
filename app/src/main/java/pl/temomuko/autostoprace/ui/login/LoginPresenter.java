@@ -4,9 +4,10 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
-import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
+import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
+import pl.temomuko.autostoprace.util.LoginValidator;
 import pl.temomuko.autostoprace.util.RxUtil;
 import retrofit2.Response;
 import rx.Observable;
@@ -15,15 +16,21 @@ import rx.Subscription;
 /**
  * Created by szymen on 2016-01-22.
  */
-public class LoginPresenter extends ContentPresenter<LoginMvpView> {
+public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
+    private DataManager mDataManager;
+    private ErrorHandler mErrorHandler;
+    private LoginValidator mLoginValidator;
     private Subscription mSubscription;
     private Observable<Response<SignInResponse>> mCurrentRequestObservable;
     private final static String TAG = "LoginPresenter";
 
     @Inject
-    public LoginPresenter(DataManager dataManager, ErrorHandler errorHandler) {
-        super(errorHandler, dataManager);
+    public LoginPresenter(DataManager dataManager, ErrorHandler errorHandler,
+                          LoginValidator loginValidator) {
+        mDataManager = dataManager;
+        mErrorHandler = errorHandler;
+        mLoginValidator = loginValidator;
     }
 
     public void setCurrentRequestObservable(Observable<Response<SignInResponse>> observable) {
@@ -81,12 +88,6 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
         }
     }
 
-    @Override
-    public void handleError(Throwable throwable) {
-        super.handleError(throwable);
-        clearCurrentRequestObservable();
-    }
-
     private void stopProgress() {
         getMvpView().setProgress(false);
     }
@@ -99,7 +100,7 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
     }
 
     private boolean isLoginDataValid(String email, String password) {
-        return mErrorHandler.isEmailValid(email) && mErrorHandler.isPasswordValid(password);
+        return mLoginValidator.isEmailValid(email) && mLoginValidator.isPasswordValid(password);
     }
 
     private void setupValidationHints(String email, String password) {
@@ -108,16 +109,16 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
     }
 
     private void setupPasswordHint(String password) {
-        if (!mErrorHandler.isPasswordValid(password)) {
-            getMvpView().showPasswordValidationError(mErrorHandler.getPasswordValidErrorMessage(password));
+        if (!mLoginValidator.isPasswordValid(password)) {
+            getMvpView().showPasswordValidationError(mLoginValidator.getPasswordValidErrorMessage(password));
         } else {
             getMvpView().hidePasswordValidationError();
         }
     }
 
     private void setupEmailHint(String email) {
-        if (!mErrorHandler.isEmailValid(email)) {
-            getMvpView().showEmailValidationError(mErrorHandler.getEmailValidErrorMessage(email));
+        if (!mLoginValidator.isEmailValid(email)) {
+            getMvpView().showEmailValidationError(mLoginValidator.getEmailValidErrorMessage(email));
         } else {
             getMvpView().hideEmailValidationError();
         }
@@ -125,5 +126,14 @@ public class LoginPresenter extends ContentPresenter<LoginMvpView> {
 
     private void clearCurrentRequestObservable() {
         mCurrentRequestObservable = null;
+    }
+
+    private void handleStandardResponseError(Response response) {
+        getMvpView().showError(mErrorHandler.getMessageFromResponse(response));
+    }
+
+    private void handleError(Throwable throwable) {
+        getMvpView().setProgress(false);
+        getMvpView().showError(mErrorHandler.getMessageFromRetrofitThrowable(throwable));
     }
 }

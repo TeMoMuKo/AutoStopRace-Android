@@ -63,12 +63,12 @@ public abstract class DrawerActivity extends BaseActivity implements
     }
 
     @Override
-    public void setHeaderUsername(String username) {
+    public void setupHeaderUsername(String username) {
         mHeaderUsernameTextView.setText(username);
     }
 
     @Override
-    public void setHeaderEmail(String email) {
+    public void setupHeaderEmail(String email) {
         mHeaderEmailTextView.setText(email);
     }
 }

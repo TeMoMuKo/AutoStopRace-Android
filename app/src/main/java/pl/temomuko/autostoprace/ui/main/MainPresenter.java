@@ -10,8 +10,7 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.User;
-import pl.temomuko.autostoprace.ui.base.content.ContentPresenter;
-import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
+import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
 import pl.temomuko.autostoprace.util.RxUtil;
@@ -21,14 +20,17 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by szymen on 2016-01-09.
  */
-public class MainPresenter extends ContentPresenter<MainMvpView> {
+public class MainPresenter extends BasePresenter<MainMvpView> {
 
+    private DataManager mDataManager;
+    private ErrorHandler mErrorHandler;
     private final static String TAG = "MainPresenter";
     private CompositeSubscription mSubscriptions;
 
     @Inject
     public MainPresenter(DataManager dataManager, ErrorHandler errorHandler) {
-        super(errorHandler, dataManager);
+        mDataManager = dataManager;
+        mErrorHandler = errorHandler;
         mSubscriptions = new CompositeSubscription();
     }
 
@@ -71,8 +73,8 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
 
     public void setupUserInfo() {
         User currentUser = mDataManager.getCurrentUser();
-        ((DrawerMvpView) getMvpView()).setHeaderUsername(currentUser.getUsername());
-        ((DrawerMvpView) getMvpView()).setHeaderEmail(currentUser.getEmail());
+        getMvpView().setupHeaderUsername(currentUser.getUsername());
+        getMvpView().setupHeaderEmail(currentUser.getEmail());
     }
 
     public void logout() {
@@ -112,5 +114,14 @@ public class MainPresenter extends ContentPresenter<MainMvpView> {
 
     public void goToPostLocation() {
         getMvpView().startPostActivity();
+    }
+
+    private void handleStandardResponseError(Response response) {
+        getMvpView().showError(mErrorHandler.getMessageFromResponse(response));
+    }
+
+    private void handleError(Throwable throwable) {
+        getMvpView().setProgress(false);
+        getMvpView().showError(mErrorHandler.getMessageFromRetrofitThrowable(throwable));
     }
 }

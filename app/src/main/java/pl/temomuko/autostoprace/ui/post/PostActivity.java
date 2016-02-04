@@ -1,19 +1,15 @@
 package pl.temomuko.autostoprace.ui.post;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
-import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
-import pl.temomuko.autostoprace.ui.main.MainActivity;
 
 /**
  * Created by szymen on 2016-01-30.
@@ -55,40 +51,5 @@ public class PostActivity extends BaseActivity implements PostMvpView {
             mPostPresenter.saveLocation(message);
         });
         mCancelButton.setOnClickListener(v -> mPostPresenter.backToMain());
-    }
-
-    @Override
-    public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void setProgress(boolean status) {
-        //TODO
-    }
-
-    @Override
-    public void showSuccessInfo() {
-        Toast.makeText(this, R.string.msg_sent_location, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showSessionExpiredError() {
-        Toast.makeText(this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void startLoginActivity() {
-        Intent intent = new Intent(this, LauncherActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
     }
 }

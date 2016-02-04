@@ -1,7 +1,9 @@
 package pl.temomuko.autostoprace.util;
 
 import android.content.Context;
-import android.util.Patterns;
+
+import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -45,20 +47,13 @@ public class ErrorHandler {
         }
     }
 
-    public boolean isEmailValid(String email) {
-        return getEmailValidErrorMessage(email).isEmpty();
-    }
-
-    public boolean isPasswordValid(String password) {
-        return getPasswordValidErrorMessage(password).isEmpty();
-    }
-
-    public String getEmailValidErrorMessage(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches() ?
-                "" : mContext.getString(R.string.error_invalid_email);
-    }
-
-    public String getPasswordValidErrorMessage(String password) {
-        return !password.isEmpty() ? "" : mContext.getString(R.string.error_empty_pass);
+    public String getMessageFromRetrofitThrowable(Throwable throwable) {
+        if((throwable instanceof SocketTimeoutException)) {
+            return mContext.getString(R.string.error_timeout);
+        } else if ((throwable instanceof IOException) && !NetworkUtil.isConnected(mContext)) {
+            return mContext.getString(R.string.error_no_internet_connection);
+        } else {
+            return mContext.getString(R.string.error_unknown);
+        }
     }
 }
