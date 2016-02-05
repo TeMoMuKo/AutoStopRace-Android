@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.ui.launcher.LauncherMvpView;
 import pl.temomuko.autostoprace.ui.launcher.LauncherPresenter;
 
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.verify;
 public class LauncherPresenterTest {
 
     @Mock LauncherMvpView mMockLauncherMvpView;
+    @Mock DataManager mMockDataManager;
     private LauncherPresenter mLauncherPresenter;
 
     @Before

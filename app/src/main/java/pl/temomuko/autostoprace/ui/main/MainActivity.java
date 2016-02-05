@@ -38,7 +38,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         if(mMainPresenter.isAuthorized()) {
             mMainPresenter.loadLocationsFromDatabase();
             mMainPresenter.loadLocationsFromServer();
-            mMainPresenter.setupUserInfo();
+            mMainPresenter.setupUserInfoInDrawer();
         }
         setupToolbarWithToggle();
         setListeners();

@@ -2,6 +2,8 @@ package pl.temomuko.autostoprace.ui.phrasebook;
 
 import android.os.Bundle;
 
+import javax.inject.Inject;
+
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 
@@ -10,10 +12,21 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
  */
 public class PhrasebookActivity extends DrawerActivity {
 
+    @Inject PhrasebookPresenter mPhrasebookPresenter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phrasebook);
+        getActivityComponent().inject(this);
+        mPhrasebookPresenter.attachView(this);
+        mPhrasebookPresenter.setupUserInfoInDrawer();
         setupToolbarWithToggle();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPhrasebookPresenter.detachView();
+        super.onDestroy();
     }
 }

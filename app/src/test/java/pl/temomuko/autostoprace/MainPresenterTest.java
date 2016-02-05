@@ -18,7 +18,6 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
-import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.ui.main.MainMvpView;
 import pl.temomuko.autostoprace.ui.main.MainPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
@@ -226,15 +225,6 @@ public class MainPresenterTest {
         verify(mMockMainMvpView, never()).startLoginActivity();
         verify(mMockMainMvpView, never()).startLauncherActivity();
         verify(mMockMainMvpView, never()).showSessionExpiredError();
-    }
-
-    @Test
-    public void testSetupUserInfo() throws Exception {
-        User fakeUser = new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL);
-        when(mMockDataManager.getCurrentUser()).thenReturn(fakeUser);
-        mMainPresenter.setupUserInfo();
-        verify(mMockMainMvpView).setupHeaderUsername(fakeUser.getUsername());
-        verify(mMockMainMvpView).setupHeaderEmail(fakeUser.getEmail());
     }
 
     @Test

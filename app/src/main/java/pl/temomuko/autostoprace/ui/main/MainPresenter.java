@@ -9,8 +9,7 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
-import pl.temomuko.autostoprace.data.model.User;
-import pl.temomuko.autostoprace.ui.base.BasePresenter;
+import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
 import pl.temomuko.autostoprace.util.RxUtil;
@@ -20,16 +19,15 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by szymen on 2016-01-09.
  */
-public class MainPresenter extends BasePresenter<MainMvpView> {
+public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
-    private DataManager mDataManager;
     private ErrorHandler mErrorHandler;
     private final static String TAG = "MainPresenter";
     private CompositeSubscription mSubscriptions;
 
     @Inject
     public MainPresenter(DataManager dataManager, ErrorHandler errorHandler) {
-        mDataManager = dataManager;
+        super(dataManager);
         mErrorHandler = errorHandler;
         mSubscriptions = new CompositeSubscription();
     }
@@ -73,12 +71,6 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
             getMvpView().showSessionExpiredError();
             getMvpView().startLoginActivity();
         }
-    }
-
-    public void setupUserInfo() {
-        User currentUser = mDataManager.getCurrentUser();
-        getMvpView().setupHeaderUsername(currentUser.getUsername());
-        getMvpView().setupHeaderEmail(currentUser.getEmail());
     }
 
     public void logout() {
