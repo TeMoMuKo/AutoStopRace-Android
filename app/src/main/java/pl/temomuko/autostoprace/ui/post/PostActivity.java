@@ -28,7 +28,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         setContentView(R.layout.activity_post);
         getActivityComponent().inject(this);
         mPostPresenter.attachView(this);
-        setupToolbar();
+        setupToolbarWithBack();
         setListeners();
     }
 
@@ -38,7 +38,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         super.onDestroy();
     }
 
-    private void setupToolbar() {
+    private void setupToolbarWithBack() {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

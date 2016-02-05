@@ -38,6 +38,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         mMainPresenter.loadLocationsFromDatabase();
         mMainPresenter.loadLocationsFromServer();
         mMainPresenter.setupUserInfo();
+        setupToolbarWithToggle();
         setListeners();
     }
 
@@ -45,6 +46,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onDestroy() {
         mMainPresenter.detachView();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
     }
 
     private void setListeners() {

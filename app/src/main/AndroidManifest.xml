@@ -40,6 +40,41 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity"/>
         </activity>
+        <activity
+            android:name=".ui.teams.TeamsActivity"
+            android:label="@string/title_activity_teams">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.schedule.ScheduleActivity"
+            android:label="@string/title_activity_schedule">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.phrasebook.PhrasebookActivity"
+            android:label="@string/title_activity_phrasebook">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.campus.CampusActivity"
+            android:label="@string/title_activity_campus">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.contact.ContactActivity"
+            android:label="@string/title_activity_contact">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

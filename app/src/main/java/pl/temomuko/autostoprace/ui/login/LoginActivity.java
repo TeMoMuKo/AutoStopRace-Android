@@ -46,10 +46,10 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         setupRetainedLoginFragment();
         mLoginPresenter.setCurrentRequestObservable(mRetainedLoginFragment.getCurrentRequestObservable());
         mLoginPresenter.attachView(this);
-        setupToolbar();
-        setListeners();
         buildProgressDialog();
         setupProgressDialog(savedInstanceState);
+        setupToolbarWithBack();
+        setListeners();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         }
     }
 
-    private void setupToolbar() {
+    private void setupToolbarWithBack() {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

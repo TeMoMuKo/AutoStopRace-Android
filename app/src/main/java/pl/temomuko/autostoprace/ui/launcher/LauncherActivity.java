@@ -25,6 +25,7 @@ public class LauncherActivity extends DrawerActivity implements LauncherMvpView 
         setContentView(R.layout.activity_launcher);
         getActivityComponent().inject(this);
         mLauncherPresenter.attachView(this);
+        setupToolbarWithToggle();
         setListeners();
     }
 
@@ -32,6 +33,12 @@ public class LauncherActivity extends DrawerActivity implements LauncherMvpView 
     protected void onDestroy() {
         mLauncherPresenter.detachView();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
     }
 
     private void setListeners() {
