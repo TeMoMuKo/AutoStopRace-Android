@@ -96,7 +96,7 @@ public class DataManagerTest {
 
     @Test
     public void testClearAuth() throws Exception {
-        mDataManager.clearAuth();
+        mDataManager.clearUserData();
         verify(mMockPrefsHelper).clearAuth();
     }
 

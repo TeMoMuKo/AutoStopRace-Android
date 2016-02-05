@@ -182,7 +182,7 @@ public class MainPresenterTest {
                 ));
         when(mMockDataManager.validateToken()).thenReturn(Observable.just(response));
         mMainPresenter.checkAuth();
-        verify(mMockDataManager).clearAuth();
+        verify(mMockDataManager).clearUserData();
         verify(mMockMainMvpView).showSessionExpiredError();
         verify(mMockMainMvpView).startLoginActivity();
         verify(mMockDataManager, never()).saveAuthorizationResponse(response);
@@ -196,7 +196,7 @@ public class MainPresenterTest {
         when(mMockDataManager.validateToken()).thenReturn(Observable.just(response));
         mMainPresenter.checkAuth();
         verify(mMockDataManager).saveAuthorizationResponse(response);
-        verify(mMockDataManager, never()).clearAuth();
+        verify(mMockDataManager, never()).clearUserData();
         verify(mMockMainMvpView, never()).startLoginActivity();
         verify(mMockMainMvpView, never()).startLauncherActivity();
         verify(mMockMainMvpView, never()).showSessionExpiredError();
@@ -215,7 +215,7 @@ public class MainPresenterTest {
     public void testLogout() throws Exception {
         when(mMockDataManager.signOut()).thenReturn(Observable.<Response<SignOutResponse>>empty());
         mMainPresenter.logout();
-        verify(mMockDataManager).clearAuth();
+        verify(mMockDataManager).clearUserData();
         verify(mMockMainMvpView).showLogoutMessage();
         verify(mMockMainMvpView).startLauncherActivity();
     }

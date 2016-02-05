@@ -48,8 +48,9 @@ public class DataManager {
         return mAsrService.signOutWithObservable(accessToken, client, uid);
     }
 
-    public void clearAuth() {
+    public void clearUserData() {
         mPrefsHelper.clearAuth();
+        mDatabaseManager.clearTables();
     }
 
     public Observable<Response<SignInResponse>> validateToken() {

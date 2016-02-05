@@ -65,7 +65,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         if (response.code() == HttpStatus.OK) {
             mDataManager.saveAuthorizationResponse(response);
         } else if (response.code() == HttpStatus.UNAUTHORIZED) {
-            mDataManager.clearAuth();
+            mDataManager.clearUserData();
             getMvpView().showSessionExpiredError();
             getMvpView().startLoginActivity();
         }
@@ -85,7 +85,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 }, throwable -> {
                     Log.i(TAG, throwable.getMessage());
                 }));
-        mDataManager.clearAuth();
+        mDataManager.clearUserData();
         getMvpView().showLogoutMessage();
         getMvpView().startLauncherActivity();
     }
