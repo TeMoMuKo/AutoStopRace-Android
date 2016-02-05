@@ -17,6 +17,7 @@ import java.util.List;
 
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.local.database.DatabaseManager;
 import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
@@ -41,6 +42,7 @@ public class DataManagerTest {
 
     @Mock PrefsHelper mMockPrefsHelper;
     @Mock AsrService mMockAsrService;
+    @Mock DatabaseManager mDatabaseManager;
     private DataManager mDataManager;
     private static String FAKE_EMAIL = "fake_email";
     private static String FAKE_PASS = "fake_pass";
@@ -54,7 +56,7 @@ public class DataManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        mDataManager = new DataManager(mMockAsrService, mMockPrefsHelper);
+        mDataManager = new DataManager(mMockAsrService, mMockPrefsHelper, mDatabaseManager);
         setupFakeResponseBuilder();
     }
 

@@ -44,7 +44,7 @@ public class PostPresenter extends ContentPresenter<PostMvpView> {
         double latitude = 12.34;
         double logitude = 43.21;
         Location locationToSend = new Location(latitude, logitude, message);
-        mDataManager.saveLocationToDatabase(locationToSend);
+        mDataManager.saveUnsentLocationToDatabase(locationToSend);
         CreateLocationRequest request = new CreateLocationRequest(locationToSend);
         mSubscription = mDataManager.postLocationToServer(request)
                 .compose(RxUtil.applySchedulers())
