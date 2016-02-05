@@ -14,6 +14,6 @@ public class TeamsActivity extends DrawerActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams);
-        setupToolbarWithBack();
+        setupToolbarWithToggle();
     }
 }

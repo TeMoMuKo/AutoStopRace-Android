@@ -8,4 +8,6 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 public interface LauncherMvpView extends DrawerMvpView {
 
     void startLoginActivity();
+
+    void startContactActivity();
 }

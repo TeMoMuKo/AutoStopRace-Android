@@ -76,6 +76,12 @@ public abstract class DrawerActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
     protected void setupToolbar() {
         setSupportActionBar(mToolbar);
     }
@@ -84,13 +90,6 @@ public abstract class DrawerActivity extends BaseActivity implements
         setupToolbar();
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
                 R.string.drawer_open, R.string.drawer_close);
-    }
-
-    protected void setupToolbarWithBack() {
-        setupToolbar();
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     private void setupDrawerMenu() {

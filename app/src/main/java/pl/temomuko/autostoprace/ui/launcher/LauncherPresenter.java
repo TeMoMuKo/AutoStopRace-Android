@@ -16,4 +16,8 @@ public class LauncherPresenter extends BasePresenter<LauncherMvpView> {
     public void goToLogin() {
         getMvpView().startLoginActivity();
     }
+
+    public void goToContact() {
+        getMvpView().startContactActivity();
+    }
 }

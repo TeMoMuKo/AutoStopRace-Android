@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
+import pl.temomuko.autostoprace.ui.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;
 
 /**
@@ -18,6 +19,7 @@ public class LauncherActivity extends DrawerActivity implements LauncherMvpView 
 
     @Inject LauncherPresenter mLauncherPresenter;
     @Bind(R.id.btn_go_to_login) Button mGoToLoginButton;
+    @Bind(R.id.btn_go_to_contact) Button mGoToContactButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,11 +45,18 @@ public class LauncherActivity extends DrawerActivity implements LauncherMvpView 
 
     private void setListeners() {
         mGoToLoginButton.setOnClickListener(v -> mLauncherPresenter.goToLogin());
+        mGoToContactButton.setOnClickListener(v -> mLauncherPresenter.goToContact());
     }
 
     @Override
     public void startLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startContactActivity() {
+        Intent intent = new Intent(this, ContactActivity.class);
         startActivity(intent);
     }
 }

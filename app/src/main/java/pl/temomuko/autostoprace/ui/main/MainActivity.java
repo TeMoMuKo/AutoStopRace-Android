@@ -2,7 +2,6 @@ package pl.temomuko.autostoprace.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,12 +46,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onDestroy() {
         mMainPresenter.detachView();
         super.onDestroy();
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
     }
 
     private void setListeners() {
