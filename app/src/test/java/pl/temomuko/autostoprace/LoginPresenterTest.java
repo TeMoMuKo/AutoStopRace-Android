@@ -9,6 +9,8 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.net.SocketTimeoutException;
+
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import pl.temomuko.autostoprace.data.DataManager;
@@ -85,6 +87,23 @@ public class LoginPresenterTest {
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
         verify(mMockLoginMvpView).showError(mMockErrorHandler.getMessageFromResponse(response));
         verify(mMockDataManager, never()).saveAuthorizationResponse(response);
+        verify(mMockLoginMvpView, never()).startMainActivity();
+    }
+
+    @Test
+    public void testSignInFailsWithSocketTimeoutException() throws Exception {
+        Throwable fakeException = new SocketTimeoutException();
+        when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS))
+                .thenReturn(Observable.error(fakeException));
+        when(mMockLoginValidator.isEmailValid(FAKE_EMAIL)).thenReturn(true);
+        when(mMockLoginValidator.isPasswordValid(FAKE_PASS)).thenReturn(true);
+        when(mMockErrorHandler.getMessageFromRetrofitThrowable(fakeException))
+                .thenReturn(FAKE_ERROR_MESSAGE);
+        mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
+        verify(mMockLoginMvpView).showError(mMockErrorHandler
+                .getMessageFromRetrofitThrowable(fakeException));
+        verify(mMockDataManager, never())
+                .saveAuthorizationResponse(Matchers.<Response<SignInResponse>>any());
         verify(mMockLoginMvpView, never()).startMainActivity();
     }
 

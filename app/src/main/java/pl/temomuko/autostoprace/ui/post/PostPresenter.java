@@ -36,10 +36,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         super.detachView();
     }
 
-    public void backToMain() {
-        getMvpView().onBackPressed();
-    }
-
     public void saveLocation(String message) {
         double latitude = 12.34;
         double longitude = 43.21;
@@ -47,5 +43,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         mSubscription = mDataManager.saveUnsentLocationToDatabase(locationToSend)
                 .compose(RxUtil.applySchedulers())
                 .subscribe();
+        getMvpView().startMainActivity();
     }
 }

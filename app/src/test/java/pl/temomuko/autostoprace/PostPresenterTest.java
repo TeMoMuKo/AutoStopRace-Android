@@ -9,10 +9,15 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.post.PostMvpView;
 import pl.temomuko.autostoprace.ui.post.PostPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by szymen on 2016-01-30.
@@ -24,6 +29,7 @@ public class PostPresenterTest {
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
     private PostPresenter mPostPresenter;
+    private final static String FAKE_MESSAGE = "fake_message";
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();
@@ -41,6 +47,10 @@ public class PostPresenterTest {
 
     @Test
     public void testSaveLocation() throws Exception {
-        //TODO
+        when(mMockDataManager.saveUnsentLocationToDatabase(any(Location.class)))
+                .thenReturn(rx.Observable.<Void>empty());
+        mPostPresenter.saveLocation(FAKE_MESSAGE);
+        verify(mMockDataManager).saveUnsentLocationToDatabase(any(Location.class));
+        verify(mMockPostMvpView).startMainActivity();
     }
 }

@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.ui.post;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.ui.main.MainActivity;
 
 /**
  * Created by szymen on 2016-01-30.
@@ -19,7 +21,6 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Inject PostPresenter mPostPresenter;
     @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(R.id.btn_send_location) Button mSendButton;
-    @Bind(R.id.btn_cancel_send_location) Button mCancelButton;
     @Bind(R.id.et_message) EditText mMessageEditText;
 
     @Override
@@ -50,6 +51,12 @@ public class PostActivity extends BaseActivity implements PostMvpView {
             String message = mMessageEditText.getText().toString();
             mPostPresenter.saveLocation(message);
         });
-        mCancelButton.setOnClickListener(v -> mPostPresenter.backToMain());
+    }
+
+    @Override
+    public void startMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

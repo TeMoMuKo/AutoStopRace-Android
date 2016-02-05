@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,10 @@ import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import retrofit2.Response;
 import rx.Observable;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -82,6 +86,28 @@ public class MainPresenterTest {
         verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
         verify(mMockMainMvpView, never()).showEmptyInfo();
         verify(mMockMainMvpView, never()).showError(any(String.class));
+    }
+
+    @Test
+    public void testLoadLocationsFromApiFailsSocketTimeoutException() throws Exception {
+        List<Location> locations = new ArrayList<>();
+        locations.add(new Location(12.34, 43.21, ""));
+        Throwable fakeException = new SocketTimeoutException();
+        when(mMockDataManager.getTeamLocationsFromServer())
+                .thenReturn(Observable.error(fakeException));
+
+        List<Location> locationsFromDatabase = new ArrayList<>();
+        locationsFromDatabase.add(new Location(99.99, 99.99, ""));
+        when(mMockErrorHandler.getMessageFromRetrofitThrowable(fakeException))
+                .thenReturn(FAKE_ERROR_MESSAGE);
+        when(mMockDataManager.getTeamLocationsFromDatabase())
+                .thenReturn(Observable.just(locationsFromDatabase));
+
+        mMainPresenter.loadLocationsFromServer();
+        verify(mMockMainMvpView).showError(mMockErrorHandler
+                .getMessageFromRetrofitThrowable(fakeException));
+        verify(mMockDataManager, never()).saveAndEmitLocationsFromDatabase(anyListOf(Location.class));
+        verify(mMockMainMvpView, never()).showEmptyInfo();
     }
 
     @Test
@@ -218,6 +244,14 @@ public class MainPresenterTest {
         verify(mMockDataManager).clearUserData();
         verify(mMockMainMvpView).showLogoutMessage();
         verify(mMockMainMvpView).startLauncherActivity();
+    }
+
+    @Test
+    public void testIsAuthorized() throws Exception {
+        when(mMockDataManager.isLoggedWithToken()).thenReturn(true);
+        assertTrue(mMainPresenter.isAuthorized());
+        when(mMockDataManager.isLoggedWithToken()).thenReturn(false);
+        assertFalse(mMainPresenter.isAuthorized());
     }
 
     @Test

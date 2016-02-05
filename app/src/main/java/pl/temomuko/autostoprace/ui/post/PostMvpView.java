@@ -8,4 +8,6 @@ import pl.temomuko.autostoprace.ui.base.MvpView;
 public interface PostMvpView extends MvpView {
 
     void onBackPressed();
+
+    void startMainActivity();
 }
