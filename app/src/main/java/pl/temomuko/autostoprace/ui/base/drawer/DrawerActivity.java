@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.ui.about.AboutActivity;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.campus.CampusActivity;
 import pl.temomuko.autostoprace.ui.contact.ContactActivity;
@@ -25,6 +27,7 @@ import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.schedule.ScheduleActivity;
+import pl.temomuko.autostoprace.ui.settings.SettingsActivity;
 import pl.temomuko.autostoprace.ui.teams.TeamsActivity;
 
 /**
@@ -45,7 +48,9 @@ public abstract class DrawerActivity extends BaseActivity implements
             ScheduleActivity.class,
             CampusActivity.class,
             PhrasebookActivity.class,
-            ContactActivity.class
+            ContactActivity.class,
+            SettingsActivity.class,
+            AboutActivity.class
     );
     private List<Integer> mActivitiesWithId = Arrays.asList(
             R.id.activity_main,
@@ -53,7 +58,9 @@ public abstract class DrawerActivity extends BaseActivity implements
             R.id.activity_schedule,
             R.id.activity_campus,
             R.id.activity_phrasebook,
-            R.id.activity_contact
+            R.id.activity_contact,
+            R.id.activity_settings,
+            R.id.activity_about
     );
 
     @Override
@@ -64,7 +71,7 @@ public abstract class DrawerActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        setupDrawerMenu();
+        setupMenuElementChecked();
     }
 
     @Override
@@ -74,6 +81,16 @@ public abstract class DrawerActivity extends BaseActivity implements
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        } else {
+            mDrawerLayout.openDrawer(Gravity.LEFT);
+        }
+        return super.onMenuOpened(featureId, menu);
     }
 
     @Override
@@ -92,7 +109,7 @@ public abstract class DrawerActivity extends BaseActivity implements
                 R.string.drawer_open, R.string.drawer_close);
     }
 
-    private void setupDrawerMenu() {
+    private void setupMenuElementChecked() {
         clearChecked(mActivities.size());
         for (int i = 0; i < mActivities.size(); i++) {
             if (mActivities.get(i).isInstance(this)) {
@@ -123,7 +140,7 @@ public abstract class DrawerActivity extends BaseActivity implements
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        for (int i = 0; i < mActivitiesWithId.size(); i++) {
+        for (int i = 0; i < mActivities.size(); i++) {
             if (item.getItemId() == mActivitiesWithId.get(i)) {
                 return activityAction(mActivities.get(i));
             }

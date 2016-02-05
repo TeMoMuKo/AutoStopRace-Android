@@ -36,12 +36,12 @@
     <string name="drawer_open">Otwórz menu</string>
     <string name="drawer_close">Zamknij menu</string>
     <string name="title_activity_schedule">Harmonogram</string>
-    <string name="title_settings">Ustawienia</string>
-    <string name="title_about_app">O aplikacji</string>
     <string name="title_my_team_locations">Lokalizacje mojego teamu</string>
     <string name="title_activity_teams">Lokalizacje innych teamów</string>
     <string name="title_activity_campus">Mapa kampusu</string>
     <string name="title_activity_phrasebook">Krótkie rozmówki</string>
     <string name="msg_login_to_show_locations">Zaloguj się, żeby zobaczyć lokalizacje swojego teamu</string>
     <string name="title_activity_contact">Kontakt do ogranizatorów</string>
+    <string name="title_activity_settings">Ustawienia</string>
+    <string name="title_activity_about">O aplikacji</string>
 </resources>
