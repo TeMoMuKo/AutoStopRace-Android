@@ -86,7 +86,7 @@ public class DatabaseManager {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 mBriteDatabase.insert(UnsentLocationTable.NAME,
-                        ServerLocationTable.toContentValues(location));
+                        UnsentLocationTable.toContentValues(location));
                 transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {
