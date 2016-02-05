@@ -55,6 +55,10 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         }
     }
 
+    public boolean isAuthorized() {
+        return mDataManager.isLoggedWithToken();
+    }
+
     private void validateToken() {
         mSubscriptions.add(mDataManager.validateToken()
                 .compose(RxUtil.applySchedulers())

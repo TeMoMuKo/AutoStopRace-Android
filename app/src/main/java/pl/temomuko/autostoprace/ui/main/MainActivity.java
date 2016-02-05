@@ -35,9 +35,11 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         getActivityComponent().inject(this);
         mMainPresenter.attachView(this);
         mMainPresenter.checkAuth();
-        mMainPresenter.loadLocationsFromDatabase();
-        mMainPresenter.loadLocationsFromServer();
-        mMainPresenter.setupUserInfo();
+        if(mMainPresenter.isAuthorized()) {
+            mMainPresenter.loadLocationsFromDatabase();
+            mMainPresenter.loadLocationsFromServer();
+            mMainPresenter.setupUserInfo();
+        }
         setupToolbarWithToggle();
         setListeners();
     }
