@@ -14,8 +14,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Arrays;
-import java.util.List;
+import com.google.common.collect.ImmutableMap;
+
+import java.util.Map;
 
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
@@ -42,26 +43,18 @@ public abstract class DrawerActivity extends BaseActivity implements
     protected ActionBarDrawerToggle mDrawerToggle;
     private TextView mHeaderUsernameTextView;
     private TextView mHeaderEmailTextView;
-    private List<Class<?>> mActivities = Arrays.asList(
-            MainActivity.class,
-            TeamsActivity.class,
-            ScheduleActivity.class,
-            CampusActivity.class,
-            PhrasebookActivity.class,
-            ContactActivity.class,
-            SettingsActivity.class,
-            AboutActivity.class
-    );
-    private List<Integer> mActivitiesWithId = Arrays.asList(
-            R.id.activity_main,
-            R.id.activity_teams,
-            R.id.activity_schedule,
-            R.id.activity_campus,
-            R.id.activity_phrasebook,
-            R.id.activity_contact,
-            R.id.activity_settings,
-            R.id.activity_about
-    );
+
+    private static final ImmutableMap<Class<? extends BaseActivity>, Integer> ACTIVITIES =
+            new ImmutableMap.Builder<Class<? extends BaseActivity>, Integer>()
+                    .put(MainActivity.class, R.id.activity_main)
+                    .put(TeamsActivity.class, R.id.activity_teams)
+                    .put(ScheduleActivity.class, R.id.activity_schedule)
+                    .put(CampusActivity.class, R.id.activity_campus)
+                    .put(PhrasebookActivity.class, R.id.activity_phrasebook)
+                    .put(ContactActivity.class, R.id.activity_contact)
+                    .put(SettingsActivity.class, R.id.activity_settings)
+                    .put(AboutActivity.class, R.id.activity_about)
+                    .build();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,11 +103,13 @@ public abstract class DrawerActivity extends BaseActivity implements
     }
 
     private void setupMenuElementChecked() {
-        clearChecked(mActivities.size());
-        for (int i = 0; i < mActivities.size(); i++) {
-            if (mActivities.get(i).isInstance(this)) {
+        int i = 0;
+        clearChecked(ACTIVITIES.size());
+        for (Map.Entry<Class<? extends BaseActivity>, Integer> entry : ACTIVITIES.entrySet()) {
+            if (entry.getKey().isInstance(this)) {
                 mNavigationView.getMenu().getItem(i).setChecked(true);
             }
+            i++;
         }
     }
 
@@ -140,9 +135,9 @@ public abstract class DrawerActivity extends BaseActivity implements
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        for (int i = 0; i < mActivities.size(); i++) {
-            if (item.getItemId() == mActivitiesWithId.get(i)) {
-                return activityAction(mActivities.get(i));
+        for (Map.Entry<Class<? extends BaseActivity>, Integer> entry : ACTIVITIES.entrySet()) {
+            if (item.getItemId() == entry.getValue()) {
+                return activityAction(entry.getKey());
             }
         }
         return false;
