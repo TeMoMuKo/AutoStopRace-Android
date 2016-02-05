@@ -91,25 +91,34 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     }
 
     public void loadLocationsFromDatabase() {
-        //TODO
+        mSubscriptions.add(
+                mDataManager.getTeamLocationsFromDatabase().subscribe(this::handleLocationList));
     }
 
     public void loadLocationsFromServer() {
         mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
                 .compose(RxUtil.applySchedulers())
-                .subscribe(this::processLocationsResponse, this::handleError));
+                .subscribe(this::processLocationsResponse,
+                        throwable -> {
+                            handleError(throwable);
+                            loadLocationsFromDatabase();
+                        }));
     }
 
     private void processLocationsResponse(Response<List<Location>> response) {
         if (response.code() == HttpStatus.OK) {
-            mDataManager.saveLocationsToDatabase(response.body())
-                    .subscribe(locations -> {
-                        if (locations.isEmpty()) getMvpView().showEmptyInfo();
-                        else getMvpView().updateLocationsList(locations);
-                    });
+
+            mDataManager.saveAndEmitLocationsFromDatabase(response.body())
+                    .subscribe(this::handleLocationList);
         } else {
             handleStandardResponseError(response);
+            mDataManager.getTeamLocationsFromDatabase().subscribe(this::handleLocationList);
         }
+    }
+
+    private void handleLocationList(List<Location> locations) {
+        if (locations.isEmpty()) getMvpView().showEmptyInfo();
+        else getMvpView().updateLocationsList(locations);
     }
 
     public void goToPostLocation() {

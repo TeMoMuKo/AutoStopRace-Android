@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +67,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void showError(String message) {
-        mCurrentLocationsTextView.setText(message);
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

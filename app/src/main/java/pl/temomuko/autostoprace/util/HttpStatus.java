@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.util;
 /**
  * Created by szymen on 2016-01-27.
  */
-public class HttpStatus {
+public abstract class HttpStatus {
 
     public final static int OK = 200;
     public final static int CREATED = 201;

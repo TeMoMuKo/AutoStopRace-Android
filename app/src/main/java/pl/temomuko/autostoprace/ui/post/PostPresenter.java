@@ -41,8 +41,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     public void saveLocation(String message) {
         double latitude = 12.34;
-        double logitude = 43.21;
-        Location locationToSend = new Location(latitude, logitude, message);
-        mDataManager.saveLocationToDatabase(locationToSend);
+        double longitude = 43.21;
+        Location locationToSend = new Location(latitude, longitude, message);
+        mDataManager.saveUnsentLocationToDatabase(locationToSend);
     }
 }

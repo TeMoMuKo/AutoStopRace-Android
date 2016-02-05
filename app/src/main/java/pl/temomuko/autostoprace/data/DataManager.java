@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.local.database.DatabaseManager;
 import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
@@ -26,11 +28,13 @@ public class DataManager {
 
     private AsrService mAsrService;
     private PrefsHelper mPrefsHelper;
+    private DatabaseManager mDatabaseManager;
 
     @Inject
-    public DataManager(AsrService asrService, PrefsHelper prefsHelper) {
+    public DataManager(AsrService asrService, PrefsHelper prefsHelper, DatabaseManager databaseManager) {
         mAsrService = asrService;
         mPrefsHelper = prefsHelper;
+        mDatabaseManager = databaseManager;
     }
 
     public Observable<Response<SignInResponse>> signIn(String login, String password) {
@@ -55,17 +59,36 @@ public class DataManager {
         return mAsrService.validateTokenWithObservable(accessToken, client, uid);
     }
 
+    public Observable<List<Location>> getTeamLocationsFromDatabase() {
+        return Observable.zip(
+                mDatabaseManager.getUnsentLocationList(),
+                mDatabaseManager.getSentLocationList(),
+                (a1, a2) -> {
+                    ArrayList<Location> result = new ArrayList<>(a1);
+                    result.addAll(a2);
+                    return result;
+                }
+        );
+    }
+
     public Observable<Response<List<Location>>> getTeamLocationsFromServer() {
         return mAsrService.getLocationsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
     }
 
-    public Observable<List<Location>> saveLocationsToDatabase(List<Location> locations) {
-        //TODO save locations from server to DB with DatabaseHelper and return Observable with locations from DB.
-        return Observable.just(locations);
+    public Observable<List<Location>> saveAndEmitLocationsFromDatabase(List<Location> locations) {
+        return Observable.zip(
+                mDatabaseManager.getUnsentLocationList(),
+                mDatabaseManager.setAndEmitReceivedLocations(locations),
+                (a1, a2) -> {
+                    ArrayList<Location> result = new ArrayList<>(a1);
+                    result.addAll(a2);
+                    return result;
+                }
+        );
     }
 
-    public void saveLocationToDatabase(Location location) {
-        //TODO
+    public Observable<Void> saveUnsentLocationToDatabase(Location location) {
+        return mDatabaseManager.addUnsentLocation(location);
     }
 
     public Observable<Response<Location>> postLocationToServer(CreateLocationRequest request) {

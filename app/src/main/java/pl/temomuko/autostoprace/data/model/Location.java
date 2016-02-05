@@ -10,14 +10,13 @@ import java.util.Date;
 public class Location {
 
     @SerializedName("location_id") private int mLocationId;
-    @SerializedName("team_id") private int mTeamId;
     @SerializedName("latitude") private double mLatitude;
     @SerializedName("longitude") private double mLongitude;
     @SerializedName("message") private String mMessage;
-    @SerializedName("created_at") private Date mCreatedDate;
-    @SerializedName("updated_at") private Date mUpdatedDate;
+    @SerializedName("created_at") private Date mServerReceiptDate;
 
-    private boolean mIsOnServer = true;
+    public Location() {
+    }
 
     public Location(double latitude, double longitude, String message) {
         mLatitude = latitude;
@@ -27,10 +26,6 @@ public class Location {
 
     public int getLocationId() {
         return mLocationId;
-    }
-
-    public int getTeamId() {
-        return mTeamId;
     }
 
     public double getLatitude() {
@@ -45,20 +40,28 @@ public class Location {
         return mMessage;
     }
 
-    public Date getCreatedDate() {
-        return mCreatedDate;
+    public Date getServerReceiptDate() {
+        return mServerReceiptDate;
     }
 
-    public Date getUpdatedDate() {
-        return mUpdatedDate;
+    public void setLocationId(int locationId) {
+        mLocationId = locationId;
     }
 
-    public boolean isOnServer() {
-        return mIsOnServer;
+    public void setLatitude(double latitude) {
+        mLatitude = latitude;
     }
 
-    public void setIsSent(boolean isSent) {
-        mIsOnServer = isSent;
+    public void setLongitude(double longitude) {
+        mLongitude = longitude;
+    }
+
+    public void setMessage(String message) {
+        mMessage = message;
+    }
+
+    public void setServerReceiptDate(Date serverReceiptDate) {
+        mServerReceiptDate = serverReceiptDate;
     }
 
     public String toString() {
