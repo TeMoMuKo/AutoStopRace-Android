@@ -17,7 +17,6 @@ public abstract class UnsentLocationTable {
     public static final String COLUMN_LONGITUDE = "longitude";
     public static final String COLUMN_MESSAGE = "message";
 
-
     public static final String CREATE =
             "CREATE TABLE " + NAME + " (" +
                     COLUMN_LOCATION_ID + " INTEGER PRIMARY KEY," +

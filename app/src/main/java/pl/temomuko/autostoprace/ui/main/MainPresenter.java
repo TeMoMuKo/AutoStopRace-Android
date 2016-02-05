@@ -107,7 +107,6 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     private void processLocationsResponse(Response<List<Location>> response) {
         if (response.code() == HttpStatus.OK) {
-
             mDataManager.saveAndEmitLocationsFromDatabase(response.body())
                     .subscribe(this::handleLocationList);
         } else {

@@ -58,5 +58,4 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
 
     compile 'com.squareup.sqlbrite:sqlbrite:0.5.1'
-
 }
