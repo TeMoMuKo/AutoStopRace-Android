@@ -1,9 +1,5 @@
 package pl.temomuko.autostoprace.data;
 
-import okhttp3.HttpUrl;
-import okhttp3.Protocol;
-import okhttp3.Request;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -15,6 +11,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.HttpUrl;
+import okhttp3.Protocol;
+import okhttp3.Request;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseManager;
