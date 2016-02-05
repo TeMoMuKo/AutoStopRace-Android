@@ -7,7 +7,7 @@ import pl.temomuko.autostoprace.ui.base.MvpView;
  */
 public interface DrawerMvpView extends MvpView {
 
-    void setHeaderUsername(String username);
+    void setupHeaderUsername(String username);
 
-    void setHeaderEmail(String email);
+    void setupHeaderEmail(String email);
 }
