@@ -11,7 +11,6 @@ import pl.temomuko.autostoprace.injection.ActivityContext;
  * Created by szymen on 2016-01-06.
  */
 
-
 @Module
 public class ActivityModule {
 

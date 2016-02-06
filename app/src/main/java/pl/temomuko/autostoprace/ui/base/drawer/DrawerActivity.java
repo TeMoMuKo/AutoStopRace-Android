@@ -34,6 +34,7 @@ import pl.temomuko.autostoprace.ui.teams.TeamsActivity;
 /**
  * Created by szymen on 2016-02-03.
  */
+
 public abstract class DrawerActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener, DrawerMvpView {
 

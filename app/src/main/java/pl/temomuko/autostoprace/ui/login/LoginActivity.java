@@ -64,6 +64,14 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         super.onSaveInstanceState(outState);
     }
 
+    private void setListeners() {
+        mLoginButton.setOnClickListener(v -> {
+            String email = mEmailEditText.getText().toString().trim();
+            String password = mPasswordEditText.getText().toString();
+            mLoginPresenter.signIn(email, password);
+        });
+    }
+
     private void checkProgressDialog(Bundle outState) {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
@@ -87,14 +95,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    private void setListeners() {
-        mLoginButton.setOnClickListener(v -> {
-            String email = mEmailEditText.getText().toString().trim();
-            String password = mPasswordEditText.getText().toString();
-            mLoginPresenter.signIn(email, password);
-        });
     }
 
     private void buildProgressDialog() {

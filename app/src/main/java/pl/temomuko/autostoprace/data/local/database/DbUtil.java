@@ -49,5 +49,4 @@ public abstract class DbUtil {
     public static double getDouble(Cursor cursor, String columnName) {
         return cursor.getDouble(cursor.getColumnIndexOrThrow(columnName));
     }
-
 }

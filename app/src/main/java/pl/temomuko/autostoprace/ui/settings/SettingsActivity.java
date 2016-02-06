@@ -10,7 +10,7 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
 /**
  * Created by szymen on 2016-02-04.
  */
-public class SettingsActivity extends BaseActivity  {
+public class SettingsActivity extends BaseActivity {
 
     @Bind(R.id.toolbar) Toolbar mToolbar;
 

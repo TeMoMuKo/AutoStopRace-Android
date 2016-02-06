@@ -13,7 +13,8 @@ import de.greenrobot.event.EventBus;
 public class EventHelper {
 
     @Inject
-    public EventHelper() {}
+    public EventHelper() {
+    }
 
     public void post(Object event) {
         EventBus.getDefault().post(event);

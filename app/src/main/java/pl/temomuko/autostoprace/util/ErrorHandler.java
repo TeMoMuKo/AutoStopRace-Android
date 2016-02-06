@@ -48,7 +48,7 @@ public class ErrorHandler {
     }
 
     public String getMessageFromRetrofitThrowable(Throwable throwable) {
-        if((throwable instanceof SocketTimeoutException)) {
+        if ((throwable instanceof SocketTimeoutException)) {
             return mContext.getString(R.string.error_timeout);
         } else if ((throwable instanceof IOException) && !NetworkUtil.isConnected(mContext)) {
             return mContext.getString(R.string.error_no_internet_connection);

@@ -16,8 +16,6 @@ public interface MainMvpView extends DrawerMvpView {
 
     void startLauncherActivity();
 
-    void showLogoutMessage();
-
     void startPostActivity();
 
     void startLoginActivity();

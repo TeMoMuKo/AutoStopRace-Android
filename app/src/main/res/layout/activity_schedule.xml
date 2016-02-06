@@ -27,12 +27,12 @@
 
             </android.support.design.widget.AppBarLayout>
 
-           <TextView
-               android:gravity="center"
-               android:layout_gravity="center"
-               android:text="@string/title_activity_schedule"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"/>
+            <TextView
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/title_activity_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
 
