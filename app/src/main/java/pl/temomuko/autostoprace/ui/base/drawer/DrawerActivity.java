@@ -43,6 +43,7 @@ public abstract class DrawerActivity extends BaseActivity implements
     protected ActionBarDrawerToggle mDrawerToggle;
     private TextView mHeaderUsernameTextView;
     private TextView mHeaderEmailTextView;
+    private TeamCircleView mTeamCircleView;
 
     private static final ImmutableMap<Class<? extends BaseActivity>, Integer> ACTIVITIES =
             new ImmutableMap.Builder<Class<? extends BaseActivity>, Integer>()
@@ -131,6 +132,7 @@ public abstract class DrawerActivity extends BaseActivity implements
         View header = mNavigationView.getHeaderView(0);
         mHeaderUsernameTextView = (TextView) header.findViewById(R.id.tv_drawer_username);
         mHeaderEmailTextView = (TextView) header.findViewById(R.id.tv_drawer_email);
+        mTeamCircleView = (TeamCircleView) header.findViewById(R.id.team_circle_view);
     }
 
     @Override
@@ -183,5 +185,10 @@ public abstract class DrawerActivity extends BaseActivity implements
     @Override
     public void setupHeaderEmail(String email) {
         mHeaderEmailTextView.setText(email);
+    }
+
+    @Override
+    public void setupTeamCircle(int teamId) {
+        mTeamCircleView.setTeamId(teamId);
     }
 }

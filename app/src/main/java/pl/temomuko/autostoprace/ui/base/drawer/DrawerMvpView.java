@@ -10,4 +10,6 @@ public interface DrawerMvpView extends MvpView {
     void setupHeaderUsername(String username);
 
     void setupHeaderEmail(String email);
+
+    void setupTeamCircle(int teamId);
 }

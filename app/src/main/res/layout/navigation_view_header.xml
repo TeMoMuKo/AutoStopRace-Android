@@ -1,43 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!--TODO-->
     <ImageView
         android:id="@+id/image_full_screen"
         android:layout_width="match_parent"
         android:layout_height="@dimen/drawer_header_height"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:background="@color/accent"/>
+        android:background="@color/accent"
+        android:scaleType="centerCrop"/>
 
-    <TextView
-        android:id="@+id/tv_drawer_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_drawer_email"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:paddingBottom="@dimen/default_margin_quarter"
-        android:text="@string/title_drawer_default"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/normal_font_size"
-        android:textStyle="bold"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/image_full_screen">
 
-    <TextView
-        android:id="@+id/tv_drawer_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/image_full_screen"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="@dimen/default_margin"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:text="@string/subtitle_drawer_default"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/normal_font_size"/>
+        <pl.temomuko.autostoprace.ui.base.drawer.TeamCircleView
+            android:id="@+id/team_circle_view"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            app:circleColor="@android:color/white"
+            app:textColor="@color/primary"
+            app:textSize="16dp"
+            tools:ignore="SpUsage"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_drawer_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:paddingBottom="@dimen/default_margin_quarter"
+                android:text="@string/title_drawer_default"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/normal_font_size"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_drawer_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:text="@string/subtitle_drawer_default"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/normal_font_size"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
