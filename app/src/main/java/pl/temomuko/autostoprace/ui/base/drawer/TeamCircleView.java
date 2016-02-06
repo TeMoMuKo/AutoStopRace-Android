@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -61,6 +62,7 @@ public class TeamCircleView extends View {
         mTextPaint.setColor(mTextColor);
         mTextPaint.setTextSize(mCircleTextSize);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
+        mTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
     }
 
     @Override
