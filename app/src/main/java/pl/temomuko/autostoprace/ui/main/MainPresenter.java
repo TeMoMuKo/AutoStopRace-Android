@@ -1,7 +1,5 @@
 package pl.temomuko.autostoprace.ui.main;
 
-import android.util.Log;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -71,19 +69,6 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
             getMvpView().showSessionExpiredError();
             getMvpView().startLoginActivity();
         }
-    }
-
-    public void logout() {
-        mSubscriptions.add(mDataManager.signOut()
-                .compose(RxUtil.applySchedulers())
-                .subscribe(response -> {
-                    Log.i(TAG, response.body().toString());
-                }, throwable -> {
-                    Log.i(TAG, throwable.getMessage());
-                }));
-        mDataManager.clearUserData();
-        getMvpView().showLogoutMessage();
-        getMvpView().startLauncherActivity();
     }
 
     public void loadLocationsFromDatabase() {

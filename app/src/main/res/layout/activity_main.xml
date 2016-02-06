@@ -28,21 +28,21 @@
             </android.support.design.widget.AppBarLayout>
 
             <Button
-                android:id="@+id/btn_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/msg_logout"/>
-
-            <Button
                 android:id="@+id/btn_go_to_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/action_add_new_location"/>
 
-            <TextView
-                android:id="@+id/tv_current_team_locations"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_current_team_locations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </ScrollView>
 
         </LinearLayout>
 

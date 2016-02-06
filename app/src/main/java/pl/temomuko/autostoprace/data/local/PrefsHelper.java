@@ -29,6 +29,8 @@ public class PrefsHelper {
     public final static String CURRENT_USER_ID = "current_user_team_id";
     public final static String CURRENT_USER_TEAM_ID = "current_user_team_id";
 
+    public final static String PREF_LOGOUT = "pref_logout";
+
     @Inject
     public PrefsHelper(@AppContext Context context) {
         mPrefs = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);

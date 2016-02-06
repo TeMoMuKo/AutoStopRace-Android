@@ -24,7 +24,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Inject MainPresenter mMainPresenter;
     @Bind(R.id.tv_current_team_locations) TextView mCurrentLocationsTextView;
-    @Bind(R.id.btn_logout) Button mLogoutButton;
     @Bind(R.id.btn_go_to_post) Button mGoToPostButton;
     private String TAG = "MainActivity";
 
@@ -35,7 +34,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         getActivityComponent().inject(this);
         mMainPresenter.attachView(this);
         mMainPresenter.checkAuth();
-        if(mMainPresenter.isAuthorized()) {
+        if (mMainPresenter.isAuthorized()) {
             mMainPresenter.loadLocationsFromDatabase();
             mMainPresenter.loadLocationsFromServer();
             mMainPresenter.setupUserInfoInDrawer();
@@ -51,7 +50,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     private void setListeners() {
-        mLogoutButton.setOnClickListener(v -> mMainPresenter.logout());
         mGoToPostButton.setOnClickListener(v -> mMainPresenter.goToPostLocation());
     }
 
@@ -62,7 +60,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void showError(String message) {
-        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

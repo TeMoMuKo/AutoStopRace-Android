@@ -17,7 +17,6 @@ import okhttp3.ResponseBody;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
-import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.ui.main.MainMvpView;
 import pl.temomuko.autostoprace.ui.main.MainPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
@@ -44,9 +43,6 @@ public class MainPresenterTest {
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
     private MainPresenter mMainPresenter;
-    private static final String FAKE_FIRST_NAME = "fake_first_name";
-    private static final String FAKE_LAST_NAME = "fake_last_name";
-    private static final String FAKE_EMAIL = "fake_email";
     private static final String FAKE_ERROR_MESSAGE = "fake_error_message";
     private static final String NOT_FOUND_RESPONSE =
             "{ \"status\": 404, \"error\": \"Not Found\" }}";
@@ -143,7 +139,7 @@ public class MainPresenterTest {
         when(mMockErrorHandler.getMessageFromResponse(response)).thenReturn(FAKE_ERROR_MESSAGE);
 
         mMainPresenter.loadLocationsFromServer();
-        verify(mMockMainMvpView).showError(mMockErrorHandler.getMessageFromResponse(response));
+        verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockDataManager).getTeamLocationsFromDatabase();
         verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
         verify(mMockDataManager, never()).saveAndEmitLocationsFromDatabase(locations);
@@ -165,7 +161,7 @@ public class MainPresenterTest {
         when(mMockErrorHandler.getMessageFromResponse(response)).thenReturn(FAKE_ERROR_MESSAGE);
 
         mMainPresenter.loadLocationsFromServer();
-        verify(mMockMainMvpView).showError(mMockErrorHandler.getMessageFromResponse(response));
+        verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockDataManager).getTeamLocationsFromDatabase();
         verify(mMockMainMvpView,never()).updateLocationsList(locationsFromDatabase);
         verify(mMockDataManager, never()).saveAndEmitLocationsFromDatabase(locations);
@@ -225,15 +221,6 @@ public class MainPresenterTest {
         verify(mMockMainMvpView, never()).startLoginActivity();
         verify(mMockMainMvpView, never()).startLauncherActivity();
         verify(mMockMainMvpView, never()).showSessionExpiredError();
-    }
-
-    @Test
-    public void testLogout() throws Exception {
-        when(mMockDataManager.signOut()).thenReturn(Observable.<Response<SignOutResponse>>empty());
-        mMainPresenter.logout();
-        verify(mMockDataManager).clearUserData();
-        verify(mMockMainMvpView).showLogoutMessage();
-        verify(mMockMainMvpView).startLauncherActivity();
     }
 
     @Test

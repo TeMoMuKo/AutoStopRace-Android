@@ -44,4 +44,9 @@
     <string name="title_activity_contact">Kontakt do ogranizatorów</string>
     <string name="title_activity_settings">Ustawienia</string>
     <string name="title_activity_about">O aplikacji</string>
+    <string name="pref_main_settings">Główne</string>
+    <string name="pref_logout">Wyloguj się</string>
+    <string name="pref_logout_summary">Zalogowany jako %1$s</string>
+    <string name="pref_logout_summary_not_logged">Niezalogowany</string>
+    <string name="app_name_version">Auto Stop Race v0.0.1</string>
 </resources>

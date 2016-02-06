@@ -43,7 +43,8 @@ public class LoginPresenterTest {
     private static final String FAKE_EMAIL = "fake_email";
     private static final String FAKE_PASS = "fake_pass";
     private static final String FAKE_ERROR_MESSAGE = "fake_error_message";
-    private static final String FAKE_VALIDATION_MESSAGE = "fake_validation_message";
+    private static final String FAKE_EMAIL_VALIDATION_MESSAGE = "fake_email_validation_message";
+    private static final String FAKE_PASS_VALIDATION_MESSAGE = "fake_pass_validation_message";
     private static final String UNAUTHORIZED_RESPONSE =
             "{ \"errors\": [ \"Invalid login credentials. Please try again.\" ] }";
 
@@ -85,7 +86,7 @@ public class LoginPresenterTest {
         when(mMockLoginValidator.isPasswordValid(FAKE_PASS)).thenReturn(true);
         when(mMockErrorHandler.getMessageFromResponse(response)).thenReturn(FAKE_ERROR_MESSAGE);
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
-        verify(mMockLoginMvpView).showError(mMockErrorHandler.getMessageFromResponse(response));
+        verify(mMockLoginMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockDataManager, never()).saveAuthorizationResponse(response);
         verify(mMockLoginMvpView, never()).startMainActivity();
     }
@@ -100,8 +101,7 @@ public class LoginPresenterTest {
         when(mMockErrorHandler.getMessageFromRetrofitThrowable(fakeException))
                 .thenReturn(FAKE_ERROR_MESSAGE);
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
-        verify(mMockLoginMvpView).showError(mMockErrorHandler
-                .getMessageFromRetrofitThrowable(fakeException));
+        verify(mMockLoginMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockDataManager, never())
                 .saveAuthorizationResponse(Matchers.<Response<SignInResponse>>any());
         verify(mMockLoginMvpView, never()).startMainActivity();
@@ -112,14 +112,14 @@ public class LoginPresenterTest {
         when(mMockLoginValidator.isPasswordValid(FAKE_PASS)).thenReturn(false);
         when(mMockLoginValidator.isEmailValid(FAKE_EMAIL)).thenReturn(false);
         when(mMockLoginValidator.getEmailValidErrorMessage(FAKE_EMAIL))
-                .thenReturn(FAKE_VALIDATION_MESSAGE);
-        when(mMockLoginValidator.getEmailValidErrorMessage(FAKE_PASS))
-                .thenReturn(FAKE_VALIDATION_MESSAGE);
+                .thenReturn(FAKE_EMAIL_VALIDATION_MESSAGE);
+        when(mMockLoginValidator.getPasswordValidErrorMessage(FAKE_PASS))
+                .thenReturn(FAKE_PASS_VALIDATION_MESSAGE);
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
         verify(mMockLoginMvpView)
-                .showEmailValidationError(mMockLoginValidator.getEmailValidErrorMessage(FAKE_EMAIL));
+                .showEmailValidationError(FAKE_EMAIL_VALIDATION_MESSAGE);
         verify(mMockLoginMvpView)
-                .showPasswordValidationError(mMockLoginValidator.getPasswordValidErrorMessage(FAKE_PASS));
+                .showPasswordValidationError(FAKE_PASS_VALIDATION_MESSAGE);
         verify(mMockDataManager, never())
                 .saveAuthorizationResponse(Matchers.<Response<SignInResponse>>any());
         verify(mMockLoginMvpView, never()).startMainActivity();

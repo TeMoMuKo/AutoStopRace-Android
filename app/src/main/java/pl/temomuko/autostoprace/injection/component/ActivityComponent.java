@@ -14,6 +14,7 @@ import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.schedule.ScheduleActivity;
 import pl.temomuko.autostoprace.ui.settings.SettingsActivity;
+import pl.temomuko.autostoprace.ui.settings.SettingsFragment;
 import pl.temomuko.autostoprace.ui.teams.TeamsActivity;
 
 /**
@@ -44,6 +45,8 @@ public interface ActivityComponent {
     void inject(ContactActivity contactActivity);
 
     void inject(SettingsActivity settingsActivity);
+
+    void inject(SettingsFragment settingsFragment);
 
     void inject(AboutActivity aboutActivity);
 }
