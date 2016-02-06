@@ -12,6 +12,7 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
  */
 public class SettingsActivity extends BaseActivity {
 
+    private static final String TAG_SETTINGS_FRAGMENT = "settings_fragment";
     @Bind(R.id.toolbar) Toolbar mToolbar;
 
     @Override
@@ -19,7 +20,7 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setupToolbarWithBack();
-        setupSettingsFragment();
+        setupSettingsFragment(savedInstanceState);
     }
 
     private void setupToolbarWithBack() {
@@ -29,9 +30,12 @@ public class SettingsActivity extends BaseActivity {
         }
     }
 
-    private void setupSettingsFragment() {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, new SettingsFragment())
-                .commit();
+    private void setupSettingsFragment(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, new SettingsFragment(), TAG_SETTINGS_FRAGMENT)
+                    .commit();
+        }
     }
 }

@@ -18,6 +18,7 @@ import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
+import pl.temomuko.autostoprace.util.DialogFactory;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -46,7 +47,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         setupRetainedLoginFragment();
         mLoginPresenter.setCurrentRequestObservable(mRetainedLoginFragment.getCurrentRequestObservable());
         mLoginPresenter.attachView(this);
-        buildProgressDialog();
+        createProgressDialog();
         setupProgressDialog(savedInstanceState);
         setupToolbarWithBack();
         setListeners();
@@ -97,13 +98,8 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         }
     }
 
-    private void buildProgressDialog() {
-        mProgressDialog = new MaterialDialog.Builder(this)
-                .title(R.string.title_logging)
-                .content(R.string.please_wait)
-                .cancelListener(dialog -> mLoginPresenter.cancelSignInRequest())
-                .progress(true, 0)
-                .build();
+    private void createProgressDialog() {
+        mProgressDialog = DialogFactory.createLoggingProcessDialog(this, mLoginPresenter);
     }
 
     private void setupProgressDialog(Bundle savedInstanceState) {

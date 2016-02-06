@@ -74,11 +74,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
-    public void showLogoutMessage() {
-        Toast.makeText(this, R.string.msg_logout_success, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void startLauncherActivity() {
         Intent intent = new Intent(this, LauncherActivity.class);
         startActivity(intent);
