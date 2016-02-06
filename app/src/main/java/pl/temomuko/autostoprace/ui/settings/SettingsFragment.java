@@ -62,6 +62,7 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
     @Override
     public void startLauncherActivity() {
         Intent intent = new Intent(getActivity(), LauncherActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         getActivity().finish();
     }

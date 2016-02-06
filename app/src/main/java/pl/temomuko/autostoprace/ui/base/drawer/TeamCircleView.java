@@ -67,9 +67,9 @@ public class TeamCircleView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         mCircleWidth = getMeasuredWidth();
         mCircleHeight = getMeasuredHeight();
-        super.onDraw(canvas);
         canvas.drawCircle(mCircleWidth / 2, mCircleHeight / 2, mCircleWidth / 2, mCirclePaint);
         float xPos = canvas.getWidth() / 2;
         float yPos =  ((mCircleHeight / 2) - ((mTextPaint.descent() + mTextPaint.ascent()) / 2));
