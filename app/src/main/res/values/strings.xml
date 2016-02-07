@@ -52,4 +52,7 @@
     <string name="msg_logout_question">Czy na pewno chcesz się wylogować?</string>
     <string name="msg_logout_info">Wszystkie lokalizacje niewysłane na serwer zostaną usunięte.</string>
     <string name="msg_cancel">Anuluj</string>
+    <string name="menu_help">Pomoc</string>
+    <string name="help">Pomoc</string>
+    <string name="ok">OK</string>
 </resources>

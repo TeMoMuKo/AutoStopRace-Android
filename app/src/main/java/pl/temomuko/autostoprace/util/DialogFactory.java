@@ -1,6 +1,9 @@
 package pl.temomuko.autostoprace.util;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -32,5 +35,28 @@ public class DialogFactory {
                 .negativeText(R.string.msg_cancel)
                 .onPositive((dialog, which) -> settingsPresenter.logout())
                 .build();
+    }
+
+    private static MaterialDialog createLoginHelpDialog(Context context) {
+        return new MaterialDialog.Builder(context)
+                .title(R.string.help)
+                .content(R.string.msg_login_info)
+                .positiveText(R.string.ok)
+                .build();
+    }
+
+    public static class HelpDialogFragment extends DialogFragment {
+
+        private static HelpDialogFragment sInstance;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return createLoginHelpDialog(getActivity());
+        }
+
+        public static HelpDialogFragment create() {
+            if(sInstance == null) sInstance = new HelpDialogFragment();
+            return sInstance;
+        }
     }
 }

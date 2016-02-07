@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @Bind(R.id.til_password) TextInputLayout mPasswordTextInputLayout;
     private MaterialDialog mProgressDialog;
     private RetainedLoginFragment mRetainedLoginFragment;
+    private static final String TAG_HELP_DIALOG_FRAGMENT = "help_dialog_fragment";
     private static final String TAG_LOGIN_FRAGMENT = "tag_login_fragment";
     private static final String BUNDLE_IS_PROGRESS_DIALOG_SHOWN = "bundle_is_progress_dialog_shown";
 
@@ -47,7 +50,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         setupRetainedLoginFragment();
         mLoginPresenter.setCurrentRequestObservable(mRetainedLoginFragment.getCurrentRequestObservable());
         mLoginPresenter.attachView(this);
-        createProgressDialog();
+        createDialogs();
         setupProgressDialog(savedInstanceState);
         setupToolbarWithBack();
         setListeners();
@@ -98,7 +101,23 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         }
     }
 
-    private void createProgressDialog() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_login_help:
+                DialogFactory.HelpDialogFragment.create().show(getFragmentManager(),
+                        TAG_HELP_DIALOG_FRAGMENT);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void createDialogs() {
         mProgressDialog = DialogFactory.createLoggingProcessDialog(this, mLoginPresenter);
     }
 
@@ -109,6 +128,8 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
             }
         }
     }
+
+    /* MVP View methods */
 
     @Override
     public void startMainActivity() {

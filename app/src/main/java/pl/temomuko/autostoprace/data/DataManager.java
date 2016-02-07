@@ -50,7 +50,7 @@ public class DataManager {
 
     public void clearUserData() {
         mPrefsHelper.clearAuth();
-        mDatabaseManager.clearTables();
+        mDatabaseManager.clearTables().subscribe();
     }
 
     public Observable<Response<SignInResponse>> validateToken() {
