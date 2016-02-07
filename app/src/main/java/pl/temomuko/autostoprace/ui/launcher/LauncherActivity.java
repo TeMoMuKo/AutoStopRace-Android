@@ -48,6 +48,8 @@ public class LauncherActivity extends DrawerActivity implements LauncherMvpView 
         mGoToContactButton.setOnClickListener(v -> mLauncherPresenter.goToContact());
     }
 
+    /* MVP View methods */
+
     @Override
     public void startLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);

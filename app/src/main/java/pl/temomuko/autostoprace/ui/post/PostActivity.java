@@ -53,6 +53,8 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         });
     }
 
+    /* MVP View methods */
+
     @Override
     public void startMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);

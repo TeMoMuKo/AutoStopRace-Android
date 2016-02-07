@@ -53,6 +53,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         mGoToPostButton.setOnClickListener(v -> mMainPresenter.goToPostLocation());
     }
 
+    /* MVP View methods */
+
     @Override
     public void updateLocationsList(List<Location> locations) {
         mCurrentLocationsTextView.setText(locations.toString());

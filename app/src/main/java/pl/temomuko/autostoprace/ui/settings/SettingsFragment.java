@@ -89,6 +89,8 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
         mLogoutPreference.setEnabled(state);
     }
 
+    /* MVP View methods */
+
     @Override
     public void showLogoutMessage() {
         Toast.makeText(getActivity(), R.string.msg_logout_success, Toast.LENGTH_SHORT).show();
