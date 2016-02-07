@@ -52,6 +52,7 @@ public class TeamCircleView extends View {
 
     private void setupCirclePaint() {
         mCirclePaint = new Paint();
+        mCirclePaint.setAntiAlias(true);
         mCirclePaint.setStyle(Paint.Style.FILL);
         mCirclePaint.setColor(mCircleColor);
     }
