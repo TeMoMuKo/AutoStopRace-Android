@@ -55,8 +55,7 @@ public class DialogFactory {
         }
 
         public static HelpDialogFragment create() {
-            if(sInstance == null) sInstance = new HelpDialogFragment();
-            return sInstance;
+            return new HelpDialogFragment();
         }
     }
 }
