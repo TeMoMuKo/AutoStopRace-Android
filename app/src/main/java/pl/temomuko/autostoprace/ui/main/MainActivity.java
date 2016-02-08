@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
@@ -25,6 +27,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Inject MainPresenter mMainPresenter;
     @Bind(R.id.tv_current_team_locations) TextView mCurrentLocationsTextView;
     @Bind(R.id.btn_go_to_post) Button mGoToPostButton;
+    @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
     private String TAG = "MainActivity";
 
     @Override
@@ -67,7 +70,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void setProgress(boolean status) {
-        //TODO
+        mMaterialProgressBar.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override

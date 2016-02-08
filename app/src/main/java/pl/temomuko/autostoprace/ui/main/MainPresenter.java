@@ -77,6 +77,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void loadLocationsFromServer() {
+        getMvpView().setProgress(true);
         mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
                 .compose(RxUtil.applySchedulers())
                 .subscribe(this::processLocationsResponse, this::handleError));
@@ -94,6 +95,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private void handleLocationList(List<Location> locations) {
         if (locations.isEmpty()) getMvpView().showEmptyInfo();
         else getMvpView().updateLocationsList(locations);
+        getMvpView().setProgress(false);
     }
 
     public void goToPostLocation() {
@@ -101,6 +103,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     private void handleStandardResponseError(Response response) {
+        getMvpView().setProgress(false);
         getMvpView().showError(mErrorHandler.getMessageFromResponse(response));
     }
 
