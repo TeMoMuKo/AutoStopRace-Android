@@ -140,8 +140,6 @@ public class MainPresenterTest {
 
         mMainPresenter.loadLocationsFromServer();
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
-        verify(mMockDataManager).getTeamLocationsFromDatabase();
-        verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
         verify(mMockDataManager, never()).saveAndEmitLocationsFromDatabase(locations);
         verify(mMockMainMvpView, never()).showEmptyInfo();
     }
@@ -162,10 +160,8 @@ public class MainPresenterTest {
 
         mMainPresenter.loadLocationsFromServer();
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
-        verify(mMockDataManager).getTeamLocationsFromDatabase();
         verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
         verify(mMockDataManager, never()).saveAndEmitLocationsFromDatabase(locations);
-        verify(mMockMainMvpView).showEmptyInfo();
     }
 
     @Test

@@ -88,6 +88,7 @@ public class DataManagerTest {
 
     @Test
     public void testClearAuth() throws Exception {
+        when(mMockDatabaseManager.clearTables()).thenReturn(Observable.<Void>empty());
         mDataManager.clearUserData();
         verify(mMockPrefsHelper).clearAuth();
     }

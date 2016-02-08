@@ -79,11 +79,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     public void loadLocationsFromServer() {
         mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
                 .compose(RxUtil.applySchedulers())
-                .subscribe(this::processLocationsResponse,
-                        throwable -> {
-                            handleError(throwable);
-                            loadLocationsFromDatabase();
-                        }));
+                .subscribe(this::processLocationsResponse, this::handleError));
     }
 
     private void processLocationsResponse(Response<List<Location>> response) {
@@ -92,7 +88,6 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                     .subscribe(this::handleLocationList);
         } else {
             handleStandardResponseError(response);
-            mDataManager.getTeamLocationsFromDatabase().subscribe(this::handleLocationList);
         }
     }
 
