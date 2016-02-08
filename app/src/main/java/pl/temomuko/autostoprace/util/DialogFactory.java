@@ -37,21 +37,15 @@ public class DialogFactory {
                 .build();
     }
 
-    private static MaterialDialog createLoginHelpDialog(Context context) {
-        return new MaterialDialog.Builder(context)
-                .title(R.string.help)
-                .content(R.string.msg_login_info)
-                .positiveText(R.string.ok)
-                .build();
-    }
-
     public static class HelpDialogFragment extends DialogFragment {
-
-        private static HelpDialogFragment sInstance;
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return createLoginHelpDialog(getActivity());
+            return new MaterialDialog.Builder(getActivity())
+                    .title(R.string.help)
+                    .content(R.string.msg_login_info)
+                    .positiveText(R.string.ok)
+                    .build();
         }
 
         public static HelpDialogFragment create() {

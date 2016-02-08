@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.ui.login;
 
+import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @Bind(R.id.til_email) TextInputLayout mEmailTextInputLayout;
     @Bind(R.id.til_password) TextInputLayout mPasswordTextInputLayout;
     private MaterialDialog mProgressDialog;
+    private DialogFragment mHelpDialogFragment;
     private RetainedLoginFragment mRetainedLoginFragment;
     private static final String TAG_HELP_DIALOG_FRAGMENT = "help_dialog_fragment";
     private static final String TAG_LOGIN_FRAGMENT = "tag_login_fragment";
@@ -50,8 +52,9 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         setupRetainedLoginFragment();
         mLoginPresenter.setCurrentRequestObservable(mRetainedLoginFragment.getCurrentRequestObservable());
         mLoginPresenter.attachView(this);
-        createDialogs();
-        setupProgressDialog(savedInstanceState);
+        createProgressDialog();
+        createHelpDialog();
+        loadProgressDialogState(savedInstanceState);
         setupToolbarWithBack();
         setListeners();
     }
@@ -64,7 +67,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        checkProgressDialog(outState);
+        saveProgressDialogState(outState);
         super.onSaveInstanceState(outState);
     }
 
@@ -76,7 +79,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         });
     }
 
-    private void checkProgressDialog(Bundle outState) {
+    private void saveProgressDialogState(Bundle outState) {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
             outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, true);
@@ -111,17 +114,21 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_login_help:
-                DialogFactory.HelpDialogFragment.create().show(getFragmentManager(),
+                mHelpDialogFragment.show(getFragmentManager(),
                         TAG_HELP_DIALOG_FRAGMENT);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void createDialogs() {
+    private void createHelpDialog() {
+        mHelpDialogFragment = DialogFactory.HelpDialogFragment.create();
+    }
+
+    private void createProgressDialog() {
         mProgressDialog = DialogFactory.createLoggingProcessDialog(this, mLoginPresenter);
     }
 
-    private void setupProgressDialog(Bundle savedInstanceState) {
+    private void loadProgressDialogState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             if (savedInstanceState.getBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN)) {
                 mProgressDialog.show();
