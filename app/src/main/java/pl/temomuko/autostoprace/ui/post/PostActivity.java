@@ -3,8 +3,11 @@ package pl.temomuko.autostoprace.ui.post;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -20,8 +23,9 @@ public class PostActivity extends BaseActivity implements PostMvpView {
 
     @Inject PostPresenter mPostPresenter;
     @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.btn_send_location) Button mSendButton;
     @Bind(R.id.et_message) EditText mMessageEditText;
+    @Bind(R.id.tv_current_location_cords) TextView mCurrentLocationCordsTextView;
+    @Bind(R.id.tv_current_location_adress) TextView mCurrentLocationAddressTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,8 +33,8 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         setContentView(R.layout.activity_post);
         getActivityComponent().inject(this);
         mPostPresenter.attachView(this);
+        mPostPresenter.setupCurrentLocation();
         setupToolbarWithBack();
-        setListeners();
     }
 
     @Override
@@ -46,11 +50,21 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         }
     }
 
-    private void setListeners() {
-        mSendButton.setOnClickListener(v -> {
-            String message = mMessageEditText.getText().toString();
-            mPostPresenter.saveLocation(message);
-        });
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_post_send:
+                String message = mMessageEditText.getText().toString();
+                mPostPresenter.saveLocation(message);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_post, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     /* MVP View methods */
@@ -60,5 +74,21 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void showSuccessInfo() {
+        Toast.makeText(this, R.string.saved_location, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updateCurrentLocationCords(double latitude, double longitude) {
+        String cords = latitude + ", " + longitude;
+        mCurrentLocationCordsTextView.setText(cords);
+    }
+
+    @Override
+    public void updateCurrentLocationAddress(String adress) {
+        mCurrentLocationAddressTextView.setText(adress);
     }
 }

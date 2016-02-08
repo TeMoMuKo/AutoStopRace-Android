@@ -8,4 +8,10 @@ import pl.temomuko.autostoprace.ui.base.MvpView;
 public interface PostMvpView extends MvpView {
 
     void startMainActivity();
+
+    void showSuccessInfo();
+
+    void updateCurrentLocationCords(double latitude, double longitude);
+
+    void updateCurrentLocationAddress(String adress);
 }

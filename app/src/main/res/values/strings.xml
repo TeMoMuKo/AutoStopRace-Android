@@ -16,8 +16,7 @@
     <string name="error_400">Nieprawidłowe żądanie</string>
     <string name="msg_welcome">Witamy w Auto Stop Race!</string>
     <string name="error_no_internet_connection">Brak połączenia z Internetem.</string>
-    <string name="hint_message">Krótka relacja (max 160 znaków)</string>
-    <string name="action_save_and_send">Zapisz i wyślij</string>
+    <string name="hint_message">Opcjonalna relacja (max 160 znaków)</string>
     <string name="action_cancel">Anuluj</string>
     <string name="title_activity_login">Logowanie</string>
     <string name="title_post_location">Wysyłanie lokalizacji</string>
@@ -55,4 +54,11 @@
     <string name="menu_help">Pomoc</string>
     <string name="help">Pomoc</string>
     <string name="ok">OK</string>
+    <string name="action_save_and_send">Zapisz i wyślij</string>
+    <string name="msg_your_location">Twoja przybliżona lokalizacja:</string>
+    <string name="msg_no_approximate_location">Brak przybliżonej lokalizacji.</string>
+    <string name="saved_location">Zapisano lokalizację</string>
+    <string name="about_app">Aplikację przygotowali członkowie koła naukowego TeMoMuKo działającego przy Politechnice Wrocławskiej.</string>
+    <string name="authors"><b>Autorzy:</b>\n- Szymon Kozak\n- Rafał Naniewicz\n- Michał Zając</string>
+    <string name="app_version">Wersja 0.0.1-alpha</string>
 </resources>

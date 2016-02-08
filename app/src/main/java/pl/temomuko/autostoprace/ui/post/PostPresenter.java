@@ -37,12 +37,18 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     }
 
     public void saveLocation(String message) {
-        double latitude = 12.34;
-        double longitude = 43.21;
+        double latitude = 51.12345;
+        double longitude = 21.12345;
         Location locationToSend = new Location(latitude, longitude, message);
         mSubscription = mDataManager.saveUnsentLocationToDatabase(locationToSend)
                 .compose(RxUtil.applySchedulers())
                 .subscribe();
+        getMvpView().showSuccessInfo();
         getMvpView().startMainActivity();
+    }
+
+    public void setupCurrentLocation() {
+        getMvpView().updateCurrentLocationAddress("ul. Sezamkowa 12, Wrocław, Polska");
+        getMvpView().updateCurrentLocationCords(51.12345, 21.12345);
     }
 }

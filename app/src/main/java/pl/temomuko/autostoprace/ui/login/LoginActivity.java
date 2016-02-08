@@ -116,6 +116,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
             case R.id.action_login_help:
                 mHelpDialogFragment.show(getFragmentManager(),
                         TAG_HELP_DIALOG_FRAGMENT);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
