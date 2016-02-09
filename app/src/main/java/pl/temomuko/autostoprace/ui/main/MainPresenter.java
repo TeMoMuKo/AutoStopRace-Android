@@ -44,7 +44,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void checkAuth() {
-        if (!mDataManager.isLoggedWithToken()) {
+        if (!isAuthorized()) {
             getMvpView().startLauncherActivity();
         } else {
             validateToken();
@@ -73,7 +73,8 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     public void loadLocationsFromDatabase() {
         mSubscriptions.add(
-                mDataManager.getTeamLocationsFromDatabase().subscribe(this::handleLocationList));
+                mDataManager.getTeamLocationsFromDatabase()
+                        .subscribe(this::handleLocationList));
     }
 
     public void loadLocationsFromServer() {

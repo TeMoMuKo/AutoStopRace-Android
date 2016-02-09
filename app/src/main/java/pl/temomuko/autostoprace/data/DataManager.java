@@ -108,7 +108,7 @@ public class DataManager {
     }
 
     public boolean isLoggedWithToken() {
-        return !mPrefsHelper.getAuthAccessToken().equals("");
+        return !mPrefsHelper.getAuthAccessToken().isEmpty();
     }
 
     public User getCurrentUser() {
