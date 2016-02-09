@@ -72,6 +72,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     public void startMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
