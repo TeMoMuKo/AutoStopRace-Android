@@ -1,6 +1,5 @@
 package pl.temomuko.autostoprace.ui.base.drawer;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -9,13 +8,11 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.common.collect.ImmutableMap;
-
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.about.AboutActivity;
-import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.campus.CampusActivity;
 import pl.temomuko.autostoprace.ui.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
@@ -32,40 +29,38 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
 
     private final NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
-    private Context mContext;
+    private DrawerActivity mCurrentDrawerActivity;
+    private static final long ITEM_ACTION_DELAY = 300;
 
-    public static final ImmutableMap<Class<? extends BaseActivity>, Integer> ACTIVITIES =
-            new ImmutableMap.Builder<Class<? extends BaseActivity>, Integer>()
-                    .put(MainActivity.class, R.id.activity_main)
-                    .put(TeamsActivity.class, R.id.activity_teams)
-                    .put(ScheduleActivity.class, R.id.activity_schedule)
-                    .put(CampusActivity.class, R.id.activity_campus)
-                    .put(PhrasebookActivity.class, R.id.activity_phrasebook)
-                    .put(ContactActivity.class, R.id.activity_contact)
-                    .put(SettingsActivity.class, R.id.activity_settings)
-                    .put(AboutActivity.class, R.id.activity_about)
-                    .build();
+    private static final List<DrawerItemTarget> ACTIVITIES = Arrays.asList(
+            new DrawerItemTarget(MainActivity.class, R.id.activity_main),
+            new DrawerItemTarget(TeamsActivity.class, R.id.activity_teams),
+            new DrawerItemTarget(ScheduleActivity.class, R.id.activity_schedule),
+            new DrawerItemTarget(CampusActivity.class, R.id.activity_campus),
+            new DrawerItemTarget(PhrasebookActivity.class, R.id.activity_phrasebook),
+            new DrawerItemTarget(ContactActivity.class, R.id.activity_contact),
+            new DrawerItemTarget(SettingsActivity.class, R.id.activity_settings),
+            new DrawerItemTarget(AboutActivity.class, R.id.activity_about)
+    );
 
-    public NavigationListener(Context context, DrawerLayout drawerLayout,
+    public NavigationListener(DrawerActivity activity, DrawerLayout drawerLayout,
                               NavigationView navigationView) {
-        mContext = context;
+        mCurrentDrawerActivity = activity;
         mDrawerLayout = drawerLayout;
         mNavigationView = navigationView;
     }
 
     public void setupMenuElementChecked() {
-        int i = 0;
         clearChecked(ACTIVITIES.size());
-        for (Map.Entry<Class<? extends BaseActivity>, Integer> activityElement : ACTIVITIES.entrySet()) {
-            if (isCurrentActivity(activityElement.getKey())) {
+        for (int i = 0; i < ACTIVITIES.size(); i++) {
+            if (isCurrentActivity(ACTIVITIES.get(i).getActivityClass())) {
                 mNavigationView.getMenu().getItem(i).setChecked(true);
             }
-            i++;
         }
     }
 
     private boolean isCurrentActivity(Class<?> activity) {
-        return activity.isInstance(mContext);
+        return activity.isInstance(mCurrentDrawerActivity);
     }
 
     private void clearChecked(int menuSize) {
@@ -76,15 +71,15 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
 
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
-        for (Map.Entry<Class<? extends BaseActivity>, Integer> activityElement : ACTIVITIES.entrySet()) {
-            if (menuItem.getItemId() == activityElement.getValue()) {
-                return activityAction(activityElement.getKey());
+        for (DrawerItemTarget target : ACTIVITIES) {
+            if (menuItem.getItemId() == target.getActivityId()) {
+                return drawerItemAction(target.getActivityClass());
             }
         }
         return false;
     }
 
-    private boolean activityAction(Class<?> targetActivity) {
+    private boolean drawerItemAction(Class<?> targetActivity) {
         if (isCurrentActivity(targetActivity)) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
         } else {
@@ -94,25 +89,48 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
     }
 
     private void tryGoToTargetActivity(Class<?> targetActivity) {
-        if (targetActivity.equals(MainActivity.class)) {
-            if (isCurrentActivity(LauncherActivity.class)) {
-                goToActivity(targetActivity, true);
-                Toast.makeText(mContext, R.string.msg_login_to_show_locations, Toast.LENGTH_SHORT).show();
-            } else ((DrawerActivity) mContext).backToMain();
+        if (isMainActivity(targetActivity)) {
+            openMainActivity();
         } else {
-            if (isCurrentActivity(LauncherActivity.class)) goToActivity(targetActivity, false);
-            else goToActivity(targetActivity, true);
+            openActivity(targetActivity);
         }
     }
 
-    private void goToActivity(Class targetActivity, boolean removeFromStack) {
+    private boolean isMainActivity(Class<?> targetActivity) {
+        return targetActivity.equals(MainActivity.class);
+    }
+
+    private void openMainActivity() {
+        if (isCurrentActivity(LauncherActivity.class)) {
+            goToActivityWithFinishCurrent(MainActivity.class);
+            showNotLoggedToast();
+        } else {
+            mCurrentDrawerActivity.backToMain();
+        }
+    }
+
+    private void showNotLoggedToast() {
+        Toast.makeText(mCurrentDrawerActivity,
+                R.string.msg_login_to_show_locations, Toast.LENGTH_SHORT).show();
+    }
+
+    private void openActivity(Class<?> targetActivity) {
+        if (isBackgroundActivity()) goToActivity(targetActivity);
+        else goToActivityWithFinishCurrent(targetActivity);
+    }
+
+    private boolean isBackgroundActivity() {
+        return isCurrentActivity(LauncherActivity.class) || isCurrentActivity(MainActivity.class);
+    }
+
+    private void goToActivity(Class targetActivity) {
         mDrawerLayout.closeDrawers();
-        Intent intent = new Intent(mContext, targetActivity);
-        new Handler().postDelayed(() -> {
-            mContext.startActivity(intent);
-            if (!(mContext instanceof MainActivity)) {
-                if (removeFromStack) ((DrawerActivity) mContext).finish();
-            }
-        }, 300);
+        Intent intent = new Intent(mCurrentDrawerActivity, targetActivity);
+        new Handler().postDelayed(() -> mCurrentDrawerActivity.startActivity(intent), ITEM_ACTION_DELAY);
+    }
+
+    private void goToActivityWithFinishCurrent(Class targetActivity) {
+        goToActivity(targetActivity);
+        new Handler().postDelayed(mCurrentDrawerActivity::finish, ITEM_ACTION_DELAY);
     }
 }

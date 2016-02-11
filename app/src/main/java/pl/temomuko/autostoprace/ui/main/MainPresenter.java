@@ -44,10 +44,10 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void checkAuth() {
-        if (!isAuthorized()) {
-            getMvpView().startLauncherActivity();
-        } else {
+        if (isAuthorized()) {
             validateToken();
+        } else {
+            getMvpView().startLauncherActivity();
         }
     }
 
