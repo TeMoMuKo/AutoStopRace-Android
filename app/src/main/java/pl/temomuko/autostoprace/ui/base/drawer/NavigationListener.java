@@ -30,7 +30,7 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
     private final NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
     private DrawerActivity mCurrentDrawerActivity;
-    private static final long ITEM_ACTION_DELAY = 300;
+    private static final long DELAY_AFTER_START_CLOSE_DRAWER = 250;
 
     private static final List<DrawerItemTarget> ACTIVITIES = Arrays.asList(
             new DrawerItemTarget(MainActivity.class, R.id.activity_main),
@@ -82,17 +82,18 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
     private boolean drawerItemAction(Class<?> targetActivity) {
         if (isCurrentActivity(targetActivity)) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
+            return true;
         } else {
-            tryGoToTargetActivity(targetActivity);
+            return tryGoToTargetActivity(targetActivity);
         }
-        return true;
     }
 
-    private void tryGoToTargetActivity(Class<?> targetActivity) {
+    private boolean tryGoToTargetActivity(Class<?> targetActivity) {
         if (isMainActivity(targetActivity)) {
-            openMainActivity();
+            return tryGoToMain();
         } else {
             openActivity(targetActivity);
+            return true;
         }
     }
 
@@ -100,12 +101,15 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
         return targetActivity.equals(MainActivity.class);
     }
 
-    private void openMainActivity() {
+    private boolean tryGoToMain() {
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
         if (isCurrentActivity(LauncherActivity.class)) {
-            goToActivityWithFinishCurrent(MainActivity.class);
             showNotLoggedToast();
+            return false;
         } else {
-            mCurrentDrawerActivity.backToMain();
+            new Handler().postDelayed(mCurrentDrawerActivity::backToMain,
+                    DELAY_AFTER_START_CLOSE_DRAWER);
+            return true;
         }
     }
 
@@ -126,11 +130,11 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
     private void goToActivity(Class targetActivity) {
         mDrawerLayout.closeDrawers();
         Intent intent = new Intent(mCurrentDrawerActivity, targetActivity);
-        new Handler().postDelayed(() -> mCurrentDrawerActivity.startActivity(intent), ITEM_ACTION_DELAY);
+        new Handler().postDelayed(() -> mCurrentDrawerActivity.startActivity(intent), DELAY_AFTER_START_CLOSE_DRAWER);
     }
 
     private void goToActivityWithFinishCurrent(Class targetActivity) {
         goToActivity(targetActivity);
-        new Handler().postDelayed(mCurrentDrawerActivity::finish, ITEM_ACTION_DELAY);
+        new Handler().postDelayed(mCurrentDrawerActivity::finish, DELAY_AFTER_START_CLOSE_DRAWER);
     }
 }
