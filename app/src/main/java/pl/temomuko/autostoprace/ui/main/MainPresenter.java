@@ -6,12 +6,10 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.Location;
-import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.HttpStatus;
 import pl.temomuko.autostoprace.util.RxUtil;
-import retrofit2.Response;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -58,17 +56,15 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private void validateToken() {
         mSubscriptions.add(mDataManager.validateToken()
                 .compose(RxUtil.applySchedulers())
-                .subscribe(this::processValidateTokenResponse, this::handleError));
-    }
-
-    private void processValidateTokenResponse(Response<SignInResponse> response) {
-        if (response.code() == HttpStatus.OK) {
-            mDataManager.saveAuthorizationResponse(response);
-        } else if (response.code() == HttpStatus.UNAUTHORIZED) {
-            mDataManager.clearUserData();
-            getMvpView().showSessionExpiredError();
-            getMvpView().startLoginActivity();
-        }
+                .subscribe(response -> {
+                    if (response.code() == HttpStatus.OK) {
+                        mDataManager.saveAuthorizationResponse(response);
+                    } else if (response.code() == HttpStatus.UNAUTHORIZED) {
+                        mDataManager.clearUserData();
+                        getMvpView().showSessionExpiredError();
+                        getMvpView().startLoginActivity();
+                    }
+                }, this::handleError));
     }
 
     public void loadLocationsFromDatabase() {
@@ -81,16 +77,8 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         getMvpView().setProgress(true);
         mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
                 .compose(RxUtil.applySchedulers())
-                .subscribe(this::processLocationsResponse, this::handleError));
-    }
-
-    private void processLocationsResponse(Response<List<Location>> response) {
-        if (response.code() == HttpStatus.OK) {
-            mDataManager.saveAndEmitLocationsFromDatabase(response.body())
-                    .subscribe(this::handleLocationList);
-        } else {
-            handleStandardResponseError(response);
-        }
+                .flatMap(mDataManager::processLocationsResponse)
+                .subscribe(this::handleLocationList, this::handleError));
     }
 
     private void handleLocationList(List<Location> locations) {
@@ -99,17 +87,12 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         getMvpView().setProgress(false);
     }
 
-    public void goToPostLocation() {
-        getMvpView().startPostActivity();
-    }
-
-    private void handleStandardResponseError(Response response) {
-        getMvpView().setProgress(false);
-        getMvpView().showError(mErrorHandler.getMessageFromResponse(response));
-    }
-
     private void handleError(Throwable throwable) {
         getMvpView().setProgress(false);
-        getMvpView().showError(mErrorHandler.getMessageFromRetrofitThrowable(throwable));
+        getMvpView().showError(mErrorHandler.getMessage(throwable));
+    }
+
+    public void goToPostLocation() {
+        getMvpView().startPostActivity();
     }
 }

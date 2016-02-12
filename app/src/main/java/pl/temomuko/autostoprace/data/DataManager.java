@@ -16,6 +16,8 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
+import pl.temomuko.autostoprace.data.remote.StandardResponseException;
+import pl.temomuko.autostoprace.util.HttpStatus;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -88,14 +90,31 @@ public class DataManager {
         );
     }
 
+    public Observable<List<Location>> processLocationsResponse(Response<List<Location>> response) {
+        if (response.code() == HttpStatus.OK) {
+            return saveAndEmitLocationsFromDatabase(response.body());
+        } else {
+            return Observable.error(new StandardResponseException(response));
+        }
+    }
+
     public Observable<Void> saveUnsentLocationToDatabase(Location location) {
         return mDatabaseManager.addUnsentLocation(location);
     }
 
-    public Observable<Response<Location>> postLocationToServer(CreateLocationRequest request) {
+    public Observable<Location> getUnsentLocations() {
+        return mDatabaseManager.getUnsentLocations();
+    }
+
+    public Observable<Void> deleteUnsentLocation(Location location) {
+        return mDatabaseManager.deleteUnsentLocation(location);
+    }
+
+    public Observable<Response<Location>> postLocationToServer(Location location) {
         String accessToken = mPrefsHelper.getAuthAccessToken();
         String client = mPrefsHelper.getAuthClient();
         String uid = mPrefsHelper.getAuthUid();
+        CreateLocationRequest request = new CreateLocationRequest(location);
         return mAsrService.postLocationWithObservable(accessToken, client, uid, request);
     }
 

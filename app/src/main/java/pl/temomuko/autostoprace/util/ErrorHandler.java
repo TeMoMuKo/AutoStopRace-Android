@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.ApiError;
+import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.injection.AppContext;
 import retrofit2.Response;
 
@@ -25,6 +26,14 @@ public class ErrorHandler {
     @Inject
     public ErrorHandler(@AppContext Context context) {
         mContext = context;
+    }
+
+    public String getMessage(Throwable throwable) {
+        if (throwable instanceof StandardResponseException) {
+            return getMessageFromResponse(((StandardResponseException) throwable).getResponse());
+        } else {
+            return getMessageFromRetrofitThrowable(throwable);
+        }
     }
 
     public String getMessageFromResponse(Response<?> response) {

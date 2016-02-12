@@ -47,6 +47,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+      //  mMainPresenter.postUnsentLocationsToServer();
+    }
+
+    @Override
     protected void onDestroy() {
         mMainPresenter.detachView();
         super.onDestroy();
