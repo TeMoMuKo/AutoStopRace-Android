@@ -67,21 +67,26 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                 }, this::handleError));
     }
 
-    public void loadLocationsFromDatabase() {
-        mSubscriptions.add(
-                mDataManager.getTeamLocationsFromDatabase()
-                        .subscribe(this::handleLocationList));
+    public void loadLocations() {
+        loadLocationsFromDatabase();
+        downloadLocationsFromServer();
     }
 
-    public void loadLocationsFromServer() {
+    private void loadLocationsFromDatabase() {
+        mSubscriptions.add(
+                mDataManager.getTeamLocationsFromDatabase()
+                        .subscribe(this::updateLocationsView));
+    }
+
+    private void downloadLocationsFromServer() {
         getMvpView().setProgress(true);
         mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
                 .compose(RxUtil.applySchedulers())
-                .flatMap(mDataManager::processLocationsResponse)
-                .subscribe(this::handleLocationList, this::handleError));
+                .flatMap(mDataManager::syncWithDatabase)
+                .subscribe(this::updateLocationsView, this::handleError));
     }
 
-    private void handleLocationList(List<Location> locations) {
+    private void updateLocationsView(List<Location> locations) {
         if (locations.isEmpty()) getMvpView().showEmptyInfo();
         else getMvpView().updateLocationsList(locations);
         getMvpView().setProgress(false);

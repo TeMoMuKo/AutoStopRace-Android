@@ -6,7 +6,6 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
-import pl.temomuko.autostoprace.util.HttpStatus;
 import pl.temomuko.autostoprace.util.LoginValidator;
 import pl.temomuko.autostoprace.util.RxUtil;
 import retrofit2.Response;
@@ -75,17 +74,14 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     private void subscribeCurrentRequestObservable() {
         mSubscription = mCurrentRequestObservable
-                .subscribe(this::processLoginResponse, this::handleError, this::stopProgress);
-    }
-
-    private void processLoginResponse(Response<SignInResponse> response) {
-        clearCurrentRequestObservable();
-        if (response.code() == HttpStatus.OK) {
-            mDataManager.saveAuthorizationResponse(response);
-            getMvpView().startMainActivity();
-        } else {
-            handleStandardResponseError(response);
-        }
+                .flatMap(response -> {
+                    clearCurrentRequestObservable();
+                    return mDataManager.processLoginResponse(response);
+                })
+                .subscribe(response -> {
+                    mDataManager.saveAuthorizationResponse(response);
+                    getMvpView().startMainActivity();
+                }, this::handleError, this::stopProgress);
     }
 
     private void stopProgress() {
@@ -128,12 +124,8 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
         mCurrentRequestObservable = null;
     }
 
-    private void handleStandardResponseError(Response response) {
-        getMvpView().showError(mErrorHandler.getMessageFromResponse(response));
-    }
-
     private void handleError(Throwable throwable) {
         getMvpView().setProgress(false);
-        getMvpView().showError(mErrorHandler.getMessageFromRetrofitThrowable(throwable));
+        getMvpView().showError(mErrorHandler.getMessage(throwable));
     }
 }

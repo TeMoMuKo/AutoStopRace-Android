@@ -123,7 +123,7 @@ public class DataManagerTest {
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
         when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
         when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
-        mDataManager.postLocationToServer(request);
+        mDataManager.postLocationToServer(locationToSend);
         verify(mMockAsrService).postLocationWithObservable(
                 FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID, request);
     }

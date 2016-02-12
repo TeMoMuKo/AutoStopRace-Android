@@ -76,7 +76,7 @@ public class MainPresenterTest {
         when(mMockDataManager.saveAndEmitLocationsFromDatabase(locations))
                 .thenReturn(Observable.just(locationsFromDatabase));
 
-        mMainPresenter.loadLocationsFromServer();
+        mMainPresenter.downloadLocationsFromServer();
         verify(mMockDataManager).saveAndEmitLocationsFromDatabase(locations);
         verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
         verify(mMockMainMvpView, never()).showEmptyInfo();
@@ -98,7 +98,7 @@ public class MainPresenterTest {
         when(mMockDataManager.getTeamLocationsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
 
-        mMainPresenter.loadLocationsFromServer();
+        mMainPresenter.downloadLocationsFromServer();
         verify(mMockMainMvpView).showError(mMockErrorHandler
                 .getMessageFromRetrofitThrowable(fakeException));
         verify(mMockDataManager, never()).saveAndEmitLocationsFromDatabase(anyListOf(Location.class));
@@ -116,7 +116,7 @@ public class MainPresenterTest {
         when(mMockDataManager.saveAndEmitLocationsFromDatabase(locations))
                 .thenReturn(Observable.just(locationsFromDatabase));
 
-        mMainPresenter.loadLocationsFromServer();
+        mMainPresenter.downloadLocationsFromServer();
         verify(mMockDataManager).saveAndEmitLocationsFromDatabase(locations);
         verify(mMockMainMvpView).showEmptyInfo();
         verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
@@ -138,7 +138,7 @@ public class MainPresenterTest {
         when(mMockDataManager.getTeamLocationsFromDatabase()).thenReturn(Observable.just(locationsFromDatabase));
         when(mMockErrorHandler.getMessageFromResponse(response)).thenReturn(FAKE_ERROR_MESSAGE);
 
-        mMainPresenter.loadLocationsFromServer();
+        mMainPresenter.downloadLocationsFromServer();
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockDataManager, never()).saveAndEmitLocationsFromDatabase(locations);
         verify(mMockMainMvpView, never()).showEmptyInfo();
@@ -158,7 +158,7 @@ public class MainPresenterTest {
         when(mMockDataManager.getTeamLocationsFromDatabase()).thenReturn(Observable.just(locationsFromDatabase));
         when(mMockErrorHandler.getMessageFromResponse(response)).thenReturn(FAKE_ERROR_MESSAGE);
 
-        mMainPresenter.loadLocationsFromServer();
+        mMainPresenter.downloadLocationsFromServer();
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
         verify(mMockDataManager, never()).saveAndEmitLocationsFromDatabase(locations);

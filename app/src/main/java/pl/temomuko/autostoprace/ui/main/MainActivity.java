@@ -38,8 +38,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         mMainPresenter.attachView(this);
         mMainPresenter.checkAuth();
         if (mMainPresenter.isAuthorized()) {
-            mMainPresenter.loadLocationsFromDatabase();
-            mMainPresenter.loadLocationsFromServer();
+            mMainPresenter.loadLocations();
             mMainPresenter.setupUserInfoInDrawer();
         }
         setupToolbarWithToggle();
@@ -49,7 +48,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     protected void onResume() {
         super.onResume();
-      //  mMainPresenter.postUnsentLocationsToServer();
     }
 
     @Override

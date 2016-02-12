@@ -78,10 +78,10 @@ public class DataManager {
         return mAsrService.getLocationsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
     }
 
-    public Observable<List<Location>> saveAndEmitLocationsFromDatabase(List<Location> locations) {
+    public Observable<List<Location>> saveAndEmitLocationsFromDatabase(List<Location> receivedLocations) {
         return Observable.zip(
                 mDatabaseManager.getUnsentLocationList(),
-                mDatabaseManager.setAndEmitReceivedLocations(locations),
+                mDatabaseManager.setAndEmitReceivedLocations(receivedLocations),
                 (a1, a2) -> {
                     ArrayList<Location> result = new ArrayList<>(a1);
                     result.addAll(a2);
@@ -90,9 +90,17 @@ public class DataManager {
         );
     }
 
-    public Observable<List<Location>> processLocationsResponse(Response<List<Location>> response) {
+    public Observable<List<Location>> syncWithDatabase(Response<List<Location>> response) {
         if (response.code() == HttpStatus.OK) {
             return saveAndEmitLocationsFromDatabase(response.body());
+        } else {
+            return Observable.error(new StandardResponseException(response));
+        }
+    }
+
+    public Observable<Response<SignInResponse>> processLoginResponse(Response<SignInResponse> response) {
+        if (response.code() == HttpStatus.OK) {
+            return Observable.just(response);
         } else {
             return Observable.error(new StandardResponseException(response));
         }
