@@ -84,7 +84,7 @@ public class PrefsHelper {
         editor.apply();
     }
 
-    public void setAuthorization(Headers headers) {
+    public void setAuthorizationHeaders(Headers headers) {
         Map<String, List<String>> headersMap = headers.toMultimap();
         setAuthAccessToken(headersMap.get(Constants.HEADER_FIELD_TOKEN).get(0));
         setAuthClient(headersMap.get(Constants.HEADER_FIELD_CLIENT).get(0));

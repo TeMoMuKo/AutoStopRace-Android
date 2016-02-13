@@ -157,7 +157,7 @@ public class DataManagerTest {
         signInResponse.setUser(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
         Response<SignInResponse> response = Response.success(signInResponse, okHttpResponse);
         mDataManager.saveAuthorizationResponse(response);
-        verify(mMockPrefsHelper).setAuthorization(response.headers());
+        verify(mMockPrefsHelper).setAuthorizationHeaders(response.headers());
         verify(mMockPrefsHelper).setCurrentUser(response.body().getUser());
     }
 

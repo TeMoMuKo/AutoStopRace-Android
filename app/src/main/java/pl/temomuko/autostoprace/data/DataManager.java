@@ -42,10 +42,10 @@ public class DataManager {
     }
 
     public Observable<Response<SignOutResponse>> signOut() {
-        String accessToken = mPrefsHelper.getAuthAccessToken();
-        String client = mPrefsHelper.getAuthClient();
-        String uid = mPrefsHelper.getAuthUid();
-        return mAsrService.signOutWithObservable(accessToken, client, uid);
+        return mAsrService.signOutWithObservable(
+                mPrefsHelper.getAuthAccessToken(),
+                mPrefsHelper.getAuthClient(),
+                mPrefsHelper.getAuthUid());
     }
 
     public void clearUserData() {
@@ -54,10 +54,10 @@ public class DataManager {
     }
 
     public Observable<Response<SignInResponse>> validateToken() {
-        String accessToken = mPrefsHelper.getAuthAccessToken();
-        String client = mPrefsHelper.getAuthClient();
-        String uid = mPrefsHelper.getAuthUid();
-        return mAsrService.validateTokenWithObservable(accessToken, client, uid);
+        return mAsrService.validateTokenWithObservable(
+                mPrefsHelper.getAuthAccessToken(),
+                mPrefsHelper.getAuthClient(),
+                mPrefsHelper.getAuthUid());
     }
 
     public Observable<List<Location>> getTeamLocationsFromDatabase() {
@@ -117,15 +117,15 @@ public class DataManager {
     }
 
     public Observable<Response<Location>> postLocationToServer(Location location) {
-        String accessToken = mPrefsHelper.getAuthAccessToken();
-        String client = mPrefsHelper.getAuthClient();
-        String uid = mPrefsHelper.getAuthUid();
-        CreateLocationRequest request = new CreateLocationRequest(location);
-        return mAsrService.postLocationWithObservable(accessToken, client, uid, request);
+        return mAsrService.postLocationWithObservable(
+                mPrefsHelper.getAuthAccessToken(),
+                mPrefsHelper.getAuthClient(),
+                mPrefsHelper.getAuthUid(),
+                new CreateLocationRequest(location));
     }
 
     public void saveAuthorizationResponse(Response<SignInResponse> response) {
-        mPrefsHelper.setAuthorization(response.headers());
+        mPrefsHelper.setAuthorizationHeaders(response.headers());
         mPrefsHelper.setCurrentUser(response.body().getUser());
     }
 
