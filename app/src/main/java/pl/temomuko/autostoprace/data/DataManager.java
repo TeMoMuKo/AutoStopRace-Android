@@ -105,12 +105,21 @@ public class DataManager {
     }
 
     public Observable<Location> processDeleteUnsentLocation(Response<Location> response,
-                                                        Location locationFromDatabase) {
+                                                            Location locationFromDatabase) {
         if (response.code() == HttpStatus.CREATED) {
-            return deleteUnsentLocation(locationFromDatabase);
+            return deleteUnsentLocation(locationFromDatabase)
+                    .doOnNext(location -> {
+                        Location responseLocation = response.body();
+                        responseLocation.setLocationId(responseLocation.getTemporaryId());
+                        saveSentLocationToDatabase(responseLocation).subscribe();
+                    });
         } else {
             return Observable.error(new StandardResponseException(response));
         }
+    }
+
+    public Observable<Void> saveSentLocationToDatabase(Location location) {
+        return mDatabaseManager.addSentLocation(location);
     }
 
     public Observable<Void> saveUnsentLocationToDatabase(Location location) {

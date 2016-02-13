@@ -15,6 +15,8 @@ public class Location {
     @SerializedName("message") private String mMessage;
     @SerializedName("created_at") private Date mServerReceiptDate;
 
+    @SerializedName("id") private int mTemporaryId;
+
     public Location() {
     }
 
@@ -62,6 +64,10 @@ public class Location {
 
     public void setServerReceiptDate(Date serverReceiptDate) {
         mServerReceiptDate = serverReceiptDate;
+    }
+
+    public int getTemporaryId() {
+        return mTemporaryId;
     }
 
     public String toString() {
