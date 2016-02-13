@@ -60,4 +60,6 @@ dependencies {
     compile 'com.google.guava:guava:18.0'
 
     compile 'com.squareup.sqlbrite:sqlbrite:0.5.1'
+
+    compile 'com.google.android.gms:play-services-location:8.4.0'
 }

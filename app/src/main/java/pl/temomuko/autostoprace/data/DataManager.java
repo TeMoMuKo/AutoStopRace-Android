@@ -16,6 +16,7 @@ import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.util.HttpStatusConstants;
+import pl.temomuko.autostoprace.util.RxUtil;
 import retrofit2.Response;
 import rx.Completable;
 import rx.Observable;
@@ -111,8 +112,11 @@ public class DataManager {
             return deleteUnsentLocation(locationFromDatabase)
                     .doOnNext(location -> {
                         Location responseLocation = response.body();
+                        //TODO: Temporary fix to invalid id naming in API.
                         responseLocation.setLocationId(responseLocation.getTemporaryId());
-                        saveSentLocationToDatabase(responseLocation).subscribe();
+                        saveSentLocationToDatabase(responseLocation)
+                                .compose(RxUtil.applyCompletableSchedulers())
+                                .subscribe();
                     });
         } else {
             return Observable.error(new StandardResponseException(response));
