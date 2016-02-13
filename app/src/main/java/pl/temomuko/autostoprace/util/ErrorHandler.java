@@ -36,7 +36,7 @@ public class ErrorHandler {
         }
     }
 
-    public String getMessageFromResponse(Response<?> response) {
+    private String getMessageFromResponse(Response<?> response) {
         ApiError apiError = new ApiError(response);
         switch (apiError.getStatus()) {
             case HttpStatus.NOT_FOUND:
@@ -56,7 +56,7 @@ public class ErrorHandler {
         }
     }
 
-    public String getMessageFromRetrofitThrowable(Throwable throwable) {
+    private String getMessageFromRetrofitThrowable(Throwable throwable) {
         if ((throwable instanceof SocketTimeoutException)) {
             return mContext.getString(R.string.error_timeout);
         } else if ((throwable instanceof IOException) && !NetworkUtil.isConnected(mContext)) {

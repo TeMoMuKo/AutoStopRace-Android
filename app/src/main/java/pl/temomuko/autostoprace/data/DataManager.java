@@ -2,12 +2,10 @@ package pl.temomuko.autostoprace.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseManager;
 import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
@@ -78,7 +76,15 @@ public class DataManager {
         return mAsrService.getLocationsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
     }
 
-    public Observable<List<Location>> saveAndEmitLocationsFromDatabase(List<Location> receivedLocations) {
+    public Observable<List<Location>> syncWithDatabase(Response<List<Location>> response) {
+        if (response.code() == HttpStatus.OK) {
+            return saveAndEmitLocationsFromDatabase(response.body());
+        } else {
+            return Observable.error(new StandardResponseException(response));
+        }
+    }
+
+    private Observable<List<Location>> saveAndEmitLocationsFromDatabase(List<Location> receivedLocations) {
         return Observable.zip(
                 mDatabaseManager.getUnsentLocationList(),
                 mDatabaseManager.setAndEmitReceivedLocations(receivedLocations),
@@ -88,14 +94,6 @@ public class DataManager {
                     return result;
                 }
         );
-    }
-
-    public Observable<List<Location>> syncWithDatabase(Response<List<Location>> response) {
-        if (response.code() == HttpStatus.OK) {
-            return saveAndEmitLocationsFromDatabase(response.body());
-        } else {
-            return Observable.error(new StandardResponseException(response));
-        }
     }
 
     public Observable<Response<SignInResponse>> processLoginResponse(Response<SignInResponse> response) {
@@ -127,10 +125,7 @@ public class DataManager {
     }
 
     public void saveAuthorizationResponse(Response<SignInResponse> response) {
-        Map<String, List<String>> headers = response.headers().toMultimap();
-        mPrefsHelper.setAuthAccessToken(headers.get(Constants.HEADER_FIELD_TOKEN).get(0));
-        mPrefsHelper.setAuthClient(headers.get(Constants.HEADER_FIELD_CLIENT).get(0));
-        mPrefsHelper.setAuthUid(headers.get(Constants.HEADER_FIELD_UID).get(0));
+        mPrefsHelper.setAuthorization(response.headers());
         mPrefsHelper.setCurrentUser(response.body().getUser());
     }
 

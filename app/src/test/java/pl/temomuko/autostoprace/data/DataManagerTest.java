@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.HttpUrl;
@@ -28,6 +27,8 @@ import rx.Observable;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -101,13 +102,13 @@ public class DataManagerTest {
         verify(mMockDatabaseManager).addUnsentLocation(unsentLocation);
     }
 
-    @Test
-    public void testSaveAndEmitLocationsFromDatabase() throws Exception {
-        ArrayList<Location> receivedLocations = new ArrayList<>();
-        mDataManager.saveAndEmitLocationsFromDatabase(receivedLocations);
-        verify(mMockDatabaseManager).getUnsentLocationList();
-        verify(mMockDatabaseManager).setAndEmitReceivedLocations(receivedLocations);
-    }
+//    @Test
+//    public void testSaveAndEmitLocationsFromDatabase() throws Exception {
+//        ArrayList<Location> receivedLocations = new ArrayList<>();
+//        mDataManager.saveAndEmitLocationsFromDatabase(receivedLocations);
+//        verify(mMockDatabaseManager).getUnsentLocationList();
+//        verify(mMockDatabaseManager).setAndEmitReceivedLocations(receivedLocations);
+//    }
 
     @Test
     public void testGetTeamLocationsFromDatabase() throws Exception {
@@ -119,13 +120,12 @@ public class DataManagerTest {
     @Test
     public void testPostLocationToServer() throws Exception {
         Location locationToSend = new Location(12.34, 56.78, "");
-        CreateLocationRequest request = new CreateLocationRequest(locationToSend);
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
         when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
         when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
         mDataManager.postLocationToServer(locationToSend);
         verify(mMockAsrService).postLocationWithObservable(
-                FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID, request);
+                eq(FAKE_ACCESS_TOKEN), eq(FAKE_CLIENT), eq(FAKE_UID), any(CreateLocationRequest.class));
     }
 
     @Test
@@ -157,9 +157,7 @@ public class DataManagerTest {
         signInResponse.setUser(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
         Response<SignInResponse> response = Response.success(signInResponse, okHttpResponse);
         mDataManager.saveAuthorizationResponse(response);
-        verify(mMockPrefsHelper).setAuthAccessToken(FAKE_ACCESS_TOKEN);
-        verify(mMockPrefsHelper).setAuthClient(FAKE_CLIENT);
-        verify(mMockPrefsHelper).setAuthUid(FAKE_UID);
+        verify(mMockPrefsHelper).setAuthorization(response.headers());
         verify(mMockPrefsHelper).setCurrentUser(response.body().getUser());
     }
 

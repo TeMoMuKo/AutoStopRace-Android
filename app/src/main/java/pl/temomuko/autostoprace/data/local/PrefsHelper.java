@@ -3,9 +3,14 @@ package pl.temomuko.autostoprace.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import okhttp3.Headers;
+import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.injection.AppContext;
 
@@ -77,6 +82,13 @@ public class PrefsHelper {
         editor.remove(PREF_CURRENT_USER_ID);
         editor.remove(PREF_CURRENT_USER_TEAM_ID);
         editor.apply();
+    }
+
+    public void setAuthorization(Headers headers) {
+        Map<String, List<String>> headersMap = headers.toMultimap();
+        setAuthAccessToken(headersMap.get(Constants.HEADER_FIELD_TOKEN).get(0));
+        setAuthClient(headersMap.get(Constants.HEADER_FIELD_CLIENT).get(0));
+        setAuthUid(headersMap.get(Constants.HEADER_FIELD_UID).get(0));
     }
 
     public void setCurrentUser(User user) {
