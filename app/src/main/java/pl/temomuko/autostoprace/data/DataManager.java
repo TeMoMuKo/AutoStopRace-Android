@@ -65,8 +65,8 @@ public class DataManager {
                 mDatabaseManager.getUnsentLocationList(),
                 mDatabaseManager.getSentLocationList(),
                 (a1, a2) -> {
-                    ArrayList<Location> result = new ArrayList<>(a1);
-                    result.addAll(a2);
+                    ArrayList<Location> result = new ArrayList<>(a2);
+                    result.addAll(a1);
                     return result;
                 }
         );
@@ -89,8 +89,8 @@ public class DataManager {
                 mDatabaseManager.getUnsentLocationList(),
                 mDatabaseManager.setAndEmitReceivedLocations(receivedLocations),
                 (a1, a2) -> {
-                    ArrayList<Location> result = new ArrayList<>(a1);
-                    result.addAll(a2);
+                    ArrayList<Location> result = new ArrayList<>(a2);
+                    result.addAll(a1);
                     return result;
                 }
         );
@@ -104,6 +104,15 @@ public class DataManager {
         }
     }
 
+    public Observable<Location> processDeleteUnsentLocation(Response<Location> response,
+                                                        Location locationFromDatabase) {
+        if (response.code() == HttpStatus.CREATED) {
+            return deleteUnsentLocation(locationFromDatabase);
+        } else {
+            return Observable.error(new StandardResponseException(response));
+        }
+    }
+
     public Observable<Void> saveUnsentLocationToDatabase(Location location) {
         return mDatabaseManager.addUnsentLocation(location);
     }
@@ -112,7 +121,7 @@ public class DataManager {
         return mDatabaseManager.getUnsentLocations();
     }
 
-    public Observable<Void> deleteUnsentLocation(Location location) {
+    public Observable<Location> deleteUnsentLocation(Location location) {
         return mDatabaseManager.deleteUnsentLocation(location);
     }
 

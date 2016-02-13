@@ -1,13 +1,18 @@
 package pl.temomuko.autostoprace.ui.main;
 
+import android.util.Log;
+
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.event.RemovedLocationEvent;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.util.EventPoster;
 import pl.temomuko.autostoprace.util.HttpStatus;
 import pl.temomuko.autostoprace.util.RxUtil;
 import rx.subscriptions.CompositeSubscription;
@@ -83,21 +88,40 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
                 .compose(RxUtil.applySchedulers())
                 .flatMap(mDataManager::syncWithDatabase)
-                .subscribe(this::updateLocationsView, this::handleError));
+                .subscribe(locations -> {
+                            updateLocationsView(locations);
+                            postUnsentLocationsToServer();
+                        }, this::handleError
+                ));
     }
 
     private void updateLocationsView(List<Location> locations) {
+        Collections.reverse(locations);
         if (locations.isEmpty()) getMvpView().showEmptyInfo();
         else getMvpView().updateLocationsList(locations);
         getMvpView().setProgress(false);
     }
 
+    public void goToPostLocation() {
+        getMvpView().startPostActivity();
+    }
+
+    public void postUnsentLocationsToServer() {
+        mSubscriptions.add(mDataManager.getUnsentLocations()
+                .compose(RxUtil.applySchedulers())
+                .flatMap(location ->
+                        mDataManager.postLocationToServer(location)
+                                .compose(RxUtil.applySchedulers())
+                                .flatMap(response ->
+                                        mDataManager.processDeleteUnsentLocation(response, location)))
+                .subscribe(removedLocation -> {
+                    EventPoster.postSticky(new RemovedLocationEvent(removedLocation));
+                    Log.i("EventPoster", removedLocation.toString());
+                }, this::handleError));
+    }
+
     private void handleError(Throwable throwable) {
         getMvpView().setProgress(false);
         getMvpView().showError(mErrorHandler.getMessage(throwable));
-    }
-
-    public void goToPostLocation() {
-        getMvpView().startPostActivity();
     }
 }

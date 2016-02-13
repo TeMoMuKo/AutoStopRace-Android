@@ -65,6 +65,6 @@ public class Location {
     }
 
     public String toString() {
-        return "(" + getLatitude() + ", " + getLongitude() + ")";
+        return "(" + getLatitude() + ", " + getLongitude() + ", " + getMessage() + ")\n";
     }
 }

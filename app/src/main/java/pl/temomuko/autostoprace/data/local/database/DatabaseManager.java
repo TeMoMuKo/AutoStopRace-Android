@@ -95,14 +95,15 @@ public class DatabaseManager {
         });
     }
 
-    public Observable<Void> deleteUnsentLocation(Location location) {
+    public Observable<Location> deleteUnsentLocation(Location location) {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 mBriteDatabase.delete(UnsentLocationTable.NAME,
-                        UnsentLocationTable.COLUMN_LOCATION_ID,
+                        UnsentLocationTable.COLUMN_LOCATION_ID + "= ?",
                         Integer.toString(location.getLocationId()));
                 transaction.markSuccessful();
+                subscriber.onNext(location);
                 subscriber.onCompleted();
             } finally {
                 transaction.end();
