@@ -105,7 +105,7 @@ public class DatabaseManager {
         });
     }
 
-    public Observable<Location> deleteUnsentLocation(Location location) {
+    public Observable<Void> deleteUnsentLocation(Location location) {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {

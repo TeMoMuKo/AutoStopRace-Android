@@ -16,9 +16,7 @@ import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.util.HttpStatusConstants;
-import pl.temomuko.autostoprace.util.RxUtil;
 import retrofit2.Response;
-import rx.Completable;
 import rx.Observable;
 
 /**
@@ -106,18 +104,12 @@ public class DataManager {
         }
     }
 
-    public Observable<Location> processDeleteUnsentLocation(Response<Location> response,
-                                                            Location locationFromDatabase) {
+    public Observable<Location> handleResponse(Response<Location> response) {
         if (response.code() == HttpStatusConstants.CREATED) {
-            return deleteUnsentLocation(locationFromDatabase)
-                    .doOnNext(location -> {
-                        Location responseLocation = response.body();
-                        //TODO: Temporary fix to invalid id naming in API.
-                        responseLocation.setLocationId(responseLocation.getTemporaryId());
-                        saveSentLocationToDatabase(responseLocation)
-                                .compose(RxUtil.applyObservableSchedulers())
-                                .subscribe();
-                    });
+            //TODO: Temporary fix to invalid id naming in API.
+            Location responseLocation = response.body();
+            responseLocation.setLocationId(responseLocation.getTemporaryId());
+            return Observable.just(responseLocation);
         } else {
             return Observable.error(new StandardResponseException(response));
         }
@@ -135,7 +127,7 @@ public class DataManager {
         return mDatabaseManager.getUnsentLocations();
     }
 
-    public Observable<Location> deleteUnsentLocation(Location location) {
+    public Observable<Void> deleteUnsentLocation(Location location) {
         return mDatabaseManager.deleteUnsentLocation(location);
     }
 

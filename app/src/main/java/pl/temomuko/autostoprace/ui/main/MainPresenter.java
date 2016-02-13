@@ -15,6 +15,7 @@ import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.EventPosterUtil;
 import pl.temomuko.autostoprace.util.HttpStatusConstants;
 import pl.temomuko.autostoprace.util.RxUtil;
+import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -108,15 +109,17 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     public void postUnsentLocationsToServer() {
         mSubscriptions.add(mDataManager.getUnsentLocations()
-                .compose(RxUtil.applyObservableSchedulers())
-                .flatMap(unsentLocation ->
-                        mDataManager.postLocationToServer(unsentLocation)
-                                .flatMap(response ->
-                                        mDataManager.processDeleteUnsentLocation(response, unsentLocation)))
+                .flatMap(unsentLocation -> mDataManager.postLocationToServer(unsentLocation)
+                        .compose(RxUtil.applyObservableSchedulers())
+                        .flatMap(mDataManager::handleResponse)
+                        .flatMap(mDataManager::saveSentLocationToDatabase)
+                        .toCompletable().endWith(mDataManager.deleteUnsentLocation(unsentLocation))
+                        .toCompletable().endWith(Observable.just(unsentLocation)))
                 .subscribe(removedLocation -> {
-                    EventPosterUtil.postSticky(new RemovedLocationEvent(removedLocation));
-                    Log.i("EventPoster", removedLocation.toString());
-                }, this::handleError));
+                            EventPosterUtil.postSticky(new RemovedLocationEvent(removedLocation));
+                            Log.i("EventPoster", "A");
+                        },
+                        this::handleError));
     }
 
     private void handleError(Throwable throwable) {
