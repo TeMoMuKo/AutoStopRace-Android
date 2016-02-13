@@ -115,7 +115,7 @@ public class DataManager {
                         //TODO: Temporary fix to invalid id naming in API.
                         responseLocation.setLocationId(responseLocation.getTemporaryId());
                         saveSentLocationToDatabase(responseLocation)
-                                .compose(RxUtil.applyCompletableSchedulers())
+                                .compose(RxUtil.applyObservableSchedulers())
                                 .subscribe();
                     });
         } else {
@@ -123,11 +123,11 @@ public class DataManager {
         }
     }
 
-    public Completable saveSentLocationToDatabase(Location location) {
+    public Observable<Void> saveSentLocationToDatabase(Location location) {
         return mDatabaseManager.addSentLocation(location);
     }
 
-    public Completable saveUnsentLocationToDatabase(Location location) {
+    public Observable<Void> saveUnsentLocationToDatabase(Location location) {
         return mDatabaseManager.addUnsentLocation(location);
     }
 

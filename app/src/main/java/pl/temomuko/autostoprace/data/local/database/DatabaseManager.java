@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.data.model.Location;
-import rx.Completable;
 import rx.Observable;
 
 /**
@@ -28,8 +27,8 @@ public class DatabaseManager {
         mBriteDatabase = SqlBrite.create().wrapDatabaseHelper(databaseOpenHelper);
     }
 
-    public Completable clearTables() {
-        return Completable.create(completableSubscriber -> {
+    public Observable<Void> clearTables() {
+        return Observable.create(subscribe -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 Cursor cursor = mBriteDatabase.query("SELECT name FROM sqlite_master WHERE type='table'");
@@ -38,7 +37,7 @@ public class DatabaseManager {
                 }
                 cursor.close();
                 transaction.markSuccessful();
-                completableSubscriber.onCompleted();
+                subscribe.onCompleted();
             } finally {
                 transaction.end();
             }
@@ -78,28 +77,28 @@ public class DatabaseManager {
         });
     }
 
-    public Completable addSentLocation(Location location) {
-        return Completable.create(completableSubscriber -> {
+    public Observable<Void> addSentLocation(Location location) {
+        return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 mBriteDatabase.insert(RemoteLocationTable.NAME,
                         RemoteLocationTable.toContentValues(location));
                 transaction.markSuccessful();
-                completableSubscriber.onCompleted();
+                subscriber.onCompleted();
             } finally {
                 transaction.end();
             }
         });
     }
 
-    public Completable addUnsentLocation(Location location) {
-        return Completable.create(completableSubscriber -> {
+    public Observable<Void> addUnsentLocation(Location location) {
+        return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 mBriteDatabase.insert(LocalUnsentLocationTable.NAME,
                         LocalUnsentLocationTable.toContentValues(location));
                 transaction.markSuccessful();
-                completableSubscriber.onCompleted();
+                subscriber.onCompleted();
             } finally {
                 transaction.end();
             }
@@ -114,7 +113,6 @@ public class DatabaseManager {
                         LocalUnsentLocationTable.COLUMN_LOCATION_ID + "= ?",
                         Integer.toString(location.getLocationId()));
                 transaction.markSuccessful();
-                subscriber.onNext(location);
                 subscriber.onCompleted();
             } finally {
                 transaction.end();

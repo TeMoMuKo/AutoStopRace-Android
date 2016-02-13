@@ -41,7 +41,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         double longitude = 21.12345;
         Location locationToSend = new Location(latitude, longitude, message);
         mSubscription = mDataManager.saveUnsentLocationToDatabase(locationToSend)
-                .compose(RxUtil.applyCompletableSchedulers())
+                .compose(RxUtil.applyObservableSchedulers())
                 .subscribe();
         getMvpView().showSuccessInfo();
         getMvpView().startMainActivity();
