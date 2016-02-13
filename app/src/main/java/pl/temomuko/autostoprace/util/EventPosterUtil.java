@@ -6,7 +6,7 @@ import de.greenrobot.event.EventBus;
  * Created by szymen on 2016-01-09.
  */
 
-public class EventPoster {
+public class EventPosterUtil {
 
     public static void post(Object event) {
         EventBus.getDefault().post(event);
