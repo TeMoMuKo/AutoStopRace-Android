@@ -13,7 +13,11 @@ import pl.temomuko.autostoprace.BuildConfig;
 /**
  * Created by Rafał Naniewicz on 04.02.2016.
  */
-public abstract class DbUtil {
+public final class DbUtil {
+
+    private DbUtil(){
+        throw new AssertionError();
+    }
 
     private final static String DATABASE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 

@@ -15,8 +15,9 @@ import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
-import pl.temomuko.autostoprace.util.HttpStatus;
+import pl.temomuko.autostoprace.util.HttpStatusConstants;
 import retrofit2.Response;
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -77,7 +78,7 @@ public class DataManager {
     }
 
     public Observable<List<Location>> syncWithDatabase(Response<List<Location>> response) {
-        if (response.code() == HttpStatus.OK) {
+        if (response.code() == HttpStatusConstants.OK) {
             return saveAndEmitLocationsFromDatabase(response.body());
         } else {
             return Observable.error(new StandardResponseException(response));
@@ -97,7 +98,7 @@ public class DataManager {
     }
 
     public Observable<Response<SignInResponse>> processLoginResponse(Response<SignInResponse> response) {
-        if (response.code() == HttpStatus.OK) {
+        if (response.code() == HttpStatusConstants.OK) {
             return Observable.just(response);
         } else {
             return Observable.error(new StandardResponseException(response));
@@ -106,7 +107,7 @@ public class DataManager {
 
     public Observable<Location> processDeleteUnsentLocation(Response<Location> response,
                                                             Location locationFromDatabase) {
-        if (response.code() == HttpStatus.CREATED) {
+        if (response.code() == HttpStatusConstants.CREATED) {
             return deleteUnsentLocation(locationFromDatabase)
                     .doOnNext(location -> {
                         Location responseLocation = response.body();
@@ -118,11 +119,11 @@ public class DataManager {
         }
     }
 
-    public Observable<Void> saveSentLocationToDatabase(Location location) {
+    public Completable saveSentLocationToDatabase(Location location) {
         return mDatabaseManager.addSentLocation(location);
     }
 
-    public Observable<Void> saveUnsentLocationToDatabase(Location location) {
+    public Completable saveUnsentLocationToDatabase(Location location) {
         return mDatabaseManager.addUnsentLocation(location);
     }
 

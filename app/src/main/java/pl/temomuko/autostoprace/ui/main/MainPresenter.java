@@ -12,8 +12,8 @@ import pl.temomuko.autostoprace.data.event.RemovedLocationEvent;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
-import pl.temomuko.autostoprace.util.EventPoster;
-import pl.temomuko.autostoprace.util.HttpStatus;
+import pl.temomuko.autostoprace.util.EventPosterUtil;
+import pl.temomuko.autostoprace.util.HttpStatusConstants;
 import pl.temomuko.autostoprace.util.RxUtil;
 import rx.subscriptions.CompositeSubscription;
 
@@ -60,11 +60,11 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     private void validateToken() {
         mSubscriptions.add(mDataManager.validateToken()
-                .compose(RxUtil.applySchedulers())
+                .compose(RxUtil.applyObservableSchedulers())
                 .subscribe(response -> {
-                    if (response.code() == HttpStatus.OK) {
+                    if (response.code() == HttpStatusConstants.OK) {
                         mDataManager.saveAuthorizationResponse(response);
-                    } else if (response.code() == HttpStatus.UNAUTHORIZED) {
+                    } else if (response.code() == HttpStatusConstants.UNAUTHORIZED) {
                         mDataManager.clearUserData();
                         getMvpView().showSessionExpiredError();
                         getMvpView().startLoginActivity();
@@ -86,7 +86,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private void downloadLocationsFromServer() {
         getMvpView().setProgress(true);
         mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
-                .compose(RxUtil.applySchedulers())
+                .compose(RxUtil.applyObservableSchedulers())
                 .flatMap(mDataManager::syncWithDatabase)
                 .subscribe(locations -> {
                             updateLocationsView(locations);
@@ -108,14 +108,14 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     public void postUnsentLocationsToServer() {
         mSubscriptions.add(mDataManager.getUnsentLocations()
-                .compose(RxUtil.applySchedulers())
+                .compose(RxUtil.applyObservableSchedulers())
                 .flatMap(location ->
                         mDataManager.postLocationToServer(location)
-                                .compose(RxUtil.applySchedulers())
+                                .compose(RxUtil.applyObservableSchedulers())
                                 .flatMap(response ->
                                         mDataManager.processDeleteUnsentLocation(response, location)))
                 .subscribe(removedLocation -> {
-                    EventPoster.postSticky(new RemovedLocationEvent(removedLocation));
+                    EventPosterUtil.postSticky(new RemovedLocationEvent(removedLocation));
                     Log.i("EventPoster", removedLocation.toString());
                 }, this::handleError));
     }

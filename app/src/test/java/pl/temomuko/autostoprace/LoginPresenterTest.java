@@ -19,7 +19,7 @@ import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.ui.login.LoginMvpView;
 import pl.temomuko.autostoprace.ui.login.LoginPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
-import pl.temomuko.autostoprace.util.HttpStatus;
+import pl.temomuko.autostoprace.util.HttpStatusConstants;
 import pl.temomuko.autostoprace.util.LoginValidator;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import retrofit2.Response;
@@ -79,7 +79,7 @@ public class LoginPresenterTest {
 
     @Test
     public void testSignInFails() throws Exception {
-        Response<SignInResponse> response = Response.error(HttpStatus.UNAUTHORIZED,
+        Response<SignInResponse> response = Response.error(HttpStatusConstants.UNAUTHORIZED,
                 ResponseBody.create(
                         MediaType.parse(Constants.HEADER_ACCEPT_JSON), UNAUTHORIZED_RESPONSE
                 ));

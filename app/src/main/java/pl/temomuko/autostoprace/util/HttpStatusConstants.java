@@ -3,8 +3,11 @@ package pl.temomuko.autostoprace.util;
 /**
  * Created by szymen on 2016-01-27.
  */
-public abstract class HttpStatusConstants {
+public final class HttpStatusConstants {
 
+    private HttpStatusConstants(){
+        throw new AssertionError();
+    }
 
     public final static int OK = 200;
     public final static int CREATED = 201;

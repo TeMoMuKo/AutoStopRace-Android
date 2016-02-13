@@ -39,17 +39,17 @@ public class ErrorHandler {
     private String getMessageFromResponse(Response<?> response) {
         ApiError apiError = new ApiError(response);
         switch (apiError.getStatus()) {
-            case HttpStatus.NOT_FOUND:
+            case HttpStatusConstants.NOT_FOUND:
                 return mContext.getString(R.string.error_404);
-            case HttpStatus.FORBIDDEN:
+            case HttpStatusConstants.FORBIDDEN:
                 return mContext.getString(R.string.error_403);
-            case HttpStatus.UNAUTHORIZED:
+            case HttpStatusConstants.UNAUTHORIZED:
                 return mContext.getString(R.string.error_401);
-            case HttpStatus.BAD_REQUEST:
+            case HttpStatusConstants.BAD_REQUEST:
                 return mContext.getString(R.string.error_400);
-            case HttpStatus.INTERNAL_SERVER_ERROR:
+            case HttpStatusConstants.INTERNAL_SERVER_ERROR:
                 return mContext.getString(R.string.error_500);
-            case HttpStatus.BAD_GATEWAY:
+            case HttpStatusConstants.BAD_GATEWAY:
                 return mContext.getString(R.string.error_502);
             default:
                 return mContext.getString(R.string.error_unknown);

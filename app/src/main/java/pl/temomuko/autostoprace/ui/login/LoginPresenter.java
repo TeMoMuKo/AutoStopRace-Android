@@ -67,7 +67,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     private void requestSignIn(String email, String password) {
         mCurrentRequestObservable = mDataManager.signIn(email, password)
-                .compose(RxUtil.applySchedulers())
+                .compose(RxUtil.applyObservableSchedulers())
                 .cache();
         subscribeCurrentRequestObservable();
     }
