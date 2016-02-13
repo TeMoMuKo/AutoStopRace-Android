@@ -8,9 +8,9 @@ import pl.temomuko.autostoprace.data.model.Location;
 /**
  * Created by Rafał Naniewicz on 04.02.2016.
  */
-public abstract class UnsentLocationTable {
+public abstract class LocalUnsentLocationTable {
 
-    public static final String NAME = "unsent_location";
+    public static final String NAME = "local_unsent_location";
 
     public static final String COLUMN_LOCATION_ID = "location_id";
     public static final String COLUMN_LATITUDE = "latitude";

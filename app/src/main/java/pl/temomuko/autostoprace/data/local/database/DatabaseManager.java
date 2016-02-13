@@ -27,10 +27,6 @@ public class DatabaseManager {
         mBriteDatabase = SqlBrite.create().wrapDatabaseHelper(databaseOpenHelper);
     }
 
-    public BriteDatabase getBriteDatabase() {
-        return mBriteDatabase;
-    }
-
     public Observable<Void> clearTables() {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
@@ -52,10 +48,10 @@ public class DatabaseManager {
         return Observable.create(subscriber -> {
             List<Location> result = new ArrayList<>();
             Cursor cursor = mBriteDatabase.query(
-                    "SELECT * FROM " + ServerLocationTable.NAME
+                    "SELECT * FROM " + RemoteLocationTable.NAME
             );
             while (cursor.moveToNext()) {
-                result.add(UnsentLocationTable.parseCursor(cursor));
+                result.add(LocalUnsentLocationTable.parseCursor(cursor));
             }
             cursor.close();
             subscriber.onNext(result);
@@ -67,13 +63,27 @@ public class DatabaseManager {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
-                mBriteDatabase.delete(ServerLocationTable.NAME, null);
+                mBriteDatabase.delete(RemoteLocationTable.NAME, null);
                 for (Location location : locations) {
-                    mBriteDatabase.insert(ServerLocationTable.NAME,
-                            ServerLocationTable.toContentValues(location));
+                    mBriteDatabase.insert(RemoteLocationTable.NAME,
+                            RemoteLocationTable.toContentValues(location));
                 }
                 transaction.markSuccessful();
                 subscriber.onNext(locations);
+                subscriber.onCompleted();
+            } finally {
+                transaction.end();
+            }
+        });
+    }
+
+    public Observable<Void> addSentLocation(Location location) {
+        return Observable.create(subscriber -> {
+            BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
+            try {
+                mBriteDatabase.insert(RemoteLocationTable.NAME,
+                        RemoteLocationTable.toContentValues(location));
+                transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {
                 transaction.end();
@@ -85,8 +95,8 @@ public class DatabaseManager {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
-                mBriteDatabase.insert(UnsentLocationTable.NAME,
-                        UnsentLocationTable.toContentValues(location));
+                mBriteDatabase.insert(LocalUnsentLocationTable.NAME,
+                        LocalUnsentLocationTable.toContentValues(location));
                 transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {
@@ -99,8 +109,8 @@ public class DatabaseManager {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
-                mBriteDatabase.delete(UnsentLocationTable.NAME,
-                        UnsentLocationTable.COLUMN_LOCATION_ID + "= ?",
+                mBriteDatabase.delete(LocalUnsentLocationTable.NAME,
+                        LocalUnsentLocationTable.COLUMN_LOCATION_ID + "= ?",
                         Integer.toString(location.getLocationId()));
                 transaction.markSuccessful();
                 subscriber.onNext(location);
@@ -114,10 +124,10 @@ public class DatabaseManager {
     public Observable<Location> getUnsentLocations() {
         return Observable.create(subscriber -> {
             Cursor cursor = mBriteDatabase.query(
-                    "SELECT * FROM " + UnsentLocationTable.NAME
+                    "SELECT * FROM " + LocalUnsentLocationTable.NAME
             );
             while (cursor.moveToNext()) {
-                subscriber.onNext(UnsentLocationTable.parseCursor(cursor));
+                subscriber.onNext(LocalUnsentLocationTable.parseCursor(cursor));
             }
             cursor.close();
             subscriber.onCompleted();
@@ -128,10 +138,10 @@ public class DatabaseManager {
         return Observable.create(subscriber -> {
             List<Location> result = new ArrayList<>();
             Cursor cursor = mBriteDatabase.query(
-                    "SELECT * FROM " + UnsentLocationTable.NAME
+                    "SELECT * FROM " + LocalUnsentLocationTable.NAME
             );
             while (cursor.moveToNext()) {
-                result.add(UnsentLocationTable.parseCursor(cursor));
+                result.add(LocalUnsentLocationTable.parseCursor(cursor));
             }
             cursor.close();
             subscriber.onNext(result);

@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.injection.AppContext;
 
 /**
@@ -28,8 +27,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.beginTransaction();
         try {
-            db.execSQL(ServerLocationTable.CREATE);
-            db.execSQL(UnsentLocationTable.CREATE);
+            db.execSQL(RemoteLocationTable.CREATE);
+            db.execSQL(LocalUnsentLocationTable.CREATE);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();

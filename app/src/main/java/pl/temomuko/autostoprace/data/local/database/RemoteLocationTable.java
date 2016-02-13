@@ -8,9 +8,9 @@ import pl.temomuko.autostoprace.data.model.Location;
 /**
  * Created by Rafał Naniewicz on 04.02.2016.
  */
-public abstract class ServerLocationTable extends UnsentLocationTable {
+public abstract class RemoteLocationTable extends LocalUnsentLocationTable {
 
-    public static final String NAME = "server_location";
+    public static final String NAME = "remote_location";
 
     public static final String COLUMN_SERVER_RECEIPT_DATE = "server_receipt_date";
 
@@ -24,14 +24,14 @@ public abstract class ServerLocationTable extends UnsentLocationTable {
                     " );";
 
     public static ContentValues toContentValues(Location location) {
-        ContentValues values = UnsentLocationTable.toContentValues(location);
+        ContentValues values = LocalUnsentLocationTable.toContentValues(location);
         values.put(COLUMN_LOCATION_ID, location.getLocationId());
         values.put(COLUMN_SERVER_RECEIPT_DATE, DbUtil.getDateFormat().format(location.getServerReceiptDate()));
         return values;
     }
 
     public static Location parseCursor(Cursor cursor) {
-        Location location = UnsentLocationTable.parseCursor(cursor);
+        Location location = LocalUnsentLocationTable.parseCursor(cursor);
         location.setServerReceiptDate(DbUtil.getDate(cursor, COLUMN_SERVER_RECEIPT_DATE));
         return location;
     }
