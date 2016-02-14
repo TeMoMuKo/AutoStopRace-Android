@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.data;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,13 +10,12 @@ import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseManager;
 import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
 import pl.temomuko.autostoprace.data.model.Location;
-import pl.temomuko.autostoprace.data.model.comparator.LocationDateComparator;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
-import pl.temomuko.autostoprace.util.HttpStatusConstants;
+import pl.temomuko.autostoprace.util.HttpStatusCode;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -79,13 +77,9 @@ public class DataManager {
     }
 
     public Observable<List<Location>> syncWithDatabase(Response<List<Location>> response) {
-        if (response.code() == HttpStatusConstants.OK) {
-            List<Location> locationsFromServer = response.body();
-            Collections.sort(locationsFromServer, new LocationDateComparator());
-            return saveAndEmitLocationsFromDatabase(locationsFromServer);
-        } else {
-            return Observable.error(new StandardResponseException(response));
-        }
+        return response.code() == HttpStatusCode.OK ?
+                saveAndEmitLocationsFromDatabase(response.body()) :
+                Observable.error(new StandardResponseException(response));
     }
 
     private Observable<List<Location>> saveAndEmitLocationsFromDatabase(List<Location> receivedLocations) {
@@ -101,19 +95,15 @@ public class DataManager {
     }
 
     public Observable<Response<SignInResponse>> handleLoginResponse(Response<SignInResponse> response) {
-        if (response.code() == HttpStatusConstants.OK) {
-            return Observable.just(response);
-        } else {
-            return Observable.error(new StandardResponseException(response));
-        }
+        return response.code() == HttpStatusCode.OK ?
+                Observable.just(response) :
+                Observable.error(new StandardResponseException(response));
     }
 
-    public Observable<Location> handleLocationsResponse(Response<Location> response) {
-        if (response.code() == HttpStatusConstants.CREATED) {
-            return Observable.just(response.body());
-        } else {
-            return Observable.error(new StandardResponseException(response));
-        }
+    public Observable<Location> handlePostLocationResponse(Response<Location> response) {
+        return response.code() == HttpStatusCode.CREATED ?
+                Observable.just(response.body()) :
+                Observable.error(new StandardResponseException(response));
     }
 
     public Observable<Void> saveSentLocationToDatabase(Location location) {

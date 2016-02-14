@@ -13,7 +13,7 @@ import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.EventUtil;
-import pl.temomuko.autostoprace.util.HttpStatusConstants;
+import pl.temomuko.autostoprace.util.HttpStatusCode;
 import pl.temomuko.autostoprace.util.RxUtil;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -63,9 +63,9 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         mSubscriptions.add(mDataManager.validateToken()
                 .compose(RxUtil.applySchedulers())
                 .subscribe(response -> {
-                    if (response.code() == HttpStatusConstants.OK) {
+                    if (response.code() == HttpStatusCode.OK) {
                         mDataManager.saveAuthorizationResponse(response);
-                    } else if (response.code() == HttpStatusConstants.UNAUTHORIZED) {
+                    } else if (response.code() == HttpStatusCode.UNAUTHORIZED) {
                         mDataManager.clearUserData();
                         getMvpView().showSessionExpiredError();
                         getMvpView().startLoginActivity();
@@ -111,7 +111,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         mSubscriptions.add(mDataManager.getUnsentLocations()
                 .flatMap((Location unsentLocation) -> mDataManager.postLocationToServer(unsentLocation)
                         .compose(RxUtil.applySchedulers())
-                        .flatMap(mDataManager::handleLocationsResponse)
+                        .flatMap(mDataManager::handlePostLocationResponse)
                         .flatMap(mDataManager::saveSentLocationToDatabase)
                         .toCompletable().endWith(mDataManager.deleteUnsentLocation(unsentLocation))
                         .toCompletable().endWith(Observable.just(unsentLocation)))

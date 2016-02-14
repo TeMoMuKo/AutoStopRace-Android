@@ -3,9 +3,9 @@ package pl.temomuko.autostoprace.util;
 /**
  * Created by szymen on 2016-01-27.
  */
-public final class HttpStatusConstants {
+public final class HttpStatusCode {
 
-    private HttpStatusConstants() {
+    private HttpStatusCode() {
         throw new AssertionError();
     }
 
