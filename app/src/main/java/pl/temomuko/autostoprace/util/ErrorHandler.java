@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.ApiError;
+import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.injection.AppContext;
 import retrofit2.Response;
@@ -39,17 +40,17 @@ public class ErrorHandler {
     private String getMessageFromResponse(Response<?> response) {
         ApiError apiError = new ApiError(response);
         switch (apiError.getStatus()) {
-            case HttpStatusCode.NOT_FOUND:
+            case HttpStatus.NOT_FOUND:
                 return mContext.getString(R.string.error_404);
-            case HttpStatusCode.FORBIDDEN:
+            case HttpStatus.FORBIDDEN:
                 return mContext.getString(R.string.error_403);
-            case HttpStatusCode.UNAUTHORIZED:
+            case HttpStatus.UNAUTHORIZED:
                 return mContext.getString(R.string.error_401);
-            case HttpStatusCode.BAD_REQUEST:
+            case HttpStatus.BAD_REQUEST:
                 return mContext.getString(R.string.error_400);
-            case HttpStatusCode.INTERNAL_SERVER_ERROR:
+            case HttpStatus.INTERNAL_SERVER_ERROR:
                 return mContext.getString(R.string.error_500);
-            case HttpStatusCode.BAD_GATEWAY:
+            case HttpStatus.BAD_GATEWAY:
                 return mContext.getString(R.string.error_502);
             default:
                 return mContext.getString(R.string.error_unknown);

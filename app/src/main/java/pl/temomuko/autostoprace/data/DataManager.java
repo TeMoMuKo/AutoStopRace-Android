@@ -14,8 +14,8 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
+import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
-import pl.temomuko.autostoprace.util.HttpStatusCode;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -77,7 +77,7 @@ public class DataManager {
     }
 
     public Observable<List<Location>> syncWithDatabase(Response<List<Location>> response) {
-        return response.code() == HttpStatusCode.OK ?
+        return response.code() == HttpStatus.OK ?
                 saveAndEmitLocationsFromDatabase(response.body()) :
                 Observable.error(new StandardResponseException(response));
     }
@@ -95,13 +95,13 @@ public class DataManager {
     }
 
     public Observable<Response<SignInResponse>> handleLoginResponse(Response<SignInResponse> response) {
-        return response.code() == HttpStatusCode.OK ?
+        return response.code() == HttpStatus.OK ?
                 Observable.just(response) :
                 Observable.error(new StandardResponseException(response));
     }
 
     public Observable<Location> handlePostLocationResponse(Response<Location> response) {
-        return response.code() == HttpStatusCode.CREATED ?
+        return response.code() == HttpStatus.CREATED ?
                 Observable.just(response.body()) :
                 Observable.error(new StandardResponseException(response));
     }

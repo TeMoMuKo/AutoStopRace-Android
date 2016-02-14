@@ -1,11 +1,11 @@
-package pl.temomuko.autostoprace.util;
+package pl.temomuko.autostoprace.data.remote;
 
 /**
  * Created by szymen on 2016-01-27.
  */
-public final class HttpStatusCode {
+public final class HttpStatus {
 
-    private HttpStatusCode() {
+    private HttpStatus() {
         throw new AssertionError();
     }
 

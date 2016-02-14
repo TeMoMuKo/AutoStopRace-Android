@@ -13,7 +13,7 @@ import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.EventUtil;
-import pl.temomuko.autostoprace.util.HttpStatusCode;
+import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.util.RxUtil;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -63,9 +63,9 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         mSubscriptions.add(mDataManager.validateToken()
                 .compose(RxUtil.applySchedulers())
                 .subscribe(response -> {
-                    if (response.code() == HttpStatusCode.OK) {
+                    if (response.code() == HttpStatus.OK) {
                         mDataManager.saveAuthorizationResponse(response);
-                    } else if (response.code() == HttpStatusCode.UNAUTHORIZED) {
+                    } else if (response.code() == HttpStatus.UNAUTHORIZED) {
                         mDataManager.clearUserData();
                         getMvpView().showSessionExpiredError();
                         getMvpView().startLoginActivity();

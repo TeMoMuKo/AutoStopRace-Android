@@ -22,7 +22,7 @@ import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.ui.main.MainMvpView;
 import pl.temomuko.autostoprace.ui.main.MainPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
-import pl.temomuko.autostoprace.util.HttpStatusCode;
+import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import retrofit2.Response;
 import rx.Observable;
@@ -140,7 +140,7 @@ public class MainPresenterTest {
 
     @Test
     public void testLoadLocationsApiFailsWithFilledDatabase() throws Exception {
-        Response<List<Location>> response = Response.error(HttpStatusCode.NOT_FOUND,
+        Response<List<Location>> response = Response.error(HttpStatus.NOT_FOUND,
                 ResponseBody.create(
                         MediaType.parse(Constants.HEADER_ACCEPT_JSON), NOT_FOUND_RESPONSE
                 ));
@@ -168,7 +168,7 @@ public class MainPresenterTest {
 
     @Test
     public void testLoadLocationsFromApiFailsWithEmptyDatabase() throws Exception {
-        Response<List<Location>> response = Response.error(HttpStatusCode.NOT_FOUND,
+        Response<List<Location>> response = Response.error(HttpStatus.NOT_FOUND,
                 ResponseBody.create(
                         MediaType.parse(Constants.HEADER_ACCEPT_JSON), NOT_FOUND_RESPONSE
                 ));
@@ -203,7 +203,7 @@ public class MainPresenterTest {
     @Test
     public void testCheckAuthExpiredSession() throws Exception {
         when(mMockDataManager.isLoggedWithToken()).thenReturn(true);
-        Response<SignInResponse> response = Response.error(HttpStatusCode.UNAUTHORIZED,
+        Response<SignInResponse> response = Response.error(HttpStatus.UNAUTHORIZED,
                 ResponseBody.create(
                         MediaType.parse(Constants.HEADER_ACCEPT_JSON), UNAUTHORIZED_RESPONSE
                 ));
