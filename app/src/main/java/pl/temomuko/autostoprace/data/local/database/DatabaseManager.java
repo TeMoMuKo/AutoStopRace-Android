@@ -110,7 +110,7 @@ public class DatabaseManager {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 mBriteDatabase.delete(LocalUnsentLocationTable.NAME,
-                        LocalUnsentLocationTable.COLUMN_LOCATION_ID + "= ?",
+                        LocalUnsentLocationTable.COLUMN_ID + "= ?",
                         Integer.toString(location.getId()));
                 transaction.markSuccessful();
                 subscriber.onCompleted();
