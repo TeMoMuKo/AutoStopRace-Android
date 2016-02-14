@@ -106,7 +106,6 @@ public class DataManager {
 
     public Observable<Location> handleResponse(Response<Location> response) {
         if (response.code() == HttpStatusConstants.CREATED) {
-            //TODO: Temporary fix to invalid id naming in API.
             return Observable.just(response.body());
         } else {
             return Observable.error(new StandardResponseException(response));
