@@ -64,9 +64,9 @@ public class DataManager {
         return Observable.zip(
                 mDatabaseManager.getUnsentLocationList(),
                 mDatabaseManager.getSentLocationList(),
-                (a1, a2) -> {
-                    ArrayList<Location> result = new ArrayList<>(a2);
-                    result.addAll(a1);
+                (unsentLocations, sentLocations) -> {
+                    ArrayList<Location> result = new ArrayList<>(sentLocations);
+                    result.addAll(unsentLocations);
                     return result;
                 }
         );
@@ -85,10 +85,10 @@ public class DataManager {
     private Observable<List<Location>> saveAndEmitLocationsFromDatabase(List<Location> receivedLocations) {
         return Observable.zip(
                 mDatabaseManager.getUnsentLocationList(),
-                mDatabaseManager.setAndEmitReceivedLocations(receivedLocations),
-                (a1, a2) -> {
-                    ArrayList<Location> result = new ArrayList<>(a2);
-                    result.addAll(a1);
+                mDatabaseManager.setAndEmitReceivedLocationList(receivedLocations),
+                (unsentLocations, sentLocations) -> {
+                    ArrayList<Location> result = new ArrayList<>(sentLocations);
+                    result.addAll(unsentLocations);
                     return result;
                 }
         );
