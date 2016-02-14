@@ -59,7 +59,7 @@ public class DatabaseManager {
         });
     }
 
-    public Observable<List<Location>> setAndEmitReceivedLocations(final List<Location> locations) {
+    public Observable<List<Location>> setAndEmitReceivedLocationList(final List<Location> locations) {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {

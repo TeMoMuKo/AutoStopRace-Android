@@ -107,7 +107,7 @@ public class DataManagerTest {
 //        ArrayList<Location> receivedLocations = new ArrayList<>();
 //        mDataManager.saveAndEmitLocationsFromDatabase(receivedLocations);
 //        verify(mMockDatabaseManager).getUnsentLocationList();
-//        verify(mMockDatabaseManager).setAndEmitReceivedLocations(receivedLocations);
+//        verify(mMockDatabaseManager).setAndEmitReceivedLocationList(receivedLocations);
 //    }
 
     @Test
