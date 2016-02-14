@@ -109,7 +109,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     public void postUnsentLocationsToServer() {
         mSubscriptions.add(mDataManager.getUnsentLocations()
-                .flatMap(unsentLocation -> mDataManager.postLocationToServer(unsentLocation)
+                .flatMap((Location unsentLocation) -> mDataManager.postLocationToServer(unsentLocation)
                         .compose(RxUtil.applyObservableSchedulers())
                         .flatMap(mDataManager::handleResponse)
                         .flatMap(mDataManager::saveSentLocationToDatabase)
@@ -117,7 +117,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                         .toCompletable().endWith(Observable.just(unsentLocation)))
                 .subscribe(removedLocation -> {
                             EventPosterUtil.postSticky(new RemovedLocationEvent(removedLocation));
-                            Log.i("EventPoster", "A");
+                            Log.i("EventPoster", "Removed: " + removedLocation.toString());
                         },
                         this::handleError));
     }
