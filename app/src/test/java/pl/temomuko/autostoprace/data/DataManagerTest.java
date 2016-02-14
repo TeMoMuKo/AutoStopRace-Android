@@ -102,13 +102,13 @@ public class DataManagerTest {
         verify(mMockDatabaseManager).addUnsentLocation(unsentLocation);
     }
 
-//    @Test
-//    public void testSaveAndEmitLocationsFromDatabase() throws Exception {
-//        ArrayList<Location> receivedLocations = new ArrayList<>();
-//        mDataManager.saveAndEmitLocationsFromDatabase(receivedLocations);
-//        verify(mMockDatabaseManager).getUnsentLocationList();
-//        verify(mMockDatabaseManager).setAndEmitReceivedLocations(receivedLocations);
-//    }
+    @Test
+    public void testSaveSentLocationsToDatabase() throws Exception {
+        Location sentLocation = new Location(18.05, 17.17, "");
+        when(mMockDatabaseManager.addSentLocation(sentLocation)).thenReturn(Observable.empty());
+        mDataManager.saveUnsentLocationToDatabase(sentLocation);
+        verify(mMockDatabaseManager).addUnsentLocation(sentLocation);
+    }
 
     @Test
     public void testGetTeamLocationsFromDatabase() throws Exception {
