@@ -89,7 +89,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
-    public void updateCurrentLocationAddress(String adress) {
-        mCurrentLocationAddressTextView.setText(adress);
+    public void updateCurrentLocationAddress(String address) {
+        mCurrentLocationAddressTextView.setText(address);
     }
 }
