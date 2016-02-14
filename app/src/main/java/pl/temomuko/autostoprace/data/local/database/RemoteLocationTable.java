@@ -16,7 +16,7 @@ public abstract class RemoteLocationTable extends LocalUnsentLocationTable {
 
     public static final String CREATE =
             "CREATE TABLE " + NAME + " (" +
-                    COLUMN_LOCATION_ID + " INTEGER PRIMARY KEY," +
+                    COLUMN_ID + " INTEGER PRIMARY KEY," +
                     COLUMN_LATITUDE + " REAL NOT NULL," +
                     COLUMN_LONGITUDE + " REAL NOT NULL," +
                     COLUMN_MESSAGE + " TEXT," +
@@ -25,7 +25,7 @@ public abstract class RemoteLocationTable extends LocalUnsentLocationTable {
 
     public static ContentValues toContentValues(Location location) {
         ContentValues values = LocalUnsentLocationTable.toContentValues(location);
-        values.put(COLUMN_LOCATION_ID, location.getId());
+        values.put(COLUMN_ID, location.getId());
         values.put(COLUMN_SERVER_RECEIPT_DATE, DbUtil.getDateFormat().format(location.getServerReceiptDate()));
         return values;
     }
