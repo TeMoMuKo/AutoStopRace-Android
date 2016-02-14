@@ -1,6 +1,7 @@
 package pl.temomuko.autostoprace.data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,6 +11,7 @@ import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseManager;
 import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
 import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.LocationDateComparator;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
@@ -78,7 +80,9 @@ public class DataManager {
 
     public Observable<List<Location>> syncWithDatabase(Response<List<Location>> response) {
         if (response.code() == HttpStatusConstants.OK) {
-            return saveAndEmitLocationsFromDatabase(response.body());
+            List<Location> locationsFromServer = response.body();
+            Collections.sort(locationsFromServer, new LocationDateComparator());
+            return saveAndEmitLocationsFromDatabase(locationsFromServer);
         } else {
             return Observable.error(new StandardResponseException(response));
         }
