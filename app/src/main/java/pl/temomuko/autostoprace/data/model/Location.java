@@ -9,13 +9,11 @@ import java.util.Date;
  */
 public class Location {
 
-    @SerializedName("location_id") private int mLocationId;
+    @SerializedName("id") private int mId;
     @SerializedName("latitude") private double mLatitude;
     @SerializedName("longitude") private double mLongitude;
     @SerializedName("message") private String mMessage;
     @SerializedName("created_at") private Date mServerReceiptDate;
-
-    @SerializedName("id") private int mTemporaryId;
 
     public Location() {
     }
@@ -26,8 +24,8 @@ public class Location {
         mMessage = message;
     }
 
-    public int getLocationId() {
-        return mLocationId;
+    public int getId() {
+        return mId;
     }
 
     public double getLatitude() {
@@ -46,8 +44,8 @@ public class Location {
         return mServerReceiptDate;
     }
 
-    public void setLocationId(int locationId) {
-        mLocationId = locationId;
+    public void setId(int id) {
+        mId = id;
     }
 
     public void setLatitude(double latitude) {
@@ -64,10 +62,6 @@ public class Location {
 
     public void setServerReceiptDate(Date serverReceiptDate) {
         mServerReceiptDate = serverReceiptDate;
-    }
-
-    public int getTemporaryId() {
-        return mTemporaryId;
     }
 
     public String toString() {

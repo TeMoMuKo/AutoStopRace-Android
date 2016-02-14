@@ -111,7 +111,7 @@ public class DatabaseManager {
             try {
                 mBriteDatabase.delete(LocalUnsentLocationTable.NAME,
                         LocalUnsentLocationTable.COLUMN_LOCATION_ID + "= ?",
-                        Integer.toString(location.getLocationId()));
+                        Integer.toString(location.getId()));
                 transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {

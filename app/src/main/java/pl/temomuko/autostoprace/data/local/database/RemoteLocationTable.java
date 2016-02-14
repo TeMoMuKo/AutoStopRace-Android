@@ -25,7 +25,7 @@ public abstract class RemoteLocationTable extends LocalUnsentLocationTable {
 
     public static ContentValues toContentValues(Location location) {
         ContentValues values = LocalUnsentLocationTable.toContentValues(location);
-        values.put(COLUMN_LOCATION_ID, location.getLocationId());
+        values.put(COLUMN_LOCATION_ID, location.getId());
         values.put(COLUMN_SERVER_RECEIPT_DATE, DbUtil.getDateFormat().format(location.getServerReceiptDate()));
         return values;
     }

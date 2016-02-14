@@ -12,7 +12,7 @@ public abstract class LocalUnsentLocationTable {
 
     public static final String NAME = "local_unsent_location";
 
-    public static final String COLUMN_LOCATION_ID = "location_id";
+    public static final String COLUMN_LOCATION_ID = "id";
     public static final String COLUMN_LATITUDE = "latitude";
     public static final String COLUMN_LONGITUDE = "longitude";
     public static final String COLUMN_MESSAGE = "message";
@@ -35,7 +35,7 @@ public abstract class LocalUnsentLocationTable {
 
     public static Location parseCursor(Cursor cursor) {
         Location location = new Location();
-        location.setLocationId(DbUtil.getInt(cursor, COLUMN_LOCATION_ID));
+        location.setId(DbUtil.getInt(cursor, COLUMN_LOCATION_ID));
         location.setLatitude(DbUtil.getDouble(cursor, COLUMN_LATITUDE));
         location.setLongitude(DbUtil.getDouble(cursor, COLUMN_LONGITUDE));
         location.setMessage(DbUtil.getString(cursor, COLUMN_MESSAGE));
