@@ -68,7 +68,7 @@ public class LoginPresenterTest {
         SignInResponse signInResponse = new SignInResponse();
         Response<SignInResponse> response = Response.success(signInResponse);
         when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(Observable.just(response));
-        when(mMockDataManager.processLoginResponse(response)).thenReturn(Observable.just(response));
+        when(mMockDataManager.handleLoginResponse(response)).thenReturn(Observable.just(response));
         when(mMockLoginValidator.isEmailValid(FAKE_EMAIL)).thenReturn(true);
         when(mMockLoginValidator.isPasswordValid(FAKE_PASS)).thenReturn(true);
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
@@ -85,7 +85,7 @@ public class LoginPresenterTest {
                 ));
         when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(Observable.just(response));
         StandardResponseException responseException = new StandardResponseException(response);
-        when(mMockDataManager.processLoginResponse(response))
+        when(mMockDataManager.handleLoginResponse(response))
                 .thenReturn(Observable.error(responseException));
         when(mMockLoginValidator.isEmailValid(FAKE_EMAIL)).thenReturn(true);
         when(mMockLoginValidator.isPasswordValid(FAKE_PASS)).thenReturn(true);

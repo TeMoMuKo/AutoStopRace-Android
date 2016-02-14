@@ -100,7 +100,7 @@ public class DataManager {
         );
     }
 
-    public Observable<Response<SignInResponse>> processLoginResponse(Response<SignInResponse> response) {
+    public Observable<Response<SignInResponse>> handleLoginResponse(Response<SignInResponse> response) {
         if (response.code() == HttpStatusConstants.OK) {
             return Observable.just(response);
         } else {
@@ -108,7 +108,7 @@ public class DataManager {
         }
     }
 
-    public Observable<Location> handleResponse(Response<Location> response) {
+    public Observable<Location> handleLocationsResponse(Response<Location> response) {
         if (response.code() == HttpStatusConstants.CREATED) {
             return Observable.just(response.body());
         } else {

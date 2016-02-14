@@ -76,7 +76,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
         mSubscription = mCurrentRequestObservable
                 .flatMap(response -> {
                     clearCurrentRequestObservable();
-                    return mDataManager.processLoginResponse(response);
+                    return mDataManager.handleLoginResponse(response);
                 })
                 .subscribe(response -> {
                     mDataManager.saveAuthorizationResponse(response);
