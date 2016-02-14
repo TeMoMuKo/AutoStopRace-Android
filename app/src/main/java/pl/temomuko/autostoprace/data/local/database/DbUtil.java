@@ -15,7 +15,7 @@ import pl.temomuko.autostoprace.BuildConfig;
  */
 public final class DbUtil {
 
-    private DbUtil(){
+    private DbUtil() {
         throw new AssertionError();
     }
 

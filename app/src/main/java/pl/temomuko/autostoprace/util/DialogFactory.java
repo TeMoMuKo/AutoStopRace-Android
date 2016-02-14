@@ -14,7 +14,11 @@ import pl.temomuko.autostoprace.ui.settings.SettingsPresenter;
 /**
  * Created by szymen on 2016-02-06.
  */
-public class DialogFactory {
+public final class DialogFactory {
+
+    private DialogFactory() {
+        throw new AssertionError();
+    }
 
     public static MaterialDialog createLoggingProcessDialog(Context context,
                                                             LoginPresenter loginPresenter) {

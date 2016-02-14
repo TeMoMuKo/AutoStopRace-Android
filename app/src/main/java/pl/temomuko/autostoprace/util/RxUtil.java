@@ -1,6 +1,5 @@
 package pl.temomuko.autostoprace.util;
 
-import rx.Completable;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -14,13 +13,7 @@ public final class RxUtil {
         throw new AssertionError();
     }
 
-    public static <T> Observable.Transformer<T, T> applyObservableSchedulers() {
-        return observable -> observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.newThread());
-    }
-
-    public static Completable.CompletableTransformer applyCompletableSchedulers() {
+    public static <T> Observable.Transformer<T, T> applySchedulers() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.newThread());

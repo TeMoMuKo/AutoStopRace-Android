@@ -12,7 +12,7 @@ import pl.temomuko.autostoprace.data.event.RemovedLocationEvent;
 import pl.temomuko.autostoprace.data.model.Location;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
-import pl.temomuko.autostoprace.util.EventPosterUtil;
+import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.HttpStatusConstants;
 import pl.temomuko.autostoprace.util.RxUtil;
 import rx.Observable;
@@ -61,7 +61,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     private void validateToken() {
         mSubscriptions.add(mDataManager.validateToken()
-                .compose(RxUtil.applyObservableSchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(response -> {
                     if (response.code() == HttpStatusConstants.OK) {
                         mDataManager.saveAuthorizationResponse(response);
@@ -87,7 +87,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private void downloadLocationsFromServer() {
         getMvpView().setProgress(true);
         mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
-                .compose(RxUtil.applyObservableSchedulers())
+                .compose(RxUtil.applySchedulers())
                 .flatMap(mDataManager::syncWithDatabase)
                 .subscribe(locations -> {
                             updateLocationsView(locations);
@@ -110,13 +110,13 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     public void postUnsentLocationsToServer() {
         mSubscriptions.add(mDataManager.getUnsentLocations()
                 .flatMap((Location unsentLocation) -> mDataManager.postLocationToServer(unsentLocation)
-                        .compose(RxUtil.applyObservableSchedulers())
+                        .compose(RxUtil.applySchedulers())
                         .flatMap(mDataManager::handleResponse)
                         .flatMap(mDataManager::saveSentLocationToDatabase)
                         .toCompletable().endWith(mDataManager.deleteUnsentLocation(unsentLocation))
                         .toCompletable().endWith(Observable.just(unsentLocation)))
                 .subscribe(removedLocation -> {
-                            EventPosterUtil.postSticky(new RemovedLocationEvent(removedLocation));
+                            EventUtil.postSticky(new RemovedLocationEvent(removedLocation));
                             Log.i("EventPoster", "Removed: " + removedLocation.toString());
                         },
                         this::handleError));

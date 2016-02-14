@@ -11,7 +11,7 @@ import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseManager;
 import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
 import pl.temomuko.autostoprace.data.model.Location;
-import pl.temomuko.autostoprace.data.model.LocationDateComparator;
+import pl.temomuko.autostoprace.data.model.comparator.LocationDateComparator;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;

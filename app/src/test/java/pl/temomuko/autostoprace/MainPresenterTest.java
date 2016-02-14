@@ -192,7 +192,7 @@ public class MainPresenterTest {
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
     }
-    
+
     @Test
     public void testCheckAuthNotLogged() throws Exception {
         when(mMockDataManager.isLoggedWithToken()).thenReturn(false);

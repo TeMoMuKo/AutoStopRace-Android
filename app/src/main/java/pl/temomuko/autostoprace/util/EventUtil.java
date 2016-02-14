@@ -6,9 +6,9 @@ import de.greenrobot.event.EventBus;
  * Created by szymen on 2016-01-09.
  */
 
-public final class EventPosterUtil {
+public final class EventUtil {
 
-    private EventPosterUtil(){
+    private EventUtil() {
         throw new AssertionError();
     }
 

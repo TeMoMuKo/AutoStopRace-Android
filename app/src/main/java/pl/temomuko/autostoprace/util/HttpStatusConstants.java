@@ -5,7 +5,7 @@ package pl.temomuko.autostoprace.util;
  */
 public final class HttpStatusConstants {
 
-    private HttpStatusConstants(){
+    private HttpStatusConstants() {
         throw new AssertionError();
     }
 

@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
  */
 public final class NetworkUtil {
 
-    private NetworkUtil(){
+    private NetworkUtil() {
         throw new AssertionError();
     }
 
