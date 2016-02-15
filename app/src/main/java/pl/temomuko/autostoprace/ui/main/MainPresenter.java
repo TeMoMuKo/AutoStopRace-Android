@@ -5,7 +5,6 @@ import android.util.Log;
 
 import java.util.Collections;
 import java.util.List;
-
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
