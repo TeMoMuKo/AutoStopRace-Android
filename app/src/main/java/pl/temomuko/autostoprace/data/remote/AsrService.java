@@ -10,8 +10,8 @@ import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import pl.temomuko.autostoprace.BuildConfig;
 import pl.temomuko.autostoprace.Constants;
-import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
-import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
+import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.Team;
@@ -42,7 +42,7 @@ public interface AsrService {
     Observable<Response<Team>> getTeamWithObservable(@Path("team_id") int teamId);
 
     @GET("teams/{team_id}/locations")
-    Observable<Response<List<Location>>> getLocationsWithObservable(@Path("team_id") int teamId);
+    Observable<Response<List<LocationRecord>>> getLocationRecordsWithObservable(@Path("team_id") int teamId);
 
     @FormUrlEncoded
     @POST("auth/sign_in")
@@ -67,11 +67,11 @@ public interface AsrService {
 
     @Headers("Content-Type: " + Constants.HEADER_CONTENT_TYPE_JSON)
     @POST("locations")
-    Observable<Response<Location>> postLocationWithObservable(
+    Observable<Response<LocationRecord>> postLocationRecordWithObservable(
             @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
             @Header(Constants.HEADER_FIELD_CLIENT) String client,
             @Header(Constants.HEADER_FIELD_UID) String uid,
-            @Body CreateLocationRequest request
+            @Body CreateLocationRecordRequest request
     );
 
     class Factory {

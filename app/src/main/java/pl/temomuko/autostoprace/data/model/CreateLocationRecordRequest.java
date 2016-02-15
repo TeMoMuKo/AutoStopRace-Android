@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by szymen on 2016-01-25.
  */
-public class CreateLocationRequest {
+public class CreateLocationRecordRequest {
 
     @SerializedName("location") private LocationWrapper mLocationWrapper;
 
-    public CreateLocationRequest(Location loc) {
+    public CreateLocationRecordRequest(LocationRecord loc) {
         mLocationWrapper = new LocationWrapper(loc.getLongitude(), loc.getLatitude(), loc.getMessage());
     }
 

@@ -1,19 +1,19 @@
 package pl.temomuko.autostoprace.data.event;
 
-import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.LocationRecord;
 
 /**
  * Created by szymen on 2016-02-13.
  */
 public class RemovedLocationEvent {
 
-    Location mLocation;
+    LocationRecord mLocationRecord;
 
-    public RemovedLocationEvent(Location location) {
-        mLocation = location;
+    public RemovedLocationEvent(LocationRecord locationRecord) {
+        mLocationRecord = locationRecord;
     }
 
-    public Location getLocation() {
-        return mLocation;
+    public LocationRecord getLocationRecord() {
+        return mLocationRecord;
     }
 }

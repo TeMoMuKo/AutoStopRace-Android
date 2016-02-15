@@ -4,7 +4,7 @@
     <string name="error_404">Coś się popsuło. Spróbuj ponownie później…</string>
     <string name="error_500">Błąd połączenia z serwerem</string>
     <string name="error_403">Brak uprawnień</string>
-    <string name="msg_empty_locations_list">Brak lokalizacji do wyświetlenia.</string>
+    <string name="msg_empty_location_records_list">Brak lokalizacji do wyświetlenia.</string>
     <string name="hint_email">Adres e-mail</string>
     <string name="hint_password">Hasło</string>
     <string name="action_login">Zaloguj</string>

@@ -1,5 +1,10 @@
 package pl.temomuko.autostoprace.data;
 
+import android.location.Location;
+
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,9 +12,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
-import pl.temomuko.autostoprace.data.local.database.DatabaseManager;
-import pl.temomuko.autostoprace.data.model.CreateLocationRequest;
-import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
+import pl.temomuko.autostoprace.data.local.gms.GMSHelper;
+import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
+import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
@@ -28,13 +34,15 @@ public class DataManager {
 
     private AsrService mAsrService;
     private PrefsHelper mPrefsHelper;
-    private DatabaseManager mDatabaseManager;
+    private DatabaseHelper mDatabaseHelper;
+    private GMSHelper mGMSHelper;
 
     @Inject
-    public DataManager(AsrService asrService, PrefsHelper prefsHelper, DatabaseManager databaseManager) {
+    public DataManager(AsrService asrService, PrefsHelper prefsHelper, DatabaseHelper databaseHelper, GMSHelper gmsHelper) {
         mAsrService = asrService;
         mPrefsHelper = prefsHelper;
-        mDatabaseManager = databaseManager;
+        mDatabaseHelper = databaseHelper;
+        mGMSHelper = gmsHelper;
     }
 
     public Observable<Response<SignInResponse>> signIn(String login, String password) {
@@ -50,7 +58,7 @@ public class DataManager {
 
     public void clearUserData() {
         mPrefsHelper.clearAuth();
-        mDatabaseManager.clearTables().subscribe();
+        mDatabaseHelper.clearTables().subscribe();
     }
 
     public Observable<Response<SignInResponse>> validateToken() {
@@ -60,35 +68,35 @@ public class DataManager {
                 mPrefsHelper.getAuthUid());
     }
 
-    public Observable<List<Location>> getTeamLocationsFromDatabase() {
+    public Observable<List<LocationRecord>> getTeamLocationRecordsFromDatabase() {
         return Observable.zip(
-                mDatabaseManager.getUnsentLocationList(),
-                mDatabaseManager.getSentLocationList(),
-                (unsentLocations, sentLocations) -> {
-                    ArrayList<Location> result = new ArrayList<>(sentLocations);
-                    result.addAll(unsentLocations);
+                mDatabaseHelper.getUnsentLocationRecordList(),
+                mDatabaseHelper.getSentLocationRecordList(),
+                (unsentLocationRecords, sentLocationRecords) -> {
+                    ArrayList<LocationRecord> result = new ArrayList<>(sentLocationRecords);
+                    result.addAll(unsentLocationRecords);
                     return result;
                 }
         );
     }
 
-    public Observable<Response<List<Location>>> getTeamLocationsFromServer() {
-        return mAsrService.getLocationsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
+    public Observable<Response<List<LocationRecord>>> getTeamLocationRecordsFromServer() {
+        return mAsrService.getLocationRecordsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
     }
 
-    public Observable<List<Location>> syncWithDatabase(Response<List<Location>> response) {
+    public Observable<List<LocationRecord>> syncWithDatabase(Response<List<LocationRecord>> response) {
         return response.code() == HttpStatus.OK ?
-                saveAndEmitLocationsFromDatabase(response.body()) :
+                saveAndEmitLocationRecordsFromDatabase(response.body()) :
                 Observable.error(new StandardResponseException(response));
     }
 
-    private Observable<List<Location>> saveAndEmitLocationsFromDatabase(List<Location> receivedLocations) {
+    private Observable<List<LocationRecord>> saveAndEmitLocationRecordsFromDatabase(List<LocationRecord> receivedLocationRecords) {
         return Observable.zip(
-                mDatabaseManager.getUnsentLocationList(),
-                mDatabaseManager.setAndEmitReceivedLocationList(receivedLocations),
-                (unsentLocations, sentLocations) -> {
-                    ArrayList<Location> result = new ArrayList<>(sentLocations);
-                    result.addAll(unsentLocations);
+                mDatabaseHelper.getUnsentLocationRecordList(),
+                mDatabaseHelper.setAndEmitReceivedLocationRecordList(receivedLocationRecords),
+                (unsentLocationRecords, sentLocationRecords) -> {
+                    ArrayList<LocationRecord> result = new ArrayList<>(sentLocationRecords);
+                    result.addAll(unsentLocationRecords);
                     return result;
                 }
         );
@@ -100,34 +108,34 @@ public class DataManager {
                 Observable.error(new StandardResponseException(response));
     }
 
-    public Observable<Location> handlePostLocationResponse(Response<Location> response) {
+    public Observable<LocationRecord> handlePostLocationRecordResponse(Response<LocationRecord> response) {
         return response.code() == HttpStatus.CREATED ?
                 Observable.just(response.body()) :
                 Observable.error(new StandardResponseException(response));
     }
 
-    public Observable<Void> saveSentLocationToDatabase(Location location) {
-        return mDatabaseManager.addSentLocation(location);
+    public Observable<Void> saveSentLocationRecordToDatabase(LocationRecord locationRecord) {
+        return mDatabaseHelper.addSentLocationRecord(locationRecord);
     }
 
-    public Observable<Void> saveUnsentLocationToDatabase(Location location) {
-        return mDatabaseManager.addUnsentLocation(location);
+    public Observable<Void> saveUnsentLocationRecordToDatabase(LocationRecord locationRecord) {
+        return mDatabaseHelper.addUnsentLocationRecord(locationRecord);
     }
 
-    public Observable<Location> getUnsentLocations() {
-        return mDatabaseManager.getUnsentLocations();
+    public Observable<LocationRecord> getUnsentLocationRecords() {
+        return mDatabaseHelper.getUnsentLocationRecords();
     }
 
-    public Observable<Void> deleteUnsentLocation(Location location) {
-        return mDatabaseManager.deleteUnsentLocation(location);
+    public Observable<Void> deleteUnsentLocationRecord(LocationRecord locationRecord) {
+        return mDatabaseHelper.deleteUnsentLocationRecord(locationRecord);
     }
 
-    public Observable<Response<Location>> postLocationToServer(Location location) {
-        return mAsrService.postLocationWithObservable(
+    public Observable<Response<LocationRecord>> postLocationRecordToServer(LocationRecord locationRecord) {
+        return mAsrService.postLocationRecordWithObservable(
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
                 mPrefsHelper.getAuthUid(),
-                new CreateLocationRequest(location));
+                new CreateLocationRecordRequest(locationRecord));
     }
 
     public void saveAuthorizationResponse(Response<SignInResponse> response) {
@@ -141,5 +149,13 @@ public class DataManager {
 
     public User getCurrentUser() {
         return mPrefsHelper.getCurrentUser();
+    }
+
+    public Observable<Location> getDeviceLocation(LocationRequest locationRequest) {
+        return mGMSHelper.getDeviceLocation(locationRequest);
+    }
+
+    public Observable<LocationSettingsResult> checkLocationSettings(LocationRequest locationRequest) {
+        return mGMSHelper.checkLocationSettings(locationRequest);
     }
 }

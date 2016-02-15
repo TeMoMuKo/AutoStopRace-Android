@@ -2,7 +2,7 @@ package pl.temomuko.autostoprace.ui.main;
 
 import java.util.List;
 
-import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 
 /**
@@ -18,7 +18,7 @@ public interface MainMvpView extends DrawerMvpView {
 
     void dismissNoFineLocationPermissionSnackbar();
 
-    void updateLocationsList(List<Location> locations);
+    void updateLocationRecordsList(List<LocationRecord> locationRecords);
 
     void showEmptyInfo();
 

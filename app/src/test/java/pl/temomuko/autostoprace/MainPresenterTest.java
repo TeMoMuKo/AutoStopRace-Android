@@ -19,7 +19,7 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
@@ -73,30 +73,30 @@ public class MainPresenterTest {
     @Ignore //TODO
     @Test
     public void testLoadLocationsReturnsLocations() throws Exception {
-        List<Location> locationsFromApi = new ArrayList<>();
-        locationsFromApi.add(new Location(12.34, 43.21, ""));
-        locationsFromApi.add(new Location(45.33, 73.51, ""));
+        List<LocationRecord> locationsFromApi = new ArrayList<>();
+        locationsFromApi.add(new LocationRecord(12.34, 43.21, ""));
+        locationsFromApi.add(new LocationRecord(45.33, 73.51, ""));
 
-        Response<List<Location>> response = Response.success(locationsFromApi);
-        when(mMockDataManager.getTeamLocationsFromServer())
+        Response<List<LocationRecord>> response = Response.success(locationsFromApi);
+        when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
 
-        List<Location> locationsFromDatabase = new ArrayList<>();
-        locationsFromDatabase.add(new Location(99.99, 99.99, ""));
-        when(mMockDataManager.getTeamLocationsFromDatabase())
+        List<LocationRecord> locationsFromDatabase = new ArrayList<>();
+        locationsFromDatabase.add(new LocationRecord(99.99, 99.99, ""));
+        when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
 
-        List<Location> updatedDatabaseLocations = new ArrayList<>(locationsFromDatabase);
-        updatedDatabaseLocations.addAll(locationsFromApi);
+        List<LocationRecord> updatedDatabaseLocationRecords = new ArrayList<>(locationsFromDatabase);
+        updatedDatabaseLocationRecords.addAll(locationsFromApi);
 
         when(mMockDataManager.syncWithDatabase(response))
-                .thenReturn(Observable.just(updatedDatabaseLocations));
+                .thenReturn(Observable.just(updatedDatabaseLocationRecords));
 
         mMainPresenter.loadLocations();
         verify(mMockDataManager).syncWithDatabase(response);
         verify(mMockMainMvpView).setProgress(true);
-        verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
-        verify(mMockMainMvpView).updateLocationsList(updatedDatabaseLocations);
+        verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
+        verify(mMockMainMvpView).updateLocationRecordsList(updatedDatabaseLocationRecords);
         verify(mMockMainMvpView, never()).showEmptyInfo();
         verify(mMockMainMvpView, never()).showError(any(String.class));
         verify(mMockMainMvpView, times(2)).setProgress(false);
@@ -105,34 +105,34 @@ public class MainPresenterTest {
     @Test
     public void testLoadLocationsFailsSocketTimeoutException() throws Exception {
         Throwable fakeSocketTimeoutException = new SocketTimeoutException();
-        when(mMockDataManager.getTeamLocationsFromServer())
+        when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.error(fakeSocketTimeoutException));
 
-        List<Location> locationsFromDatabase = new ArrayList<>();
-        locationsFromDatabase.add(new Location(99.99, 99.99, ""));
+        List<LocationRecord> locationsFromDatabase = new ArrayList<>();
+        locationsFromDatabase.add(new LocationRecord(99.99, 99.99, ""));
         when(mMockErrorHandler.getMessage(fakeSocketTimeoutException))
                 .thenReturn(FAKE_ERROR_MESSAGE);
-        when(mMockDataManager.getTeamLocationsFromDatabase())
+        when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
 
         mMainPresenter.loadLocations();
         verify(mMockMainMvpView).showError(mMockErrorHandler
                 .getMessage(fakeSocketTimeoutException));
-        verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
-        verify(mMockDataManager, never()).syncWithDatabase(Matchers.<Response<List<Location>>>any());
+        verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
+        verify(mMockDataManager, never()).syncWithDatabase(Matchers.<Response<List<LocationRecord>>>any());
         verify(mMockMainMvpView, never()).showEmptyInfo();
     }
 
     @Ignore //TODO
     @Test
     public void testLoadLocationsApiReturnsEmptyListWithEmptyDatabase() throws Exception {
-        List<Location> locations = new ArrayList<>();
-        Response<List<Location>> response = Response.success(locations);
-        when(mMockDataManager.getTeamLocationsFromServer())
+        List<LocationRecord> locationRecords = new ArrayList<>();
+        Response<List<LocationRecord>> response = Response.success(locationRecords);
+        when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
 
-        List<Location> locationsFromDatabase = new ArrayList<>();
-        when(mMockDataManager.getTeamLocationsFromDatabase())
+        List<LocationRecord> locationsFromDatabase = new ArrayList<>();
+        when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
 
         when(mMockDataManager.syncWithDatabase(response))
@@ -141,22 +141,22 @@ public class MainPresenterTest {
         mMainPresenter.loadLocations();
         verify(mMockDataManager).syncWithDatabase(response);
         verify(mMockMainMvpView, times(2)).showEmptyInfo();
-        verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
+        verify(mMockMainMvpView, never()).updateLocationRecordsList(locationsFromDatabase);
         verify(mMockMainMvpView, never()).showError(any(String.class));
     }
 
     @Test
     public void testLoadLocationsApiFailsWithFilledDatabase() throws Exception {
-        Response<List<Location>> response = Response.error(HttpStatus.NOT_FOUND,
+        Response<List<LocationRecord>> response = Response.error(HttpStatus.NOT_FOUND,
                 ResponseBody.create(
                         MediaType.parse(Constants.HEADER_ACCEPT_JSON), NOT_FOUND_RESPONSE
                 ));
-        when(mMockDataManager.getTeamLocationsFromServer())
+        when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
 
-        List<Location> locationsFromDatabase = new ArrayList<>();
-        locationsFromDatabase.add(new Location(99.99, 99.99, ""));
-        when(mMockDataManager.getTeamLocationsFromDatabase())
+        List<LocationRecord> locationsFromDatabase = new ArrayList<>();
+        locationsFromDatabase.add(new LocationRecord(99.99, 99.99, ""));
+        when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
 
         StandardResponseException responseException = new StandardResponseException(response);
@@ -167,7 +167,7 @@ public class MainPresenterTest {
                 .thenReturn(Observable.error(responseException));
 
         mMainPresenter.loadLocations();
-        verify(mMockMainMvpView).updateLocationsList(locationsFromDatabase);
+        verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
         verify(mMockDataManager).syncWithDatabase(response);
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockMainMvpView, never()).showEmptyInfo();
@@ -175,15 +175,15 @@ public class MainPresenterTest {
 
     @Test
     public void testLoadLocationsFromApiFailsWithEmptyDatabase() throws Exception {
-        Response<List<Location>> response = Response.error(HttpStatus.NOT_FOUND,
+        Response<List<LocationRecord>> response = Response.error(HttpStatus.NOT_FOUND,
                 ResponseBody.create(
                         MediaType.parse(Constants.HEADER_ACCEPT_JSON), NOT_FOUND_RESPONSE
                 ));
-        when(mMockDataManager.getTeamLocationsFromServer())
+        when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
 
-        List<Location> locationsFromDatabase = new ArrayList<>();
-        when(mMockDataManager.getTeamLocationsFromDatabase())
+        List<LocationRecord> locationsFromDatabase = new ArrayList<>();
+        when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
 
         StandardResponseException responseException = new StandardResponseException(response);
@@ -197,7 +197,7 @@ public class MainPresenterTest {
         verify(mMockDataManager).syncWithDatabase(response);
         verify(mMockMainMvpView).showEmptyInfo();
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
-        verify(mMockMainMvpView, never()).updateLocationsList(locationsFromDatabase);
+        verify(mMockMainMvpView, never()).updateLocationRecordsList(locationsFromDatabase);
     }
 
     @Test

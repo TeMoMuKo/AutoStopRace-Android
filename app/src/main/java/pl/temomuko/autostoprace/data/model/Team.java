@@ -11,7 +11,7 @@ public class Team {
 
     @SerializedName("id") private int mId;
     @SerializedName("name") private String mName;
-    @SerializedName("location") private Location mLastLocation;
+    @SerializedName("location") private LocationRecord mLastLocationRecord;
     @SerializedName("users") private List<User> mUsers;
 
     public int getId() {
@@ -22,8 +22,8 @@ public class Team {
         return mName;
     }
 
-    public Location getLastLocation() {
-        return mLastLocation;
+    public LocationRecord getLastLocationRecord() {
+        return mLastLocationRecord;
     }
 
     public List<User> getUsers() {

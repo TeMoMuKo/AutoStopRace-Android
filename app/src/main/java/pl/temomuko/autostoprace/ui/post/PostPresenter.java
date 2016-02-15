@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.ui.post;
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxUtil;
@@ -39,8 +39,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public void saveLocation(String message) {
         double latitude = 51.12345;
         double longitude = 21.12345;
-        Location locationToSend = new Location(latitude, longitude, message);
-        mSubscription = mDataManager.saveUnsentLocationToDatabase(locationToSend)
+        LocationRecord locationRecordToSend = new LocationRecord(latitude, longitude, message);
+        mSubscription = mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
                 .compose(RxUtil.applySchedulers())
                 .subscribe();
         getMvpView().showSuccessInfo();

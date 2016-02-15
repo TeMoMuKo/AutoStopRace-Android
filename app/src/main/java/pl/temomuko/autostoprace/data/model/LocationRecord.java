@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by szymen on 2016-01-22.
  */
-public class Location {
+public class LocationRecord {
 
     @SerializedName("id") private int mId;
     @SerializedName("latitude") private double mLatitude;
@@ -15,10 +15,10 @@ public class Location {
     @SerializedName("message") private String mMessage;
     @SerializedName("created_at") private Date mServerReceiptDate;
 
-    public Location() {
+    public LocationRecord() {
     }
 
-    public Location(double latitude, double longitude, String message) {
+    public LocationRecord(double latitude, double longitude, String message) {
         mLatitude = latitude;
         mLongitude = longitude;
         mMessage = message;

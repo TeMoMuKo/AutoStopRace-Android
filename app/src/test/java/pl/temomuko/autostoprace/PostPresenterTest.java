@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.post.PostMvpView;
 import pl.temomuko.autostoprace.ui.post.PostPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
@@ -47,10 +47,10 @@ public class PostPresenterTest {
 
     @Test
     public void testSaveLocation() throws Exception {
-        when(mMockDataManager.saveUnsentLocationToDatabase(any(Location.class)))
+        when(mMockDataManager.saveUnsentLocationRecordToDatabase(any(LocationRecord.class)))
                 .thenReturn(rx.Observable.<Void>empty());
         mPostPresenter.saveLocation(FAKE_MESSAGE);
-        verify(mMockDataManager).saveUnsentLocationToDatabase(any(Location.class));
+        verify(mMockDataManager).saveUnsentLocationRecordToDatabase(any(LocationRecord.class));
         verify(mMockPostMvpView).startMainActivity();
     }
 }

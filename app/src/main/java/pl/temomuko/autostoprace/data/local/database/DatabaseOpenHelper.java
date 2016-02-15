@@ -27,8 +27,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.beginTransaction();
         try {
-            db.execSQL(RemoteLocationTable.CREATE);
-            db.execSQL(LocalUnsentLocationTable.CREATE);
+            db.execSQL(RemoteLocationRecordTable.CREATE);
+            db.execSQL(LocalUnsentLocationRecordTable.CREATE);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();

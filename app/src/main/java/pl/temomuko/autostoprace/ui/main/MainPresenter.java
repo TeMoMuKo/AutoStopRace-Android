@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.event.RemovedLocationEvent;
-import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
@@ -82,13 +82,13 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     private void loadLocationsFromDatabase() {
         mSubscriptions.add(
-                mDataManager.getTeamLocationsFromDatabase()
+                mDataManager.getTeamLocationRecordsFromDatabase()
                         .subscribe(this::updateLocationsView));
     }
 
     private void downloadLocationsFromServer() {
         getMvpView().setProgress(true);
-        mSubscriptions.add(mDataManager.getTeamLocationsFromServer()
+        mSubscriptions.add(mDataManager.getTeamLocationRecordsFromServer()
                 .compose(RxUtil.applySchedulers())
                 .flatMap(mDataManager::syncWithDatabase)
                 .subscribe(locations -> {
@@ -98,10 +98,10 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                 ));
     }
 
-    private void updateLocationsView(List<Location> locations) {
-        Collections.reverse(locations);
-        if (locations.isEmpty()) getMvpView().showEmptyInfo();
-        else getMvpView().updateLocationsList(locations);
+    private void updateLocationsView(List<LocationRecord> locationRecords) {
+        Collections.reverse(locationRecords);
+        if (locationRecords.isEmpty()) getMvpView().showEmptyInfo();
+        else getMvpView().updateLocationRecordsList(locationRecords);
         getMvpView().setProgress(false);
     }
 
@@ -129,13 +129,13 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void postUnsentLocationsToServer() {
-        mSubscriptions.add(mDataManager.getUnsentLocations()
-                .flatMap((Location unsentLocation) -> mDataManager.postLocationToServer(unsentLocation)
+        mSubscriptions.add(mDataManager.getUnsentLocationRecords()
+                .flatMap((LocationRecord unsentLocationRecord) -> mDataManager.postLocationRecordToServer(unsentLocationRecord)
                         .compose(RxUtil.applySchedulers())
-                        .flatMap(mDataManager::handlePostLocationResponse)
-                        .flatMap(mDataManager::saveSentLocationToDatabase)
-                        .toCompletable().endWith(mDataManager.deleteUnsentLocation(unsentLocation))
-                        .toCompletable().endWith(Observable.just(unsentLocation)))
+                        .flatMap(mDataManager::handlePostLocationRecordResponse)
+                        .flatMap(mDataManager::saveSentLocationRecordToDatabase)
+                        .toCompletable().endWith(mDataManager.deleteUnsentLocationRecord(unsentLocationRecord))
+                        .toCompletable().endWith(Observable.just(unsentLocationRecord)))
                 .subscribe(removedLocation -> {
                             EventUtil.postSticky(new RemovedLocationEvent(removedLocation));
                             Log.i("EventUtil", "Removed: " + removedLocation.toString());

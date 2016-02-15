@@ -21,7 +21,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
@@ -32,7 +32,7 @@ import pl.temomuko.autostoprace.ui.post.PostActivity;
 public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Inject MainPresenter mMainPresenter;
-    @Bind(R.id.tv_current_team_locations) TextView mCurrentLocationsTextView;
+    @Bind(R.id.tv_current_team_locations) TextView mCurrentLocationRecordsTextView;
     @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
     private Snackbar mNoFineLocationPermissionSnackbar;
@@ -116,8 +116,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
-    public void updateLocationsList(List<Location> locations) {
-        mCurrentLocationsTextView.setText(locations.toString());
+    public void updateLocationRecordsList(List<LocationRecord> locationRecords) {
+        mCurrentLocationRecordsTextView.setText(locationRecords.toString());
     }
 
     @Override
@@ -132,7 +132,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void showEmptyInfo() {
-        mCurrentLocationsTextView.setText(R.string.msg_empty_locations_list);
+        mCurrentLocationRecordsTextView.setText(R.string.msg_empty_location_records_list);
     }
 
     @Override
