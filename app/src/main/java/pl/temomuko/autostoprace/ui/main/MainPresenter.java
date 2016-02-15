@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.ui.main;
 
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import java.util.Collections;
@@ -10,10 +11,10 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.event.RemovedLocationEvent;
 import pl.temomuko.autostoprace.data.model.Location;
+import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.EventUtil;
-import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.util.RxUtil;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -22,6 +23,8 @@ import rx.subscriptions.CompositeSubscription;
  * Created by szymen on 2016-01-09.
  */
 public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
+
+    private static final int FINE_LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private ErrorHandler mErrorHandler;
     private final static String TAG = "MainPresenter";
@@ -104,7 +107,26 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void goToPostLocation() {
-        getMvpView().startPostActivity();
+        getMvpView().dismissNoFineLocationPermissionSnackbar();
+        if (getMvpView().hasLocationPermission()) {
+            getMvpView().startPostActivity();
+        } else {
+            getMvpView().compatRequestFineLocationPermission(FINE_LOCATION_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    public void handlePermissionResult(int requestCode, int[] grantResults) {
+        switch (requestCode) {
+            case FINE_LOCATION_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getMvpView().startPostActivity();
+                } else {
+                    getMvpView().showNoFineLocationPermissionSnackbar();
+                }
+                break;
+            }
+        }
     }
 
     public void postUnsentLocationsToServer() {

@@ -29,22 +29,16 @@
 
             <me.zhanghai.android.materialprogressbar.MaterialProgressBar
                 android:id="@+id/horizontal_progress_toolbar"
+                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:indeterminate="true"
                 android:progress="30"
                 android:secondaryProgress="60"
                 app:mpb_progressStyle="horizontal"
-                app:mpb_useIntrinsicPadding="false"
                 app:mpb_showTrack="false"
-                android:indeterminate="true"
-                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding" />
-
-            <Button
-                android:id="@+id/btn_go_to_post"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/action_add_new_location"/>
+                app:mpb_useIntrinsicPadding="false"/>
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -58,6 +52,14 @@
             </ScrollView>
 
         </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_go_to_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_add_location_white_24dp"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

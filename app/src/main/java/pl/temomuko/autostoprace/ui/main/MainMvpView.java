@@ -10,6 +10,14 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
  */
 public interface MainMvpView extends DrawerMvpView {
 
+    boolean hasLocationPermission();
+
+    void compatRequestFineLocationPermission(int requestCode);
+
+    void showNoFineLocationPermissionSnackbar();
+
+    void dismissNoFineLocationPermissionSnackbar();
+
     void updateLocationsList(List<Location> locations);
 
     void showEmptyInfo();

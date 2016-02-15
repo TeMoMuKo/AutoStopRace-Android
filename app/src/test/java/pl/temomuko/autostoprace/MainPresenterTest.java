@@ -1,5 +1,7 @@
 package pl.temomuko.autostoprace;
 
+import android.content.pm.PackageManager;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,6 +32,7 @@ import rx.Observable;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -50,6 +53,7 @@ public class MainPresenterTest {
             "{ \"status\": 404, \"error\": \"Not Found\" }}";
     private static final String UNAUTHORIZED_RESPONSE =
             "{ \"errors\": [ \"Invalid login credentials. Please try again.\" ] }";
+    private static final int FINE_LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();
@@ -238,8 +242,36 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void testGoToPostLocation() throws Exception {
+    public void testGoToPostLocationWithPermission() throws Exception {
+        when(mMockMainMvpView.hasLocationPermission()).thenReturn(true);
         mMainPresenter.goToPostLocation();
+        verify(mMockMainMvpView).dismissNoFineLocationPermissionSnackbar();
         verify(mMockMainMvpView).startPostActivity();
+        verify(mMockMainMvpView, never()).compatRequestFineLocationPermission(anyInt());
+    }
+
+    @Test
+    public void testGoToPostLocationWithoutPermission() throws Exception {
+        when(mMockMainMvpView.hasLocationPermission()).thenReturn(false);
+        mMainPresenter.goToPostLocation();
+        verify(mMockMainMvpView).dismissNoFineLocationPermissionSnackbar();
+        verify(mMockMainMvpView, never()).startPostActivity();
+        verify(mMockMainMvpView).compatRequestFineLocationPermission(anyInt());
+    }
+
+    @Test
+    public void testHandlePermissionResultGranted() throws Exception {
+        mMainPresenter.handlePermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
+                new int[]{PackageManager.PERMISSION_GRANTED});
+        verify(mMockMainMvpView).startPostActivity();
+        verify(mMockMainMvpView,never()).showNoFineLocationPermissionSnackbar();
+    }
+
+    @Test
+    public void testHandlePermissionResultDenied() throws Exception {
+        mMainPresenter.handlePermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
+                new int[]{PackageManager.PERMISSION_DENIED});
+        verify(mMockMainMvpView,never()).startPostActivity();
+        verify(mMockMainMvpView).showNoFineLocationPermissionSnackbar();
     }
 }

@@ -1,9 +1,16 @@
 package pl.temomuko.autostoprace.ui.main;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +33,10 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Inject MainPresenter mMainPresenter;
     @Bind(R.id.tv_current_team_locations) TextView mCurrentLocationsTextView;
-    @Bind(R.id.btn_go_to_post) Button mGoToPostButton;
     @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
+    @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
+    private Snackbar mNoFineLocationPermissionSnackbar;
+
     private String TAG = "MainActivity";
 
     @Override
@@ -51,16 +60,60 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        mMainPresenter.handlePermissionResult(requestCode, grantResults);
+    }
+
+    @Override
     protected void onDestroy() {
         mMainPresenter.detachView();
         super.onDestroy();
     }
 
     private void setListeners() {
-        mGoToPostButton.setOnClickListener(v -> mMainPresenter.goToPostLocation());
+        mGoToPostFab.setOnClickListener(v -> mMainPresenter.goToPostLocation());
     }
 
     /* MVP View methods */
+
+    @Override
+    public boolean hasLocationPermission() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void compatRequestFineLocationPermission(int requestCode) {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                requestCode);
+    }
+
+    @Override
+    public void showNoFineLocationPermissionSnackbar() {
+        mNoFineLocationPermissionSnackbar = Snackbar.make(findViewById(R.id.cl_root),
+                R.string.warning_no_fine_location_permission,
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.settings, onClick -> goToAppSettings());
+        mNoFineLocationPermissionSnackbar.show();
+    }
+
+    private void goToAppSettings() {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                .addCategory(Intent.CATEGORY_DEFAULT)
+                .setData(Uri.parse("package:" + getPackageName()));
+        startActivity(intent);
+    }
+
+    @Override
+    public void dismissNoFineLocationPermissionSnackbar() {
+        if (mNoFineLocationPermissionSnackbar != null && mNoFineLocationPermissionSnackbar.isShown()) {
+            mNoFineLocationPermissionSnackbar.dismiss();
+        }
+    }
 
     @Override
     public void updateLocationsList(List<Location> locations) {

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Auto Stop Race</string>
-    <string name="error_unknown">Ojojoj, coś poszło nie tak, spróbuj ponownie za chwilę...</string>
-    <string name="error_404">Coś się popsuło. Spróbuj ponownie później...</string>
+    <string name="error_unknown">Ojojoj, coś poszło nie tak, spróbuj ponownie za chwilę…</string>
+    <string name="error_404">Coś się popsuło. Spróbuj ponownie później…</string>
     <string name="error_500">Błąd połączenia z serwerem</string>
     <string name="error_403">Brak uprawnień</string>
     <string name="msg_empty_locations_list">Brak lokalizacji do wyświetlenia.</string>
@@ -25,7 +25,7 @@
     <string name="error_session_expired">Sesja wygasła, zaloguj się ponownie</string>
     <string name="msg_show_contact">Kontakt do organizatorów</string>
     <string name="msg_login_info">Zaloguj się za pomocą danych ustalonych przy aktywacji swojego konta. Instrukcje znajdują się w mailu od organizatorów.</string>
-    <string name="title_logging">Logowanie...</string>
+    <string name="title_logging">Logowanie…</string>
     <string name="please_wait">Proszę czekać.</string>
     <string name="error_invalid_email">Niepoprawny adres email.</string>
     <string name="error_empty_pass">Wpisz hasło.</string>
@@ -61,4 +61,6 @@
     <string name="about_app">Aplikację przygotowali członkowie koła naukowego TeMoMuKo działającego przy Politechnice Wrocławskiej.</string>
     <string name="authors"><b>Autorzy:</b>\n- Szymon Kozak\n- Rafał Naniewicz\n- Michał Zając</string>
     <string name="app_version">Wersja 0.0.1-alpha</string>
+    <string name="warning_no_fine_location_permission">Brak uprawnień dostępu do lokalizacji.</string>
+    <string name="settings">Ustawienia</string>
 </resources>
