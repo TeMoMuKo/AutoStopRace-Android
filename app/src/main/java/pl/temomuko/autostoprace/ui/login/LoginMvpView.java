@@ -12,9 +12,9 @@ public interface LoginMvpView extends MvpView {
 
     void startMainActivity();
 
-    void showEmailValidationError(String message);
+    void showInvalidEmailValidaionError();
 
-    void showPasswordValidationError(String message);
+    void showEmptyPasswordValidationError();
 
     void hideEmailValidationError();
 

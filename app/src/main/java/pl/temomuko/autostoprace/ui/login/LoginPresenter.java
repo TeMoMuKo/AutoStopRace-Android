@@ -6,7 +6,6 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
-import pl.temomuko.autostoprace.util.LoginValidator;
 import pl.temomuko.autostoprace.util.RxUtil;
 import retrofit2.Response;
 import rx.Observable;
@@ -19,17 +18,14 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     private DataManager mDataManager;
     private ErrorHandler mErrorHandler;
-    private LoginValidator mLoginValidator;
     private Subscription mSubscription;
     private Observable<Response<SignInResponse>> mCurrentRequestObservable;
     private final static String TAG = "LoginPresenter";
 
     @Inject
-    public LoginPresenter(DataManager dataManager, ErrorHandler errorHandler,
-                          LoginValidator loginValidator) {
+    public LoginPresenter(DataManager dataManager, ErrorHandler errorHandler) {
         mDataManager = dataManager;
         mErrorHandler = errorHandler;
-        mLoginValidator = loginValidator;
     }
 
     public void setCurrentRequestObservable(Observable<Response<SignInResponse>> observable) {
@@ -57,10 +53,18 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     public void signIn(String email, String password) {
         setupValidationHints(email, password);
-        if (isLoginDataValid(email, password)) {
+        if (isEmailValid(email) && isPasswordValid(password)) {
             getMvpView().setProgress(true);
             requestSignIn(email, password);
         }
+    }
+
+    private boolean isEmailValid(String email) {
+        return mErrorHandler.isEmailValid(email);
+    }
+
+    private boolean isPasswordValid(String password) {
+        return !password.isEmpty();
     }
 
     private void requestSignIn(String email, String password) {
@@ -91,28 +95,24 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
         clearCurrentRequestObservable();
     }
 
-    private boolean isLoginDataValid(String email, String password) {
-        return mLoginValidator.isEmailValid(email) && mLoginValidator.isPasswordValid(password);
-    }
-
     private void setupValidationHints(String email, String password) {
         setupEmailHint(email);
         setupPasswordHint(password);
     }
 
-    private void setupPasswordHint(String password) {
-        if (!mLoginValidator.isPasswordValid(password)) {
-            getMvpView().showPasswordValidationError(mLoginValidator.getPasswordValidErrorMessage(password));
+    private void setupEmailHint(String email) {
+        if (!isEmailValid(email)) {
+            getMvpView().showInvalidEmailValidaionError();
         } else {
-            getMvpView().hidePasswordValidationError();
+            getMvpView().hideEmailValidationError();
         }
     }
 
-    private void setupEmailHint(String email) {
-        if (!mLoginValidator.isEmailValid(email)) {
-            getMvpView().showEmailValidationError(mLoginValidator.getEmailValidErrorMessage(email));
+    private void setupPasswordHint(String password) {
+        if (!isPasswordValid(password)) {
+            getMvpView().showEmptyPasswordValidationError();
         } else {
-            getMvpView().hideEmailValidationError();
+            getMvpView().hidePasswordValidationError();
         }
     }
 

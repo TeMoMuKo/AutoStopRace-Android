@@ -10,7 +10,6 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
 import pl.temomuko.autostoprace.util.ErrorHandler;
-import pl.temomuko.autostoprace.util.LoginValidator;
 
 /**
  * Created by szymen on 2016-01-06.
@@ -27,6 +26,4 @@ public interface ApplicationComponent {
     DataManager dataManager();
 
     ErrorHandler errorHandler();
-
-    LoginValidator loginValidator();
 }
