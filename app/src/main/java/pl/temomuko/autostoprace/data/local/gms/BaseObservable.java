@@ -82,5 +82,4 @@ abstract class BaseObservable<T> implements Observable.OnSubscribe<T>, Connectio
             mSubscriber.onError(new ApiClientConnectionFailedException(connectionResult.toString()));
         }
     }
-
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.util.Collections;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
@@ -43,9 +44,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     @Override
     public void detachView() {
-        if (mSubscriptions != null && !mSubscriptions.isUnsubscribed()) {
-            mSubscriptions.unsubscribe();
-        }
+        if (mSubscriptions != null) mSubscriptions.unsubscribe();
         super.detachView();
     }
 

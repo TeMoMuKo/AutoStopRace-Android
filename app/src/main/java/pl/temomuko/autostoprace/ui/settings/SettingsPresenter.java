@@ -30,9 +30,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
     @Override
     public void detachView() {
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
-        }
+        if (mSubscription != null) mSubscription.unsubscribe();
         super.detachView();
     }
 

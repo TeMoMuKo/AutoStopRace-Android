@@ -50,9 +50,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     @Override
     public void detachView() {
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
-        }
+        if (mSubscription != null) mSubscription.unsubscribe();
         getMvpView().saveCurrentRequestObservable(mCurrentRequestObservable);
         super.detachView();
     }
@@ -89,9 +87,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     }
 
     public void cancelSignInRequest() {
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
-        }
+        if (mSubscription != null) mSubscription.unsubscribe();
         clearCurrentRequestObservable();
     }
 
