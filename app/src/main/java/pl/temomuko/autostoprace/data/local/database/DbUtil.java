@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.data.local.database;
 
 import android.database.Cursor;
-import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +8,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import pl.temomuko.autostoprace.BuildConfig;
+import pl.temomuko.autostoprace.util.LogUtil;
 
 /**
  * Created by Rafał Naniewicz on 04.02.2016.
@@ -39,7 +39,7 @@ public final class DbUtil {
             date = sDateFormat.parse(dateString);
         } catch (ParseException e) {
             if (BuildConfig.DEBUG) {
-                Log.wtf("Parsing date failed for values:", dateString);
+                LogUtil.wtf("Parsing date failed for values:", dateString);
                 e.printStackTrace();
             }
         }

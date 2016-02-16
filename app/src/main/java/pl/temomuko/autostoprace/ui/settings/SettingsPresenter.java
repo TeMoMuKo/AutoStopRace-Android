@@ -1,11 +1,10 @@
 package pl.temomuko.autostoprace.ui.settings;
 
-import android.util.Log;
-
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
+import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.RxUtil;
 import rx.Subscription;
 
@@ -45,9 +44,9 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         mSubscription = mDataManager.signOut()
                 .compose(RxUtil.applySchedulers())
                 .subscribe(response -> {
-                    Log.i(TAG, response.body().toString());
+                    LogUtil.i(TAG, response.body().toString());
                 }, throwable -> {
-                    Log.i(TAG, throwable.getMessage());
+                    LogUtil.i(TAG, throwable.getMessage());
                 });
         mDataManager.clearUserData();
         getMvpView().showLogoutMessage();

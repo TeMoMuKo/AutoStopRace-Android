@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.ui.main;
 
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +14,7 @@ import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.EventUtil;
+import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.RxUtil;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -137,7 +137,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                         .toCompletable().endWith(Observable.just(unsentLocationRecord)))
                 .subscribe(removedLocation -> {
                             EventUtil.postSticky(new RemovedLocationEvent(removedLocation));
-                            Log.i("EventUtil", "Removed: " + removedLocation.toString());
+                            LogUtil.i("EventUtil", "Removed: " + removedLocation.toString());
                         },
                         this::handleError));
     }
