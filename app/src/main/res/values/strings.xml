@@ -63,4 +63,5 @@
     <string name="app_version">Wersja 0.0.1-alpha</string>
     <string name="warning_no_fine_location_permission">Brak uprawnień dostępu do lokalizacji.</string>
     <string name="settings">Ustawienia</string>
+    <string name="error_email_confirmation">Najpierw aktywuj swoje konto, instrukcje znajdziesz w mailu od organizatorów.</string>
 </resources>
