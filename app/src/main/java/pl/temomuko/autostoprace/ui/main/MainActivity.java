@@ -96,7 +96,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         mNoFineLocationPermissionSnackbar = Snackbar.make(findViewById(R.id.cl_root),
                 R.string.warning_no_fine_location_permission,
                 Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.settings, onClick -> goToAppSettings());
+                .setAction(R.string.settings, v -> goToAppSettings());
         mNoFineLocationPermissionSnackbar.show();
     }
 

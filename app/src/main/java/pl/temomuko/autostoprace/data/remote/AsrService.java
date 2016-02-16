@@ -3,10 +3,12 @@ package pl.temomuko.autostoprace.data.remote;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import pl.temomuko.autostoprace.BuildConfig;
 import pl.temomuko.autostoprace.Constants;
@@ -15,6 +17,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.Team;
+import retrofit2.Converter;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -76,6 +79,8 @@ public interface AsrService {
 
     class Factory {
 
+        private static Converter<ResponseBody, SignInResponse> SIGN_IN_ERROR_RESPONSE_CONVERTER;
+
         public static AsrService createAsrService() {
             Gson gson = new GsonBuilder()
                     .setDateFormat(Constants.JSON_DATE_FORMAT)
@@ -86,7 +91,13 @@ public interface AsrService {
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
+            SIGN_IN_ERROR_RESPONSE_CONVERTER = retrofit
+                    .responseBodyConverter(SignInResponse.class, new Annotation[0]);
             return retrofit.create(AsrService.class);
+        }
+
+        public static Converter<ResponseBody, SignInResponse> getSignInErrorResponseConverter() {
+            return SIGN_IN_ERROR_RESPONSE_CONVERTER;
         }
 
         private static OkHttpClient getOkHttpClient() {

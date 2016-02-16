@@ -112,11 +112,13 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private void handleLocationUpdate(Location location) {
         if (mLatestLocation == null) {
-            // TODO: 16.02.2016 tmp no idea for method name @szymen anyway you are going to change that
+            // TODO: 16.02.2016 temporary
             getMvpView().displayGPSFixFound();
         }
         mLatestLocation = location;
         getMvpView().updateCurrentLocationCords(mLatestLocation.getLatitude(), mLatestLocation.getLongitude());
+        //// TODO: 16.02.2016 implement reverse geo
+        getMvpView().updateCurrentLocationAddress("Somewhere");
     }
 
     public void handleActivityResult(int requestCode, int resultCode) {

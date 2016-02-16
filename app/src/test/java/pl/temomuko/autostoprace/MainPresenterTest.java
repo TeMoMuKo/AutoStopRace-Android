@@ -267,14 +267,14 @@ public class MainPresenterTest {
         mMainPresenter.handlePermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
                 new int[]{PackageManager.PERMISSION_GRANTED});
         verify(mMockMainMvpView).startPostActivity();
-        verify(mMockMainMvpView,never()).showNoFineLocationPermissionSnackbar();
+        verify(mMockMainMvpView, never()).showNoFineLocationPermissionSnackbar();
     }
 
     @Test
     public void testHandlePermissionResultDenied() throws Exception {
         mMainPresenter.handlePermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
                 new int[]{PackageManager.PERMISSION_DENIED});
-        verify(mMockMainMvpView,never()).startPostActivity();
+        verify(mMockMainMvpView, never()).startPostActivity();
         verify(mMockMainMvpView).showNoFineLocationPermissionSnackbar();
     }
 }

@@ -1,6 +1,8 @@
 package pl.temomuko.autostoprace.util;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.util.Patterns;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -45,7 +47,7 @@ public class ErrorHandler {
             case HttpStatus.FORBIDDEN:
                 return mContext.getString(R.string.error_403);
             case HttpStatus.UNAUTHORIZED:
-                return mContext.getString(R.string.error_401);
+                return getUnauthorizedDetails(apiError);
             case HttpStatus.BAD_REQUEST:
                 return mContext.getString(R.string.error_400);
             case HttpStatus.INTERNAL_SERVER_ERROR:
@@ -57,6 +59,15 @@ public class ErrorHandler {
         }
     }
 
+    @NonNull
+    private String getUnauthorizedDetails(ApiError apiError) {
+        if (apiError.isEmailConfirmationError()) {
+            return mContext.getString(R.string.error_email_confirmation);
+        } else {
+            return mContext.getString(R.string.error_401);
+        }
+    }
+
     private String getMessageFromRetrofitThrowable(Throwable throwable) {
         if ((throwable instanceof SocketTimeoutException)) {
             return mContext.getString(R.string.error_timeout);
@@ -65,5 +76,9 @@ public class ErrorHandler {
         } else {
             return mContext.getString(R.string.error_unknown);
         }
+    }
+
+    public boolean isEmailValid(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }
