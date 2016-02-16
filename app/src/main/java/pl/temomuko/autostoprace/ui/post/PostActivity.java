@@ -1,6 +1,7 @@
 package pl.temomuko.autostoprace.ui.post;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -8,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.api.Status;
 
 import javax.inject.Inject;
 
@@ -26,6 +29,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Bind(R.id.et_message) EditText mMessageEditText;
     @Bind(R.id.tv_current_location_cords) TextView mCurrentLocationCordsTextView;
     @Bind(R.id.tv_current_location_adress) TextView mCurrentLocationAddressTextView;
+    private boolean mIsResolutionShown = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,18 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         mPostPresenter.attachView(this);
         mPostPresenter.setupCurrentLocation();
         setupToolbarWithBack();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mPostPresenter.startLocationService();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPostPresenter.stopLocationService();
     }
 
     @Override
@@ -67,6 +83,11 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mPostPresenter.handleActivityResult(requestCode, resultCode);
+    }
+
     /* MVP View methods */
 
     @Override
@@ -91,5 +112,25 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     public void updateCurrentLocationAddress(String address) {
         mCurrentLocationAddressTextView.setText(address);
+    }
+
+    @Override
+    public void startStatusResolution(Status status, int checkSettingsRequestCode) {
+        try {
+            status.startResolutionForResult(this, checkSettingsRequestCode);
+        } catch (IntentSender.SendIntentException e) {
+
+        }
+    }
+
+    @Override
+    public void showLocationSettingsWarning() {
+        Toast.makeText(this, "w", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void displayGPSFixFound() {
+        //// TODO: 16.02.2016 its temporary
+        Toast.makeText(this, "lokalizacja ustalona", Toast.LENGTH_LONG).show();
     }
 }
