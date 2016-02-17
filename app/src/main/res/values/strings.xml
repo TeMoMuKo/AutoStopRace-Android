@@ -64,4 +64,9 @@
     <string name="warning_no_fine_location_permission">Brak uprawnień dostępu do lokalizacji.</string>
     <string name="settings">Ustawienia</string>
     <string name="error_email_confirmation">Najpierw aktywuj swoje konto, instrukcje znajdziesz w mailu od organizatorów.</string>
+    <string name="action_share">Udostępnij</string>
+    <string name="action_licenses">Licencje Open Source</string>
+    <string name="msg_rate_app_question">Spodobała Ci się ta aplikacja?</string>
+    <string name="msg_rate_app">Oceń ją w sklepie Google Play!</string>
+    <string name="action_go_to_store">Przejdź do Google Play</string>
 </resources>
