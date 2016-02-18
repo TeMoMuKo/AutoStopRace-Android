@@ -10,26 +10,33 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.data.event.GpsStatusChangeEvent;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
+import pl.temomuko.autostoprace.util.LogUtil;
+import pl.temomuko.autostoprace.util.PermissionUtil;
 
 /**
  * Created by szymen on 2016-01-30.
  */
 public class PostActivity extends BaseActivity implements PostMvpView {
 
+    private static final int CHECK_LOCATION_SETTINGS_REQUEST_CODE = 1;
+
     @Inject PostPresenter mPostPresenter;
     @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(R.id.et_message) EditText mMessageEditText;
     @Bind(R.id.tv_current_location_cords) TextView mCurrentLocationCordsTextView;
     @Bind(R.id.tv_current_location_adress) TextView mCurrentLocationAddressTextView;
-    private boolean mIsResolutionShown = false;
+    private boolean mIsLocationSettingsStatusForResultCalled = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +44,6 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         setContentView(R.layout.activity_post);
         getActivityComponent().inject(this);
         mPostPresenter.attachView(this);
-        mPostPresenter.setupCurrentLocation();
         setupToolbarWithBack();
     }
 
@@ -45,12 +51,14 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     protected void onStart() {
         super.onStart();
         mPostPresenter.startLocationService();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mPostPresenter.stopLocationService();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -85,7 +93,10 @@ public class PostActivity extends BaseActivity implements PostMvpView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mPostPresenter.handleActivityResult(requestCode, resultCode);
+        if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
+            mIsLocationSettingsStatusForResultCalled = false;
+            mPostPresenter.handleLocationSettingsActivityResult(resultCode);
+        }
     }
 
     /* MVP View methods */
@@ -115,22 +126,49 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
-    public void startStatusResolution(Status status, int checkSettingsRequestCode) {
+    public void startLocationSettingsStatusResolution(Status status) {
         try {
-            status.startResolutionForResult(this, checkSettingsRequestCode);
+            mIsLocationSettingsStatusForResultCalled = true;
+            status.startResolutionForResult(this, CHECK_LOCATION_SETTINGS_REQUEST_CODE);
         } catch (IntentSender.SendIntentException e) {
-
+            LogUtil.e("Intent sender exception", e.getMessage());
         }
     }
 
     @Override
-    public void showLocationSettingsWarning() {
-        Toast.makeText(this, "w", Toast.LENGTH_LONG).show();
+    public void displayGPSFixAcquired() {
+        Toast.makeText(this, R.string.location_acquired, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void displayGPSFixFound() {
-        //// TODO: 16.02.2016 its temporary
-        Toast.makeText(this, "lokalizacja ustalona", Toast.LENGTH_LONG).show();
+    public void startConnectionResultResolution(ConnectionResult connectionResult) {
+        try {
+            connectionResult.startResolutionForResult(this, 0);
+        } catch (IntentSender.SendIntentException e) {
+            LogUtil.e("Intent sender exception", e.getMessage());
+        }
+    }
+
+    @Override
+    public void compatRequestFineLocationPermission() {
+        PermissionUtil.requestFineLocationPermission(this);
+    }
+
+    @Override
+    public void finishWithInadequateSettingsWarning() {
+        Toast.makeText(this, R.string.warning_inadequate_location_settings, Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    @Override
+    public boolean isLocationSettingsStatusForResultCalled() {
+        return mIsLocationSettingsStatusForResultCalled;
+    }
+
+    /* Events */
+
+    @SuppressWarnings("unused")
+    public void onEventMainThread(GpsStatusChangeEvent event) {
+        mPostPresenter.handleGpsStatusChange();
     }
 }

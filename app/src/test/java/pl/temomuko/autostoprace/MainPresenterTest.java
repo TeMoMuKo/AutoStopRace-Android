@@ -248,7 +248,7 @@ public class MainPresenterTest {
     public void testGoToPostLocationWithPermission() throws Exception {
         when(mMockMainMvpView.hasLocationPermission()).thenReturn(true);
         mMainPresenter.goToPostLocation();
-        verify(mMockMainMvpView).dismissNoFineLocationPermissionSnackbar();
+        verify(mMockMainMvpView).dismissWarningSnackbar();
         verify(mMockMainMvpView).startPostActivity();
         verify(mMockMainMvpView, never()).compatRequestFineLocationPermission(anyInt());
     }
@@ -257,7 +257,7 @@ public class MainPresenterTest {
     public void testGoToPostLocationWithoutPermission() throws Exception {
         when(mMockMainMvpView.hasLocationPermission()).thenReturn(false);
         mMainPresenter.goToPostLocation();
-        verify(mMockMainMvpView).dismissNoFineLocationPermissionSnackbar();
+        verify(mMockMainMvpView).dismissWarningSnackbar();
         verify(mMockMainMvpView, never()).startPostActivity();
         verify(mMockMainMvpView).compatRequestFineLocationPermission(anyInt());
     }
@@ -267,7 +267,7 @@ public class MainPresenterTest {
         mMainPresenter.handlePermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
                 new int[]{PackageManager.PERMISSION_GRANTED});
         verify(mMockMainMvpView).startPostActivity();
-        verify(mMockMainMvpView, never()).showNoFineLocationPermissionSnackbar();
+        verify(mMockMainMvpView, never()).showNoFineLocationPermissionWarning();
     }
 
     @Test
@@ -275,6 +275,6 @@ public class MainPresenterTest {
         mMainPresenter.handlePermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
                 new int[]{PackageManager.PERMISSION_DENIED});
         verify(mMockMainMvpView, never()).startPostActivity();
-        verify(mMockMainMvpView).showNoFineLocationPermissionSnackbar();
+        verify(mMockMainMvpView).showNoFineLocationPermissionWarning();
     }
 }

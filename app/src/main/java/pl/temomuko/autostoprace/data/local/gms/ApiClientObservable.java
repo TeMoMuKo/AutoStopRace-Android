@@ -11,7 +11,7 @@ import rx.Subscriber;
 /**
  * Created by Rafał Naniewicz on 10.02.2016.
  */
-public class ApiClientObservable extends BaseObservable<GoogleApiClient> {
+public class ApiClientObservable extends GmsBaseObservable<GoogleApiClient> {
 
     @SafeVarargs
     public static Observable<GoogleApiClient> create(Context context, Api<? extends Api.ApiOptions.NotRequiredOptions>... apis) {

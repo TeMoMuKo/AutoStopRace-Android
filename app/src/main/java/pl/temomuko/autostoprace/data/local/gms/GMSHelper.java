@@ -3,6 +3,8 @@ package pl.temomuko.autostoprace.data.local.gms;
 import android.content.Context;
 import android.location.Location;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -18,12 +20,12 @@ import rx.Observable;
  * Created by Rafał Naniewicz on 15.02.2016.
  */
 @Singleton
-public class GMSHelper {
+public class GmsHelper {
 
     private Context mContext;
 
     @Inject
-    public GMSHelper(@AppContext Context context) {
+    public GmsHelper(@AppContext Context context) {
         mContext = context;
     }
 

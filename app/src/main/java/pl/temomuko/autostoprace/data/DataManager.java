@@ -11,9 +11,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
-import pl.temomuko.autostoprace.data.local.gms.GMSHelper;
+import pl.temomuko.autostoprace.data.local.gms.GmsHelper;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
@@ -35,14 +36,25 @@ public class DataManager {
     private AsrService mAsrService;
     private PrefsHelper mPrefsHelper;
     private DatabaseHelper mDatabaseHelper;
-    private GMSHelper mGMSHelper;
+    private GmsHelper mGmsHelper;
+    private PermissionHelper mPermissionHelper;
 
     @Inject
-    public DataManager(AsrService asrService, PrefsHelper prefsHelper, DatabaseHelper databaseHelper, GMSHelper gmsHelper) {
+    public DataManager(AsrService asrService, PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
+                       GmsHelper gmsHelper, PermissionHelper permissionHelper) {
         mAsrService = asrService;
         mPrefsHelper = prefsHelper;
         mDatabaseHelper = databaseHelper;
-        mGMSHelper = gmsHelper;
+        mGmsHelper = gmsHelper;
+        mPermissionHelper = permissionHelper;
+    }
+
+    public GmsHelper getGmsHelper() {
+        return mGmsHelper;
+    }
+
+    public PermissionHelper getPermissionHelper() {
+        return mPermissionHelper;
     }
 
     public Observable<Response<SignInResponse>> signIn(String login, String password) {
@@ -152,10 +164,10 @@ public class DataManager {
     }
 
     public Observable<Location> getDeviceLocation(LocationRequest locationRequest) {
-        return mGMSHelper.getDeviceLocation(locationRequest);
+        return mGmsHelper.getDeviceLocation(locationRequest);
     }
 
     public Observable<LocationSettingsResult> checkLocationSettings(LocationRequest locationRequest) {
-        return mGMSHelper.checkLocationSettings(locationRequest);
+        return mGmsHelper.checkLocationSettings(locationRequest);
     }
 }

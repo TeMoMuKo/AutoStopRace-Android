@@ -1,5 +1,8 @@
 package pl.temomuko.autostoprace.ui.main;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.Status;
+
 import java.util.List;
 
 import pl.temomuko.autostoprace.data.model.LocationRecord;
@@ -9,14 +12,6 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
  * Created by szymen on 2016-01-09.
  */
 public interface MainMvpView extends DrawerMvpView {
-
-    boolean hasLocationPermission();
-
-    void compatRequestFineLocationPermission(int requestCode);
-
-    void showNoFineLocationPermissionSnackbar();
-
-    void dismissNoFineLocationPermissionSnackbar();
 
     void updateLocationRecordsList(List<LocationRecord> locationRecords);
 
@@ -33,4 +28,16 @@ public interface MainMvpView extends DrawerMvpView {
     void setProgress(boolean state);
 
     void showSessionExpiredError();
+
+    void compatRequestFineLocationPermission();
+
+    void showNoFineLocationPermissionWarning();
+
+    void dismissWarningSnackbar();
+
+    void startLocationSettingsStatusResolution(Status status);
+
+    void showLocationSettingsWarning();
+
+    void startConnectionResultResolution(ConnectionResult connectionResult);
 }

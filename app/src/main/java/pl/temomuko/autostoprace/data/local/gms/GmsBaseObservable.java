@@ -11,6 +11,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.Arrays;
 import java.util.List;
 
+import pl.temomuko.autostoprace.util.LogUtil;
 import rx.Observable;
 import rx.Subscriber;
 import rx.subscriptions.Subscriptions;
@@ -21,7 +22,7 @@ import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFail
 /**
  * Created by Rafał Naniewicz on 10.02.2016.
  */
-abstract class BaseObservable<T> implements Observable.OnSubscribe<T>, ConnectionCallbacks, OnConnectionFailedListener {
+abstract class GmsBaseObservable<T> implements Observable.OnSubscribe<T>, ConnectionCallbacks, OnConnectionFailedListener {
 
     private final Context mContext;
     private final List<Api<? extends Api.ApiOptions.NotRequiredOptions>> mServices;
@@ -30,7 +31,7 @@ abstract class BaseObservable<T> implements Observable.OnSubscribe<T>, Connectio
     private Subscriber<? super T> mSubscriber;
 
     @SafeVarargs
-    protected BaseObservable(Context context, Api<? extends Api.ApiOptions.NotRequiredOptions>... services) {
+    protected GmsBaseObservable(Context context, Api<? extends Api.ApiOptions.NotRequiredOptions>... services) {
         mContext = context;
         mServices = Arrays.asList(services);
     }
@@ -67,19 +68,20 @@ abstract class BaseObservable<T> implements Observable.OnSubscribe<T>, Connectio
 
     @Override
     public void onConnected(Bundle bundle) {
+        LogUtil.i("GMS", "connected");
         onApiClientReady(mApiClient, mSubscriber);
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        mApiClient.connect();
+        LogUtil.i("GMS", "suspended");
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        LogUtil.e("GMS", "connection failed");
         if (!mSubscriber.isUnsubscribed()) {
-            //mostly thrown when google mobile services are unavailable
-            mSubscriber.onError(new ApiClientConnectionFailedException(connectionResult.toString()));
+            mSubscriber.onError(new ApiClientConnectionFailedException(connectionResult));
         }
     }
 }

@@ -1,20 +1,30 @@
 package pl.temomuko.autostoprace.ui.main;
 
-import android.content.pm.PackageManager;
+import android.app.Activity;
+import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.event.RemovedLocationEvent;
+import pl.temomuko.autostoprace.data.local.PermissionHelper;
+import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
+import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.RxUtil;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -24,17 +34,17 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
-    private static final int FINE_LOCATION_PERMISSION_REQUEST_CODE = 1;
-
     private ErrorHandler mErrorHandler;
     private final static String TAG = "MainPresenter";
     private CompositeSubscription mSubscriptions;
+    private PermissionHelper mPermissionHelper;
 
     @Inject
     public MainPresenter(DataManager dataManager, ErrorHandler errorHandler) {
         super(dataManager);
         mErrorHandler = errorHandler;
         mSubscriptions = new CompositeSubscription();
+        mPermissionHelper = mDataManager.getPermissionHelper();
     }
 
     @Override
@@ -105,25 +115,57 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void goToPostLocation() {
-        getMvpView().dismissNoFineLocationPermissionSnackbar();
-        if (getMvpView().hasLocationPermission()) {
+        getMvpView().dismissWarningSnackbar();
+        if (mPermissionHelper.hasFineLocationPermission()) {
+            checkLocationSettings();
+        } else {
+            getMvpView().compatRequestFineLocationPermission();
+        }
+    }
+
+    public void checkLocationSettings() {
+        mSubscriptions.add(mDataManager.checkLocationSettings(Constants.APP_LOCATION_REQUEST)
+                .subscribe(this::handleLocationSettingsResult,
+                        this::handleGmsError));
+    }
+
+    private void handleGmsError(Throwable throwable) {
+        if (throwable instanceof ApiClientConnectionFailedException) {
+            ConnectionResult mConnectionResult =
+                    ((ApiClientConnectionFailedException) throwable).getConnectionResult();
+            getMvpView().startConnectionResultResolution(mConnectionResult);
+        }
+    }
+
+    public void handleLocationSettingsActivityResult(int resultCode) {
+        if (resultCode == Activity.RESULT_OK) {
             getMvpView().startPostActivity();
         } else {
-            getMvpView().compatRequestFineLocationPermission(FINE_LOCATION_PERMISSION_REQUEST_CODE);
+            getMvpView().showLocationSettingsWarning();
+        }
+    }
+
+    private void handleLocationSettingsResult(LocationSettingsResult locationSettingsResult) {
+        final Status status = locationSettingsResult.getStatus();
+        switch (status.getStatusCode()) {
+            case LocationSettingsStatusCodes.SUCCESS:
+                getMvpView().startPostActivity();
+                break;
+            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                getMvpView().startLocationSettingsStatusResolution(status);
+                break;
+            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                Log.i(TAG, "Location settings are inadequate, and cannot be fixed here. Dialog " +
+                        "not created.");
+                break;
         }
     }
 
     public void handlePermissionResult(int requestCode, int[] grantResults) {
-        switch (requestCode) {
-            case FINE_LOCATION_PERMISSION_REQUEST_CODE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getMvpView().startPostActivity();
-                } else {
-                    getMvpView().showNoFineLocationPermissionSnackbar();
-                }
-                break;
-            }
+        if (PermissionUtil.wasFineLocationPermissionGranted(requestCode, grantResults)) {
+            checkLocationSettings();
+        } else {
+            getMvpView().showNoFineLocationPermissionWarning();
         }
     }
 

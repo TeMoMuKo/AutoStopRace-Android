@@ -14,7 +14,7 @@ import rx.Subscriber;
 /**
  * Created by Rafał Naniewicz on 10.02.2016.
  */
-public class LocationObservable extends BaseObservable<Location> implements LocationListener {
+public class LocationObservable extends GmsBaseObservable<Location> implements LocationListener {
 
     private final LocationRequest mLocationRequest;
     private Subscriber<? super Location> mSubscriber;

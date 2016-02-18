@@ -64,4 +64,7 @@
     <string name="warning_no_fine_location_permission">Brak uprawnień dostępu do lokalizacji.</string>
     <string name="settings">Ustawienia</string>
     <string name="error_email_confirmation">Najpierw aktywuj swoje konto, instrukcje znajdziesz w mailu od organizatorów.</string>
+    <string name="change_settings">Zmień</string>
+    <string name="warning_inadequate_location_settings">Nieodpowiednie ustawienia lokalizacji.</string>
+    <string name="location_acquired">Ustalono twoją lokalizację</string>
 </resources>
