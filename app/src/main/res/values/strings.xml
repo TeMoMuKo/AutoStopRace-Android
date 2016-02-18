@@ -68,5 +68,5 @@
     <string name="action_licenses">Licencje Open Source</string>
     <string name="msg_rate_app_question">Spodobała Ci się ta aplikacja?</string>
     <string name="msg_rate_app">Oceń ją w sklepie Google Play!</string>
-    <string name="action_go_to_store">Przejdź do Google Play</string>
+    <string name="action_rate">Oceń aplikację</string>
 </resources>

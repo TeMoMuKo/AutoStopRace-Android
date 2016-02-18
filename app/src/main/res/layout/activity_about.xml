@@ -18,143 +18,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="2">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            android:padding="@dimen/default_padding">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/default_padding"
-                    android:layout_marginTop="@dimen/default_margin_halved"
-                    android:src="@mipmap/ic_launcher"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/default_margin_halved"
-                        android:text="@string/app_name"
-                        android:textColor="@color/primary_text"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/default_margin_quarter"
-                        android:text="@string/app_version"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="14sp"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@drawable/shadow_standard"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/default_padding">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3dp"
-                android:text="@string/about_app"
-                android:textSize="15sp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:lineSpacingExtra="3dp"
-                android:text="@string/authors"
-                android:textSize="16sp"/>
-
-        </LinearLayout>
+        <include layout="@layout/header_about"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:background="#ececec"
-                android:gravity="bottom">
+                android:layout_height="match_parent"
+                android:layout_above="@+id/include2">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/place_autocomplete_separator"/>
+                <include layout="@layout/content_about_text"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/default_margin_halved"
-                    android:paddingLeft="@dimen/default_margin"
-                    android:paddingRight="@dimen/default_margin"
-                    android:paddingTop="@dimen/default_margin"
-                    >
+            </ScrollView>
 
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/default_margin_halved"
-                        android:lineSpacingExtra="10dp"
-                        android:text="@string/msg_rate_app_question"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/place_autocomplete_separator"
+                android:layout_above="@+id/include2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/textView"
-                        android:text="@string/msg_rate_app"
-                        android:textSize="16sp"/>
-
-                    <Button
-                        android:id="@+id/btn_go_to_store"
-                        style="?attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:text="@string/action_go_to_store"
-                        android:textColor="@color/accent"/>
-
-                </RelativeLayout>
-
-            </RelativeLayout>
+            <include layout="@layout/content_rate"
+                     android:id="@+id/include2"/>
 
         </RelativeLayout>
 
