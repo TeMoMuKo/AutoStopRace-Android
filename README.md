@@ -1,4 +1,6 @@
+![ASR Logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 # AutoStopRace
+
 Auto Stop Race android app. <br>
 http://www.autostoprace.pl/
 
