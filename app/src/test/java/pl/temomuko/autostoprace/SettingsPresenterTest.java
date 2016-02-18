@@ -74,6 +74,7 @@ public class SettingsPresenterTest {
     public void testLogout() throws Exception {
         when(mMockDataManager.signOut())
                 .thenReturn(Observable.<Response<SignOutResponse>>empty());
+        when(mMockDataManager.clearUserData()).thenReturn(Observable.empty());
         mSettingsPresenter.logout();
         verify(mMockDataManager).clearUserData();
         verify(mMockSettingsMvpView).showLogoutMessage();

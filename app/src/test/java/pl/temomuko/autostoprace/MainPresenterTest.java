@@ -2,6 +2,8 @@ package pl.temomuko.autostoprace;
 
 import android.content.pm.PackageManager;
 
+import com.google.android.gms.location.LocationRequest;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -19,6 +21,7 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
@@ -33,7 +36,6 @@ import rx.Observable;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -48,6 +50,7 @@ public class MainPresenterTest {
     @Mock MainMvpView mMockMainMvpView;
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
+    @Mock PermissionHelper mMockPermissionHelper;
     private MainPresenter mMainPresenter;
     private static final String FAKE_ERROR_MESSAGE = "fake_error_message";
     private static final String NOT_FOUND_RESPONSE =
@@ -246,27 +249,29 @@ public class MainPresenterTest {
 
     @Test
     public void testGoToPostLocationWithPermission() throws Exception {
-        when(mMockMainMvpView.hasLocationPermission()).thenReturn(true);
+        when(mMockDataManager.checkLocationSettings(any(LocationRequest.class)))
+                .thenReturn(Observable.empty());
+        when(mMockDataManager.hasFineLocationPermission()).thenReturn(true);
         mMainPresenter.goToPostLocation();
-        verify(mMockMainMvpView).dismissWarning();
-        verify(mMockMainMvpView).startPostActivity();
-        verify(mMockMainMvpView, never()).compatRequestFineLocationPermission(anyInt());
+        verify(mMockMainMvpView, never()).compatRequestFineLocationPermission();
     }
 
     @Test
     public void testGoToPostLocationWithoutPermission() throws Exception {
-        when(mMockMainMvpView.hasLocationPermission()).thenReturn(false);
+        when(mMockPermissionHelper.hasFineLocationPermission()).thenReturn(false);
         mMainPresenter.goToPostLocation();
         verify(mMockMainMvpView).dismissWarning();
         verify(mMockMainMvpView, never()).startPostActivity();
-        verify(mMockMainMvpView).compatRequestFineLocationPermission(anyInt());
+        verify(mMockMainMvpView).compatRequestFineLocationPermission();
     }
 
     @Test
     public void testHandlePermissionResultGranted() throws Exception {
+        when(mMockDataManager.checkLocationSettings(any(LocationRequest.class)))
+                .thenReturn(Observable.empty());
         mMainPresenter.handlePermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
                 new int[]{PackageManager.PERMISSION_GRANTED});
-        verify(mMockMainMvpView).startPostActivity();
+        verify(mMockDataManager).checkLocationSettings(any(LocationRequest.class));
         verify(mMockMainMvpView, never()).showNoFineLocationPermissionWarning();
     }
 

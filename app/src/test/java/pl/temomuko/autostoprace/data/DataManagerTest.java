@@ -92,13 +92,6 @@ public class DataManagerTest {
     }
 
     @Test
-    public void testClearAuth() throws Exception {
-        when(mMockDatabaseHelper.clearTables()).thenReturn(Observable.<Void>empty());
-        mDataManager.clearUserData();
-        verify(mMockPrefsHelper).clearAuth();
-    }
-
-    @Test
     public void testSaveUnsentLocationsToDatabase() throws Exception {
         LocationRecord unsentLocationRecord = new LocationRecord(18.05, 17.17, "");
         when(mMockDatabaseHelper.addUnsentLocationRecord(unsentLocationRecord)).thenReturn(Observable.empty());

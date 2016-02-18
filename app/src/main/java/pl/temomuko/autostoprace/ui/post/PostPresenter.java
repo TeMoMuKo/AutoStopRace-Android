@@ -33,7 +33,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     private static final int LOCATION_ACCURACY = LocationRequest.PRIORITY_HIGH_ACCURACY;
 
     private DataManager mDataManager;
-    private PermissionHelper mPermissionHelper;
     private ErrorHandler mErrorHandler;
     private CompositeSubscription mSubscriptions;
     private CompositeSubscription mLocationSubscriptions;
@@ -53,7 +52,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
                 .setPriority(LOCATION_ACCURACY);
         mSubscriptions = new CompositeSubscription();
         mLocationSubscriptions = new CompositeSubscription();
-        mPermissionHelper = mDataManager.getPermissionHelper();
     }
 
     @Override
@@ -81,7 +79,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     }
 
     public void startLocationService() {
-        if (mPermissionHelper.hasFineLocationPermission()) {
+        if (mDataManager.hasFineLocationPermission()) {
             checkLocationSettings();
         } else {
             getMvpView().compatRequestFineLocationPermission();

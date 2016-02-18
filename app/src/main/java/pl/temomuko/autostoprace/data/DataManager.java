@@ -25,6 +25,7 @@ import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import retrofit2.Response;
 import rx.Observable;
+import rx.functions.Action0;
 
 /**
  * Created by szymen on 2016-01-09.
@@ -49,14 +50,6 @@ public class DataManager {
         mPermissionHelper = permissionHelper;
     }
 
-    public GmsLocationHelper getGmsLocationHelper() {
-        return mGmsLocationHelper;
-    }
-
-    public PermissionHelper getPermissionHelper() {
-        return mPermissionHelper;
-    }
-
     public Observable<Response<SignInResponse>> signIn(String login, String password) {
         return mAsrService.signInWithObservable(login, password);
     }
@@ -69,8 +62,8 @@ public class DataManager {
     }
 
     public Observable<Void> clearUserData() {
-        mPrefsHelper.clearAuth();
-        return mDatabaseHelper.clearTables();
+        return mDatabaseHelper.clearTables()
+                .doOnSubscribe(mPrefsHelper::clearAuth);
     }
 
     public Observable<Response<SignInResponse>> validateToken() {
@@ -169,5 +162,9 @@ public class DataManager {
 
     public Observable<LocationSettingsResult> checkLocationSettings(LocationRequest locationRequest) {
         return mGmsLocationHelper.checkLocationSettings(locationRequest);
+    }
+
+    public boolean hasFineLocationPermission() {
+        return mPermissionHelper.hasFineLocationPermission();
     }
 }

@@ -37,14 +37,12 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private ErrorHandler mErrorHandler;
     private final static String TAG = "MainPresenter";
     private CompositeSubscription mSubscriptions;
-    private PermissionHelper mPermissionHelper;
 
     @Inject
     public MainPresenter(DataManager dataManager, ErrorHandler errorHandler) {
         super(dataManager);
         mErrorHandler = errorHandler;
         mSubscriptions = new CompositeSubscription();
-        mPermissionHelper = mDataManager.getPermissionHelper();
     }
 
     @Override
@@ -116,7 +114,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     public void goToPostLocation() {
         getMvpView().dismissWarning();
-        if (mPermissionHelper.hasFineLocationPermission()) {
+        if (mDataManager.hasFineLocationPermission()) {
             checkLocationSettings();
         } else {
             getMvpView().compatRequestFineLocationPermission();
