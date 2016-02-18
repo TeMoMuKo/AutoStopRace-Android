@@ -67,4 +67,9 @@
     <string name="change_settings">Zmień</string>
     <string name="warning_inadequate_location_settings">Nieodpowiednie ustawienia lokalizacji.</string>
     <string name="location_acquired">Ustalono twoją lokalizację</string>
+    <string name="action_share">Udostępnij</string>
+    <string name="action_licenses">Licencje Open Source</string>
+    <string name="msg_rate_app_question">Spodobała Ci się ta aplikacja?</string>
+    <string name="msg_rate_app">Oceń ją w sklepie Google Play!</string>
+    <string name="action_rate">Oceń aplikację</string>
 </resources>
