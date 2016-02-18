@@ -19,6 +19,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.LogUtil;
+import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.RxUtil;
 import rx.subscriptions.CompositeSubscription;
 
@@ -139,6 +140,14 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public void handleLocationSettingsActivityResult(int resultCode) {
         if (resultCode == Activity.RESULT_OK) {
             startLocationUpdates();
+        } else {
+            getMvpView().finishWithInadequateSettingsWarning();
+        }
+    }
+
+    public void handlePermissionResult(int requestCode, int[] grantResults) {
+        if (PermissionUtil.wasFineLocationPermissionGranted(requestCode, grantResults)) {
+            checkLocationSettings();
         } else {
             getMvpView().finishWithInadequateSettingsWarning();
         }

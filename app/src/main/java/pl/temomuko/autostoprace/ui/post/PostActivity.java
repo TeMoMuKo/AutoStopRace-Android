@@ -3,6 +3,7 @@ package pl.temomuko.autostoprace.ui.post;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,6 +56,21 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        mPostPresenter.handlePermissionResult(requestCode, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
+            mIsLocationSettingsStatusForResultCalled = false;
+            mPostPresenter.handleLocationSettingsActivityResult(resultCode);
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         mPostPresenter.stopLocationService();
@@ -89,14 +105,6 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_post, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
-            mIsLocationSettingsStatusForResultCalled = false;
-            mPostPresenter.handleLocationSettingsActivityResult(resultCode);
-        }
     }
 
     /* MVP View methods */
