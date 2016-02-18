@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 
 import java.util.List;
@@ -42,7 +43,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     private Snackbar mWarningSnackbar;
 
     private String TAG = "MainActivity";
-    private boolean mIsLocationSettingsStatusForResultCalled = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,8 +69,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
-            mIsLocationSettingsStatusForResultCalled = false;
-            mMainPresenter.handleLocationSettingsActivityResult(resultCode);
+            mMainPresenter.handleLocationSettingsDialogResult(resultCode);
         }
     }
 
@@ -146,20 +145,15 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
-    public void dismissWarningSnackbar() {
+    public void dismissWarning() {
         if (mWarningSnackbar != null && mWarningSnackbar.isShown()) {
             mWarningSnackbar.dismiss();
         }
     }
 
     @Override
-    public void startLocationSettingsStatusResolution(Status status) {
-        try {
-            mIsLocationSettingsStatusForResultCalled = true;
-            status.startResolutionForResult(this, CHECK_LOCATION_SETTINGS_REQUEST_CODE);
-        } catch (IntentSender.SendIntentException e) {
-            LogUtil.e("Intent sender exception", e.getMessage());
-        }
+    public void onUserResolvableLocationSettings(Status status) {
+        IntentUtil.startGmsStatusForResolution(this,status,CHECK_LOCATION_SETTINGS_REQUEST_CODE);
     }
 
     @Override
@@ -172,11 +166,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
-    public void startConnectionResultResolution(ConnectionResult connectionResult) {
-        try {
-            connectionResult.startResolutionForResult(this, 0);
-        } catch (IntentSender.SendIntentException e) {
-            LogUtil.e("Intent sender exception", e.getMessage());
-        }
+    public void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult) {
+        IntentUtil.startGmsConnectionResultForResolution(this,connectionResult,-1);
+    }
+
+    @Override
+    public void onGmsConnectionResultNoResolution(int errorCode) {
+        GoogleApiAvailability.getInstance().getErrorDialog(this,errorCode,0).show();
     }
 }

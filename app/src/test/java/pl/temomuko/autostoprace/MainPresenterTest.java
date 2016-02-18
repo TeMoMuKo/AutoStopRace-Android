@@ -248,7 +248,7 @@ public class MainPresenterTest {
     public void testGoToPostLocationWithPermission() throws Exception {
         when(mMockMainMvpView.hasLocationPermission()).thenReturn(true);
         mMainPresenter.goToPostLocation();
-        verify(mMockMainMvpView).dismissWarningSnackbar();
+        verify(mMockMainMvpView).dismissWarning();
         verify(mMockMainMvpView).startPostActivity();
         verify(mMockMainMvpView, never()).compatRequestFineLocationPermission(anyInt());
     }
@@ -257,7 +257,7 @@ public class MainPresenterTest {
     public void testGoToPostLocationWithoutPermission() throws Exception {
         when(mMockMainMvpView.hasLocationPermission()).thenReturn(false);
         mMainPresenter.goToPostLocation();
-        verify(mMockMainMvpView).dismissWarningSnackbar();
+        verify(mMockMainMvpView).dismissWarning();
         verify(mMockMainMvpView, never()).startPostActivity();
         verify(mMockMainMvpView).compatRequestFineLocationPermission(anyInt());
     }

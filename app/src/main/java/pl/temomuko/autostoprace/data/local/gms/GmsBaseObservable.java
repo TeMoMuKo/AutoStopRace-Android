@@ -62,9 +62,7 @@ abstract class GmsBaseObservable<T> implements Observable.OnSubscribe<T>, Connec
 
     protected abstract void onApiClientReady(GoogleApiClient googleApi, Subscriber<? super T> subscriber);
 
-    protected void onUnsubscribe(GoogleApiClient apiClient) {
-
-    }
+    protected abstract void onUnsubscribe(GoogleApiClient apiClient);
 
     @Override
     public void onConnected(Bundle bundle) {

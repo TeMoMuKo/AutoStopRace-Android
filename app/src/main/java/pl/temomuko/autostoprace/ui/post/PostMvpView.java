@@ -18,15 +18,17 @@ public interface PostMvpView extends MvpView {
 
     void updateCurrentLocationAddress(String address);
 
-    void startLocationSettingsStatusResolution(Status status);
+    void compatRequestFineLocationPermission();
+
+    void onUserResolvableLocationSettings(Status status);
 
     void displayGPSFixAcquired();
 
-    void startConnectionResultResolution(ConnectionResult connectionResult);
+    void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult);
 
-    void compatRequestFineLocationPermission();
+    void onGmsConnectionResultNoResolution(int errorCode);
 
     void finishWithInadequateSettingsWarning();
 
-    boolean isLocationSettingsStatusForResultCalled();
+    boolean isLocationSettingsStatusDialogCalled();
 }

@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.ui.post;
 
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 
 import javax.inject.Inject;
@@ -22,7 +22,7 @@ import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.event.GpsStatusChangeEvent;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
-import pl.temomuko.autostoprace.util.LogUtil;
+import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 
 /**
@@ -59,14 +59,14 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        mPostPresenter.handlePermissionResult(requestCode, grantResults);
+        mPostPresenter.handleLocationPermissionResult(requestCode, grantResults);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
             mIsLocationSettingsStatusForResultCalled = false;
-            mPostPresenter.handleLocationSettingsActivityResult(resultCode);
+            mPostPresenter.handleLocationSettingsDialogResult(resultCode);
         }
     }
 
@@ -134,13 +134,9 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
-    public void startLocationSettingsStatusResolution(Status status) {
-        try {
-            mIsLocationSettingsStatusForResultCalled = true;
-            status.startResolutionForResult(this, CHECK_LOCATION_SETTINGS_REQUEST_CODE);
-        } catch (IntentSender.SendIntentException e) {
-            LogUtil.e("Intent sender exception", e.getMessage());
-        }
+    public void onUserResolvableLocationSettings(Status status) {
+        IntentUtil.startGmsStatusForResolution(this, status, CHECK_LOCATION_SETTINGS_REQUEST_CODE);
+        mIsLocationSettingsStatusForResultCalled = true;
     }
 
     @Override
@@ -149,12 +145,13 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
-    public void startConnectionResultResolution(ConnectionResult connectionResult) {
-        try {
-            connectionResult.startResolutionForResult(this, 0);
-        } catch (IntentSender.SendIntentException e) {
-            LogUtil.e("Intent sender exception", e.getMessage());
-        }
+    public void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult) {
+        IntentUtil.startGmsConnectionResultForResolution(this, connectionResult, -1);
+    }
+
+    @Override
+    public void onGmsConnectionResultNoResolution(int errorCode) {
+        GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, 0).show();
     }
 
     @Override
@@ -169,7 +166,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
-    public boolean isLocationSettingsStatusForResultCalled() {
+    public boolean isLocationSettingsStatusDialogCalled() {
         return mIsLocationSettingsStatusForResultCalled;
     }
 

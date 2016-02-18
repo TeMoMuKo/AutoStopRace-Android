@@ -30,4 +30,9 @@ public class ApiClientObservable extends GmsBaseObservable<GoogleApiClient> {
             subscriber.onCompleted();
         }
     }
+
+    @Override
+    protected void onUnsubscribe(GoogleApiClient apiClient) {
+
+    }
 }

@@ -48,7 +48,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 }, throwable -> {
                     LogUtil.i(TAG, throwable.getMessage());
                 });
-        mDataManager.clearUserData();
+        mDataManager.clearUserData().subscribe();
         getMvpView().showLogoutMessage();
         getMvpView().startLauncherActivity();
     }

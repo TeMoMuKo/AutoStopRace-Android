@@ -3,8 +3,6 @@ package pl.temomuko.autostoprace.data.local.gms;
 import android.content.Context;
 import android.location.Location;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -20,12 +18,17 @@ import rx.Observable;
  * Created by Rafał Naniewicz on 15.02.2016.
  */
 @Singleton
-public class GmsHelper {
+public class GmsLocationHelper {
+
+    public final static LocationRequest APP_LOCATION_REQUEST = getLocationRequest();
+    private static final int LOCATION_UPDATE_INTERVAL_MILLISECONDS = 5000;
+    private static final int LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS = LOCATION_UPDATE_INTERVAL_MILLISECONDS / 2;
+    private static final int LOCATION_ACCURACY = LocationRequest.PRIORITY_HIGH_ACCURACY;
 
     private Context mContext;
 
     @Inject
-    public GmsHelper(@AppContext Context context) {
+    public GmsLocationHelper(@AppContext Context context) {
         mContext = context;
     }
 
@@ -45,5 +48,12 @@ public class GmsHelper {
                 .addLocationRequest(locationRequest)
                 .setAlwaysShow(true)
                 .build();
+    }
+
+    private static LocationRequest getLocationRequest() {
+        return new LocationRequest()
+                .setFastestInterval(LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS)
+                .setInterval(LOCATION_UPDATE_INTERVAL_MILLISECONDS)
+                .setPriority(LOCATION_ACCURACY);
     }
 }

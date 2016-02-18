@@ -10,7 +10,7 @@ import android.support.v4.app.ActivityCompat;
  */
 public final class PermissionUtil {
 
-    public static final int FINE_LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int FINE_LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private PermissionUtil() {
         throw new AssertionError();

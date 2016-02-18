@@ -33,11 +33,13 @@ public interface MainMvpView extends DrawerMvpView {
 
     void showNoFineLocationPermissionWarning();
 
-    void dismissWarningSnackbar();
+    void dismissWarning();
 
-    void startLocationSettingsStatusResolution(Status status);
+    void onUserResolvableLocationSettings(Status status);
 
     void showLocationSettingsWarning();
 
-    void startConnectionResultResolution(ConnectionResult connectionResult);
+    void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult);
+
+    void onGmsConnectionResultNoResolution(int errorCode);
 }

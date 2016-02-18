@@ -11,10 +11,10 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import javax.inject.Inject;
 
-import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
+import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
@@ -89,34 +89,54 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     }
 
     private void checkLocationSettings() {
-        if (!getMvpView().isLocationSettingsStatusForResultCalled()) {
-            mLocationSubscriptions.add(mDataManager.checkLocationSettings(Constants.APP_LOCATION_REQUEST)
-                    .subscribe(this::handleLocationSettingsResult,
+        if (!getMvpView().isLocationSettingsStatusDialogCalled()) {
+            mLocationSubscriptions.add(mDataManager.checkLocationSettings(GmsLocationHelper.APP_LOCATION_REQUEST)
+                    .subscribe(this::handleLocationSettings,
                             this::handleGmsError));
         }
     }
 
-    private void handleGmsError(Throwable throwable) {
-        if (throwable instanceof ApiClientConnectionFailedException) {
-            ConnectionResult mConnectionResult =
-                    ((ApiClientConnectionFailedException) throwable).getConnectionResult();
-            getMvpView().startConnectionResultResolution(mConnectionResult);
-        }
-    }
-
-    private void handleLocationSettingsResult(LocationSettingsResult locationSettingsResult) {
+    private void handleLocationSettings(LocationSettingsResult locationSettingsResult) {
         final Status status = locationSettingsResult.getStatus();
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
                 startLocationUpdates();
                 break;
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                getMvpView().startLocationSettingsStatusResolution(status);
+                getMvpView().onUserResolvableLocationSettings(status);
                 break;
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                 LogUtil.i(TAG, "Location settings are inadequate, and cannot be fixed here. Dialog " +
                         "not created.");
                 break;
+        }
+    }
+
+    public void handleLocationSettingsDialogResult(int resultCode) {
+        if (resultCode == Activity.RESULT_OK) {
+            startLocationUpdates();
+        } else {
+            getMvpView().finishWithInadequateSettingsWarning();
+        }
+    }
+
+    private void handleGmsError(Throwable throwable) {
+        if (throwable instanceof ApiClientConnectionFailedException) {
+            ConnectionResult connectionResult =
+                    ((ApiClientConnectionFailedException) throwable).getConnectionResult();
+            if (connectionResult.hasResolution()) {
+                getMvpView().onGmsConnectionResultResolutionRequired(connectionResult);
+            } else {
+                getMvpView().onGmsConnectionResultNoResolution(connectionResult.getErrorCode());
+            }
+        }
+    }
+
+    public void handleLocationPermissionResult(int requestCode, int[] grantResults) {
+        if (PermissionUtil.wasFineLocationPermissionGranted(requestCode, grantResults)) {
+            checkLocationSettings();
+        } else {
+            getMvpView().finishWithInadequateSettingsWarning();
         }
     }
 
@@ -135,22 +155,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
                 Double.toString(location.getLatitude()) + ", " + Double.toString(location.getLongitude()));
         //// TODO: 16.02.2016 implement reverse geo
         getMvpView().updateCurrentLocationAddress("Somewhere");
-    }
-
-    public void handleLocationSettingsActivityResult(int resultCode) {
-        if (resultCode == Activity.RESULT_OK) {
-            startLocationUpdates();
-        } else {
-            getMvpView().finishWithInadequateSettingsWarning();
-        }
-    }
-
-    public void handlePermissionResult(int requestCode, int[] grantResults) {
-        if (PermissionUtil.wasFineLocationPermissionGranted(requestCode, grantResults)) {
-            checkLocationSettings();
-        } else {
-            getMvpView().finishWithInadequateSettingsWarning();
-        }
     }
 
     public void stopLocationService() {

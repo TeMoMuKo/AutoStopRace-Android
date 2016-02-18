@@ -13,11 +13,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.event.RemovedLocationEvent;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
+import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
@@ -77,7 +77,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                     if (response.code() == HttpStatus.OK) {
                         mDataManager.saveAuthorizationResponse(response);
                     } else if (response.code() == HttpStatus.UNAUTHORIZED) {
-                        mDataManager.clearUserData();
+                        mDataManager.clearUserData().subscribe();
                         getMvpView().showSessionExpiredError();
                         getMvpView().startLoginActivity();
                     }
@@ -115,7 +115,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void goToPostLocation() {
-        getMvpView().dismissWarningSnackbar();
+        getMvpView().dismissWarning();
         if (mPermissionHelper.hasFineLocationPermission()) {
             checkLocationSettings();
         } else {
@@ -124,20 +124,28 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void checkLocationSettings() {
-        mSubscriptions.add(mDataManager.checkLocationSettings(Constants.APP_LOCATION_REQUEST)
-                .subscribe(this::handleLocationSettingsResult,
+        mSubscriptions.add(mDataManager.checkLocationSettings(GmsLocationHelper.APP_LOCATION_REQUEST)
+                .subscribe(this::handleLocationSettings,
                         this::handleGmsError));
     }
 
-    private void handleGmsError(Throwable throwable) {
-        if (throwable instanceof ApiClientConnectionFailedException) {
-            ConnectionResult mConnectionResult =
-                    ((ApiClientConnectionFailedException) throwable).getConnectionResult();
-            getMvpView().startConnectionResultResolution(mConnectionResult);
+    private void handleLocationSettings(LocationSettingsResult locationSettingsResult) {
+        final Status status = locationSettingsResult.getStatus();
+        switch (status.getStatusCode()) {
+            case LocationSettingsStatusCodes.SUCCESS:
+                getMvpView().startPostActivity();
+                break;
+            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                getMvpView().onUserResolvableLocationSettings(status);
+                break;
+            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                Log.i(TAG, "Location settings are inadequate, and cannot be fixed here. Dialog " +
+                        "not created.");
+                break;
         }
     }
 
-    public void handleLocationSettingsActivityResult(int resultCode) {
+    public void handleLocationSettingsDialogResult(int resultCode) {
         if (resultCode == Activity.RESULT_OK) {
             getMvpView().startPostActivity();
         } else {
@@ -145,19 +153,15 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         }
     }
 
-    private void handleLocationSettingsResult(LocationSettingsResult locationSettingsResult) {
-        final Status status = locationSettingsResult.getStatus();
-        switch (status.getStatusCode()) {
-            case LocationSettingsStatusCodes.SUCCESS:
-                getMvpView().startPostActivity();
-                break;
-            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                getMvpView().startLocationSettingsStatusResolution(status);
-                break;
-            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                Log.i(TAG, "Location settings are inadequate, and cannot be fixed here. Dialog " +
-                        "not created.");
-                break;
+    private void handleGmsError(Throwable throwable) {
+        if (throwable instanceof ApiClientConnectionFailedException) {
+            ConnectionResult connectionResult =
+                    ((ApiClientConnectionFailedException) throwable).getConnectionResult();
+            if (connectionResult.hasResolution()) {
+                getMvpView().onGmsConnectionResultResolutionRequired(connectionResult);
+            } else {
+                getMvpView().onGmsConnectionResultNoResolution(connectionResult.getErrorCode());
+            }
         }
     }
 
