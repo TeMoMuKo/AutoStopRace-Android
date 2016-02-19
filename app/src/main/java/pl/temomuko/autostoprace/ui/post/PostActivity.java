@@ -14,10 +14,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
-import de.greenrobot.event.EventBus;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.event.GpsStatusChangeEvent;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
@@ -173,7 +176,8 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     /* Events */
 
     @SuppressWarnings("unused")
-    public void onEventMainThread(GpsStatusChangeEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGpsStatusChangeEvent(GpsStatusChangeEvent event) {
         mPostPresenter.handleGpsStatusChange();
     }
 }

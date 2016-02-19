@@ -1,6 +1,6 @@
 package pl.temomuko.autostoprace.util;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by szymen on 2016-01-09.

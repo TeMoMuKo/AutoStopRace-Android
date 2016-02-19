@@ -14,19 +14,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.event.RemovedLocationEvent;
-import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
-import pl.temomuko.autostoprace.util.EventUtil;
-import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.RxUtil;
-import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -98,11 +93,14 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         mSubscriptions.add(mDataManager.getTeamLocationRecordsFromServer()
                 .compose(RxUtil.applySchedulers())
                 .flatMap(mDataManager::syncWithDatabase)
-                .subscribe(locations -> {
-                            updateLocationsView(locations);
-                            postUnsentLocationsToServer();
-                        }, this::handleError
-                ));
+                .subscribe(locationRecords -> {
+                            updateLocationsView(locationRecords);
+                            getMvpView().startPostService();
+                        },
+                        throwable -> {
+                            handleError(throwable);
+                            getMvpView().startPostService();
+                        }));
     }
 
     private void updateLocationsView(List<LocationRecord> locationRecords) {
@@ -169,21 +167,6 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         } else {
             getMvpView().showNoFineLocationPermissionWarning();
         }
-    }
-
-    public void postUnsentLocationsToServer() {
-        mSubscriptions.add(mDataManager.getUnsentLocationRecords()
-                .flatMap((LocationRecord unsentLocationRecord) -> mDataManager.postLocationRecordToServer(unsentLocationRecord)
-                        .compose(RxUtil.applySchedulers())
-                        .flatMap(mDataManager::handlePostLocationRecordResponse)
-                        .flatMap(mDataManager::saveSentLocationRecordToDatabase)
-                        .toCompletable().endWith(mDataManager.deleteUnsentLocationRecord(unsentLocationRecord))
-                        .toCompletable().endWith(Observable.just(unsentLocationRecord)))
-                .subscribe(removedLocation -> {
-                            EventUtil.postSticky(new RemovedLocationEvent(removedLocation));
-                            LogUtil.i("EventUtil", "Removed: " + removedLocation.toString());
-                        },
-                        this::handleError));
     }
 
     private void handleError(Throwable throwable) {

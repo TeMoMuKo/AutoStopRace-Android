@@ -5,11 +5,11 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 /**
  * Created by szymen on 2016-02-13.
  */
-public class RemovedLocationEvent {
+public class RemovedLocationFromUnsentEvent {
 
     LocationRecord mLocationRecord;
 
-    public RemovedLocationEvent(LocationRecord locationRecord) {
+    public RemovedLocationFromUnsentEvent(LocationRecord locationRecord) {
         mLocationRecord = locationRecord;
     }
 

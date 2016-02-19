@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.ui.main;
 
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -22,11 +21,11 @@ import butterknife.Bind;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.service.PostService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.util.IntentUtil;
-import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 
 /**
@@ -88,6 +87,11 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     public void updateLocationRecordsList(List<LocationRecord> locationRecords) {
         mCurrentLocationRecordsTextView.setText(locationRecords.toString());
+    }
+
+    @Override
+    public void startPostService() {
+        startService(PostService.getStartIntent(this));
     }
 
     @Override
@@ -153,7 +157,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void onUserResolvableLocationSettings(Status status) {
-        IntentUtil.startGmsStatusForResolution(this,status,CHECK_LOCATION_SETTINGS_REQUEST_CODE);
+        IntentUtil.startGmsStatusForResolution(this, status, CHECK_LOCATION_SETTINGS_REQUEST_CODE);
     }
 
     @Override
@@ -167,11 +171,11 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult) {
-        IntentUtil.startGmsConnectionResultForResolution(this,connectionResult,-1);
+        IntentUtil.startGmsConnectionResultForResolution(this, connectionResult, -1);
     }
 
     @Override
     public void onGmsConnectionResultNoResolution(int errorCode) {
-        GoogleApiAvailability.getInstance().getErrorDialog(this,errorCode,0).show();
+        GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, 0).show();
     }
 }
