@@ -100,6 +100,7 @@ public class MainPresenterTest {
         verify(mMockMainMvpView).setProgress(true);
         verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
         verify(mMockMainMvpView).updateLocationRecordsList(updatedDatabaseLocationRecords);
+        verify(mMockMainMvpView).startPostService();
         verify(mMockMainMvpView, never()).showEmptyInfo();
         verify(mMockMainMvpView, never()).showError(any(String.class));
         verify(mMockMainMvpView, times(2)).setProgress(false);
@@ -121,6 +122,7 @@ public class MainPresenterTest {
         mMainPresenter.loadLocations();
         verify(mMockMainMvpView).showError(mMockErrorHandler
                 .getMessage(fakeSocketTimeoutException));
+        verify(mMockMainMvpView).startPostService();
         verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
         verify(mMockDataManager, never()).syncWithDatabase(Matchers.<Response<List<LocationRecord>>>any());
         verify(mMockMainMvpView, never()).showEmptyInfo();
@@ -144,6 +146,7 @@ public class MainPresenterTest {
         mMainPresenter.loadLocations();
         verify(mMockDataManager).syncWithDatabase(response);
         verify(mMockMainMvpView, times(2)).showEmptyInfo();
+        verify(mMockMainMvpView).startPostService();
         verify(mMockMainMvpView, never()).updateLocationRecordsList(locationsFromDatabase);
         verify(mMockMainMvpView, never()).showError(any(String.class));
     }
@@ -172,6 +175,7 @@ public class MainPresenterTest {
         mMainPresenter.loadLocations();
         verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
         verify(mMockDataManager).syncWithDatabase(response);
+        verify(mMockMainMvpView).startPostService();
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockMainMvpView, never()).showEmptyInfo();
     }
@@ -200,6 +204,7 @@ public class MainPresenterTest {
         verify(mMockDataManager).syncWithDatabase(response);
         verify(mMockMainMvpView).showEmptyInfo();
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
+        verify(mMockMainMvpView).startPostService();
         verify(mMockMainMvpView, never()).updateLocationRecordsList(locationsFromDatabase);
     }
 
@@ -218,6 +223,7 @@ public class MainPresenterTest {
                         MediaType.parse(Constants.HEADER_ACCEPT_JSON), UNAUTHORIZED_RESPONSE
                 ));
         when(mMockDataManager.validateToken()).thenReturn(Observable.just(response));
+        when(mMockDataManager.clearUserData()).thenReturn(Observable.empty());
         mMainPresenter.checkAuth();
         verify(mMockDataManager).clearUserData();
         verify(mMockMainMvpView).showSessionExpiredError();

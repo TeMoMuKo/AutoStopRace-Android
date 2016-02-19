@@ -46,10 +46,6 @@ public class PostService extends Service {
         super.onDestroy();
     }
 
-    public static Intent getStartIntent(Context context) {
-        return new Intent(context, PostService.class);
-    }
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -68,6 +64,10 @@ public class PostService extends Service {
 
         postUnsentLocationsToServer();
         return START_STICKY;
+    }
+
+    public static Intent getStartIntent(Context context) {
+        return new Intent(context, PostService.class);
     }
 
     public void postUnsentLocationsToServer() {

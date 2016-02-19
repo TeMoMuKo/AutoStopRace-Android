@@ -120,9 +120,11 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void checkLocationSettings() {
-        mSubscriptions.add(mDataManager.checkLocationSettings(GmsLocationHelper.APP_LOCATION_REQUEST)
-                .subscribe(this::handleLocationSettings,
-                        this::handleGmsError));
+        if (!getMvpView().isLocationSettingsStatusDialogCalled()) {
+            mSubscriptions.add(mDataManager.checkLocationSettings(GmsLocationHelper.APP_LOCATION_REQUEST)
+                    .subscribe(this::handleLocationSettings,
+                            this::handleGmsError));
+        }
     }
 
     private void handleLocationSettings(LocationSettingsResult locationSettingsResult) {
