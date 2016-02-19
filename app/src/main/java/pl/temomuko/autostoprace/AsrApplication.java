@@ -3,6 +3,9 @@ package pl.temomuko.autostoprace;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
 import pl.temomuko.autostoprace.injection.component.ApplicationComponent;
 import pl.temomuko.autostoprace.injection.component.DaggerApplicationComponent;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
@@ -13,6 +16,12 @@ import pl.temomuko.autostoprace.injection.module.ApplicationModule;
 public class AsrApplication extends Application {
 
     ApplicationComponent mApplicationComponent;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Fabric.with(this, new Crashlytics());
+    }
 
     public ApplicationComponent getComponent() {
         if (mApplicationComponent == null) {
