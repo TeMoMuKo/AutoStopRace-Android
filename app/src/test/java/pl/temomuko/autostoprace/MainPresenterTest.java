@@ -218,6 +218,7 @@ public class MainPresenterTest {
                         MediaType.parse(Constants.HEADER_ACCEPT_JSON), UNAUTHORIZED_RESPONSE
                 ));
         when(mMockDataManager.validateToken()).thenReturn(Observable.just(response));
+        when(mMockDataManager.clearUserData()).thenReturn(Observable.empty());
         mMainPresenter.checkAuth();
         verify(mMockDataManager).clearUserData();
         verify(mMockMainMvpView).showSessionExpiredError();

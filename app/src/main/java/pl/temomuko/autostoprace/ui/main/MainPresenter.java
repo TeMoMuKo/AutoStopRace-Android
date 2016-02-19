@@ -15,7 +15,6 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.event.RemovedLocationEvent;
-import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
@@ -122,9 +121,11 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void checkLocationSettings() {
-        mSubscriptions.add(mDataManager.checkLocationSettings(GmsLocationHelper.APP_LOCATION_REQUEST)
-                .subscribe(this::handleLocationSettings,
-                        this::handleGmsError));
+        if (!getMvpView().isLocationSettingsStatusDialogCalled()) {
+            mSubscriptions.add(mDataManager.checkLocationSettings(GmsLocationHelper.APP_LOCATION_REQUEST)
+                    .subscribe(this::handleLocationSettings,
+                            this::handleGmsError));
+        }
     }
 
     private void handleLocationSettings(LocationSettingsResult locationSettingsResult) {

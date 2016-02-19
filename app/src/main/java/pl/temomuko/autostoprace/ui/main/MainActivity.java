@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.ui.main;
 
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -26,7 +25,6 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.util.IntentUtil;
-import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 
 /**
@@ -41,6 +39,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
     private Snackbar mWarningSnackbar;
+
+    private boolean mIsLocationSettingsStatusForResultCalled = false;
 
     private String TAG = "MainActivity";
 
@@ -69,6 +69,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
+            mIsLocationSettingsStatusForResultCalled = false;
             mMainPresenter.handleLocationSettingsDialogResult(resultCode);
         }
     }
@@ -153,7 +154,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void onUserResolvableLocationSettings(Status status) {
-        IntentUtil.startGmsStatusForResolution(this,status,CHECK_LOCATION_SETTINGS_REQUEST_CODE);
+        IntentUtil.startGmsStatusForResolution(this, status, CHECK_LOCATION_SETTINGS_REQUEST_CODE);
+        mIsLocationSettingsStatusForResultCalled = true;
     }
 
     @Override
@@ -167,11 +169,16 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult) {
-        IntentUtil.startGmsConnectionResultForResolution(this,connectionResult,-1);
+        IntentUtil.startGmsConnectionResultForResolution(this, connectionResult, -1);
     }
 
     @Override
     public void onGmsConnectionResultNoResolution(int errorCode) {
-        GoogleApiAvailability.getInstance().getErrorDialog(this,errorCode,0).show();
+        GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, 0).show();
+    }
+
+    @Override
+    public boolean isLocationSettingsStatusDialogCalled() {
+        return mIsLocationSettingsStatusForResultCalled;
     }
 }
