@@ -54,7 +54,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/msg_no_approximate_location"
+                        android:text="@string/msg_estabilishing_approximate_location"
                         android:textColor="@color/primary_text"
                         android:textSize="16sp"
                         android:textStyle="bold"/>

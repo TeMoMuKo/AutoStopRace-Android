@@ -31,4 +31,6 @@ public interface PostMvpView extends MvpView {
     void finishWithInadequateSettingsWarning();
 
     boolean isLocationSettingsStatusDialogCalled();
+
+    void showNoLocationEstabilishedError();
 }
