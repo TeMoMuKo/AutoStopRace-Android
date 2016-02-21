@@ -33,7 +33,7 @@ public class GmsLocationHelper {
     }
 
     public Observable<Location> getDeviceLocation(LocationRequest locationRequest) {
-        return LocationObservable.createObservable(mContext, locationRequest);
+        return LocationObservable.create(mContext, locationRequest);
     }
 
     public Observable<LocationSettingsResult> checkLocationSettings(LocationRequest locationRequest) {

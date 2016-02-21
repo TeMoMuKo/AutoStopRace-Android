@@ -19,7 +19,7 @@ public class LocationObservable extends GmsBaseObservable<Location> implements L
     private final LocationRequest mLocationRequest;
     private Subscriber<? super Location> mSubscriber;
 
-    public static Observable<Location> createObservable(Context context, LocationRequest locationRequest) {
+    public static Observable<Location> create(Context context, LocationRequest locationRequest) {
         return Observable.create(new LocationObservable(context, locationRequest));
     }
 
