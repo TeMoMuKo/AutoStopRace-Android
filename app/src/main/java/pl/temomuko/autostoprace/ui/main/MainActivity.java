@@ -25,6 +25,7 @@ import pl.temomuko.autostoprace.service.PostService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
+import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 
@@ -94,7 +95,9 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void startPostService() {
-        startService(PostService.getStartIntent(this));
+        if(!AndroidComponentUtil.isServiceRunning(this, PostService.class)) {
+            startService(PostService.getStartIntent(this));
+        }
     }
 
     @Override

@@ -6,7 +6,6 @@ import com.google.android.gms.location.LocationRequest;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,7 +72,6 @@ public class MainPresenterTest {
         mMainPresenter.detachView();
     }
 
-    @Ignore //TODO
     @Test
     public void testLoadLocationsReturnsLocations() throws Exception {
         List<LocationRecord> locationsFromApi = new ArrayList<>();
@@ -128,7 +126,6 @@ public class MainPresenterTest {
         verify(mMockMainMvpView, never()).showEmptyInfo();
     }
 
-    @Ignore //TODO
     @Test
     public void testLoadLocationsApiReturnsEmptyListWithEmptyDatabase() throws Exception {
         List<LocationRecord> locationRecords = new ArrayList<>();

@@ -17,7 +17,6 @@ import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedExceptio
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
-import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.RxUtil;
@@ -34,20 +33,19 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     private static final int LOCATION_ACCURACY = LocationRequest.PRIORITY_HIGH_ACCURACY;
 
     private DataManager mDataManager;
-    private ErrorHandler mErrorHandler;
     private CompositeSubscription mSubscriptions;
     private CompositeSubscription mLocationSubscriptions;
     private Subscription geocodingSubscription;
 
     private Location mLatestLocation;
     private LocationRequest mLocationRequest;
+    private boolean mIsLocationSaved;
 
     private final static String TAG = "PostPresenter";
 
     @Inject
-    public PostPresenter(DataManager dataManager, ErrorHandler errorHandler) {
+    public PostPresenter(DataManager dataManager) {
         mDataManager = dataManager;
-        mErrorHandler = errorHandler;
         mLocationRequest = new LocationRequest()
                 .setFastestInterval(FASTEST_UPDATE_INTERVAL_MILLISECONDS)
                 .setInterval(UPDATE_INTERVAL_MILLISECONDS)
@@ -69,19 +67,34 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         super.detachView();
     }
 
-    public void saveLocation(String message) {
+    public void setLatestLocation(Location latestLocation) {
+        mLatestLocation = latestLocation;
+    }
+
+    public void tryToSaveLocation(String message) {
         if (mLatestLocation == null) {
             getMvpView().showNoLocationEstablishedError();
         } else {
+            saveLocation(message);
+        }
+    }
+
+    private void saveLocation(String message) {
+        if (!mIsLocationSaved) {
             double latitude = mLatestLocation.getLatitude();
             double longitude = mLatestLocation.getLongitude();
             LocationRecord locationRecordToSend = new LocationRecord(latitude, longitude, message);
-            mSubscriptions.add(mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
+            mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
                     .compose(RxUtil.applySchedulers())
-                    .subscribe());
+                    .subscribe();
+            setLocationSaved();
             getMvpView().showSuccessInfo();
             getMvpView().startMainActivity();
         }
+    }
+
+    private void setLocationSaved() {
+        mIsLocationSaved = true;
     }
 
     public void startLocationService() {
