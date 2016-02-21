@@ -65,6 +65,10 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         super.detachView();
     }
 
+    public void setLatestLocation(Location latestLocation) {
+        mLatestLocation = latestLocation;
+    }
+
     public void saveLocation(String message) {
         if (mLatestLocation == null) {
             getMvpView().showNoLocationEstabilishedError();
@@ -72,9 +76,9 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
             double latitude = mLatestLocation.getLatitude();
             double longitude = mLatestLocation.getLongitude();
             LocationRecord locationRecordToSend = new LocationRecord(latitude, longitude, message);
-            mSubscriptions.add(mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
+            mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
                     .compose(RxUtil.applySchedulers())
-                    .subscribe());
+                    .subscribe();
             getMvpView().showSuccessInfo();
             getMvpView().startMainActivity();
         }

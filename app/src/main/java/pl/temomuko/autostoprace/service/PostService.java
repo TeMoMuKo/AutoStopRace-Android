@@ -42,7 +42,6 @@ public class PostService extends Service {
     @Override
     public void onDestroy() {
         LogUtil.i(TAG, "Service destroyed.");
-        if (mSubscription != null) mSubscription.unsubscribe();
         super.onDestroy();
     }
 
@@ -71,21 +70,21 @@ public class PostService extends Service {
     }
 
     public void postUnsentLocationsToServer() {
-        LogUtil.i(TAG, "Checking for unsent location records...");
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-
-        mSubscription = mDataManager.getUnsentLocationRecords()
-                .flatMap((LocationRecord unsentLocationRecord) -> mDataManager.postLocationRecordToServer(unsentLocationRecord)
-                        .compose(RxUtil.applySchedulers())
-                        .flatMap(mDataManager::handlePostLocationRecordResponse)
-                        .flatMap(mDataManager::saveSentLocationRecordToDatabase)
-                        .toCompletable().endWith(mDataManager.deleteUnsentLocationRecord(unsentLocationRecord))
-                        .toCompletable().endWith(Observable.just(unsentLocationRecord)))
-                .subscribe(removedLocation -> {
-                            EventUtil.postSticky(new RemovedLocationFromUnsentEvent(removedLocation));
-                            LogUtil.i("EventUtil", "Removed: " + removedLocation.toString());
-                        },
-                        this::handleError, this::handleCompleted);
+        if (mSubscription == null || mSubscription.isUnsubscribed()) {
+            LogUtil.i(TAG, "Checking for unsent location records...");
+            mSubscription = mDataManager.getUnsentLocationRecords()
+                    .concatMap((LocationRecord unsentLocationRecord) -> mDataManager.postLocationRecordToServer(unsentLocationRecord)
+                            .compose(RxUtil.applySchedulers())
+                            .flatMap(mDataManager::handlePostLocationRecordResponse)
+                            .flatMap(mDataManager::saveSentLocationRecordToDatabase)
+                            .toCompletable().endWith(mDataManager.deleteUnsentLocationRecord(unsentLocationRecord))
+                            .toCompletable().endWith(Observable.just(unsentLocationRecord)))
+                    .subscribe(removedLocation -> {
+                                EventUtil.postSticky(new RemovedLocationFromUnsentEvent(removedLocation));
+                                LogUtil.i("EventUtil", "Removed: " + removedLocation.toString());
+                            },
+                            this::handleError, this::handleCompleted);
+        }
     }
 
     private void handleCompleted() {

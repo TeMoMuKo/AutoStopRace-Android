@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.util;
 
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -19,5 +20,16 @@ public final class AndroidComponentUtil {
                 state ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                 PackageManager.DONT_KILL_APP);
+    }
+
+    public static boolean isServiceRunning(Context context, Class serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo serviceInfo :
+                manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(serviceInfo.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

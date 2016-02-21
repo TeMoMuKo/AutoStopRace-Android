@@ -1,5 +1,7 @@
 package pl.temomuko.autostoprace;
 
+import android.location.Location;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -28,6 +30,7 @@ public class PostPresenterTest {
     @Mock PostMvpView mMockPostMvpView;
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
+    @Mock Location mMockLastestLocation;
     private PostPresenter mPostPresenter;
     private final static String FAKE_MESSAGE = "fake_message";
 
@@ -37,6 +40,7 @@ public class PostPresenterTest {
     @Before
     public void setUp() throws Exception {
         mPostPresenter = new PostPresenter(mMockDataManager, mMockErrorHandler);
+        mPostPresenter.setLatestLocation(mMockLastestLocation);
         mPostPresenter.attachView(mMockPostMvpView);
     }
 
@@ -49,6 +53,8 @@ public class PostPresenterTest {
     public void testSaveLocation() throws Exception {
         when(mMockDataManager.saveUnsentLocationRecordToDatabase(any(LocationRecord.class)))
                 .thenReturn(rx.Observable.<Void>empty());
+        when(mMockLastestLocation.getLatitude()).thenReturn(12.34);
+        when(mMockLastestLocation.getLongitude()).thenReturn(45.67);
         mPostPresenter.saveLocation(FAKE_MESSAGE);
         verify(mMockDataManager).saveUnsentLocationRecordToDatabase(any(LocationRecord.class));
         verify(mMockPostMvpView).startMainActivity();
