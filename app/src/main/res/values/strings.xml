@@ -56,7 +56,7 @@
     <string name="ok">OK</string>
     <string name="action_save_and_send">Zapisz i wyślij</string>
     <string name="msg_your_location">Twoja przybliżona lokalizacja:</string>
-    <string name="msg_estabilishing_approximate_location">Trwa ustalanie przybliżonej lokalizacji…</string>
+    <string name="msg_establishing_approximate_location">Trwa ustalanie przybliżonej lokalizacji…</string>
     <string name="saved_location">Zapisano lokalizację</string>
     <string name="about_app">Aplikację przygotowali członkowie koła naukowego TeMoMuKo działającego przy Politechnice Wrocławskiej.</string>
     <string name="authors"><b>Autorzy:</b>\n- Szymon Kozak\n- Rafał Naniewicz\n- Michał Zając</string>
@@ -72,6 +72,6 @@
     <string name="msg_rate_app_question">Spodobała Ci się ta aplikacja?</string>
     <string name="msg_rate_app">Oceń ją w sklepie Google Play!</string>
     <string name="action_rate">Oceń aplikację</string>
-    <string name="msg_wait_for_estabilished_location">Poczekaj aż ustalimy Twoją lokalizację…</string>
+    <string name="msg_wait_for_established_location">Poczekaj aż ustalimy Twoją lokalizację…</string>
     <string name="msg_searching_for_aproximate_address">Trwa ustalanie przybliżonej lokalizacji…</string>
 </resources>

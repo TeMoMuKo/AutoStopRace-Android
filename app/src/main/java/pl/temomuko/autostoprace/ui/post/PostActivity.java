@@ -176,7 +176,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
 
     @Override
     public void showNoLocationEstablishedError() {
-        Toast.makeText(this, R.string.msg_wait_for_estabilished_location, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.msg_wait_for_established_location, Toast.LENGTH_SHORT).show();
     }
 
     @Override
