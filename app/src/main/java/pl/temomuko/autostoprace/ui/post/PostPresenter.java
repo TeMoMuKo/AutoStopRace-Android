@@ -66,15 +66,18 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     }
 
     public void saveLocation(String message) {
-        //todo tmp to prevent nullptr
-        double latitude = mLatestLocation != null ? mLatestLocation.getLatitude() : 0;
-        double longitude = mLatestLocation != null ? mLatestLocation.getLongitude() : 0;
-        LocationRecord locationRecordToSend = new LocationRecord(latitude, longitude, message);
-        mSubscriptions.add(mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
-                .compose(RxUtil.applySchedulers())
-                .subscribe());
-        getMvpView().showSuccessInfo();
-        getMvpView().startMainActivity();
+        if (mLatestLocation == null) {
+            getMvpView().showNoLocationEstabilishedError();
+        } else {
+            double latitude = mLatestLocation.getLatitude();
+            double longitude = mLatestLocation.getLongitude();
+            LocationRecord locationRecordToSend = new LocationRecord(latitude, longitude, message);
+            mSubscriptions.add(mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
+                    .compose(RxUtil.applySchedulers())
+                    .subscribe());
+            getMvpView().showSuccessInfo();
+            getMvpView().startMainActivity();
+        }
     }
 
     public void startLocationService() {

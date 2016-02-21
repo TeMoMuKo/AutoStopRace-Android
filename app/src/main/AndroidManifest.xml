@@ -24,8 +24,8 @@
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
-            android:theme="@style/AppTheme.NormalStatusBar"
-            android:label="@string/title_activity_login">
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NormalStatusBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.launcher.LauncherActivity"/>
@@ -36,8 +36,8 @@
         </activity>
         <activity
             android:name=".ui.post.PostActivity"
-            android:theme="@style/AppTheme.NormalStatusBar"
-            android:label="@string/title_post_location">
+            android:label="@string/title_post_location"
+            android:theme="@style/AppTheme.NormalStatusBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity"/>
@@ -79,16 +79,16 @@
         </activity>
         <activity
             android:name=".ui.about.AboutActivity"
-            android:theme="@style/AppTheme.NormalStatusBar"
-            android:label="@string/title_activity_about">
+            android:label="@string/title_activity_about"
+            android:theme="@style/AppTheme.NormalStatusBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity"/>
         </activity>
         <activity
             android:name=".ui.settings.SettingsActivity"
-            android:theme="@style/AppTheme.NormalStatusBar"
-            android:label="@string/title_activity_settings">
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.NormalStatusBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity"/>
@@ -109,7 +109,6 @@
         </receiver>
 
         <service android:name=".service.PostService"/>
-
     </application>
 
 </manifest>

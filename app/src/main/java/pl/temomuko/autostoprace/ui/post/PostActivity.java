@@ -94,6 +94,12 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_post, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_post_send:
@@ -102,12 +108,6 @@ public class PostActivity extends BaseActivity implements PostMvpView {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_post, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     /* MVP View methods */
@@ -171,6 +171,11 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     public boolean isLocationSettingsStatusDialogCalled() {
         return mIsLocationSettingsStatusForResultCalled;
+    }
+
+    @Override
+    public void showNoLocationEstabilishedError() {
+        Toast.makeText(this, R.string.msg_wait_for_estabilished_location, Toast.LENGTH_SHORT).show();
     }
 
     /* Events */
