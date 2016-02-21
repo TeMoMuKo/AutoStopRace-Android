@@ -35,6 +35,7 @@ import pl.temomuko.autostoprace.util.PermissionUtil;
 public class MainActivity extends DrawerActivity implements MainMvpView {
 
     private static final int CHECK_LOCATION_SETTINGS_REQUEST_CODE = 1;
+    private static final int UNHANDLED_REQUEST_CODE = -1;
 
     @Inject MainPresenter mMainPresenter;
     @Bind(R.id.tv_current_team_locations) TextView mCurrentLocationRecordsTextView;
@@ -95,7 +96,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void startPostService() {
-        if(!AndroidComponentUtil.isServiceRunning(this, PostService.class)) {
+        if (!AndroidComponentUtil.isServiceRunning(this, PostService.class)) {
             startService(PostService.getStartIntent(this));
         }
     }
@@ -178,12 +179,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult) {
-        IntentUtil.startGmsConnectionResultForResolution(this, connectionResult, -1);
+        IntentUtil.startGmsConnectionResultForResolution(this, connectionResult, UNHANDLED_REQUEST_CODE);
     }
 
     @Override
     public void onGmsConnectionResultNoResolution(int errorCode) {
-        GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, 0).show();
+        GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, UNHANDLED_REQUEST_CODE).show();
     }
 
     @Override

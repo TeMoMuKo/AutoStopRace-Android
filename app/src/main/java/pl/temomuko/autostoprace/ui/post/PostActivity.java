@@ -34,6 +34,7 @@ import pl.temomuko.autostoprace.util.PermissionUtil;
 public class PostActivity extends BaseActivity implements PostMvpView {
 
     private static final int CHECK_LOCATION_SETTINGS_REQUEST_CODE = 1;
+    private static final int UNHANDLED_REQUEST_CODE = -1;
 
     @Inject PostPresenter mPostPresenter;
     @Bind(R.id.toolbar) Toolbar mToolbar;
@@ -149,12 +150,12 @@ public class PostActivity extends BaseActivity implements PostMvpView {
 
     @Override
     public void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult) {
-        IntentUtil.startGmsConnectionResultForResolution(this, connectionResult, -1);
+        IntentUtil.startGmsConnectionResultForResolution(this, connectionResult, UNHANDLED_REQUEST_CODE);
     }
 
     @Override
     public void onGmsConnectionResultNoResolution(int errorCode) {
-        GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, 0).show();
+        GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, UNHANDLED_REQUEST_CODE).show();
     }
 
     @Override
