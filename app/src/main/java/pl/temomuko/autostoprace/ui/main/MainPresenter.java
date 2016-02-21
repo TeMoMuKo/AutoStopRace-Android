@@ -30,7 +30,7 @@ import rx.subscriptions.CompositeSubscription;
 public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     private ErrorHandler mErrorHandler;
-    private final static String TAG = "MainPresenter";
+    private final static String TAG = MainPresenter.class.getSimpleName();
     private CompositeSubscription mSubscriptions;
 
     @Inject

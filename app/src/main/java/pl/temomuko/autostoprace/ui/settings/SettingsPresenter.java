@@ -15,7 +15,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
     private DataManager mDataManager;
     private Subscription mSubscription;
-    private static final String TAG = "SettingsPresenter";
+    private final static String TAG = SettingsPresenter.class.getSimpleName();
 
     @Inject
     public SettingsPresenter(DataManager dataManager) {
@@ -46,7 +46,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 .subscribe(response -> {
                     LogUtil.i(TAG, response.body().toString());
                 }, throwable -> {
-                    LogUtil.i(TAG, throwable.getMessage());
+                    LogUtil.e(TAG, throwable.getMessage());
                 });
         mDataManager.clearUserData().subscribe();
         getMvpView().showLogoutMessage();

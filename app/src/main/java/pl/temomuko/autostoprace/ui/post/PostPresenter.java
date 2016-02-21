@@ -41,7 +41,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     private LocationRequest mLocationRequest;
     private boolean mIsLocationSaved;
 
-    private final static String TAG = "PostPresenter";
+    private final static String TAG = PostPresenter.class.getSimpleName();
 
     @Inject
     public PostPresenter(DataManager dataManager) {

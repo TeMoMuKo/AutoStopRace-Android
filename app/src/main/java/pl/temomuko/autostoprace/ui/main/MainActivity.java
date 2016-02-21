@@ -42,10 +42,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
     private Snackbar mWarningSnackbar;
-
     private boolean mIsLocationSettingsStatusForResultCalled = false;
-
-    private String TAG = "MainActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
