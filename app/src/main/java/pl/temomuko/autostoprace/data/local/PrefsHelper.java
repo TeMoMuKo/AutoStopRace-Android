@@ -66,12 +66,6 @@ public class PrefsHelper {
         editor.remove(PREF_AUTH_TOKEN);
         editor.remove(PREF_AUTH_CLIENT);
         editor.remove(PREF_AUTH_UID);
-        editor.apply();
-        clearUser();
-    }
-
-    private void clearUser() {
-        SharedPreferences.Editor editor = mPrefs.edit();
         editor.remove(PREF_CURRENT_USER_JSON);
         editor.apply();
     }

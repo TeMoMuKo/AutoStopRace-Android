@@ -10,16 +10,16 @@ public class CreateLocationRecordRequest {
     @SerializedName("location") private LocationWrapper mLocationWrapper;
 
     public CreateLocationRecordRequest(LocationRecord loc) {
-        mLocationWrapper = new LocationWrapper(loc.getLongitude(), loc.getLatitude(), loc.getMessage());
+        mLocationWrapper = new LocationWrapper(loc.getLatitude(), loc.getLongitude(), loc.getMessage());
     }
 
     private static class LocationWrapper {
 
-        @SerializedName("longitude") private double mLongitude;
         @SerializedName("latitude") private double mLatitude;
+        @SerializedName("longitude") private double mLongitude;
         @SerializedName("message") private String mMessage;
 
-        public LocationWrapper(double longitude, double latitude, String message) {
+        public LocationWrapper(double latitude, double longitude, String message) {
             mLongitude = longitude;
             mLatitude = latitude;
             mMessage = message;
