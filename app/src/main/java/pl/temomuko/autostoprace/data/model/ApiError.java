@@ -11,7 +11,7 @@ import retrofit2.Converter;
 import retrofit2.Response;
 
 /**
- * Created by szymen on 2016-01-22.
+ * Created by Szymon Kozak on 2016-01-22.
  */
 public class ApiError {
 

@@ -23,7 +23,7 @@ import pl.temomuko.autostoprace.ui.settings.SettingsActivity;
 import pl.temomuko.autostoprace.ui.teams.TeamsActivity;
 
 /**
- * Created by szymen on 2016-02-07.
+ * Created by Szymon Kozak on 2016-02-07.
  */
 public class NavigationListener implements NavigationView.OnNavigationItemSelectedListener {
 

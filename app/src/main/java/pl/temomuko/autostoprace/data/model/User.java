@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.data.model;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by szymen on 2016-01-22.
+ * Created by Szymon Kozak on 2016-01-22.
  */
 public class User {
 

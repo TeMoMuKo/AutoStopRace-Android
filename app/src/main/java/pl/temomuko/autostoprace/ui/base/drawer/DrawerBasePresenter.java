@@ -5,7 +5,7 @@ import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 
 /**
- * Created by szymen on 2016-02-05.
+ * Created by Szymon Kozak on 2016-02-05.
  */
 public abstract class DrawerBasePresenter<T extends DrawerMvpView> extends BasePresenter<T> {
 

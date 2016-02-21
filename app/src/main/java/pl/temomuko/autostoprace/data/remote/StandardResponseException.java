@@ -5,7 +5,7 @@ import java.io.IOException;
 import retrofit2.Response;
 
 /**
- * Created by szymen on 2016-02-12.
+ * Created by Szymon Kozak on 2016-02-12.
  */
 public class StandardResponseException extends IOException {
 

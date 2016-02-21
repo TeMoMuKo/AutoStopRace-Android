@@ -13,7 +13,7 @@ import pl.temomuko.autostoprace.ui.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;
 
 /**
- * Created by szymen on 2016-01-22.
+ * Created by Szymon Kozak on 2016-01-22.
  */
 public class LauncherActivity extends DrawerActivity implements LauncherMvpView {
 

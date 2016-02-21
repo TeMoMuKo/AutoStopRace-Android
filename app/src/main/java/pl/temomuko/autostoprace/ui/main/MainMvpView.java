@@ -9,7 +9,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 
 /**
- * Created by szymen on 2016-01-09.
+ * Created by Szymon Kozak on 2016-01-09.
  */
 public interface MainMvpView extends DrawerMvpView {
 

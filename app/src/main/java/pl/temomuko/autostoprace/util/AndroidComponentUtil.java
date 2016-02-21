@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 /**
- * Created by szymen on 2016-02-19.
+ * Created by Szymon Kozak on 2016-02-19.
  */
 public final class AndroidComponentUtil {
 

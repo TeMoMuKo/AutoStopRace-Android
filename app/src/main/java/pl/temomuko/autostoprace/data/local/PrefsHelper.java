@@ -17,7 +17,7 @@ import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.injection.AppContext;
 
 /**
- * Created by szymen on 2016-01-09.
+ * Created by Szymon Kozak on 2016-01-09.
  */
 
 @Singleton

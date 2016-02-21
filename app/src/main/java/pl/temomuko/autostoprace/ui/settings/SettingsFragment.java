@@ -17,7 +17,7 @@ import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.util.DialogFactory;
 
 /**
- * Created by szymen on 2016-02-05.
+ * Created by Szymon Kozak on 2016-02-05.
  */
 public class SettingsFragment extends PreferenceFragment implements SettingsMvpView {
 

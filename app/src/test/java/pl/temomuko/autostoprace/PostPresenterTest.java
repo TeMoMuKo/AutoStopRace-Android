@@ -21,7 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by szymen on 2016-01-30.
+ * Created by Szymon Kozak on 2016-01-30.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class PostPresenterTest {

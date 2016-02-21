@@ -9,7 +9,7 @@ import pl.temomuko.autostoprace.util.RxUtil;
 import rx.Subscription;
 
 /**
- * Created by szymen on 2016-02-05.
+ * Created by Szymon Kozak on 2016-02-05.
  */
 public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 

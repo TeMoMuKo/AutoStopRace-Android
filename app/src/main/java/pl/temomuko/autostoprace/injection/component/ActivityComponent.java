@@ -17,7 +17,7 @@ import pl.temomuko.autostoprace.ui.settings.SettingsFragment;
 import pl.temomuko.autostoprace.ui.teams.TeamsActivity;
 
 /**
- * Created by szymen on 2016-01-06.
+ * Created by Szymon Kozak on 2016-01-06.
  */
 @ActivityScope
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)

@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 
 /**
- * Created by szymen on 2016-01-22.
+ * Created by Szymon Kozak on 2016-01-22.
  */
 public class LauncherPresenter extends BasePresenter<LauncherMvpView> {
 

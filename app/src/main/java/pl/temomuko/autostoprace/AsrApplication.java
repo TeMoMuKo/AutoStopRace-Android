@@ -11,7 +11,7 @@ import pl.temomuko.autostoprace.injection.component.DaggerApplicationComponent;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
 
 /**
- * Created by szymen on 2016-01-06.
+ * Created by Szymon Kozak on 2016-01-06.
  */
 public class AsrApplication extends Application {
 

@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.util;
 import org.greenrobot.eventbus.EventBus;
 
 /**
- * Created by szymen on 2016-01-09.
+ * Created by Szymon Kozak on 2016-01-09.
  */
 
 public final class EventUtil {

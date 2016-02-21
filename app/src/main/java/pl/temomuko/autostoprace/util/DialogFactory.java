@@ -12,7 +12,7 @@ import pl.temomuko.autostoprace.ui.login.LoginPresenter;
 import pl.temomuko.autostoprace.ui.settings.SettingsPresenter;
 
 /**
- * Created by szymen on 2016-02-06.
+ * Created by Szymon Kozak on 2016-02-06.
  */
 public final class DialogFactory {
 

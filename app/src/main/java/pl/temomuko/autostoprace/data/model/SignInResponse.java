@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by szymen on 2016-01-25.
+ * Created by Szymon Kozak on 2016-01-25.
  */
 public class SignInResponse {
 

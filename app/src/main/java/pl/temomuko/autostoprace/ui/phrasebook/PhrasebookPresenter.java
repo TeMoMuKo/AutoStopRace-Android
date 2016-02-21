@@ -7,7 +7,7 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 
 /**
- * Created by szymen on 2016-02-05.
+ * Created by Szymon Kozak on 2016-02-05.
  */
 public class PhrasebookPresenter extends DrawerBasePresenter<DrawerMvpView> {
 

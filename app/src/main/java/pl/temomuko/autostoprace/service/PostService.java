@@ -23,7 +23,7 @@ import rx.Observable;
 import rx.Subscription;
 
 /**
- * Created by szymen on 2016-02-19.
+ * Created by Szymon Kozak on 2016-02-19.
  */
 public class PostService extends Service {
 

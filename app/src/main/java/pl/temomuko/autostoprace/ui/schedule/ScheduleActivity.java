@@ -8,7 +8,7 @@ import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 
 /**
- * Created by szymen on 2016-02-04.
+ * Created by Szymon Kozak on 2016-02-04.
  */
 public class ScheduleActivity extends DrawerActivity {
 

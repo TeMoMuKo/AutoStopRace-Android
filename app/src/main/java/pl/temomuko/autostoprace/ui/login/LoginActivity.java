@@ -26,7 +26,7 @@ import retrofit2.Response;
 import rx.Observable;
 
 /**
- * Created by szymen on 2016-01-22.
+ * Created by Szymon Kozak on 2016-01-22.
  */
 public class LoginActivity extends BaseActivity implements LoginMvpView {
 

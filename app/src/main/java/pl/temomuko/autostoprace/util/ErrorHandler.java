@@ -18,7 +18,7 @@ import pl.temomuko.autostoprace.injection.AppContext;
 import retrofit2.Response;
 
 /**
- * Created by szymen on 2016-01-27.
+ * Created by Szymon Kozak on 2016-01-27.
  */
 
 @Singleton

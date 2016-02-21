@@ -25,7 +25,7 @@ import pl.temomuko.autostoprace.util.RxUtil;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Created by szymen on 2016-01-09.
+ * Created by Szymon Kozak on 2016-01-09.
  */
 public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 

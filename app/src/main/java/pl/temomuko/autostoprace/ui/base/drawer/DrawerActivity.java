@@ -15,7 +15,7 @@ import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 
 /**
- * Created by szymen on 2016-02-03.
+ * Created by Szymon Kozak on 2016-02-03.
  */
 
 public abstract class DrawerActivity extends BaseActivity implements DrawerMvpView {
