@@ -174,8 +174,13 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
-    public void showNoLocationEstabilishedError() {
+    public void showNoLocationEstablishedError() {
         Toast.makeText(this, R.string.msg_wait_for_estabilished_location, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setSearchingForApproximateAddress() {
+        mCurrentLocationAddressTextView.setText(getString(R.string.msg_searching_for_aproximate_address));
     }
 
     /* Events */

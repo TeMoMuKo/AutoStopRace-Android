@@ -32,5 +32,7 @@ public interface PostMvpView extends MvpView {
 
     boolean isLocationSettingsStatusDialogCalled();
 
-    void showNoLocationEstabilishedError();
+    void showNoLocationEstablishedError();
+
+    void setSearchingForApproximateAddress();
 }

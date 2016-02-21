@@ -1,6 +1,7 @@
 package pl.temomuko.autostoprace.ui.post;
 
 import android.app.Activity;
+import android.location.Address;
 import android.location.Location;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -20,6 +21,7 @@ import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.RxUtil;
+import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -27,7 +29,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class PostPresenter extends BasePresenter<PostMvpView> {
 
-    private static final int UPDATE_INTERVAL_MILLISECONDS = 5000;
+    private static final int UPDATE_INTERVAL_MILLISECONDS = 10000;
     private static final int FASTEST_UPDATE_INTERVAL_MILLISECONDS = UPDATE_INTERVAL_MILLISECONDS / 2;
     private static final int LOCATION_ACCURACY = LocationRequest.PRIORITY_HIGH_ACCURACY;
 
@@ -35,6 +37,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     private ErrorHandler mErrorHandler;
     private CompositeSubscription mSubscriptions;
     private CompositeSubscription mLocationSubscriptions;
+    private Subscription geocodingSubscription;
 
     private Location mLatestLocation;
     private LocationRequest mLocationRequest;
@@ -62,12 +65,13 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public void detachView() {
         mSubscriptions.unsubscribe();
         mLocationSubscriptions.unsubscribe();
+        if (geocodingSubscription != null) geocodingSubscription.unsubscribe();
         super.detachView();
     }
 
     public void saveLocation(String message) {
         if (mLatestLocation == null) {
-            getMvpView().showNoLocationEstabilishedError();
+            getMvpView().showNoLocationEstablishedError();
         } else {
             double latitude = mLatestLocation.getLatitude();
             double longitude = mLatestLocation.getLongitude();
@@ -153,8 +157,36 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         getMvpView().updateCurrentLocationCords(mLatestLocation.getLatitude(), mLatestLocation.getLongitude());
         LogUtil.i("Location update :",
                 Double.toString(location.getLatitude()) + ", " + Double.toString(location.getLongitude()));
-        //// TODO: 16.02.2016 implement reverse geo
-        getMvpView().updateCurrentLocationAddress("Somewhere");
+        geocodeAddress();
+    }
+
+    private void geocodeAddress() {
+        if (geocodingSubscription != null) geocodingSubscription.unsubscribe();
+        geocodingSubscription = mDataManager.getAddressFromCoordinates(mLatestLocation.getLatitude(),
+                mLatestLocation.getLongitude())
+                .subscribe(
+                        this::handleGeocodedAddress,
+                        this::handleGeocodeError
+                );
+    }
+
+    private void handleGeocodedAddress(Address address) {
+        getMvpView().updateCurrentLocationAddress(getAddressString(address));
+    }
+
+    private String getAddressString(Address address) {
+        StringBuilder addressStringBuilder = new StringBuilder();
+        for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+            addressStringBuilder.append(address.getAddressLine(i));
+            if (i != address.getMaxAddressLineIndex()) {
+                addressStringBuilder.append("\n");
+            }
+        }
+        return addressStringBuilder.toString();
+    }
+
+    private void handleGeocodeError(Throwable throwable) {
+        //// TODO: 21.02.2016 handle errors
     }
 
     public void stopLocationService() {
