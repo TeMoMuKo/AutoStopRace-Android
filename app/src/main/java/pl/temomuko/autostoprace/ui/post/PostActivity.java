@@ -104,7 +104,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
         switch (item.getItemId()) {
             case R.id.action_post_send:
                 String message = mMessageEditText.getText().toString().trim();
-                mPostPresenter.saveLocation(message);
+                mPostPresenter.tryToSaveLocation(message);
                 return true;
         }
         return super.onOptionsItemSelected(item);

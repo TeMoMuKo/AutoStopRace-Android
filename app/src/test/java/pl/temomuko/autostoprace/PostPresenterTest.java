@@ -14,7 +14,6 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.post.PostMvpView;
 import pl.temomuko.autostoprace.ui.post.PostPresenter;
-import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 
 import static org.mockito.Matchers.any;
@@ -29,7 +28,6 @@ public class PostPresenterTest {
 
     @Mock PostMvpView mMockPostMvpView;
     @Mock DataManager mMockDataManager;
-    @Mock ErrorHandler mMockErrorHandler;
     @Mock Location mMockLastestLocation;
     private PostPresenter mPostPresenter;
     private final static String FAKE_MESSAGE = "fake_message";
@@ -39,7 +37,7 @@ public class PostPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mPostPresenter = new PostPresenter(mMockDataManager, mMockErrorHandler);
+        mPostPresenter = new PostPresenter(mMockDataManager);
         mPostPresenter.setLatestLocation(mMockLastestLocation);
         mPostPresenter.attachView(mMockPostMvpView);
     }
@@ -55,7 +53,7 @@ public class PostPresenterTest {
                 .thenReturn(rx.Observable.<Void>empty());
         when(mMockLastestLocation.getLatitude()).thenReturn(12.34);
         when(mMockLastestLocation.getLongitude()).thenReturn(45.67);
-        mPostPresenter.saveLocation(FAKE_MESSAGE);
+        mPostPresenter.tryToSaveLocation(FAKE_MESSAGE);
         verify(mMockDataManager).saveUnsentLocationRecordToDatabase(any(LocationRecord.class));
         verify(mMockPostMvpView).startMainActivity();
     }
