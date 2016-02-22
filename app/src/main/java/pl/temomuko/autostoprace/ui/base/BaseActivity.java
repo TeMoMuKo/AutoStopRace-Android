@@ -10,7 +10,7 @@ import pl.temomuko.autostoprace.injection.component.DaggerActivityComponent;
 import pl.temomuko.autostoprace.injection.module.ActivityModule;
 
 /**
- * Created by szymen on 2016-01-06.
+ * Created by Szymon Kozak on 2016-01-06.
  */
 public abstract class BaseActivity extends AppCompatActivity {
 

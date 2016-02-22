@@ -5,7 +5,7 @@ import android.util.Log;
 import pl.temomuko.autostoprace.BuildConfig;
 
 /**
- * Created by szymen on 2016-02-16.
+ * Created by Szymon Kozak on 2016-02-16.
  */
 public final class LogUtil {
 

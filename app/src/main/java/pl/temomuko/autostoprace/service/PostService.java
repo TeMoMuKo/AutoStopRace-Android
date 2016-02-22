@@ -23,14 +23,14 @@ import rx.Observable;
 import rx.Subscription;
 
 /**
- * Created by szymen on 2016-02-19.
+ * Created by Szymon Kozak on 2016-02-19.
  */
 public class PostService extends Service {
 
     @Inject DataManager mDataManager;
     @Inject ErrorHandler mErrorHandler;
     private Subscription mSubscription;
-    private final static String TAG = "PostService";
+    private final static String TAG = PostService.class.getSimpleName();
 
     @Override
     public void onCreate() {
@@ -100,7 +100,7 @@ public class PostService extends Service {
 
     public static class NetworkChangeReceiver extends BroadcastReceiver {
 
-        private static final String TAG = "NetworkChangeReceiver";
+        private final static String TAG = NetworkChangeReceiver.class.getSimpleName();
 
         @Override
         public void onReceive(final Context context, final Intent intent) {

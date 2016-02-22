@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by szymen on 2016-02-06.
+ * Created by Szymon Kozak on 2016-02-06.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class SettingsPresenterTest {

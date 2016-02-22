@@ -16,7 +16,7 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.util.IntentUtil;
 
 /**
- * Created by szymen on 2016-02-05.
+ * Created by Szymon Kozak on 2016-02-05.
  */
 public class AboutActivity extends BaseActivity {
 

@@ -14,7 +14,7 @@ import pl.temomuko.autostoprace.ui.launcher.LauncherPresenter;
 import static org.mockito.Mockito.verify;
 
 /**
- * Created by szymen on 2016-01-30.
+ * Created by Szymon Kozak on 2016-01-30.
  */
 
 @RunWith(MockitoJUnitRunner.class)

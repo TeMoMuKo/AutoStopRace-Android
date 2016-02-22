@@ -23,7 +23,7 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Created by szymen on 2016-01-30.
+ * Created by Szymon Kozak on 2016-01-30.
  */
 public class PostPresenter extends BasePresenter<PostMvpView> {
 
@@ -35,7 +35,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     private Location mLatestLocation;
     private boolean mIsLocationSaved;
 
-    private final static String TAG = "PostPresenter";
+    private final static String TAG = PostPresenter.class.getSimpleName();
 
     @Inject
     public PostPresenter(DataManager dataManager) {

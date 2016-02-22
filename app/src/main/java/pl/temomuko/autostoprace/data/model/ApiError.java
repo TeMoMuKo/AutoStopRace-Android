@@ -11,7 +11,7 @@ import retrofit2.Converter;
 import retrofit2.Response;
 
 /**
- * Created by szymen on 2016-01-22.
+ * Created by Szymon Kozak on 2016-01-22.
  */
 public class ApiError {
 
@@ -19,7 +19,7 @@ public class ApiError {
     private List<String> mErrors = new ArrayList<>();
     private final static String EMAIL_CONFIRMATION_ERROR_SUFFIX =
             "You must follow the instructions in the email before your account can be activated";
-    private final static String TAG = "ApiError";
+    private final static String TAG = ApiError.class.getSimpleName();
 
     private ApiError(int status) {
         mStatus = status;

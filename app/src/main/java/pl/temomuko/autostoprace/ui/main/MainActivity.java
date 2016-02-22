@@ -30,7 +30,7 @@ import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 
 /**
- * Created by szymen on 2016-01-06.
+ * Created by Szymon Kozak on 2016-01-06.
  */
 public class MainActivity extends DrawerActivity implements MainMvpView {
 
@@ -42,10 +42,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
     private Snackbar mWarningSnackbar;
-
     private boolean mIsLocationSettingsStatusForResultCalled = false;
-
-    private String TAG = "MainActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

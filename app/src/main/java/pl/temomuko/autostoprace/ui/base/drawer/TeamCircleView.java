@@ -12,7 +12,7 @@ import android.view.View;
 import pl.temomuko.autostoprace.R;
 
 /**
- * Created by szymen on 2016-02-06.
+ * Created by Szymon Kozak on 2016-02-06.
  */
 public class TeamCircleView extends View {
 

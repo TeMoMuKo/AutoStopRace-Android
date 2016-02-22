@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.ui.base.drawer;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 
 /**
- * Created by szymen on 2016-02-11.
+ * Created by Szymon Kozak on 2016-02-11.
  */
 public class DrawerItemTarget {
 

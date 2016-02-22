@@ -11,7 +11,7 @@ import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.injection.AppContext;
 
 /**
- * Created by szymen on 2016-01-06.
+ * Created by Szymon Kozak on 2016-01-06.
  */
 
 @Module

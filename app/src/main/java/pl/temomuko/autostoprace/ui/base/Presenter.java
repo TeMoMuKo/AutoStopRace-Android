@@ -1,7 +1,7 @@
 package pl.temomuko.autostoprace.ui.base;
 
 /**
- * Created by szymen on 2016-01-09.
+ * Created by Szymon Kozak on 2016-01-09.
  */
 public interface Presenter<T extends MvpView> {
 

@@ -8,7 +8,7 @@ import retrofit2.Response;
 import rx.Observable;
 
 /**
- * Created by szymen on 2016-02-03.
+ * Created by Szymon Kozak on 2016-02-03.
  */
 
 /* Fragment which helps keep SignIn Observable

@@ -1,7 +1,7 @@
 package pl.temomuko.autostoprace.data.remote;
 
 /**
- * Created by szymen on 2016-01-27.
+ * Created by Szymon Kozak on 2016-01-27.
  */
 public final class HttpStatus {
 

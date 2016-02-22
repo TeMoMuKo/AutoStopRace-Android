@@ -29,7 +29,7 @@ import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 
 /**
- * Created by szymen on 2016-01-30.
+ * Created by Szymon Kozak on 2016-01-30.
  */
 public class PostActivity extends BaseActivity implements PostMvpView {
 

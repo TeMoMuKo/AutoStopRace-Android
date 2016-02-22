@@ -15,7 +15,7 @@ import rx.plugins.RxJavaSchedulersHook;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by szymen on 2016-01-22.
+ * Created by Szymon Kozak on 2016-01-22.
  */
 
 /**

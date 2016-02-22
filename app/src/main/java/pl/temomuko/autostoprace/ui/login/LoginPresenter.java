@@ -12,7 +12,7 @@ import rx.Observable;
 import rx.Subscription;
 
 /**
- * Created by szymen on 2016-01-22.
+ * Created by Szymon Kozak on 2016-01-22.
  */
 public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
