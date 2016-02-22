@@ -11,7 +11,9 @@ public interface SettingsMvpView extends MvpView {
 
     void startLauncherActivity();
 
-    void setupLogoutPreferenceSummary(boolean isAuth, String summary);
+    void setupUserLogoutPreferenceSummary(String username);
+
+    void setupGuestLogoutPreferenceSummary();
 
     void setupLogoutPreferenceEnabled(boolean state);
 }

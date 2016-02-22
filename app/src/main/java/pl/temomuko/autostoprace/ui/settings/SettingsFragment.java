@@ -79,16 +79,6 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
         }
     }
 
-    public void setupLogoutPreferenceSummary(boolean isAuth, String username) {
-        String loggedAsMessage = getActivity().getString(R.string.pref_logout_summary, username);
-        String notLoggedMessage = getActivity().getString(R.string.pref_logout_summary_not_logged);
-        mLogoutPreference.setSummary(isAuth ? loggedAsMessage : notLoggedMessage);
-    }
-
-    public void setupLogoutPreferenceEnabled(boolean state) {
-        mLogoutPreference.setEnabled(state);
-    }
-
     /* MVP View methods */
 
     @Override
@@ -102,5 +92,22 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    @Override
+    public void setupLogoutPreferenceEnabled(boolean state) {
+        mLogoutPreference.setEnabled(state);
+    }
+
+    @Override
+    public void setupUserLogoutPreferenceSummary(String username) {
+        String summary = getActivity().getString(R.string.pref_logout_summary, username);
+        mLogoutPreference.setSummary(summary);
+    }
+
+    @Override
+    public void setupGuestLogoutPreferenceSummary() {
+        String summary = getActivity().getString(R.string.pref_logout_summary_not_logged);
+        mLogoutPreference.setSummary(summary);
     }
 }
