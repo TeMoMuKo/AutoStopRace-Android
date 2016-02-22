@@ -6,7 +6,6 @@ import android.location.Location;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
@@ -28,17 +27,12 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class PostPresenter extends BasePresenter<PostMvpView> {
 
-    private static final int UPDATE_INTERVAL_MILLISECONDS = 10000;
-    private static final int FASTEST_UPDATE_INTERVAL_MILLISECONDS = UPDATE_INTERVAL_MILLISECONDS / 2;
-    private static final int LOCATION_ACCURACY = LocationRequest.PRIORITY_HIGH_ACCURACY;
-
     private DataManager mDataManager;
     private CompositeSubscription mSubscriptions;
     private CompositeSubscription mLocationSubscriptions;
     private Subscription geocodingSubscription;
 
     private Location mLatestLocation;
-    private LocationRequest mLocationRequest;
     private boolean mIsLocationSaved;
 
     private final static String TAG = "PostPresenter";
@@ -46,10 +40,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     @Inject
     public PostPresenter(DataManager dataManager) {
         mDataManager = dataManager;
-        mLocationRequest = new LocationRequest()
-                .setFastestInterval(FASTEST_UPDATE_INTERVAL_MILLISECONDS)
-                .setInterval(UPDATE_INTERVAL_MILLISECONDS)
-                .setPriority(LOCATION_ACCURACY);
         mSubscriptions = new CompositeSubscription();
         mLocationSubscriptions = new CompositeSubscription();
     }
@@ -158,7 +148,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     }
 
     private void startLocationUpdates() {
-        mLocationSubscriptions.add(mDataManager.getDeviceLocation(mLocationRequest)
+        mLocationSubscriptions.add(mDataManager.getDeviceLocation(GmsLocationHelper.APP_LOCATION_REQUEST)
                 .subscribe(this::handleLocationUpdate, this::handleGmsError));
     }
 
