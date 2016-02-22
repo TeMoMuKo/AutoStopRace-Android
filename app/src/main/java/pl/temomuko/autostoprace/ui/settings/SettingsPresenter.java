@@ -34,7 +34,9 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     public void setupLogoutPreference() {
-        if (mDataManager.isLoggedWithToken()) {
+        boolean isAuth = mDataManager.isLoggedWithToken();
+        getMvpView().setupLogoutPreferenceEnabled(isAuth);
+        if (isAuth) {
             String username = mDataManager.getCurrentUser().getUsername();
             getMvpView().setupUserLogoutPreferenceSummary(username);
         } else {
