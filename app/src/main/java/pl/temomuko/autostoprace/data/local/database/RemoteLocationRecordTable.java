@@ -20,6 +20,9 @@ public abstract class RemoteLocationRecordTable extends LocalUnsentLocationRecor
                     COLUMN_LATITUDE + " REAL NOT NULL," +
                     COLUMN_LONGITUDE + " REAL NOT NULL," +
                     COLUMN_MESSAGE + " TEXT," +
+                    COLUMN_ADDRESS + " TEXT," +
+                    COLUMN_COUNTRY + " TEXT," +
+                    COLUMN_COUNTRY_CODE + " TEXT," +
                     COLUMN_SERVER_RECEIPT_DATE + " TEXT " +
                     " );";
 
