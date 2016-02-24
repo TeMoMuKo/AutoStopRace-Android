@@ -42,7 +42,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
     private Snackbar mWarningSnackbar;
-    private boolean mIsLocationSettingsStatusForResultCalled = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
-            mIsLocationSettingsStatusForResultCalled = false;
+            mMainPresenter.setIsLocationSettingsStatusForResultCalled(false);
             mMainPresenter.handleLocationSettingsDialogResult(resultCode);
         }
     }
@@ -162,7 +161,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     public void onUserResolvableLocationSettings(Status status) {
         IntentUtil.startGmsStatusForResolution(this, status, CHECK_LOCATION_SETTINGS_REQUEST_CODE);
-        mIsLocationSettingsStatusForResultCalled = true;
+        mMainPresenter.setIsLocationSettingsStatusForResultCalled(true);
     }
 
     @Override
@@ -182,10 +181,5 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     public void onGmsConnectionResultNoResolution(int errorCode) {
         GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, UNHANDLED_REQUEST_CODE).show();
-    }
-
-    @Override
-    public boolean isLocationSettingsStatusDialogCalled() {
-        return mIsLocationSettingsStatusForResultCalled;
     }
 }

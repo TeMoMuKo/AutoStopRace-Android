@@ -32,6 +32,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private ErrorHandler mErrorHandler;
     private final static String TAG = MainPresenter.class.getSimpleName();
     private CompositeSubscription mSubscriptions;
+    private boolean mIsLocationSettingsStatusForResultCalled = false;
 
     @Inject
     public MainPresenter(DataManager dataManager, ErrorHandler errorHandler) {
@@ -120,7 +121,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     public void checkLocationSettings() {
-        if (!getMvpView().isLocationSettingsStatusDialogCalled()) {
+        if (!mIsLocationSettingsStatusForResultCalled) {
             mSubscriptions.add(mDataManager.checkLocationSettings(GmsLocationHelper.APP_LOCATION_REQUEST)
                     .subscribe(this::handleLocationSettings,
                             this::handleGmsError));
@@ -174,5 +175,9 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private void handleError(Throwable throwable) {
         getMvpView().setProgress(false);
         getMvpView().showError(mErrorHandler.getMessage(throwable));
+    }
+
+    public void setIsLocationSettingsStatusForResultCalled(boolean isLocationSettingsStatusForResultCalled) {
+        mIsLocationSettingsStatusForResultCalled = isLocationSettingsStatusForResultCalled;
     }
 }

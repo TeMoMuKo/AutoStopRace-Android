@@ -31,6 +31,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     private CompositeSubscription mSubscriptions;
     private CompositeSubscription mLocationSubscriptions;
     private Subscription geocodingSubscription;
+    private boolean mIsLocationSettingsStatusForResultCalled = false;
 
     private Location mLatestLocation;
     private boolean mIsLocationSaved;
@@ -96,7 +97,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     }
 
     private void checkLocationSettings() {
-        if (!getMvpView().isLocationSettingsStatusDialogCalled()) {
+        if (!mIsLocationSettingsStatusForResultCalled) {
             mLocationSubscriptions.add(mDataManager.checkLocationSettings(GmsLocationHelper.APP_LOCATION_REQUEST)
                     .subscribe(this::handleLocationSettings,
                             this::handleGmsError));
@@ -199,5 +200,9 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public void handleGpsStatusChange() {
         stopLocationService();
         startLocationService();
+    }
+
+    public void setIsLocationSettingsStatusForResultCalled(boolean isLocationSettingsStatusForResultCalled) {
+        mIsLocationSettingsStatusForResultCalled = isLocationSettingsStatusForResultCalled;
     }
 }

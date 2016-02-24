@@ -45,5 +45,4 @@ public interface MainMvpView extends DrawerMvpView {
 
     void onGmsConnectionResultNoResolution(int errorCode);
 
-    boolean isLocationSettingsStatusDialogCalled();
 }

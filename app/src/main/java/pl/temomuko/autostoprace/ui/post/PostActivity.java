@@ -41,7 +41,6 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Bind(R.id.et_message) EditText mMessageEditText;
     @Bind(R.id.tv_current_location_cords) TextView mCurrentLocationCordsTextView;
     @Bind(R.id.tv_current_location_adress) TextView mCurrentLocationAddressTextView;
-    private boolean mIsLocationSettingsStatusForResultCalled = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
-            mIsLocationSettingsStatusForResultCalled = false;
+            mPostPresenter.setIsLocationSettingsStatusForResultCalled(false);
             mPostPresenter.handleLocationSettingsDialogResult(resultCode);
         }
     }
@@ -140,7 +139,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     public void onUserResolvableLocationSettings(Status status) {
         IntentUtil.startGmsStatusForResolution(this, status, CHECK_LOCATION_SETTINGS_REQUEST_CODE);
-        mIsLocationSettingsStatusForResultCalled = true;
+        mPostPresenter.setIsLocationSettingsStatusForResultCalled(true);
     }
 
     @Override
@@ -167,11 +166,6 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     public void finishWithInadequateSettingsWarning() {
         Toast.makeText(this, R.string.warning_inadequate_location_settings, Toast.LENGTH_LONG).show();
         finish();
-    }
-
-    @Override
-    public boolean isLocationSettingsStatusDialogCalled() {
-        return mIsLocationSettingsStatusForResultCalled;
     }
 
     @Override
