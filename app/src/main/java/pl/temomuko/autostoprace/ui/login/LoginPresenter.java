@@ -22,7 +22,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     private DataManager mDataManager;
     private ErrorHandler mErrorHandler;
     private Subscription mSubscription;
-    private RxCacheHelper mRxCacheHelper;
+    private RxCacheHelper<Response<SignInResponse>> mRxCacheHelper;
     private Observable<Response<SignInResponse>> mCurrentRequestObservable;
     private final static String TAG = "LoginPresenter";
 
@@ -30,13 +30,12 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     public LoginPresenter(DataManager dataManager, ErrorHandler errorHandler) {
         mDataManager = dataManager;
         mErrorHandler = errorHandler;
-
     }
 
     @Override
     public void attachView(LoginMvpView mvpView) {
         super.attachView(mvpView);
-        mRxCacheHelper = new RxCacheHelper((Activity) getMvpView());
+        mRxCacheHelper = new RxCacheHelper<>((Activity) getMvpView());
         mCurrentRequestObservable = mRxCacheHelper.getSavedObservable();
         continueRequest();
     }
