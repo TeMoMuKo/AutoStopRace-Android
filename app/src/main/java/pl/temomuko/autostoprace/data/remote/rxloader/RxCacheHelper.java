@@ -13,9 +13,14 @@ public class RxCacheHelper<T> {
 
     private static final String TAB_RETAINED_FRAGMENT = "tab_retained_fragment";
     private RxRetainedFragment mRetainedFragment;
+    private Observable<T> mCachedObservable;
 
     public RxCacheHelper(Activity activity) {
         setupRetainedFragment(activity);
+    }
+
+    public static <T> RxCacheHelper<T> create(Activity activity) {
+        return new RxCacheHelper<>(activity);
     }
 
     private void setupRetainedFragment(Activity activity) {
@@ -29,12 +34,24 @@ public class RxCacheHelper<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public void saveObservable(Observable<T> observable) {
-        mRetainedFragment.setCurrentRequestObservable(observable);
+    public void save() {
+        mRetainedFragment.setCurrentRequestObservable(mCachedObservable);
     }
 
     @SuppressWarnings("unchecked")
-    public Observable<T> getSavedObservable() {
-        return mRetainedFragment.getCurrentRequestObservable();
+    public void restore() {
+        mCachedObservable = mRetainedFragment.getCurrentRequestObservable();
+    }
+
+    public void cache(Observable<T> observable) {
+        mCachedObservable = observable.cache();
+    }
+
+    public void clear() {
+        mCachedObservable = null;
+    }
+
+    public Observable<T> getCachedObservable() {
+        return mCachedObservable;
     }
 }
