@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.ui.login;
 
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -18,12 +17,9 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.util.DialogFactory;
-import retrofit2.Response;
-import rx.Observable;
 
 /**
  * Created by Szymon Kozak on 2016-01-22.
@@ -39,9 +35,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @Bind(R.id.til_password) TextInputLayout mPasswordTextInputLayout;
     private MaterialDialog mProgressDialog;
     private DialogFragment mHelpDialogFragment;
-    private RetainedLoginFragment mRetainedLoginFragment;
     private static final String TAG_HELP_DIALOG_FRAGMENT = "help_dialog_fragment";
-    private static final String TAG_LOGIN_FRAGMENT = "tag_login_fragment";
     private static final String BUNDLE_IS_PROGRESS_DIALOG_SHOWN = "bundle_is_progress_dialog_shown";
 
     @Override
@@ -49,8 +43,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getActivityComponent().inject(this);
-        setupRetainedLoginFragment();
-        mLoginPresenter.setCurrentRequestObservable(mRetainedLoginFragment.getCurrentRequestObservable());
         mLoginPresenter.attachView(this);
         createProgressDialog();
         createHelpDialog();
@@ -85,15 +77,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
             outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, true);
         } else {
             outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, false);
-        }
-    }
-
-    private void setupRetainedLoginFragment() {
-        FragmentManager fm = getFragmentManager();
-        mRetainedLoginFragment = (RetainedLoginFragment) fm.findFragmentByTag(TAG_LOGIN_FRAGMENT);
-        if (mRetainedLoginFragment == null) {
-            mRetainedLoginFragment = new RetainedLoginFragment();
-            fm.beginTransaction().add(mRetainedLoginFragment, TAG_LOGIN_FRAGMENT).commit();
         }
     }
 
@@ -178,10 +161,5 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @Override
     public void hidePasswordValidationError() {
         mPasswordTextInputLayout.setErrorEnabled(false);
-    }
-
-    @Override
-    public void saveCurrentRequestObservable(Observable<Response<SignInResponse>> observable) {
-        mRetainedLoginFragment.setCurrentRequestObservable(observable);
     }
 }

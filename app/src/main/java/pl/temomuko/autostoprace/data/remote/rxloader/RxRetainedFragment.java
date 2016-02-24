@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.login;
+package pl.temomuko.autostoprace.data.remote.rxloader;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -8,13 +8,10 @@ import retrofit2.Response;
 import rx.Observable;
 
 /**
- * Created by Szymon Kozak on 2016-02-03.
+ * Created by Szymon Kozak on 2016-02-24.
  */
+public class RxRetainedFragment extends Fragment {
 
-/* Fragment which helps keep SignIn Observable
-to continue same request after orientation change */
-
-public class RetainedLoginFragment extends Fragment {
 
     private Observable<Response<SignInResponse>> mCurrentRequestObservable;
 
@@ -31,4 +28,5 @@ public class RetainedLoginFragment extends Fragment {
     public Observable<Response<SignInResponse>> getCurrentRequestObservable() {
         return mCurrentRequestObservable;
     }
+
 }

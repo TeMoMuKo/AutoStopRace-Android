@@ -1,9 +1,12 @@
 package pl.temomuko.autostoprace.ui.login;
 
+import android.app.Activity;
+
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
+import pl.temomuko.autostoprace.data.remote.rxloader.RxCacheHelper;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxUtil;
@@ -19,6 +22,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     private DataManager mDataManager;
     private ErrorHandler mErrorHandler;
     private Subscription mSubscription;
+    private RxCacheHelper mRxCacheHelper;
     private Observable<Response<SignInResponse>> mCurrentRequestObservable;
     private final static String TAG = "LoginPresenter";
 
@@ -26,15 +30,14 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     public LoginPresenter(DataManager dataManager, ErrorHandler errorHandler) {
         mDataManager = dataManager;
         mErrorHandler = errorHandler;
-    }
 
-    public void setCurrentRequestObservable(Observable<Response<SignInResponse>> observable) {
-        mCurrentRequestObservable = observable;
     }
 
     @Override
     public void attachView(LoginMvpView mvpView) {
         super.attachView(mvpView);
+        mRxCacheHelper = new RxCacheHelper((Activity) getMvpView());
+        mCurrentRequestObservable = mRxCacheHelper.getSavedObservable();
         continueRequest();
     }
 
@@ -46,8 +49,8 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     @Override
     public void detachView() {
+        mRxCacheHelper.saveObservable(mCurrentRequestObservable);
         if (mSubscription != null) mSubscription.unsubscribe();
-        getMvpView().saveCurrentRequestObservable(mCurrentRequestObservable);
         super.detachView();
     }
 
