@@ -20,7 +20,7 @@ public class TeamCircleView extends View {
     private int mTextColor;
     private int mCircleWidth;
     private int mCircleHeight;
-    private int mTeamId = 0;
+    private int mTeamId;
     private float mCircleTextSize;
     private Paint mCirclePaint;
     private Paint mTextPaint;

@@ -35,7 +35,6 @@ public class PrefsHelper {
     @Inject
     public PrefsHelper(@AppContext Context context) {
         mPrefs = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-
     }
 
     public void setAuthAccessToken(String token) {

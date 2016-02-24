@@ -56,8 +56,7 @@ public class SettingsPresenterTest {
         when(mMockDataManager.getCurrentUser()).thenReturn(fakeUser);
         mSettingsPresenter.setupLogoutPreference();
         verify(mMockSettingsMvpView).setupLogoutPreferenceEnabled(true);
-        //// TODO: 24.02.2016 @szymenpl fix
-        //verify(mMockSettingsMvpView).setupLogoutPreferenceSummary(true, FAKE_FIRST_NAME.concat(" ").concat(FAKE_LAST_NAME));
+        verify(mMockSettingsMvpView).setupUserLogoutPreferenceSummary(FAKE_FIRST_NAME.concat(" ").concat(FAKE_LAST_NAME));
     }
 
     @Test
@@ -67,8 +66,7 @@ public class SettingsPresenterTest {
         when(mMockDataManager.getCurrentUser()).thenReturn(fakeUser);
         mSettingsPresenter.setupLogoutPreference();
         verify(mMockSettingsMvpView).setupLogoutPreferenceEnabled(false);
-        //// TODO: 24.02.2016 @szymenpl fix
-        //verify(mMockSettingsMvpView).setupLogoutPreferenceSummary(false, " ");
+        verify(mMockSettingsMvpView).setupGuestLogoutPreferenceSummary();
     }
 
     @Test
