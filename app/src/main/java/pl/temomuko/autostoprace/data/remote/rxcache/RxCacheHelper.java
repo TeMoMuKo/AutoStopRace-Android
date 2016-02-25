@@ -44,19 +44,19 @@ public class RxCacheHelper<T> {
     private RxCacheHelper() {
     }
 
+    private void setTag(String tag) {
+        mTag = tag;
+    }
+
+    private String getTag() {
+        return mTag;
+    }
+
     /**
      * Setup helper with activity which provides FragmentManager
      */
     public void setup(Activity activity) {
         setupRetainedFragment(activity);
-    }
-
-    public void setTag(String tag) {
-        mTag = tag;
-    }
-
-    public String getTag() {
-        return mTag;
     }
 
     private void setupRetainedFragment(Activity activity) {

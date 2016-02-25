@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.data.remote.rxcache.RxCacheHelper;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.util.DialogFactory;
@@ -37,12 +38,14 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     private DialogFragment mHelpDialogFragment;
     private static final String TAG_HELP_DIALOG_FRAGMENT = "help_dialog_fragment";
     private static final String BUNDLE_IS_PROGRESS_DIALOG_SHOWN = "bundle_is_progress_dialog_shown";
+    private static final String TAG = LoginActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getActivityComponent().inject(this);
+        mLoginPresenter.setupRxCacheHelper(this, RxCacheHelper.get(TAG));
         mLoginPresenter.attachView(this);
         createProgressDialog();
         createHelpDialog();

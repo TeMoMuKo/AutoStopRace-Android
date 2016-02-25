@@ -44,5 +44,4 @@ public interface MainMvpView extends DrawerMvpView {
     void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult);
 
     void onGmsConnectionResultNoResolution(int errorCode);
-
 }

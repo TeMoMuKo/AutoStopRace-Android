@@ -21,5 +21,5 @@ public interface LoginMvpView extends MvpView {
 
     void setProgress(boolean state);
 
-   // void saveCurrentRequestObservable(Observable<Response<SignInResponse>> observable);
+    // void saveCurrentRequestObservable(Observable<Response<SignInResponse>> observable);
 }

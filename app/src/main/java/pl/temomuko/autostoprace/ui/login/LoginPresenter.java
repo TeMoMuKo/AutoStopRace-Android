@@ -33,8 +33,6 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     @Override
     public void attachView(LoginMvpView mvpView) {
         super.attachView(mvpView);
-        mRxLoginCacheHelper = RxCacheHelper.get(TAG);
-        mRxLoginCacheHelper.setup((Activity) getMvpView());
         if (mRxLoginCacheHelper.isCached()) {
             continueCachedRequest();
         }
@@ -44,6 +42,11 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     public void detachView() {
         if (mSubscription != null) mSubscription.unsubscribe();
         super.detachView();
+    }
+
+    public void setupRxCacheHelper(Activity activity, RxCacheHelper<Response<SignInResponse>> helper) {
+        mRxLoginCacheHelper = helper;
+        mRxLoginCacheHelper.setup(activity);
     }
 
     public void signIn(String email, String password) {
