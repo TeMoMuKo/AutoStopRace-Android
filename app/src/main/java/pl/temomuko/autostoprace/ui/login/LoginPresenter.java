@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
-import pl.temomuko.autostoprace.data.remote.rxloader.RxCacheHelper;
+import pl.temomuko.autostoprace.data.remote.rxcache.RxCacheHelper;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxUtil;
@@ -22,7 +22,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     private ErrorHandler mErrorHandler;
     private Subscription mSubscription;
     private RxCacheHelper<Response<SignInResponse>> mRxLoginCacheHelper;
-    private final static String TAG = "LoginPresenter";
+    private final static String TAG = LoginPresenter.class.getSimpleName();
 
     @Inject
     public LoginPresenter(DataManager dataManager, ErrorHandler errorHandler) {
@@ -33,20 +33,15 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     @Override
     public void attachView(LoginMvpView mvpView) {
         super.attachView(mvpView);
-        mRxLoginCacheHelper = RxCacheHelper.create((Activity) getMvpView());
-        mRxLoginCacheHelper.restore();
-        continueCachedRequest();
-    }
-
-    private void continueCachedRequest() {
-        if (mRxLoginCacheHelper.getCachedObservable() != null) {
-            subscribeCurrentRequestObservable();
+        mRxLoginCacheHelper = RxCacheHelper.get(TAG);
+        mRxLoginCacheHelper.setup((Activity) getMvpView());
+        if (mRxLoginCacheHelper.isCached()) {
+            continueCachedRequest();
         }
     }
 
     @Override
     public void detachView() {
-        mRxLoginCacheHelper.save();
         if (mSubscription != null) mSubscription.unsubscribe();
         super.detachView();
     }
@@ -70,11 +65,11 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     private void requestSignIn(String email, String password) {
         mRxLoginCacheHelper.cache(mDataManager.signIn(email, password)
                 .compose(RxUtil.applySchedulers()));
-        subscribeCurrentRequestObservable();
+        continueCachedRequest();
     }
 
-    private void subscribeCurrentRequestObservable() {
-        mSubscription = mRxLoginCacheHelper.getCachedObservable()
+    private void continueCachedRequest() {
+        mSubscription = mRxLoginCacheHelper.getRestoredCachedObservable()
                 .flatMap(response -> {
                     clearCurrentRequestObservable();
                     return mDataManager.handleLoginResponse(response);
@@ -95,7 +90,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     }
 
     private void clearCurrentRequestObservable() {
-        mRxLoginCacheHelper.clear();
+        mRxLoginCacheHelper.clearCache();
     }
 
     private void setupValidationHints(String email, String password) {

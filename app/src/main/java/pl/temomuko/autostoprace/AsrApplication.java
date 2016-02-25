@@ -23,6 +23,7 @@ public class AsrApplication extends Application {
         Fabric.with(this, new Crashlytics());
     }
 
+
     public ApplicationComponent getComponent() {
         if (mApplicationComponent == null) {
             mApplicationComponent = DaggerApplicationComponent.builder()
