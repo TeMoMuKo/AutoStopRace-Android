@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.injection.AppContext;
-import pl.temomuko.autostoprace.util.RxUtil;
+import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 
 /**

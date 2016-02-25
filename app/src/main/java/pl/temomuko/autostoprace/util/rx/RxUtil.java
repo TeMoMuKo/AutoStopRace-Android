@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.util;
+package pl.temomuko.autostoprace.util.rx;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

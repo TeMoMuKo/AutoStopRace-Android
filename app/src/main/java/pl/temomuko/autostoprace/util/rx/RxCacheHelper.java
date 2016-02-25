@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.data.remote.rxcache;
+package pl.temomuko.autostoprace.util.rx;
 
 import android.app.Activity;
 import android.app.Fragment;
