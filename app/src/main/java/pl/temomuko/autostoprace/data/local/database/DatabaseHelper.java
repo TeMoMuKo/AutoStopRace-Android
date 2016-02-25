@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Rafał Naniewicz on 04.02.2016.
@@ -24,7 +25,7 @@ public class DatabaseHelper {
 
     @Inject
     public DatabaseHelper(DatabaseOpenHelper databaseOpenHelper) {
-        mBriteDatabase = SqlBrite.create().wrapDatabaseHelper(databaseOpenHelper);
+        mBriteDatabase = SqlBrite.create().wrapDatabaseHelper(databaseOpenHelper, Schedulers.io());
     }
 
     public Observable<Void> clearTables() {
