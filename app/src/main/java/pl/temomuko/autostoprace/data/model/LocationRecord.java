@@ -21,11 +21,14 @@ public class LocationRecord {
     public LocationRecord() {
     }
 
-    public LocationRecord(double latitude, double longitude, String message, String address) {
+    public LocationRecord(double latitude, double longitude, String message, String address,
+                          String country, String countryCode) {
         mLatitude = latitude;
         mLongitude = longitude;
         mMessage = message;
         mAddress = address;
+        mCountry = country;
+        mCountryCode = countryCode;
     }
 
     public int getId() {

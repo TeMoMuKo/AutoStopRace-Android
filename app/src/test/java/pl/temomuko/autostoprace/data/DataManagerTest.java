@@ -96,7 +96,7 @@ public class DataManagerTest {
 
     @Test
     public void testSaveUnsentLocationsToDatabase() throws Exception {
-        LocationRecord unsentLocationRecord = new LocationRecord(18.05, 17.17, "","");
+        LocationRecord unsentLocationRecord = new LocationRecord(18.05, 17.17, "Yo", "Somewhere, Poland", "Poland", "PL");
         when(mMockDatabaseHelper.addUnsentLocationRecord(unsentLocationRecord)).thenReturn(Observable.empty());
         mDataManager.saveUnsentLocationRecordToDatabase(unsentLocationRecord);
         verify(mMockDatabaseHelper).addUnsentLocationRecord(unsentLocationRecord);
@@ -104,7 +104,7 @@ public class DataManagerTest {
 
     @Test
     public void testSaveSentLocationsToDatabase() throws Exception {
-        LocationRecord sentLocationRecord = new LocationRecord(18.05, 17.17, "","");
+        LocationRecord sentLocationRecord = new LocationRecord(18.05, 17.17, "Yo", "Somewhere, Poland", "Poland", "PL");
         when(mMockDatabaseHelper.addSentLocationRecord(sentLocationRecord)).thenReturn(Observable.empty());
         mDataManager.saveUnsentLocationRecordToDatabase(sentLocationRecord);
         verify(mMockDatabaseHelper).addUnsentLocationRecord(sentLocationRecord);
@@ -119,7 +119,7 @@ public class DataManagerTest {
 
     @Test
     public void testPostLocationToServer() throws Exception {
-        LocationRecord locationRecordToSend = new LocationRecord(12.34, 56.78, "","");
+        LocationRecord locationRecordToSend = new LocationRecord(12.34, 56.78, "Yo", "Somewhere, Poland", "Poland", "PL");
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
         when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
         when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);

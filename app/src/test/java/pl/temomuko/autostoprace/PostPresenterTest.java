@@ -1,6 +1,10 @@
 package pl.temomuko.autostoprace;
 
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.location.Address;
+
+import com.google.android.gms.location.LocationRequest;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,8 +19,10 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.post.PostMvpView;
 import pl.temomuko.autostoprace.ui.post.PostPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
+import rx.Observable;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +37,7 @@ public class PostPresenterTest {
     @Mock Address mMockLatestAddress;
     private PostPresenter mPostPresenter;
     private final static String FAKE_MESSAGE = "fake_message";
+    private static final int FINE_LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();
@@ -56,5 +63,60 @@ public class PostPresenterTest {
         mPostPresenter.tryToSaveLocation(FAKE_MESSAGE);
         verify(mMockDataManager).saveUnsentLocationRecordToDatabase(any(LocationRecord.class));
         verify(mMockPostMvpView).startMainActivity();
+    }
+
+    @Test
+    public void testStartLocationServiceWithoutPermission() {
+        when(mMockDataManager.hasFineLocationPermission()).thenReturn(false);
+        mPostPresenter.startLocationService();
+        verify(mMockDataManager, never()).checkLocationSettings(any(LocationRequest.class));
+        verify(mMockPostMvpView).compatRequestFineLocationPermission();
+    }
+
+    @Test
+    public void testStartLocationServiceWithPermission() {
+        when(mMockDataManager.hasFineLocationPermission()).thenReturn(true);
+        when(mMockDataManager.checkLocationSettings(any(LocationRequest.class))).thenReturn(Observable.empty());
+        mPostPresenter.startLocationService();
+        verify(mMockDataManager).checkLocationSettings(any(LocationRequest.class));
+        verify(mMockPostMvpView, never()).compatRequestFineLocationPermission();
+    }
+
+    @Test
+    public void testHandlePermissionResultGranted() throws Exception {
+        when(mMockDataManager.checkLocationSettings(any(LocationRequest.class)))
+                .thenReturn(Observable.empty());
+        mPostPresenter.handleLocationPermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
+                new int[]{PackageManager.PERMISSION_GRANTED});
+        verify(mMockDataManager).checkLocationSettings(any(LocationRequest.class));
+        verify(mMockPostMvpView, never()).finishWithInadequateSettingsWarning();
+    }
+
+    @Test
+    public void testHandlePermissionResultDenied() throws Exception {
+        when(mMockDataManager.checkLocationSettings(any(LocationRequest.class)))
+                .thenReturn(Observable.empty());
+        mPostPresenter.handleLocationPermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
+                new int[]{PackageManager.PERMISSION_DENIED});
+        verify(mMockDataManager, never()).checkLocationSettings(any(LocationRequest.class));
+        verify(mMockPostMvpView).finishWithInadequateSettingsWarning();
+    }
+
+    @Test
+    public void testHandleLocationSettingsDialogResultOk() {
+        when(mMockDataManager.getDeviceLocation((any(LocationRequest.class))))
+                .thenReturn(Observable.empty());
+        mPostPresenter.handleLocationSettingsDialogResult(Activity.RESULT_OK);
+        verify(mMockDataManager).getDeviceLocation(any(LocationRequest.class));
+        verify(mMockPostMvpView, never()).finishWithInadequateSettingsWarning();
+    }
+
+    @Test
+    public void testHandleLocationSettingsDialogResultCanceled() {
+        when(mMockDataManager.getDeviceLocation((any(LocationRequest.class))))
+                .thenReturn(Observable.empty());
+        mPostPresenter.handleLocationSettingsDialogResult(Activity.RESULT_CANCELED);
+        verify(mMockDataManager, never()).getDeviceLocation(any(LocationRequest.class));
+        verify(mMockPostMvpView).finishWithInadequateSettingsWarning();
     }
 }

@@ -64,10 +64,12 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private void saveLocation(String message) {
         if (!mIsLocationSaved) {
-            double latitude = mLatestAddress.getLatitude();
-            double longitude = mLatestAddress.getLongitude();
-            String address = getAddressStringFromAddress(mLatestAddress);
-            LocationRecord locationRecordToSend = new LocationRecord(latitude, longitude, message, address);
+            LocationRecord locationRecordToSend = new LocationRecord(mLatestAddress.getLatitude(),
+                    mLatestAddress.getLongitude(),
+                    message,
+                    getAddressStringFromAddress(mLatestAddress),
+                    mLatestAddress.getCountryName(),
+                    mLatestAddress.getCountryCode());
             mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
                     .compose(RxUtil.applySchedulers())
                     .subscribe();

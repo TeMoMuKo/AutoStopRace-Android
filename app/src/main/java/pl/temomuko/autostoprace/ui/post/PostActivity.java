@@ -148,11 +148,6 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
-    public void displayGPSFixAcquired() {
-        Toast.makeText(this, R.string.location_acquired, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult) {
         IntentUtil.startGmsConnectionResultForResolution(this, connectionResult, UNHANDLED_REQUEST_CODE);
     }

@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
 
+import java.util.Locale;
+
 import io.fabric.sdk.android.Fabric;
 import pl.temomuko.autostoprace.injection.component.ApplicationComponent;
 import pl.temomuko.autostoprace.injection.component.DaggerApplicationComponent;
@@ -21,6 +23,7 @@ public class AsrApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
+        Locale.setDefault(new Locale("pl"));
     }
 
     public ApplicationComponent getComponent() {

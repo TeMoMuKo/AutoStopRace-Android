@@ -22,8 +22,6 @@ public interface PostMvpView extends MvpView {
 
     void onUserResolvableLocationSettings(Status status);
 
-    void displayGPSFixAcquired();
-
     void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult);
 
     void onGmsConnectionResultNoResolution(int errorCode);
