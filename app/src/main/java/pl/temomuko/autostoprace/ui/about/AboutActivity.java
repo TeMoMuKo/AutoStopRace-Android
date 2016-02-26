@@ -74,6 +74,8 @@ public class AboutActivity extends BaseActivity {
             case R.id.action_share:
                 shareApp();
                 return true;
+            case R.id.action_licenses:
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
