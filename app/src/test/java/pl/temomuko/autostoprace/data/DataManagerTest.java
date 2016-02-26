@@ -17,7 +17,7 @@ import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
-import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
+import pl.temomuko.autostoprace.data.local.geocoding.GeoCodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
@@ -47,7 +47,7 @@ public class DataManagerTest {
     @Mock DatabaseHelper mMockDatabaseHelper;
     @Mock GmsLocationHelper mMockGmsLocationHelper;
     @Mock PermissionHelper mMockPermissionHelper;
-    @Mock GeocodingHelper mMockGeocodingHelper;
+    @Mock GeoCodingHelper mMockGeoCodingHelper;
     private DataManager mDataManager;
     private static String FAKE_EMAIL = "fake_email";
     private static String FAKE_PASS = "fake_pass";
@@ -62,7 +62,7 @@ public class DataManagerTest {
     @Before
     public void setUp() throws Exception {
         mDataManager = new DataManager(mMockAsrService, mMockPrefsHelper, mMockDatabaseHelper,
-                mMockGmsLocationHelper, mMockPermissionHelper, mMockGeocodingHelper);
+                mMockGmsLocationHelper, mMockPermissionHelper, mMockGeoCodingHelper);
         setupFakeResponseBuilder();
     }
 
@@ -96,7 +96,7 @@ public class DataManagerTest {
 
     @Test
     public void testSaveUnsentLocationsToDatabase() throws Exception {
-        LocationRecord unsentLocationRecord = new LocationRecord(18.05, 17.17, "");
+        LocationRecord unsentLocationRecord = new LocationRecord(18.05, 17.17, "","");
         when(mMockDatabaseHelper.addUnsentLocationRecord(unsentLocationRecord)).thenReturn(Observable.empty());
         mDataManager.saveUnsentLocationRecordToDatabase(unsentLocationRecord);
         verify(mMockDatabaseHelper).addUnsentLocationRecord(unsentLocationRecord);
@@ -104,7 +104,7 @@ public class DataManagerTest {
 
     @Test
     public void testSaveSentLocationsToDatabase() throws Exception {
-        LocationRecord sentLocationRecord = new LocationRecord(18.05, 17.17, "");
+        LocationRecord sentLocationRecord = new LocationRecord(18.05, 17.17, "","");
         when(mMockDatabaseHelper.addSentLocationRecord(sentLocationRecord)).thenReturn(Observable.empty());
         mDataManager.saveUnsentLocationRecordToDatabase(sentLocationRecord);
         verify(mMockDatabaseHelper).addUnsentLocationRecord(sentLocationRecord);
@@ -119,7 +119,7 @@ public class DataManagerTest {
 
     @Test
     public void testPostLocationToServer() throws Exception {
-        LocationRecord locationRecordToSend = new LocationRecord(12.34, 56.78, "");
+        LocationRecord locationRecordToSend = new LocationRecord(12.34, 56.78, "","");
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
         when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
         when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);

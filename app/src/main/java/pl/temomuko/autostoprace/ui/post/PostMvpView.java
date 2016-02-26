@@ -14,9 +14,9 @@ public interface PostMvpView extends MvpView {
 
     void showSuccessInfo();
 
-    void updateCurrentLocationCords(double latitude, double longitude);
+    void updateCurrentLocation(double latitude, double longitude,String address);
 
-    void updateCurrentLocationAddress(String address);
+    void updateCurrentLocation(double latitude, double longitude);
 
     void compatRequestFineLocationPermission();
 
@@ -31,6 +31,4 @@ public interface PostMvpView extends MvpView {
     void finishWithInadequateSettingsWarning();
 
     void showNoLocationEstablishedError();
-
-    void setSearchingForApproximateAddress();
 }

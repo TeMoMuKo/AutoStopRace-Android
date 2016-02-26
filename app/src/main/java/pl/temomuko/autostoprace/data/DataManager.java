@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace.data;
 
 import android.location.Address;
 import android.location.Location;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsResult;
@@ -15,7 +16,7 @@ import javax.inject.Singleton;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
-import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
+import pl.temomuko.autostoprace.data.local.geocoding.GeoCodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
@@ -40,18 +41,18 @@ public class DataManager {
     private DatabaseHelper mDatabaseHelper;
     private GmsLocationHelper mGmsLocationHelper;
     private PermissionHelper mPermissionHelper;
-    private GeocodingHelper mGeocodingHelper;
+    private GeoCodingHelper mGeoCodingHelper;
 
     @Inject
     public DataManager(AsrService asrService, PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
                        GmsLocationHelper gmsLocationHelper, PermissionHelper permissionHelper,
-                       GeocodingHelper geocodingHelper) {
+                       GeoCodingHelper geoCodingHelper) {
         mAsrService = asrService;
         mPrefsHelper = prefsHelper;
         mDatabaseHelper = databaseHelper;
         mGmsLocationHelper = gmsLocationHelper;
         mPermissionHelper = permissionHelper;
-        mGeocodingHelper = geocodingHelper;
+        mGeoCodingHelper = geoCodingHelper;
     }
 
     public Observable<Response<SignInResponse>> signIn(String login, String password) {
@@ -172,7 +173,7 @@ public class DataManager {
         return mPermissionHelper.hasFineLocationPermission();
     }
 
-    public Observable<Address> getAddressFromCoordinates(double latitude, double longitude) {
-        return mGeocodingHelper.getFromLocation(latitude, longitude);
+    public Observable<Address> getAddressFromLocation(@NonNull Location location) {
+        return mGeoCodingHelper.getFromLocation(location);
     }
 }
