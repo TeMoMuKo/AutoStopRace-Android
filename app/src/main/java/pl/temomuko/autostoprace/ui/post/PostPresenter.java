@@ -2,7 +2,6 @@ package pl.temomuko.autostoprace.ui.post;
 
 import android.app.Activity;
 import android.location.Address;
-import android.location.Location;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
@@ -19,7 +18,6 @@ import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
-import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -30,10 +28,9 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     private DataManager mDataManager;
     private CompositeSubscription mSubscriptions;
     private CompositeSubscription mLocationSubscriptions;
-    private Subscription geocodingSubscription;
     private boolean mIsLocationSettingsStatusForResultCalled = false;
 
-    private Location mLatestLocation;
+    private Address mLatestAddress;
     private boolean mIsLocationSaved;
 
     private final static String TAG = PostPresenter.class.getSimpleName();
@@ -54,16 +51,11 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public void detachView() {
         mSubscriptions.unsubscribe();
         mLocationSubscriptions.unsubscribe();
-        if (geocodingSubscription != null) geocodingSubscription.unsubscribe();
         super.detachView();
     }
 
-    public void setLatestLocation(Location latestLocation) {
-        mLatestLocation = latestLocation;
-    }
-
     public void tryToSaveLocation(String message) {
-        if (mLatestLocation == null) {
+        if (mLatestAddress == null) {
             getMvpView().showNoLocationEstablishedError();
         } else {
             saveLocation(message);
@@ -72,9 +64,10 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private void saveLocation(String message) {
         if (!mIsLocationSaved) {
-            double latitude = mLatestLocation.getLatitude();
-            double longitude = mLatestLocation.getLongitude();
-            LocationRecord locationRecordToSend = new LocationRecord(latitude, longitude, message);
+            double latitude = mLatestAddress.getLatitude();
+            double longitude = mLatestAddress.getLongitude();
+            String address = getAddressStringFromAddress(mLatestAddress);
+            LocationRecord locationRecordToSend = new LocationRecord(latitude, longitude, message, address);
             mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
                     .compose(RxUtil.applySchedulers())
                     .subscribe();
@@ -137,6 +130,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
             } else {
                 getMvpView().onGmsConnectionResultNoResolution(connectionResult.getErrorCode());
             }
+        } else {
+            LogUtil.e(TAG, throwable.toString());
         }
     }
 
@@ -150,47 +145,33 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private void startLocationUpdates() {
         mLocationSubscriptions.add(mDataManager.getDeviceLocation(GmsLocationHelper.APP_LOCATION_REQUEST)
-                .subscribe(this::handleLocationUpdate, this::handleGmsError));
+                .switchMap(mDataManager::getAddressFromLocation)
+                .subscribe(this::handleAddress, this::handleGmsError));
     }
 
-    private void handleLocationUpdate(Location location) {
-        if (mLatestLocation == null) {
-            getMvpView().displayGPSFixAcquired();
+    private void handleAddress(Address address) {
+        LogUtil.i("Address update :", address.toString());
+        mLatestAddress = address;
+        String addressString = getAddressStringFromAddress(address);
+        if (addressString != null) {
+            getMvpView().updateCurrentLocation(address.getLatitude(), address.getLongitude(), addressString);
+        } else {
+            getMvpView().updateCurrentLocation(address.getLatitude(), address.getLongitude());
         }
-        mLatestLocation = location;
-        getMvpView().updateCurrentLocationCords(mLatestLocation.getLatitude(), mLatestLocation.getLongitude());
-        LogUtil.i("Location update :",
-                Double.toString(location.getLatitude()) + ", " + Double.toString(location.getLongitude()));
-        geocodeAddress();
     }
 
-    private void geocodeAddress() {
-        if (geocodingSubscription != null) geocodingSubscription.unsubscribe();
-        geocodingSubscription = mDataManager.getAddressFromCoordinates(mLatestLocation.getLatitude(),
-                mLatestLocation.getLongitude())
-                .subscribe(
-                        this::handleGeocodedAddress,
-                        this::handleGeocodeError
-                );
-    }
-
-    private void handleGeocodedAddress(Address address) {
-        getMvpView().updateCurrentLocationAddress(getAddressString(address));
-    }
-
-    private String getAddressString(Address address) {
+    private String getAddressStringFromAddress(Address address) {
+        if (address.getMaxAddressLineIndex() == -1) {
+            return null;
+        }
         StringBuilder addressStringBuilder = new StringBuilder();
         for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
             addressStringBuilder.append(address.getAddressLine(i));
             if (i != address.getMaxAddressLineIndex()) {
-                addressStringBuilder.append("\n");
+                addressStringBuilder.append(", ");
             }
         }
         return addressStringBuilder.toString();
-    }
-
-    private void handleGeocodeError(Throwable throwable) {
-        //// TODO: 21.02.2016 handle errors
     }
 
     public void stopLocationService() {
@@ -204,5 +185,9 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     public void setIsLocationSettingsStatusForResultCalled(boolean isLocationSettingsStatusForResultCalled) {
         mIsLocationSettingsStatusForResultCalled = isLocationSettingsStatusForResultCalled;
+    }
+
+    public void setLatestAddress(Address latestAddress) {
+        mLatestAddress = latestAddress;
     }
 }

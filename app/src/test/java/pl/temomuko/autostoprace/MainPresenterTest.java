@@ -75,15 +75,15 @@ public class MainPresenterTest {
     @Test
     public void testLoadLocationsReturnsLocations() throws Exception {
         List<LocationRecord> locationsFromApi = new ArrayList<>();
-        locationsFromApi.add(new LocationRecord(12.34, 43.21, ""));
-        locationsFromApi.add(new LocationRecord(45.33, 73.51, ""));
+        locationsFromApi.add(new LocationRecord(12.34, 43.21, "",""));
+        locationsFromApi.add(new LocationRecord(45.33, 73.51, "",""));
 
         Response<List<LocationRecord>> response = Response.success(locationsFromApi);
         when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
 
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
-        locationsFromDatabase.add(new LocationRecord(99.99, 99.99, ""));
+        locationsFromDatabase.add(new LocationRecord(99.99, 99.99, "",""));
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
 
@@ -111,7 +111,7 @@ public class MainPresenterTest {
                 .thenReturn(Observable.error(fakeSocketTimeoutException));
 
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
-        locationsFromDatabase.add(new LocationRecord(99.99, 99.99, ""));
+        locationsFromDatabase.add(new LocationRecord(99.99, 99.99, "",""));
         when(mMockErrorHandler.getMessage(fakeSocketTimeoutException))
                 .thenReturn(FAKE_ERROR_MESSAGE);
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
@@ -158,7 +158,7 @@ public class MainPresenterTest {
                 .thenReturn(Observable.just(response));
 
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
-        locationsFromDatabase.add(new LocationRecord(99.99, 99.99, ""));
+        locationsFromDatabase.add(new LocationRecord(99.99, 99.99, "",""));
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
 

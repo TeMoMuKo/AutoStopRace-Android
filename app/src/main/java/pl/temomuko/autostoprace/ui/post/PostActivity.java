@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -126,14 +127,18 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
-    public void updateCurrentLocationCords(double latitude, double longitude) {
+    public void updateCurrentLocation(double latitude, double longitude, String address) {
+        mCurrentLocationAddressTextView.setText(address);
         String cords = latitude + ", " + longitude;
+        mCurrentLocationCordsTextView.setVisibility(View.VISIBLE);
         mCurrentLocationCordsTextView.setText(cords);
     }
 
     @Override
-    public void updateCurrentLocationAddress(String address) {
-        mCurrentLocationAddressTextView.setText(address);
+    public void updateCurrentLocation(double latitude, double longitude) {
+        String cords = latitude + ", " + longitude;
+        mCurrentLocationCordsTextView.setVisibility(View.GONE);
+        mCurrentLocationAddressTextView.setText(cords);
     }
 
     @Override
@@ -171,11 +176,6 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     public void showNoLocationEstablishedError() {
         Toast.makeText(this, R.string.msg_wait_for_established_location, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void setSearchingForApproximateAddress() {
-        mCurrentLocationAddressTextView.setText(getString(R.string.msg_searching_for_aproximate_address));
     }
 
     /* Events */
