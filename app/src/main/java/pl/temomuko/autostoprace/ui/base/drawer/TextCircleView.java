@@ -23,7 +23,7 @@ public class TextCircleView extends View {
     private float mCircleTextSize;
     private Paint mCirclePaint;
     private Paint mTextPaint;
-    private String mText;
+    private String mText = "";
 
     public TextCircleView(Context context, AttributeSet attrs) {
         super(context, attrs);

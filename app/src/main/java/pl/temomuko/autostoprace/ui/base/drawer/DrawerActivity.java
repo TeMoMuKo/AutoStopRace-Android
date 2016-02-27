@@ -109,6 +109,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
 
     @Override
     public void setupTeamCircle(int teamId) {
+        mTextCircleView.setVisibility(View.VISIBLE);
         mTextCircleView.setText("#" + teamId);
     }
 }
