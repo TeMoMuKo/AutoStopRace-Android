@@ -27,7 +27,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
     private NavigationListener mNavigationListener;
     private TextView mHeaderUsernameTextView;
     private TextView mHeaderEmailTextView;
-    private TeamCircleView mTeamCircleView;
+    private TextCircleView mTextCircleView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +92,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         View header = mNavigationView.getHeaderView(0);
         mHeaderUsernameTextView = (TextView) header.findViewById(R.id.tv_drawer_username);
         mHeaderEmailTextView = (TextView) header.findViewById(R.id.tv_drawer_email);
-        mTeamCircleView = (TeamCircleView) header.findViewById(R.id.team_circle_view);
+        mTextCircleView = (TextCircleView) header.findViewById(R.id.team_circle_view);
     }
 
     /* MVP View methods */
@@ -109,6 +109,6 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
 
     @Override
     public void setupTeamCircle(int teamId) {
-        mTeamCircleView.setTeamId(teamId);
+        mTextCircleView.setText("#" + teamId);
     }
 }

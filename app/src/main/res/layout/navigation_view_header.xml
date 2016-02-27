@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/image_full_screen">
 
-        <pl.temomuko.autostoprace.ui.base.drawer.TeamCircleView
+        <pl.temomuko.autostoprace.ui.base.drawer.TextCircleView
             android:id="@+id/team_circle_view"
             android:layout_width="48dp"
             android:layout_height="48dp"
