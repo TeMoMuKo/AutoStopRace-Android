@@ -1,8 +1,11 @@
 ![ASR Logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 # AutoStopRace
 
-Auto Stop Race android app. <br>
-http://www.autostoprace.pl/
+Android app which allows participants of hitchhiking race to share their location. <br>
+Project website: http://www.autostoprace.pl/ 
+
+Application built on MVP-based architecture powered by RxJava.  ([architecture guidelines by ribot](https://github.com/ribot/android-guidelines/blob/master/architecture_guidelines/android_architecture.md))
+
 
 ## License
 
