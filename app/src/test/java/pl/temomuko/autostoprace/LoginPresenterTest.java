@@ -104,7 +104,7 @@ public class LoginPresenterTest {
     public void testSignInFails() throws Exception {
         Response<SignInResponse> response = Response.error(HttpStatus.UNAUTHORIZED,
                 ResponseBody.create(
-                        MediaType.parse(Constants.HEADER_ACCEPT_JSON), UNAUTHORIZED_RESPONSE
+                        MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), UNAUTHORIZED_RESPONSE
                 ));
         when(mMockErrorHandler.isEmailValid(FAKE_EMAIL)).thenReturn(true);
         when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(Observable.just(response));

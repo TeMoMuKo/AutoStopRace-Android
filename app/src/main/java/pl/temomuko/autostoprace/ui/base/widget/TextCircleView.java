@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.base.drawer;
+package pl.temomuko.autostoprace.ui.base.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;

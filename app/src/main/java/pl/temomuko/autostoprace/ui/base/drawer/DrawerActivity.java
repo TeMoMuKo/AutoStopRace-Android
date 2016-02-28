@@ -13,6 +13,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.ui.base.widget.TextCircleView;
 
 /**
  * Created by Szymon Kozak on 2016-02-03.

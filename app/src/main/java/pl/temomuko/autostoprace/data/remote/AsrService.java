@@ -68,7 +68,7 @@ public interface AsrService {
             @Header(Constants.HEADER_FIELD_UID) String uid
     );
 
-    @Headers("Content-Type: " + Constants.HEADER_CONTENT_TYPE_JSON)
+    @Headers("Content-Type: " + Constants.HEADER_VALUE_APPLICATION_JSON)
     @POST("locations")
     Observable<Response<LocationRecord>> postLocationRecordWithObservable(
             @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
@@ -105,7 +105,7 @@ public interface AsrService {
                     .addInterceptor(getLoggingInterceptor())
                     .addNetworkInterceptor(chain -> {
                         Request request = chain.request().newBuilder()
-                                .addHeader("Accept", Constants.HEADER_ACCEPT_JSON)
+                                .addHeader("Accept", Constants.HEADER_VALUE_APPLICATION_JSON)
                                 .build();
                         return chain.proceed(request);
                     })

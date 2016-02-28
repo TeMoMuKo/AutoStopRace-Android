@@ -152,7 +152,7 @@ public class MainPresenterTest {
     public void testLoadLocationsApiFailsWithFilledDatabase() throws Exception {
         Response<List<LocationRecord>> response = Response.error(HttpStatus.NOT_FOUND,
                 ResponseBody.create(
-                        MediaType.parse(Constants.HEADER_ACCEPT_JSON), NOT_FOUND_RESPONSE
+                        MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), NOT_FOUND_RESPONSE
                 ));
         when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
@@ -181,7 +181,7 @@ public class MainPresenterTest {
     public void testLoadLocationsFromApiFailsWithEmptyDatabase() throws Exception {
         Response<List<LocationRecord>> response = Response.error(HttpStatus.NOT_FOUND,
                 ResponseBody.create(
-                        MediaType.parse(Constants.HEADER_ACCEPT_JSON), NOT_FOUND_RESPONSE
+                        MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), NOT_FOUND_RESPONSE
                 ));
         when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
@@ -217,7 +217,7 @@ public class MainPresenterTest {
         when(mMockDataManager.isLoggedWithToken()).thenReturn(true);
         Response<SignInResponse> response = Response.error(HttpStatus.UNAUTHORIZED,
                 ResponseBody.create(
-                        MediaType.parse(Constants.HEADER_ACCEPT_JSON), UNAUTHORIZED_RESPONSE
+                        MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), UNAUTHORIZED_RESPONSE
                 ));
         when(mMockDataManager.validateToken()).thenReturn(Observable.just(response));
         when(mMockDataManager.clearUserData()).thenReturn(Observable.empty());
