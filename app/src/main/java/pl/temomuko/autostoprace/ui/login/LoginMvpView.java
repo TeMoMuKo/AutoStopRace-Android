@@ -9,17 +9,11 @@ public interface LoginMvpView extends MvpView {
 
     void startMainActivity();
 
-    void showInvalidEmailValidaionError();
+    void setInvalidEmailValidationError(boolean state);
 
-    void showEmptyPasswordValidationError();
-
-    void hideEmailValidationError();
-
-    void hidePasswordValidationError();
+    void setInvalidPasswordValidationError(boolean state);
 
     void showError(String message);
 
     void setProgress(boolean state);
-
-    // void saveCurrentRequestObservable(Observable<Response<SignInResponse>> observable);
 }

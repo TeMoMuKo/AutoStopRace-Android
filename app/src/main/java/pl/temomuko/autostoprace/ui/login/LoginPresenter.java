@@ -97,24 +97,8 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     }
 
     private void setupValidationHints(String email, String password) {
-        setupEmailHint(email);
-        setupPasswordHint(password);
-    }
-
-    private void setupEmailHint(String email) {
-        if (!isEmailValid(email)) {
-            getMvpView().showInvalidEmailValidaionError();
-        } else {
-            getMvpView().hideEmailValidationError();
-        }
-    }
-
-    private void setupPasswordHint(String password) {
-        if (!isPasswordValid(password)) {
-            getMvpView().showEmptyPasswordValidationError();
-        } else {
-            getMvpView().hidePasswordValidationError();
-        }
+        getMvpView().setInvalidEmailValidationError(!isEmailValid(email));
+        getMvpView().setInvalidPasswordValidationError(!isPasswordValid(password));
     }
 
     private void handleError(Throwable throwable) {

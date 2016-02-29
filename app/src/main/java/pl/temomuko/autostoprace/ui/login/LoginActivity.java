@@ -144,25 +144,14 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void showInvalidEmailValidaionError() {
-        mEmailTextInputLayout.setErrorEnabled(true);
-        mEmailTextInputLayout.setError(getString(R.string.error_invalid_email));
+    public void setInvalidEmailValidationError(boolean state) {
+        mEmailTextInputLayout.setErrorEnabled(state);
+        if(state) mEmailTextInputLayout.setError(getString(R.string.error_invalid_email));
     }
 
-    @Override
-    public void showEmptyPasswordValidationError() {
-        mPasswordTextInputLayout.setErrorEnabled(true);
-        mPasswordTextInputLayout.setError(getString(R.string.error_empty_pass));
-    }
 
-    @Override
-    public void hideEmailValidationError() {
-        mEmailTextInputLayout.setErrorEnabled(false);
-    }
-
-    @Override
-    public void hidePasswordValidationError() {
-        mPasswordTextInputLayout.setErrorEnabled(false);
+    public void setInvalidPasswordValidationError(boolean state) {
+        mPasswordTextInputLayout.setErrorEnabled(state);
+        if(state) mPasswordTextInputLayout.setError(getString(R.string.error_empty_pass));
     }
 }
