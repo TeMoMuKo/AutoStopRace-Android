@@ -24,4 +24,17 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="ListItemTitle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/primary_text_standard</item>
+    </style>
+    <style name="ListItemHeader">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/primary_text_standard</item>
+    </style>
+    <style name="ListItemText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/secondary_text_standard</item>
+    </style>
+
 </resources>

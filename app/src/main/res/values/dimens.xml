@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_padding">16dp</dimen>
+    <dimen name="default_padding_halved">8dp</dimen>
     <dimen name="height_launcher_button">62dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->

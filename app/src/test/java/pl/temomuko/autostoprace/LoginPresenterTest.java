@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,11 +18,11 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
-import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.ui.login.LoginMvpView;
 import pl.temomuko.autostoprace.ui.login.LoginPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
+import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -142,9 +143,9 @@ public class LoginPresenterTest {
         when(mMockErrorHandler.isEmailValid(FAKE_EMAIL)).thenReturn(false);
         mLoginPresenter.signIn(INVALID_FAKE_EMAIL, INVALID_FAKE_PASS);
         verify(mMockLoginMvpView)
-                .showInvalidEmailValidaionError();
+                .setInvalidEmailValidationError(true);
         verify(mMockLoginMvpView)
-                .showEmptyPasswordValidationError();
+                .setInvalidEmailValidationError(true);
         verify(mMockDataManager, never())
                 .saveAuthorizationResponse(Matchers.<Response<SignInResponse>>any());
         verify(mMockLoginMvpView, never()).startMainActivity();
