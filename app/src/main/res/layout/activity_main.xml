@@ -41,17 +41,34 @@
                 app:mpb_showTrack="false"
                 app:mpb_useIntrinsicPadding="false"/>
 
-            <ScrollView
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="false">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/tv_current_team_locations"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            </ScrollView>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:paddingBottom="@dimen/bottom_fab_spacing"/>
+
+                    <TextView
+                        android:id="@+id/tv_empty_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:lineSpacingExtra="8dp"
+                        android:text="@string/msg_empty_location_records_list"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:visibility="gone"/>
+                </FrameLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
 
         </LinearLayout>
 

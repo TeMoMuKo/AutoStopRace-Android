@@ -7,20 +7,22 @@
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
-    <color name="divider">#B6B6B6</color>
+    <color name="divider">#29000000</color>
     <color name="primary_text_standard">#de000000</color>
     <color name="secondary_text_standard">#8a000000</color>
     <color name="rate_app_background">#ececec</color>
 
     <array name="circle_text_view_colors">
-        <item>#FF5252</item>
+        <item>#D50000</item>
+        <item>#FF4081</item>
+        <item>#C51162</item>
         <item>#D500F9</item>
         <item>#651FFF</item>
-        <item>#3D5AFE</item>
-        <item>#2979FF</item>
-        <item>#FFAB00</item>
+        <item>#00695C</item>
         <item>#FF6D00</item>
-        <item>#FF3D00</item>
+        <item>#DD2C00</item>
+        <item>#3D5AFE</item>
         <item>#5D4037</item>
+        <item>#2979FF</item>
     </array>
 </resources>

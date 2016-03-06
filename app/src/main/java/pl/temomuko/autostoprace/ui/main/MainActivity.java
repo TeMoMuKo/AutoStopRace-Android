@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +28,7 @@ import pl.temomuko.autostoprace.service.PostService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
+import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
@@ -32,15 +36,19 @@ import pl.temomuko.autostoprace.util.PermissionUtil;
 /**
  * Created by Szymon Kozak on 2016-01-06.
  */
-public class MainActivity extends DrawerActivity implements MainMvpView {
+public class MainActivity extends DrawerActivity implements MainMvpView, LocationRecordsAdapter.Callback {
 
     private static final int CHECK_LOCATION_SETTINGS_REQUEST_CODE = 1;
     private static final int UNHANDLED_REQUEST_CODE = -1;
 
     @Inject MainPresenter mMainPresenter;
-    @Bind(R.id.tv_current_team_locations) TextView mCurrentLocationRecordsTextView;
+    @Inject LocationRecordsAdapter mLocationRecordsAdapter;
+    @Inject VerticalDividerItemDecoration mVerticalDividerItemDecoration;
     @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
+    @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
+    @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.tv_empty_info) TextView mTvEmptyInfo;
     private Snackbar mWarningSnackbar;
 
     @Override
@@ -56,6 +64,23 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         }
         setupToolbarWithToggle();
         setListeners();
+        setupRecyclerView();
+        setupSwipeToRefresh();
+    }
+
+    private void setupRecyclerView() {
+        mLocationRecordsAdapter.setCallback(this);
+        mRecyclerView.setAdapter(mLocationRecordsAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
+    }
+
+    private void setupSwipeToRefresh() {
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.accent, R.color.primary);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mMainPresenter.loadLocations();
+            mSwipeRefreshLayout.setRefreshing(false);
+        });
     }
 
     @Override
@@ -83,11 +108,18 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         mGoToPostFab.setOnClickListener(v -> mMainPresenter.goToPostLocation());
     }
 
+    @Override
+    public void onLocationRecordClicked(LocationRecord locationRecord) {
+        //// TODO: 06.03.2016 handle click
+        Toast.makeText(this, locationRecord.getLongitude() + ", " + locationRecord.getLatitude(), Toast.LENGTH_SHORT).show();
+    }
+
     /* MVP View methods */
 
     @Override
     public void updateLocationRecordsList(List<LocationRecord> locationRecords) {
-        mCurrentLocationRecordsTextView.setText(locationRecords.toString());
+        mLocationRecordsAdapter.setLocationRecords(locationRecords);
+        mTvEmptyInfo.setVisibility(View.GONE);
     }
 
     @Override
@@ -109,7 +141,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void showEmptyInfo() {
-        mCurrentLocationRecordsTextView.setText(R.string.msg_empty_location_records_list);
+        mTvEmptyInfo.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -52,7 +52,7 @@ public class DatabaseHelper {
                     "SELECT * FROM " + RemoteLocationRecordTable.NAME
             );
             while (cursor.moveToNext()) {
-                result.add(LocalUnsentLocationRecordTable.parseCursor(cursor));
+                result.add(RemoteLocationRecordTable.parseCursor(cursor));
             }
             cursor.close();
             subscriber.onNext(result);

@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.base.widget;
+package pl.temomuko.autostoprace.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -16,8 +17,8 @@ import pl.temomuko.autostoprace.R;
  */
 public class TextCircleView extends View {
 
-    private int mCircleColor;
-    private int mTextColor;
+    private @ColorInt int mCircleColor;
+    private @ColorInt int mTextColor;
     private int mCircleWidth;
     private int mCircleHeight;
     private float mCircleTextSize;
@@ -86,7 +87,12 @@ public class TextCircleView extends View {
     }
 
     public void setText(String text) {
-        mText = text;
+        mText = text != null ? text : "";
+    }
+
+    public void setCircleColor(@ColorInt int circleColor) {
+        mCircleColor = circleColor;
+        mCirclePaint.setColor(mCircleColor);
     }
 }
 
