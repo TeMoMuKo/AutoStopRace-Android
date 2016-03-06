@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -47,7 +46,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView, Locatio
     @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
-    @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.tv_empty_info) TextView mTvEmptyInfo;
     private Snackbar mWarningSnackbar;
 
@@ -65,7 +63,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView, Locatio
         setupToolbarWithToggle();
         setListeners();
         setupRecyclerView();
-        setupSwipeToRefresh();
     }
 
     private void setupRecyclerView() {
@@ -73,14 +70,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView, Locatio
         mRecyclerView.setAdapter(mLocationRecordsAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
-    }
-
-    private void setupSwipeToRefresh() {
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.accent, R.color.primary);
-        mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            mMainPresenter.loadLocations();
-            mSwipeRefreshLayout.setRefreshing(false);
-        });
     }
 
     @Override

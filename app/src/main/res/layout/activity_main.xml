@@ -28,25 +28,11 @@
 
             </android.support.design.widget.AppBarLayout>
 
-            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-                android:id="@+id/horizontal_progress_toolbar"
-                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:indeterminate="true"
-                android:progress="30"
-                android:secondaryProgress="60"
-                app:mpb_progressStyle="horizontal"
-                app:mpb_showTrack="false"
-                app:mpb_useIntrinsicPadding="false"/>
-
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_refresh_layout"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -55,20 +41,36 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:clipToPadding="false"
-                        android:paddingBottom="@dimen/bottom_fab_spacing"/>
+                        android:paddingBottom="@dimen/bottom_fab_spacing"
+                        android:paddingTop="4dp"/>
 
-                    <TextView
-                        android:id="@+id/tv_empty_info"
-                        android:layout_width="wrap_content"
+
+                    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                        android:id="@+id/horizontal_progress_toolbar"
+                        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:lineSpacingExtra="8dp"
-                        android:text="@string/msg_empty_location_records_list"
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:visibility="gone"/>
-                </FrameLayout>
-            </android.support.v4.widget.SwipeRefreshLayout>
+                        android:layout_gravity="bottom"
+                        android:indeterminate="true"
+                        android:progress="30"
+                        android:secondaryProgress="60"
+                        app:mpb_progressStyle="horizontal"
+                        app:mpb_showTrack="false"
+                        app:mpb_useIntrinsicPadding="false"/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_empty_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:lineSpacingExtra="8dp"
+                    android:text="@string/msg_empty_location_records_list"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:visibility="gone"/>
+            </FrameLayout>
 
         </LinearLayout>
 
