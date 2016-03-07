@@ -107,7 +107,9 @@ public class PostService extends Service {
             if (NetworkUtil.isConnected(context)) {
                 LogUtil.i(TAG, "Network is connected.");
                 AndroidComponentUtil.toggleComponent(context, getClass(), false);
-                context.startService(getStartIntent(context));
+                if (!AndroidComponentUtil.isServiceRunning(context, PostService.class)) {
+                    context.startService(getStartIntent(context));
+                }
             }
         }
     }
