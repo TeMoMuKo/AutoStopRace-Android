@@ -21,7 +21,7 @@ import rx.Observable;
 public class GmsLocationHelper {
 
     public final static LocationRequest APP_LOCATION_REQUEST = getLocationRequest();
-    private static final int LOCATION_UPDATE_INTERVAL_MILLISECONDS = 10000;
+    private static final int LOCATION_UPDATE_INTERVAL_MILLISECONDS = 7000;
     private static final int LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS = LOCATION_UPDATE_INTERVAL_MILLISECONDS / 2;
     private static final int LOCATION_ACCURACY = LocationRequest.PRIORITY_HIGH_ACCURACY;
 

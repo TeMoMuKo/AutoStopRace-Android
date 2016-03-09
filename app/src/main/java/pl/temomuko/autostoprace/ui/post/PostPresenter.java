@@ -10,6 +10,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import javax.inject.Inject;
 
+import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
@@ -147,7 +148,9 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private void startLocationUpdates() {
         mLocationSubscriptions.add(mDataManager.getDeviceLocation(GmsLocationHelper.APP_LOCATION_REQUEST)
+                .filter(location -> location.getAccuracy() <= Constants.MAX_LOCATION_ACCURACY)
                 .switchMap(location -> {
+                    getMvpView().updateAccuracyInfo(location.getAccuracy());
                     LogUtil.i(TAG, Float.toString(location.getAccuracy()));
                     return mDataManager.getAddressFromLocation(location);
                 })

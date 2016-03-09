@@ -29,4 +29,6 @@ public interface PostMvpView extends MvpView {
     void finishWithInadequateSettingsWarning();
 
     void showNoLocationEstablishedError();
+
+    void updateAccuracyInfo(float accuracy);
 }
