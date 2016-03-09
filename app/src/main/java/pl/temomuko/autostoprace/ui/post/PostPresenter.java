@@ -151,7 +151,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
                 .filter(location -> location.getAccuracy() <= Constants.MAX_LOCATION_ACCURACY)
                 .switchMap(location -> {
                     getMvpView().updateAccuracyInfo(location.getAccuracy());
-                    LogUtil.i(TAG, Float.toString(location.getAccuracy()));
+                    LogUtil.i(TAG, "Accuracy: " + Float.toString(location.getAccuracy()));
                     return mDataManager.getAddressFromLocation(location);
                 })
                 .subscribe(this::handleAddress, this::handleGmsError));
