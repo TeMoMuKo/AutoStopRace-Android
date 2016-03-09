@@ -33,7 +33,7 @@ public class GeoCodingHelper {
         mContext = context;
     }
 
-    public Observable<Address> getFromLocation(@NonNull Location location) {
+    public Observable<Address> getAddressFromLocation(@NonNull Location location) {
         return GeocoderObservable.create(mContext, location.getLatitude(), location.getLongitude())
                 .timeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
                 .onErrorResumeNext(throwable -> {

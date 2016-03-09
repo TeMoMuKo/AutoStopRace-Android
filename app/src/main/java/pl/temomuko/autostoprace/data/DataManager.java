@@ -174,6 +174,6 @@ public class DataManager {
     }
 
     public Observable<Address> getAddressFromLocation(@NonNull Location location) {
-        return mGeoCodingHelper.getFromLocation(location);
+        return mGeoCodingHelper.getAddressFromLocation(location);
     }
 }

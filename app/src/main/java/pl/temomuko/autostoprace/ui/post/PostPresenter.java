@@ -147,7 +147,10 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private void startLocationUpdates() {
         mLocationSubscriptions.add(mDataManager.getDeviceLocation(GmsLocationHelper.APP_LOCATION_REQUEST)
-                .switchMap(mDataManager::getAddressFromLocation)
+                .switchMap(location -> {
+                    LogUtil.i(TAG, Float.toString(location.getAccuracy()));
+                    return mDataManager.getAddressFromLocation(location);
+                })
                 .subscribe(this::handleAddress, this::handleGmsError));
     }
 
