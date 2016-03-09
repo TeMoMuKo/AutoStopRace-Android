@@ -3,6 +3,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -23,83 +24,87 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
+                app:cardCornerRadius="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:orientation="vertical"
-                android:padding="@dimen/default_padding">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/msg_your_location"/>
-
-                    <TextView
-                        android:id="@+id/tv_accuracy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="(+/- 50m)"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"/>
-
-                </RelativeLayout>
+                android:layout_marginLeft="@dimen/full_screen_card_margin"
+                android:layout_marginRight="@dimen/full_screen_card_margin"
+                android:layout_marginTop="@dimen/full_screen_card_margin">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="@dimen/default_padding">
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="8dp"
-                        android:alpha="0.75"
-                        android:scaleType="fitStart"
-                        android:src="@drawable/ic_my_location_black_24dp"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/msg_your_location"/>
+
+                        <TextView
+                            android:id="@+id/tv_accuracy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            tools:text="(+/- 50m)"/>
+
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tv_current_location_adress"
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:layout_width="30dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginRight="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="@string/msg_establishing_approximate_location"
-                            android:textColor="@color/primary_text"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
+                            android:alpha="0.75"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/ic_my_location_black_24dp"/>
 
-                        <TextView
-                            android:id="@+id/tv_current_location_cords"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textColor="@color/secondary_text"
-                            android:textSize="12sp"
-                            android:visibility="gone"/>
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_current_location_adress"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/msg_establishing_approximate_location"
+                                android:textColor="@color/primary_text"
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/tv_current_location_cords"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="12sp"
+                                android:visibility="gone"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@drawable/shadow_standard"/>
+            </android.support.v7.widget.CardView>
 
             <EditText
                 android:id="@+id/et_message"
