@@ -78,8 +78,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:weightSum="1">
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_current_location_adress"
@@ -90,8 +89,7 @@
                                 android:textColor="@color/primary_text"
                                 android:layout_marginBottom="8dp"
                                 android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:layout_weight="1.57"/>
+                                android:textStyle="bold"/>
 
                         </LinearLayout>
 
@@ -101,9 +99,9 @@
                         android:id="@+id/tv_current_location_cords"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
+                        android:alpha="0.60"
                         android:layout_marginLeft="38dp"
                         android:visibility="gone"
                         tools:text="51.12345, 17.12345"
