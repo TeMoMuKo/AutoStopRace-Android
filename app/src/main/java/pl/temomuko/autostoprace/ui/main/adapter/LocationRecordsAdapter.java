@@ -90,14 +90,14 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         }
     }
 
-    private void expandItem(ViewHolder holder) {
-        holder.mTvLocationRecordMessage.setMaxLines(Integer.MAX_VALUE);
-        holder.mTvLocationRecordMessage.setEllipsize(null);
-    }
-
     private void collapseItem(ViewHolder holder) {
         holder.mTvLocationRecordMessage.setMaxLines(2);
         holder.mTvLocationRecordMessage.setEllipsize(TextUtils.TruncateAt.END);
+    }
+
+    private void expandItem(ViewHolder holder) {
+        holder.mTvLocationRecordMessage.setMaxLines(Integer.MAX_VALUE);
+        holder.mTvLocationRecordMessage.setEllipsize(null);
     }
 
     private void setupCountryCodeCircleView(ViewHolder holder, LocationRecord locationRecord) {
@@ -154,8 +154,6 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         @Bind(R.id.image_server_synchronization_state) ImageView mImageServerSynchronizationState;
         @Bind(R.id.image_unknown_country_code) ImageView mImageUnknownCountryCode;
         View mItemView;
-
-        private int mStartHeight;
 
         public ViewHolder(View itemView) {
             super(itemView);
