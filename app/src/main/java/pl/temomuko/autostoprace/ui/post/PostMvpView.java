@@ -14,7 +14,7 @@ public interface PostMvpView extends MvpView {
 
     void showSuccessInfo();
 
-    void updateCurrentLocation(double latitude, double longitude,String address);
+    void updateCurrentLocation(double latitude, double longitude, String address);
 
     void updateCurrentLocation(double latitude, double longitude);
 

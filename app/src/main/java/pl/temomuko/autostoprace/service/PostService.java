@@ -56,7 +56,7 @@ public class PostService extends Service {
         LogUtil.i(TAG, "Service started.");
         if (!NetworkUtil.isConnected(this)) {
             AndroidComponentUtil.toggleComponent(this, NetworkChangeReceiver.class, true);
-            LogUtil.i(TAG, "Connection not available. Service stopped");
+            LogUtil.i(TAG, "Connection not available. Service stopped.");
             stopSelf();
             return START_NOT_STICKY;
         }
@@ -81,7 +81,7 @@ public class PostService extends Service {
                             .toCompletable().endWith(Observable.just(unsentLocationRecord)))
                     .subscribe(removedLocation -> {
                                 EventUtil.postSticky(new RemovedLocationFromUnsentEvent(removedLocation));
-                                LogUtil.i("EventUtil", "Removed: " + removedLocation.toString());
+                                LogUtil.i(TAG, "Removed: " + removedLocation.toString());
                             },
                             this::handleError, this::handleCompleted);
         }

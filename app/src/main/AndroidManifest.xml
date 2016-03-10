@@ -93,6 +93,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity"/>
         </activity>
+
         <receiver android:name=".service.GpsStatusChangeReceiver">
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED"/>
@@ -105,6 +106,7 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
+
         <service android:name=".service.PostService"/>
     </application>
 </manifest>

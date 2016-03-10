@@ -64,14 +64,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
             mMainPresenter.setupUserInfoInDrawer();
         }
         setupToolbarWithToggle();
-        setListeners();
         setupRecyclerView();
-    }
-
-    private void setupRecyclerView() {
-        mRecyclerView.setAdapter(mLocationRecordsAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
+        setListeners();
     }
 
     @Override
@@ -93,6 +87,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onDestroy() {
         mMainPresenter.detachView();
         super.onDestroy();
+    }
+
+    private void setupRecyclerView() {
+        mRecyclerView.setAdapter(mLocationRecordsAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
     }
 
     private void setListeners() {
@@ -130,8 +130,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
-    public void setProgress(boolean status) {
-        mMaterialProgressBar.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
+    public void setProgress(boolean state) {
+        mMaterialProgressBar.setVisibility(state ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override

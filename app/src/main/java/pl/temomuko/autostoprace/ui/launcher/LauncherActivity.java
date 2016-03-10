@@ -26,12 +26,6 @@ public class LauncherActivity extends DrawerActivity {
         setListeners();
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
     private void setListeners() {
         mGoToLoginButton.setOnClickListener(v -> startLoginActivity());
         mGoToContactButton.setOnClickListener(v -> startContactActivity());

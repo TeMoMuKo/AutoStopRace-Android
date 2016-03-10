@@ -68,7 +68,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         holder.mTvLocationRecordMessage.setText(locationRecord.getMessage());
         setupMessage(holder, item);
         holder.mItemView.setOnClickListener(view -> {
-            if(mIsExpandingEnabled) switchMessageState(holder, item);
+            if (mIsExpandingEnabled) switchMessageState(holder, item);
         });
     }
 
