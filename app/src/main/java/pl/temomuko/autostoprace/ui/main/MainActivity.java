@@ -120,6 +120,11 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
+    public void setItemsExpandingEnabled(boolean state) {
+        mLocationRecordsAdapter.setEnabledExpanding(state);
+    }
+
+    @Override
     public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }

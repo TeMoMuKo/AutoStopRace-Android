@@ -33,6 +33,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
 
     private List<LocationRecordItem> mLocationRecordItems;
     private Context mAppContext;
+    private boolean mIsExpandingEnabled = false;
 
     @Inject
     public LocationRecordsAdapter(@AppContext Context context) {
@@ -43,6 +44,10 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     public void setLocationRecordItems(List<LocationRecordItem> locationRecordItems) {
         mLocationRecordItems = locationRecordItems;
         notifyDataSetChanged();
+    }
+
+    public void setEnabledExpanding(boolean state) {
+        mIsExpandingEnabled = state;
     }
 
     @Override
@@ -63,7 +68,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         holder.mTvLocationRecordMessage.setText(locationRecord.getMessage());
         setupMessage(holder, item);
         holder.mItemView.setOnClickListener(view -> {
-            switchMessageState(holder, item);
+            if(mIsExpandingEnabled) switchMessageState(holder, item);
         });
     }
 

@@ -96,6 +96,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                 .flatMap(mDataManager::syncWithDatabase)
                 .subscribe(locationRecords -> {
                             updateLocationsView(locationRecords);
+                            getMvpView().setItemsExpandingEnabled(true);
                             getMvpView().startPostService();
                         },
                         throwable -> {
