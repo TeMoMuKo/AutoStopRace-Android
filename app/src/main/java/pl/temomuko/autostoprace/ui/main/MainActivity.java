@@ -26,16 +26,19 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.service.PostService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
+import pl.temomuko.autostoprace.ui.main.adapter.LocationRecordItem;
+import pl.temomuko.autostoprace.ui.main.adapter.LocationRecordsAdapter;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
+import rx.Observable;
 
 /**
  * Created by Szymon Kozak on 2016-01-06.
  */
-public class MainActivity extends DrawerActivity implements MainMvpView, LocationRecordsAdapter.Callback {
+public class MainActivity extends DrawerActivity implements MainMvpView {
 
     private static final int CHECK_LOCATION_SETTINGS_REQUEST_CODE = 1;
     private static final int UNHANDLED_REQUEST_CODE = -1;
@@ -66,7 +69,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView, Locatio
     }
 
     private void setupRecyclerView() {
-        mLocationRecordsAdapter.setCallback(this);
         mRecyclerView.setAdapter(mLocationRecordsAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
@@ -97,18 +99,17 @@ public class MainActivity extends DrawerActivity implements MainMvpView, Locatio
         mGoToPostFab.setOnClickListener(v -> mMainPresenter.goToPostLocation());
     }
 
-    @Override
-    public void onLocationRecordClicked(LocationRecord locationRecord) {
-        //// TODO: 06.03.2016 handle click
-        Toast.makeText(this, locationRecord.getLongitude() + ", " + locationRecord.getLatitude(), Toast.LENGTH_SHORT).show();
-    }
-
     /* MVP View methods */
 
     @Override
     public void updateLocationRecordsList(List<LocationRecord> locationRecords) {
-        mLocationRecordsAdapter.setLocationRecords(locationRecords);
-        mTvEmptyInfo.setVisibility(View.GONE);
+        Observable.from(locationRecords)
+                .map(LocationRecordItem::new)
+                .toList()
+                .subscribe(items -> {
+                    mLocationRecordsAdapter.setLocationRecordItems(items);
+                    mTvEmptyInfo.setVisibility(View.GONE);
+                });
     }
 
     @Override

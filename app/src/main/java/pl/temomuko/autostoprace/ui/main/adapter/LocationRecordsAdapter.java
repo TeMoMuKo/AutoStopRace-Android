@@ -1,7 +1,8 @@
-package pl.temomuko.autostoprace.ui.main;
+package pl.temomuko.autostoprace.ui.main.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,23 +31,18 @@ import pl.temomuko.autostoprace.util.DateUtil;
  */
 public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecordsAdapter.ViewHolder> {
 
-    private List<LocationRecord> mLocationRecords;
+    private List<LocationRecordItem> mLocationRecordItems;
     private Context mAppContext;
-    private Callback mCallback;
 
     @Inject
     public LocationRecordsAdapter(@AppContext Context context) {
-        mLocationRecords = new ArrayList<>();
+        mLocationRecordItems = new ArrayList<>();
         mAppContext = context;
     }
 
-    public void setLocationRecords(List<LocationRecord> locationRecords) {
-        mLocationRecords = locationRecords;
+    public void setLocationRecordItems(List<LocationRecordItem> locationRecordItems) {
+        mLocationRecordItems = locationRecordItems;
         notifyDataSetChanged();
-    }
-
-    public void setCallback(Callback callback) {
-        mCallback = callback;
     }
 
     @Override
@@ -58,13 +54,45 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
 
     @Override
     public void onBindViewHolder(LocationRecordsAdapter.ViewHolder holder, int position) {
-        LocationRecord locationRecord = mLocationRecords.get(position);
+        LocationRecordItem item = mLocationRecordItems.get(position);
+        LocationRecord locationRecord = item.getLocationRecord();
         setupCountryCodeCircleView(holder, locationRecord);
         setupServerSynchronizationState(holder.mImageServerSynchronizationState, locationRecord);
         setupLocation(holder.mTvLocation, locationRecord);
-        holder.mTvLocationRecordMessage.setText(locationRecord.getMessage());
         setupReceiptDate(holder, locationRecord);
-        holder.mItemView.setOnClickListener(v -> mCallback.onLocationRecordClicked(locationRecord));
+        holder.mTvLocationRecordMessage.setText(locationRecord.getMessage());
+        setupMessage(holder, item);
+        holder.mItemView.setOnClickListener(view -> {
+            switchMessageState(holder, item);
+        });
+    }
+
+    private void switchMessageState(ViewHolder holder, LocationRecordItem item) {
+        if (item.isExpanded()) {
+            collapseItem(holder);
+            item.setIsExpanded(false);
+        } else {
+            expandItem(holder);
+            item.setIsExpanded(true);
+        }
+    }
+
+    private void setupMessage(ViewHolder holder, LocationRecordItem item) {
+        if (!item.isExpanded()) {
+            collapseItem(holder);
+        } else {
+            expandItem(holder);
+        }
+    }
+
+    private void expandItem(ViewHolder holder) {
+        holder.mTvLocationRecordMessage.setMaxLines(Integer.MAX_VALUE);
+        holder.mTvLocationRecordMessage.setEllipsize(null);
+    }
+
+    private void collapseItem(ViewHolder holder) {
+        holder.mTvLocationRecordMessage.setMaxLines(2);
+        holder.mTvLocationRecordMessage.setEllipsize(TextUtils.TruncateAt.END);
     }
 
     private void setupCountryCodeCircleView(ViewHolder holder, LocationRecord locationRecord) {
@@ -108,7 +136,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
 
     @Override
     public int getItemCount() {
-        return mLocationRecords.size();
+        return mLocationRecordItems.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -121,6 +149,8 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         @Bind(R.id.image_server_synchronization_state) ImageView mImageServerSynchronizationState;
         @Bind(R.id.image_unknown_country_code) ImageView mImageUnknownCountryCode;
         View mItemView;
+
+        private int mStartHeight;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -142,10 +172,5 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
                 mImageUnknownCountryCode.setVisibility(View.VISIBLE);
             }
         }
-    }
-
-    interface Callback {
-
-        void onLocationRecordClicked(LocationRecord locationRecord);
     }
 }
