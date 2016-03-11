@@ -40,6 +40,8 @@
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:scrollbars="vertical"
+                        android:scrollbarStyle="outsideOverlay"
                         android:clipToPadding="false"
                         android:paddingBottom="@dimen/bottom_fab_spacing"
                         android:paddingTop="4dp"/>
