@@ -49,7 +49,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
-    @Bind(R.id.tv_empty_info) TextView mTvEmptyInfo;
+    @Bind(R.id.tv_empty_info) TextView mEmptyInfoTextView;
     private Snackbar mWarningSnackbar;
 
     @Override
@@ -108,7 +108,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
                 .toList()
                 .subscribe(items -> {
                     mLocationRecordsAdapter.setLocationRecordItems(items);
-                    mTvEmptyInfo.setVisibility(View.GONE);
+                    mEmptyInfoTextView.setVisibility(View.GONE);
                 });
     }
 
@@ -136,7 +136,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void showEmptyInfo() {
-        mTvEmptyInfo.setVisibility(View.VISIBLE);
+        mEmptyInfoTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
