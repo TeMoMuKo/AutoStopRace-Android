@@ -43,4 +43,6 @@
         <item name="android:textColor">@color/secondary_text_standard</item>
     </style>
 
+    <style name="Theme.Translucent.Status" parent="AppTheme.Base"/>
+
 </resources>

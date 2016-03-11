@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="Theme.Translucent.Status" parent="AppTheme.Base">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+</resources>
