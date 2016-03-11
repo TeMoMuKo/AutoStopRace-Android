@@ -12,7 +12,6 @@
     android:paddingLeft="@dimen/default_padding"
     android:paddingRight="@dimen/default_padding"
     android:paddingTop="@dimen/default_padding_halved"
-    android:animateLayoutChanges="true"
     android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
     <FrameLayout
@@ -70,7 +69,8 @@
                 style="@style/ListItemText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"
+                android:ellipsize="end"
+                android:maxLines="2"
                 tools:text="Ale nudno :("/>
 
         </LinearLayout>
