@@ -1,7 +1,5 @@
 package pl.temomuko.autostoprace.ui.main.adapter;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -79,48 +77,23 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     }
 
     private void setupMessage(ViewHolder holder, LocationRecordItem item) {
-        if (item.isExpanded()) {
-            holder.mTvLocationRecordMessage.setMaxLines(EXPANDED_ITEM_MESSAGE_MAX_LINES);
-        } else {
-            holder.mTvLocationRecordMessage.setMaxLines(COLLAPSED_ITEM_MESSAGE_MAX_LINES);
-        }
+        holder.mTvLocationRecordMessage.setMaxLines(
+                item.isExpanded() ? EXPANDED_ITEM_MESSAGE_MAX_LINES : COLLAPSED_ITEM_MESSAGE_MAX_LINES
+        );
     }
 
     private void switchMessageState(ViewHolder holder, LocationRecordItem item) {
         if (item.isExpanded()) {
             item.setIsExpanded(false);
-            collapseItem(holder);
+            AnimationUtil.animateTextViewMaxLinesChange(holder.mTvLocationRecordMessage,
+                    COLLAPSED_ITEM_MESSAGE_MAX_LINES,
+                    RESIZING_ANIMATION_DURATION);
         } else {
             item.setIsExpanded(true);
-            expandItem(holder);
+            AnimationUtil.animateTextViewMaxLinesChange(holder.mTvLocationRecordMessage,
+                    EXPANDED_ITEM_MESSAGE_MAX_LINES,
+                    RESIZING_ANIMATION_DURATION);
         }
-    }
-
-    private void collapseItem(ViewHolder holder) {
-        int startHeight = holder.mTvLocationRecordMessage.getMeasuredHeight();
-        holder.mTvLocationRecordMessage.setMaxLines(COLLAPSED_ITEM_MESSAGE_MAX_LINES);
-        holder.mTvLocationRecordMessage.measure(
-                View.MeasureSpec.makeMeasureSpec(holder.itemView.getWidth(), View.MeasureSpec.AT_MOST),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        int endHeight = holder.mTvLocationRecordMessage.getMeasuredHeight();
-        AnimationUtil.animateTextViewMaxHeight(holder.mTvLocationRecordMessage, startHeight, endHeight,
-                RESIZING_ANIMATION_DURATION, new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        holder.mTvLocationRecordMessage.setMaxLines(COLLAPSED_ITEM_MESSAGE_MAX_LINES);
-                    }
-                });
-    }
-
-    private void expandItem(ViewHolder holder) {
-        int startHeight = holder.mTvLocationRecordMessage.getMeasuredHeight();
-        holder.mTvLocationRecordMessage.setMaxLines(EXPANDED_ITEM_MESSAGE_MAX_LINES);
-        holder.mTvLocationRecordMessage.measure(
-                View.MeasureSpec.makeMeasureSpec(holder.itemView.getWidth(), View.MeasureSpec.AT_MOST),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        int endHeight = holder.mTvLocationRecordMessage.getMeasuredHeight();
-        AnimationUtil.animateTextViewMaxHeight(holder.mTvLocationRecordMessage, startHeight, endHeight,
-                RESIZING_ANIMATION_DURATION);
     }
 
     private void setupCountryCodeCircleView(ViewHolder holder, LocationRecord locationRecord) {
