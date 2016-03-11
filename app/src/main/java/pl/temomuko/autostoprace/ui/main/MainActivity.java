@@ -49,7 +49,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
-    @Bind(R.id.tv_empty_info) TextView mTvEmptyInfo;
+    @Bind(R.id.tv_empty_info) TextView mEmptyInfoTextView;
     private Snackbar mWarningSnackbar;
 
     @Override
@@ -64,14 +64,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
             mMainPresenter.setupUserInfoInDrawer();
         }
         setupToolbarWithToggle();
-        setListeners();
         setupRecyclerView();
-    }
-
-    private void setupRecyclerView() {
-        mRecyclerView.setAdapter(mLocationRecordsAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
+        setListeners();
     }
 
     @Override
@@ -95,6 +89,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         super.onDestroy();
     }
 
+    private void setupRecyclerView() {
+        mRecyclerView.setAdapter(mLocationRecordsAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
+    }
+
     private void setListeners() {
         mGoToPostFab.setOnClickListener(v -> mMainPresenter.goToPostLocation());
     }
@@ -108,7 +108,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
                 .toList()
                 .subscribe(items -> {
                     mLocationRecordsAdapter.setLocationRecordItems(items);
-                    mTvEmptyInfo.setVisibility(View.GONE);
+                    mEmptyInfoTextView.setVisibility(View.GONE);
                 });
     }
 
@@ -130,13 +130,13 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
-    public void setProgress(boolean status) {
-        mMaterialProgressBar.setVisibility(status ? View.VISIBLE : View.INVISIBLE);
+    public void setProgress(boolean state) {
+        mMaterialProgressBar.setVisibility(state ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
     public void showEmptyInfo() {
-        mTvEmptyInfo.setVisibility(View.VISIBLE);
+        mEmptyInfoTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
