@@ -76,5 +76,5 @@
     <string name="description_location_record_state">Stan synchronizacji rekordu z serwerem</string>
     <string name="description_unknown_cuntry_code">Kod kraju nieznany</string>
     <string name="accuracy_label">(+/- %1$sm)</string>
-    <string name="label_sponsor">Sponsorem akcji jest m. in:</string>
+    <string name="label_sponsor">Sponsorem edycji 2016 jest m. in.:</string>
 </resources>

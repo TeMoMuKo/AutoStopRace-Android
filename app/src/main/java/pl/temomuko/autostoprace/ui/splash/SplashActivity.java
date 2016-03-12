@@ -24,7 +24,10 @@ public class SplashActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        Picasso.with(this).load(R.drawable.logo_linuxpl).into(mSponsorLogoImageView);
+        Picasso.with(this)
+                .load(R.drawable.logo_linuxpl)
+                .placeholder(R.drawable.logo_linuxpl)
+                .into(mSponsorLogoImageView);
         new Handler().postDelayed(this::startMainActivity, Constants.SPLASH_DURATION);
     }
 
