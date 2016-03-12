@@ -48,20 +48,20 @@ public interface AsrService {
     Observable<Response<List<LocationRecord>>> getLocationRecordsWithObservable(@Path("team_id") int teamId);
 
     @FormUrlEncoded
-    @POST("auth/sign_in")
+    @POST("api/v1/auth/sign_in")
     Observable<Response<SignInResponse>> signInWithObservable(
             @Field("email") String email,
             @Field("password") String password
     );
 
-    @DELETE("auth/sign_out")
+    @DELETE("api/v1/auth/sign_out")
     Observable<Response<SignOutResponse>> signOutWithObservable(
             @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
             @Header(Constants.HEADER_FIELD_CLIENT) String client,
             @Header(Constants.HEADER_FIELD_UID) String uid
     );
 
-    @GET("auth/validate_token")
+    @GET("api/v1/auth/validate_token")
     Observable<Response<SignInResponse>> validateTokenWithObservable(
             @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
             @Header(Constants.HEADER_FIELD_CLIENT) String client,
