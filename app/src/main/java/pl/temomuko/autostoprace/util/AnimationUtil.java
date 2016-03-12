@@ -25,14 +25,17 @@ public class AnimationUtil {
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         final int endHeight = textView.getMeasuredHeight();
         ObjectAnimator animation = ObjectAnimator.ofInt(textView, MAX_HEIGHT_ATTR, startHeight, endHeight);
-        animation.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (textView.getMaxHeight() == endHeight) {
-                    textView.setMaxLines(maxLines);
+        animation.addListener(
+                new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (textView.getMaxHeight() == endHeight) {
+                            textView.setMaxLines(maxLines);
+                        }
+                    }
                 }
-            }
-        });
+
+        );
         animation.setDuration(duration).start();
     }
 }

@@ -23,7 +23,7 @@ public class AsrApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-        Locale.setDefault(new Locale("pl"));
+        Locale.setDefault(new Locale(Constants.DEFAULT_LOCALE));
     }
 
     public ApplicationComponent getComponent() {
