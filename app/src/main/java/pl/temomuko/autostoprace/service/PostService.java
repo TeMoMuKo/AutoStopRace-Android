@@ -6,12 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.event.RemovedLocationFromUnsentEvent;
+import pl.temomuko.autostoprace.data.event.SuccessfullySentLocationToServerEvent;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.ErrorHandler;
@@ -19,7 +20,6 @@ import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.NetworkUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
-import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -73,17 +73,19 @@ public class PostService extends Service {
         if (mSubscription == null || mSubscription.isUnsubscribed()) {
             LogUtil.i(TAG, "Checking for unsent location records...");
             mSubscription = mDataManager.getUnsentLocationRecords()
-                    .compose(RxUtil.applySchedulers())
-                    .concatMap((LocationRecord unsentLocationRecord) -> mDataManager.postLocationRecordToServer(unsentLocationRecord)
-                            .flatMap(mDataManager::handlePostLocationRecordResponse)
-                            .flatMap(mDataManager::saveSentLocationRecordToDatabase)
-                            .toCompletable().endWith(mDataManager.deleteUnsentLocationRecord(unsentLocationRecord))
-                            .toCompletable().endWith(Observable.just(unsentLocationRecord)))
-                    .subscribe(removedLocationRecord -> {
-                                EventUtil.postSticky(new RemovedLocationFromUnsentEvent(removedLocationRecord));
-                                LogUtil.i(TAG, "Removed: " + removedLocationRecord.toString());
+                    .concatMap((LocationRecord unsentLocationRecord) ->
+                            mDataManager.postLocationRecordToServer(unsentLocationRecord)
+                                    .compose(RxUtil.applySchedulers())
+                                    .flatMap(mDataManager::handlePostLocationRecordResponse)
+                                    .flatMap(mDataManager::saveSentLocationRecordToDatabase)
+                                    .zipWith(mDataManager.deleteUnsentLocationRecord(unsentLocationRecord), Pair::create))
+                    .subscribe(pair -> {
+                                EventUtil.postSticky(new SuccessfullySentLocationToServerEvent(pair.second, pair.first));
+                                LogUtil.i(TAG, "Removed local location record: " + pair.second.toString());
+                                LogUtil.i(TAG, "Received location record: " + pair.first.toString());
                             },
-                            this::handleError, this::handleCompleted);
+                            this::handleError,
+                            this::handleCompleted);
         }
     }
 
@@ -94,6 +96,7 @@ public class PostService extends Service {
 
     private void handleError(Throwable throwable) {
         LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
+        LogUtil.e(TAG, throwable.toString());
         LogUtil.i(TAG, "Service stopped");
         stopSelf();
     }

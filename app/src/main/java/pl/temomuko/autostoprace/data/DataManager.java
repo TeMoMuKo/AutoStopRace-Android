@@ -124,11 +124,11 @@ public class DataManager {
                 Observable.error(new StandardResponseException(response));
     }
 
-    public Observable<Void> saveSentLocationRecordToDatabase(LocationRecord locationRecord) {
+    public Observable<LocationRecord> saveSentLocationRecordToDatabase(LocationRecord locationRecord) {
         return mDatabaseHelper.addSentLocationRecord(locationRecord);
     }
 
-    public Observable<Void> saveUnsentLocationRecordToDatabase(LocationRecord locationRecord) {
+    public Observable<LocationRecord> saveUnsentLocationRecordToDatabase(LocationRecord locationRecord) {
         return mDatabaseHelper.addUnsentLocationRecord(locationRecord);
     }
 
@@ -136,7 +136,7 @@ public class DataManager {
         return mDatabaseHelper.getUnsentLocationRecords();
     }
 
-    public Observable<Void> deleteUnsentLocationRecord(LocationRecord locationRecord) {
+    public Observable<LocationRecord> deleteUnsentLocationRecord(LocationRecord locationRecord) {
         return mDatabaseHelper.deleteUnsentLocationRecord(locationRecord);
     }
 

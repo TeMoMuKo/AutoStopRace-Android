@@ -78,13 +78,14 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<Void> addSentLocationRecord(LocationRecord locationRecord) {
+    public Observable<LocationRecord> addSentLocationRecord(LocationRecord locationRecord) {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 mBriteDatabase.insert(RemoteLocationRecordTable.NAME,
                         RemoteLocationRecordTable.toContentValues(locationRecord));
                 transaction.markSuccessful();
+                subscriber.onNext(locationRecord);
                 subscriber.onCompleted();
             } finally {
                 transaction.end();
@@ -92,13 +93,14 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<Void> addUnsentLocationRecord(LocationRecord locationRecord) {
+    public Observable<LocationRecord> addUnsentLocationRecord(LocationRecord locationRecord) {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 mBriteDatabase.insert(LocalUnsentLocationRecordTable.NAME,
                         LocalUnsentLocationRecordTable.toContentValues(locationRecord));
                 transaction.markSuccessful();
+                subscriber.onNext(locationRecord);
                 subscriber.onCompleted();
             } finally {
                 transaction.end();
@@ -106,7 +108,7 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<Void> deleteUnsentLocationRecord(LocationRecord locationRecord) {
+    public Observable<LocationRecord> deleteUnsentLocationRecord(LocationRecord locationRecord) {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
@@ -114,6 +116,7 @@ public class DatabaseHelper {
                         LocalUnsentLocationRecordTable.COLUMN_ID + "= ?",
                         Integer.toString(locationRecord.getId()));
                 transaction.markSuccessful();
+                subscriber.onNext(locationRecord);
                 subscriber.onCompleted();
             } finally {
                 transaction.end();
