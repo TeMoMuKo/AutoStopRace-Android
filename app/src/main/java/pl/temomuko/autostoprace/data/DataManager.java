@@ -16,7 +16,7 @@ import javax.inject.Singleton;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
-import pl.temomuko.autostoprace.data.local.geocoding.GeoCodingHelper;
+import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
@@ -41,18 +41,18 @@ public class DataManager {
     private DatabaseHelper mDatabaseHelper;
     private GmsLocationHelper mGmsLocationHelper;
     private PermissionHelper mPermissionHelper;
-    private GeoCodingHelper mGeoCodingHelper;
+    private GeocodingHelper mGeocodingHelper;
 
     @Inject
     public DataManager(AsrService asrService, PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
                        GmsLocationHelper gmsLocationHelper, PermissionHelper permissionHelper,
-                       GeoCodingHelper geoCodingHelper) {
+                       GeocodingHelper geocodingHelper) {
         mAsrService = asrService;
         mPrefsHelper = prefsHelper;
         mDatabaseHelper = databaseHelper;
         mGmsLocationHelper = gmsLocationHelper;
         mPermissionHelper = permissionHelper;
-        mGeoCodingHelper = geoCodingHelper;
+        mGeocodingHelper = geocodingHelper;
     }
 
     public Observable<Response<SignInResponse>> signIn(String login, String password) {
@@ -174,6 +174,6 @@ public class DataManager {
     }
 
     public Observable<Address> getAddressFromLocation(@NonNull Location location) {
-        return mGeoCodingHelper.getAddressFromLocation(location);
+        return mGeocodingHelper.getAddressFromLocation(location);
     }
 }

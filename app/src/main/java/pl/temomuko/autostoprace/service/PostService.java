@@ -73,15 +73,15 @@ public class PostService extends Service {
         if (mSubscription == null || mSubscription.isUnsubscribed()) {
             LogUtil.i(TAG, "Checking for unsent location records...");
             mSubscription = mDataManager.getUnsentLocationRecords()
+                    .compose(RxUtil.applySchedulers())
                     .concatMap((LocationRecord unsentLocationRecord) -> mDataManager.postLocationRecordToServer(unsentLocationRecord)
-                            .compose(RxUtil.applySchedulers())
                             .flatMap(mDataManager::handlePostLocationRecordResponse)
                             .flatMap(mDataManager::saveSentLocationRecordToDatabase)
                             .toCompletable().endWith(mDataManager.deleteUnsentLocationRecord(unsentLocationRecord))
                             .toCompletable().endWith(Observable.just(unsentLocationRecord)))
-                    .subscribe(removedLocation -> {
-                                EventUtil.postSticky(new RemovedLocationFromUnsentEvent(removedLocation));
-                                LogUtil.i(TAG, "Removed: " + removedLocation.toString());
+                    .subscribe(removedLocationRecord -> {
+                                EventUtil.postSticky(new RemovedLocationFromUnsentEvent(removedLocationRecord));
+                                LogUtil.i(TAG, "Removed: " + removedLocationRecord.toString());
                             },
                             this::handleError, this::handleCompleted);
         }

@@ -21,15 +21,15 @@ import rx.schedulers.Schedulers;
  * Created by Rafał Naniewicz on 19.02.2016.
  */
 @Singleton
-public class GeoCodingHelper {
+public class GeocodingHelper {
 
     private static final int TIMEOUT_IN_SECONDS = 5;
-    private static final String TAG = "GeoCodingHelper";
+    private static final String TAG = "GeocodingHelper";
 
     Context mContext;
 
     @Inject
-    public GeoCodingHelper(@AppContext Context context) {
+    public GeocodingHelper(@AppContext Context context) {
         mContext = context;
     }
 
