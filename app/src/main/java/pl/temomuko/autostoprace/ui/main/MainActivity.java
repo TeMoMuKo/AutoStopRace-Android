@@ -68,12 +68,15 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         setupToolbarWithToggle();
         setupRecyclerView();
         setListeners();
+        if (mMainPresenter.isAuthorized()) {
+            loadLocations(savedInstanceState);
+            mMainPresenter.setupUserInfoInDrawer();
+        }
+    }
+
+    private void loadLocations(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            mMainPresenter.checkAuth();
-            if (mMainPresenter.isAuthorized()) {
-                mMainPresenter.loadLocations();
-                mMainPresenter.setupUserInfoInDrawer();
-            }
+            mMainPresenter.loadLocations();
         } else {
             restoreInstanceState(savedInstanceState);
         }
@@ -89,6 +92,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         } else {
             mMainPresenter.loadLocations();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMainPresenter.checkAuth();
     }
 
     @Override
