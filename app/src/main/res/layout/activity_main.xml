@@ -42,7 +42,8 @@
                         android:layout_height="wrap_content"
                         android:clipToPadding="false"
                         android:paddingBottom="@dimen/bottom_fab_spacing"
-                        android:paddingTop="4dp"/>
+                        android:paddingTop="4dp"
+                        android:scrollbars="vertical"/>
 
                     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
                         android:id="@+id/horizontal_progress_toolbar"
@@ -53,6 +54,7 @@
                         android:indeterminate="true"
                         android:progress="30"
                         android:secondaryProgress="60"
+                        android:visibility="gone"
                         app:mpb_progressStyle="horizontal"
                         app:mpb_showTrack="false"
                         app:mpb_useIntrinsicPadding="false"/>

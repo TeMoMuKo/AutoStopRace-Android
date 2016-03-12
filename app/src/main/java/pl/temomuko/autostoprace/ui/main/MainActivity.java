@@ -7,6 +7,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,6 +36,7 @@ import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
+import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import rx.Observable;
 
 /**
@@ -42,6 +46,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     private static final int CHECK_LOCATION_SETTINGS_REQUEST_CODE = 1;
     private static final int UNHANDLED_REQUEST_CODE = -1;
+    private static final String BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS = "BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS";
 
     @Inject MainPresenter mMainPresenter;
     @Inject LocationRecordsAdapter mLocationRecordsAdapter;
@@ -51,21 +56,48 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.tv_empty_info) TextView mEmptyInfoTextView;
     private Snackbar mWarningSnackbar;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getActivityComponent().inject(this);
+        mMainPresenter.setupRxCacheHelper(this, RxCacheHelper.get(TAG));
         mMainPresenter.attachView(this);
-        mMainPresenter.checkAuth();
-        if (mMainPresenter.isAuthorized()) {
-            mMainPresenter.loadLocations();
-            mMainPresenter.setupUserInfoInDrawer();
-        }
         setupToolbarWithToggle();
         setupRecyclerView();
         setListeners();
+        if (savedInstanceState == null) {
+            mMainPresenter.checkAuth();
+            if (mMainPresenter.isAuthorized()) {
+                mMainPresenter.loadLocations();
+                mMainPresenter.setupUserInfoInDrawer();
+            }
+        } else {
+            restoreInstanceState(savedInstanceState);
+        }
+    }
+
+    private void restoreInstanceState(@NonNull Bundle savedInstanceState) {
+        LocationRecordItem[] locationRecordItems =
+                (LocationRecordItem[]) savedInstanceState.getParcelableArray(BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS);
+        if (locationRecordItems != null) {
+            mLocationRecordsAdapter.setLocationRecordItems(Arrays.asList(locationRecordItems));
+            //// TODO: 11.03.2016 Temporary
+            setItemsExpandingEnabled(true);
+        } else {
+            mMainPresenter.loadLocations();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        List<LocationRecordItem> locationRecordItems = mLocationRecordsAdapter.getLocationRecordItems();
+        LocationRecordItem[] locationRecordItemsArray =
+                locationRecordItems.toArray(new LocationRecordItem[locationRecordItems.size()]);
+        outState.putParcelableArray(BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS, locationRecordItemsArray);
     }
 
     @Override
@@ -87,6 +119,22 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onDestroy() {
         mMainPresenter.detachView();
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                mMainPresenter.loadLocations();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupRecyclerView() {

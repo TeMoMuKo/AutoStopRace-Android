@@ -37,6 +37,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
 
     private List<LocationRecordItem> mLocationRecordItems;
     private Context mAppContext;
+
     private boolean mIsExpandingEnabled = false;
 
     @Inject
@@ -133,6 +134,10 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         } else {
             holder.setDatesVisibility(View.GONE);
         }
+    }
+
+    public List<LocationRecordItem> getLocationRecordItems() {
+        return mLocationRecordItems;
     }
 
     @Override

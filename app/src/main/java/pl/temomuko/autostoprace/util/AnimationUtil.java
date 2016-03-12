@@ -18,7 +18,6 @@ public class AnimationUtil {
     }
 
     public static void animateTextViewMaxLinesChange(final TextView textView, final int maxLines, final int duration) {
-        LogUtil.e("maxLines", Integer.toString(textView.getMaxLines()));
         final int startHeight = textView.getMeasuredHeight();
         textView.setMaxLines(maxLines);
         textView.measure(

@@ -1,5 +1,8 @@
 package pl.temomuko.autostoprace.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -7,7 +10,7 @@ import java.util.Date;
 /**
  * Created by Szymon Kozak on 2016-01-22.
  */
-public class LocationRecord {
+public class LocationRecord implements Parcelable {
 
     @SerializedName("id") private int mId;
     @SerializedName("latitude") private double mLatitude;
@@ -100,4 +103,46 @@ public class LocationRecord {
                 getAddress() + ",\n "
                 + getMessage() + ")\n";
     }
+
+    protected LocationRecord(Parcel in) {
+        mId = in.readInt();
+        mLatitude = in.readDouble();
+        mLongitude = in.readDouble();
+        mMessage = in.readString();
+        mAddress = in.readString();
+        mCountry = in.readString();
+        mCountryCode = in.readString();
+        long tmpMServerReceiptDate = in.readLong();
+        mServerReceiptDate = tmpMServerReceiptDate != -1 ? new Date(tmpMServerReceiptDate) : null;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
+        dest.writeDouble(mLatitude);
+        dest.writeDouble(mLongitude);
+        dest.writeString(mMessage);
+        dest.writeString(mAddress);
+        dest.writeString(mCountry);
+        dest.writeString(mCountryCode);
+        dest.writeLong(mServerReceiptDate != null ? mServerReceiptDate.getTime() : -1L);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<LocationRecord> CREATOR = new Parcelable.Creator<LocationRecord>() {
+        @Override
+        public LocationRecord createFromParcel(Parcel in) {
+            return new LocationRecord(in);
+        }
+
+        @Override
+        public LocationRecord[] newArray(int size) {
+            return new LocationRecord[size];
+        }
+    };
 }
