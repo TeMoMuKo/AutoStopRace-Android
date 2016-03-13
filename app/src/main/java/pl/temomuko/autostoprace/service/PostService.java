@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.event.PostServiceStateChangedEvent;
 import pl.temomuko.autostoprace.data.event.SuccessfullySentLocationToServerEvent;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
@@ -60,7 +61,7 @@ public class PostService extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
-
+        EventUtil.postSticky(new PostServiceStateChangedEvent(true));
         postUnsentLocationsToServer();
         return START_STICKY;
     }
@@ -80,7 +81,7 @@ public class PostService extends Service {
                                     .flatMap(mDataManager::saveSentLocationRecordToDatabase)
                                     .zipWith(mDataManager.deleteUnsentLocationRecord(unsentLocationRecord), Pair::create))
                     .subscribe(pair -> {
-                                EventUtil.postSticky(new SuccessfullySentLocationToServerEvent(pair.second, pair.first));
+                                EventUtil.post(new SuccessfullySentLocationToServerEvent(pair.second, pair.first));
                                 LogUtil.i(TAG, "Removed local location record: " + pair.second.toString());
                                 LogUtil.i(TAG, "Received location record: " + pair.first.toString());
                             },
@@ -91,6 +92,7 @@ public class PostService extends Service {
 
     private void handleCompleted() {
         LogUtil.i(TAG, "Service stopped");
+        EventUtil.postSticky(new PostServiceStateChangedEvent(false));
         stopSelf();
     }
 
@@ -98,6 +100,7 @@ public class PostService extends Service {
         LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
         LogUtil.e(TAG, throwable.toString());
         LogUtil.i(TAG, "Service stopped");
+        EventUtil.postSticky(new PostServiceStateChangedEvent(false));
         stopSelf();
     }
 
