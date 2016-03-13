@@ -69,8 +69,8 @@ public class DatabaseHelper {
                     mBriteDatabase.insert(RemoteLocationRecordTable.NAME,
                             RemoteLocationRecordTable.toContentValues(locationRecord));
                 }
-                transaction.markSuccessful();
                 subscriber.onNext(locationRecords);
+                transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {
                 transaction.end();
@@ -84,8 +84,8 @@ public class DatabaseHelper {
             try {
                 mBriteDatabase.insert(RemoteLocationRecordTable.NAME,
                         RemoteLocationRecordTable.toContentValues(locationRecord));
-                transaction.markSuccessful();
                 subscriber.onNext(locationRecord);
+                transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {
                 transaction.end();
@@ -99,8 +99,8 @@ public class DatabaseHelper {
             try {
                 mBriteDatabase.insert(LocalUnsentLocationRecordTable.NAME,
                         LocalUnsentLocationRecordTable.toContentValues(locationRecord));
-                transaction.markSuccessful();
                 subscriber.onNext(locationRecord);
+                transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {
                 transaction.end();
@@ -115,8 +115,8 @@ public class DatabaseHelper {
                 mBriteDatabase.delete(LocalUnsentLocationRecordTable.NAME,
                         LocalUnsentLocationRecordTable.COLUMN_ID + "= ?",
                         Integer.toString(locationRecord.getId()));
-                transaction.markSuccessful();
                 subscriber.onNext(locationRecord);
+                transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {
                 transaction.end();
