@@ -1,6 +1,7 @@
 package pl.temomuko.autostoprace.data.local.database;
 
 import android.database.Cursor;
+import android.support.v4.util.Pair;
 
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
@@ -78,13 +79,16 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<LocationRecord> addSentLocationRecord(LocationRecord locationRecord) {
+    public Observable<Pair<LocationRecord, LocationRecord>> moveLocationRecordToSent(Pair<LocationRecord, LocationRecord> locationRecordPair) {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
+                mBriteDatabase.delete(LocalUnsentLocationRecordTable.NAME,
+                        LocalUnsentLocationRecordTable.COLUMN_ID + "= ?",
+                        Integer.toString(locationRecordPair.first.getId()));
                 mBriteDatabase.insert(RemoteLocationRecordTable.NAME,
-                        RemoteLocationRecordTable.toContentValues(locationRecord));
-                subscriber.onNext(locationRecord);
+                        RemoteLocationRecordTable.toContentValues(locationRecordPair.second));
+                subscriber.onNext(locationRecordPair);
                 transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {
@@ -99,22 +103,6 @@ public class DatabaseHelper {
             try {
                 mBriteDatabase.insert(LocalUnsentLocationRecordTable.NAME,
                         LocalUnsentLocationRecordTable.toContentValues(locationRecord));
-                subscriber.onNext(locationRecord);
-                transaction.markSuccessful();
-                subscriber.onCompleted();
-            } finally {
-                transaction.end();
-            }
-        });
-    }
-
-    public Observable<LocationRecord> deleteUnsentLocationRecord(LocationRecord locationRecord) {
-        return Observable.create(subscriber -> {
-            BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
-            try {
-                mBriteDatabase.delete(LocalUnsentLocationRecordTable.NAME,
-                        LocalUnsentLocationRecordTable.COLUMN_ID + "= ?",
-                        Integer.toString(locationRecord.getId()));
                 subscriber.onNext(locationRecord);
                 transaction.markSuccessful();
                 subscriber.onCompleted();

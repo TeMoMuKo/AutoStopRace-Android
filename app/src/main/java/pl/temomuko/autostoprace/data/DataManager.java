@@ -3,6 +3,7 @@ package pl.temomuko.autostoprace.data;
 import android.location.Address;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsResult;
@@ -124,10 +125,6 @@ public class DataManager {
                 Observable.error(new StandardResponseException(response));
     }
 
-    public Observable<LocationRecord> saveSentLocationRecordToDatabase(LocationRecord locationRecord) {
-        return mDatabaseHelper.addSentLocationRecord(locationRecord);
-    }
-
     public Observable<LocationRecord> saveUnsentLocationRecordToDatabase(LocationRecord locationRecord) {
         return mDatabaseHelper.addUnsentLocationRecord(locationRecord);
     }
@@ -136,8 +133,8 @@ public class DataManager {
         return mDatabaseHelper.getUnsentLocationRecords();
     }
 
-    public Observable<LocationRecord> deleteUnsentLocationRecord(LocationRecord locationRecord) {
-        return mDatabaseHelper.deleteUnsentLocationRecord(locationRecord);
+    public Observable<Pair<LocationRecord, LocationRecord>> moveLocationRecordToSent(Pair<LocationRecord, LocationRecord> locationRecordPair) {
+        return mDatabaseHelper.moveLocationRecordToSent(locationRecordPair);
     }
 
     public Observable<Response<LocationRecord>> postLocationRecordToServer(LocationRecord locationRecord) {
