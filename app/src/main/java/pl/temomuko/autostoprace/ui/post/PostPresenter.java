@@ -77,7 +77,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
                     .subscribe();
             setLocationSaved();
             getMvpView().showSuccessInfo();
-            getMvpView().startMainActivity();
+            getMvpView().closeActivity();
         }
     }
 

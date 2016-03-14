@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace.ui.main;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
@@ -66,11 +67,9 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                 .subscribe(locationRecords -> {
                             updateLocationsView(locationRecords);
                             getMvpView().setItemsExpandingEnabled(true);
-                            getMvpView().startPostService();
                         },
                         throwable -> {
                             handleError(throwable);
-                            getMvpView().startPostService();
                         }));
     }
 
@@ -110,7 +109,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         downloadLocationsFromServer();
     }
 
-    private void loadLocationsFromDatabase() {
+    public void loadLocationsFromDatabase() {
         mSubscriptions.add(
                 mDataManager.getTeamLocationRecordsFromDatabase()
                         .subscribe(this::updateLocationsView));

@@ -65,6 +65,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     private Snackbar mWarningSnackbar;
     private boolean mPostServiceSetProgress;
     private boolean mPresenterSetProgress;
+    private boolean mPendingRefresh;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +113,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onResume() {
         super.onResume();
         mMainPresenter.checkAuth();
+        startPostService();
     }
 
     @Override
@@ -160,7 +162,11 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                mMainPresenter.loadLocations();
+                if (!mPostServiceSetProgress) {
+                    mMainPresenter.loadLocations();
+                } else {
+                    mPendingRefresh = true;
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -299,5 +305,14 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         LogUtil.i(TAG, "received post service state changed: " + Boolean.toString(event.isPostServiceActive()));
         mPostServiceSetProgress = event.isPostServiceActive();
         mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ? View.VISIBLE : View.INVISIBLE);
+        //// TODO: 14.03.2016 Temporary
+        if (!event.isPostServiceActive()) {
+            if (mPendingRefresh) {
+                mMainPresenter.loadLocations();
+                mPendingRefresh=false;
+            } else {
+                mMainPresenter.loadLocationsFromDatabase();
+            }
+        }
     }
 }

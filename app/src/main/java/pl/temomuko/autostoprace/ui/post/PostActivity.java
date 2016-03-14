@@ -25,7 +25,6 @@ import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.event.GpsStatusChangeEvent;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
-import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 
@@ -115,10 +114,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     /* MVP View methods */
 
     @Override
-    public void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+    public void closeActivity() {
         finish();
     }
 
@@ -166,7 +162,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     public void finishWithInadequateSettingsWarning() {
         Toast.makeText(this, R.string.warning_inadequate_location_settings, Toast.LENGTH_LONG).show();
-        finish();
+        closeActivity();
     }
 
     @Override

@@ -19,4 +19,8 @@ public final class EventUtil {
     public static void postSticky(Object event) {
         EventBus.getDefault().postSticky(event);
     }
+
+    public static <T> T getSticky(Class<T> eventType) {
+        return EventBus.getDefault().getStickyEvent(eventType);
+    }
 }
