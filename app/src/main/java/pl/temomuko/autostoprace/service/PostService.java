@@ -76,10 +76,10 @@ public class PostService extends Service {
             LogUtil.i(TAG, "Checking for unsent location records...");
             mSubscription = mDataManager.getUnsentLocationRecords()
                     .flatMap(mDataManager::postLocationRecordToServer, Pair::create, MAX_CONCURRENT)
-                    .flatMap(locationRecordResponseLocationRecordPair ->
-                                    mDataManager.handlePostLocationRecordResponse(locationRecordResponseLocationRecordPair.second),
-                            (locationRecordResponseLocationRecordPair, receivedLocationRecord) ->
-                                    Pair.create(locationRecordResponseLocationRecordPair.first, receivedLocationRecord))
+                    .flatMap(unsentLocationRecordLocationRecordResponsePair ->
+                                    mDataManager.handlePostLocationRecordResponse(unsentLocationRecordLocationRecordResponsePair.second),
+                            (unsentLocationRecordLocationRecordResponsePair, receivedLocationRecord) ->
+                                    Pair.create(unsentLocationRecordLocationRecordResponsePair.first, receivedLocationRecord))
                     .flatMap(mDataManager::moveLocationRecordToSent)
                     .compose(RxUtil.applySchedulers())
                     .subscribe(pair -> {
