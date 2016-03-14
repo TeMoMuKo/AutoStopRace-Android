@@ -88,11 +88,13 @@ public class TextCircleView extends View {
 
     public void setText(String text) {
         mText = text != null ? text : "";
+        invalidate();
     }
 
     public void setCircleColor(@ColorInt int circleColor) {
         mCircleColor = circleColor;
         mCirclePaint.setColor(mCircleColor);
+        invalidate();
     }
 }
 
