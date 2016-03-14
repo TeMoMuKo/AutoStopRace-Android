@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.lang.annotation.Annotation;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -83,7 +84,7 @@ public interface AsrService {
 
         public static AsrService createAsrService() {
             Gson gson = new GsonBuilder()
-                    .setDateFormat(Constants.JSON_DATE_FORMAT)
+                    .registerTypeAdapter(Date.class, new GmtDateDeserializer())
                     .create();
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(Constants.API_BASE_URL)

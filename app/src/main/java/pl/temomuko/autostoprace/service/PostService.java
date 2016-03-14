@@ -78,6 +78,7 @@ public class PostService extends Service {
                                     .compose(RxUtil.applySchedulers())
                                     .flatMap(mDataManager::handlePostLocationRecordResponse)
                                     .flatMap(mDataManager::saveSentLocationRecordToDatabase)
+                                    .flatMap(mDataManager::saveSentLocationRecordToDatabase)
                                     .zipWith(mDataManager.deleteUnsentLocationRecord(unsentLocationRecord), Pair::create))
                     .subscribe(pair -> {
                                 EventUtil.postSticky(new SuccessfullySentLocationToServerEvent(pair.second, pair.first));
