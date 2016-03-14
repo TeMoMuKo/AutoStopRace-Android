@@ -3,7 +3,6 @@ package pl.temomuko.autostoprace.data;
 import android.location.Address;
 import android.location.Location;
 import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsResult;
@@ -27,6 +26,7 @@ import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
+import pl.temomuko.autostoprace.service.helper.UnsentAndRecordFromResponsePair;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -133,7 +133,7 @@ public class DataManager {
         return mDatabaseHelper.getUnsentLocationRecords();
     }
 
-    public Observable<Pair<LocationRecord, LocationRecord>> moveLocationRecordToSent(Pair<LocationRecord, LocationRecord> locationRecordPair) {
+    public Observable<UnsentAndRecordFromResponsePair> moveLocationRecordToSent(UnsentAndRecordFromResponsePair locationRecordPair) {
         return mDatabaseHelper.moveLocationRecordToSent(locationRecordPair);
     }
 

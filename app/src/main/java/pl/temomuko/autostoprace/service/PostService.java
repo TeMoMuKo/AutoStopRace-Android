@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 
 import javax.inject.Inject;
 
@@ -14,12 +13,16 @@ import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.event.PostServiceStateChangeEvent;
 import pl.temomuko.autostoprace.data.event.SuccessfullySentLocationToServerEvent;
+import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.service.helper.UnsentAndRecordFromResponsePair;
+import pl.temomuko.autostoprace.service.helper.UnsentAndServerResponsePair;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.NetworkUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
+import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -75,21 +78,38 @@ public class PostService extends Service {
         if (mSubscription == null || mSubscription.isUnsubscribed()) {
             LogUtil.i(TAG, "Checking for unsent location records...");
             mSubscription = mDataManager.getUnsentLocationRecords()
-                    .flatMap(mDataManager::postLocationRecordToServer, Pair::create, MAX_CONCURRENT)
-                    .flatMap(unsentLocationRecordLocationRecordResponsePair ->
-                                    mDataManager.handlePostLocationRecordResponse(unsentLocationRecordLocationRecordResponsePair.second),
-                            (unsentLocationRecordLocationRecordResponsePair, receivedLocationRecord) ->
-                                    Pair.create(unsentLocationRecordLocationRecordResponsePair.first, receivedLocationRecord))
+                    .flatMap(mDataManager::postLocationRecordToServer, UnsentAndServerResponsePair::create,
+                            MAX_CONCURRENT)
+                    .flatMap(this::getLocationRecordFromResponseInPair)
                     .flatMap(mDataManager::moveLocationRecordToSent)
                     .compose(RxUtil.applySchedulers())
-                    .subscribe(pair -> {
-                                EventUtil.post(new SuccessfullySentLocationToServerEvent(pair.first, pair.second));
-                                LogUtil.i(TAG, "Removed local location record: " + pair.first.toString());
-                                LogUtil.i(TAG, "Received location record: " + pair.second.toString());
-                            },
+                    .subscribe(
+                            this::handleUnsentAndRecordFromResponse,
                             this::handleError,
-                            this::handleCompleted);
+                            this::handleCompleted
+                    );
         }
+    }
+
+    private Observable<UnsentAndRecordFromResponsePair> getLocationRecordFromResponseInPair
+            (UnsentAndServerResponsePair unsentAndResponse) {
+        return Observable.just(unsentAndResponse)
+                .flatMap(unsentAndServerResponsePair ->
+                                mDataManager.handlePostLocationRecordResponse(
+                                        unsentAndServerResponsePair.getLocationRecordResponse()
+                                ),
+                        (unsentAndServerResponsePair, receivedLocationRecord) ->
+                                UnsentAndRecordFromResponsePair.create(
+                                        unsentAndServerResponsePair.getUnsentLocationRecord(), receivedLocationRecord
+                                ));
+    }
+
+    private void handleUnsentAndRecordFromResponse(UnsentAndRecordFromResponsePair unsentAndRecordFromResponse) {
+        LocationRecord unsentLocationRecord = unsentAndRecordFromResponse.getUnsentLocationRecord();
+        LocationRecord locationRecordFromResponse = unsentAndRecordFromResponse.getLocationRecordFromResponse();
+        EventUtil.post(new SuccessfullySentLocationToServerEvent(unsentLocationRecord, locationRecordFromResponse));
+        LogUtil.i(TAG, "Removed local location record: " + unsentLocationRecord.toString());
+        LogUtil.i(TAG, "Received location record: " + locationRecordFromResponse.toString());
     }
 
     private void handleCompleted() {

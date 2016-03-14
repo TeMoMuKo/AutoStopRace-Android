@@ -57,7 +57,7 @@ public class PostPresenterTest {
     @Test
     public void testSaveLocation() throws Exception {
         when(mMockDataManager.saveUnsentLocationRecordToDatabase(any(LocationRecord.class)))
-                .thenReturn(rx.Observable.<Void>empty());
+                .thenReturn(Observable.<LocationRecord>empty());
         when(mMockLatestAddress.getLatitude()).thenReturn(12.34);
         when(mMockLatestAddress.getLongitude()).thenReturn(45.67);
         mPostPresenter.tryToSaveLocation(FAKE_MESSAGE);

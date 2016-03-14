@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.data.local.database;
 
 import android.database.Cursor;
-import android.support.v4.util.Pair;
 
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
@@ -13,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.service.helper.UnsentAndRecordFromResponsePair;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -79,16 +79,16 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<Pair<LocationRecord, LocationRecord>> moveLocationRecordToSent(Pair<LocationRecord, LocationRecord> locationRecordPair) {
+    public Observable<UnsentAndRecordFromResponsePair> moveLocationRecordToSent(UnsentAndRecordFromResponsePair unsentAndFromResponse) {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 mBriteDatabase.delete(LocalUnsentLocationRecordTable.NAME,
                         LocalUnsentLocationRecordTable.COLUMN_ID + "= ?",
-                        Integer.toString(locationRecordPair.first.getId()));
+                        Integer.toString(unsentAndFromResponse.getUnsentLocationRecord().getId()));
                 mBriteDatabase.insert(RemoteLocationRecordTable.NAME,
-                        RemoteLocationRecordTable.toContentValues(locationRecordPair.second));
-                subscriber.onNext(locationRecordPair);
+                        RemoteLocationRecordTable.toContentValues(unsentAndFromResponse.getLocationRecordFromResponse()));
+                subscriber.onNext(unsentAndFromResponse);
                 transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {
