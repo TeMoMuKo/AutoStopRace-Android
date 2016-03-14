@@ -63,7 +63,7 @@ public class PostService extends Service {
             return START_NOT_STICKY;
         }
         EventUtil.postSticky(new PostServiceStateChangedEvent(true));
-        postUnsentLocationsToServer();
+        synchronizeLocationsWithServer();
         return START_STICKY;
     }
 
@@ -71,15 +71,15 @@ public class PostService extends Service {
         return new Intent(context, PostService.class);
     }
 
-    public void postUnsentLocationsToServer() {
+    public void synchronizeLocationsWithServer() {
         if (mSubscription == null || mSubscription.isUnsubscribed()) {
             LogUtil.i(TAG, "Checking for unsent location records...");
             mSubscription = mDataManager.getUnsentLocationRecords()
                     .flatMap(mDataManager::postLocationRecordToServer, Pair::create, MAX_CONCURRENT)
-                    .flatMap(locationRecordResponsePair ->
-                                    mDataManager.handlePostLocationRecordResponse(locationRecordResponsePair.second),
-                            (locationRecordResponsePair, locationRecord) ->
-                                    Pair.create(locationRecordResponsePair.first, locationRecord))
+                    .flatMap(locationRecordResponseLocationRecordPair ->
+                                    mDataManager.handlePostLocationRecordResponse(locationRecordResponseLocationRecordPair.second),
+                            (locationRecordResponseLocationRecordPair, receivedLocationRecord) ->
+                                    Pair.create(locationRecordResponseLocationRecordPair.first, receivedLocationRecord))
                     .flatMap(mDataManager::moveLocationRecordToSent)
                     .compose(RxUtil.applySchedulers())
                     .subscribe(pair -> {
