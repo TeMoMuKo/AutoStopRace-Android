@@ -17,6 +17,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +29,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.data.event.PostServiceStateChangedEvent;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.service.PostService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
@@ -35,6 +40,7 @@ import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
+import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import rx.Observable;
@@ -47,6 +53,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     private static final int CHECK_LOCATION_SETTINGS_REQUEST_CODE = 1;
     private static final int UNHANDLED_REQUEST_CODE = -1;
     private static final String BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS = "BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Inject MainPresenter mMainPresenter;
     @Inject LocationRecordsAdapter mLocationRecordsAdapter;
@@ -56,7 +63,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.tv_empty_info) TextView mEmptyInfoTextView;
     private Snackbar mWarningSnackbar;
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private boolean mPostServiceSetProgress;
+    private boolean mPresenterSetProgress;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +103,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         mMainPresenter.checkAuth();
@@ -122,6 +136,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
             mMainPresenter.setIsLocationSettingsStatusForResultCalled(false);
             mMainPresenter.handleLocationSettingsDialogResult(resultCode);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -188,7 +208,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void setProgress(boolean state) {
-        mMaterialProgressBar.setVisibility(state ? View.VISIBLE : View.INVISIBLE);
+        mPresenterSetProgress = state;
+        mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
@@ -265,5 +286,15 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     public void onGmsConnectionResultNoResolution(int errorCode) {
         GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, UNHANDLED_REQUEST_CODE).show();
+    }
+
+    /* Events */
+
+    @SuppressWarnings("unused")
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onGpsStatusChangeEvent(PostServiceStateChangedEvent event) {
+        LogUtil.i(TAG, "received post service state changed:" + Boolean.toString(event.isPostServiceActive()));
+        mPostServiceSetProgress = event.isPostServiceActive();
+        mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ? View.VISIBLE : View.INVISIBLE);
     }
 }

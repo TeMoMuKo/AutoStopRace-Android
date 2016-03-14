@@ -20,6 +20,6 @@ public final class Constants {
     public final static String HEADER_FIELD_UID = "uid";
     public final static String HEADER_VALUE_APPLICATION_JSON = "application/json";
 
-    public static final float MAX_LOCATION_ACCURACY = 60.0f;
+    public static final float MAX_LOCATION_ACCURACY = 150.0f;
     public static final long SPLASH_DURATION = 700;
 }
