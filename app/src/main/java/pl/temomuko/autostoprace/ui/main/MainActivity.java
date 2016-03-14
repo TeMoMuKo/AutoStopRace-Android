@@ -29,7 +29,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.event.PostServiceStateChangedEvent;
+import pl.temomuko.autostoprace.data.event.PostServiceStateChangeEvent;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.service.PostService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
@@ -209,7 +209,9 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     public void setProgress(boolean state) {
         mPresenterSetProgress = state;
-        mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ? View.VISIBLE : View.INVISIBLE);
+        mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ?
+                View.VISIBLE :
+                View.INVISIBLE);
     }
 
     @Override
@@ -269,6 +271,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         mMainPresenter.setIsLocationSettingsStatusForResultCalled(true);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void showLocationSettingsWarning() {
         mWarningSnackbar = Snackbar.make(findViewById(R.id.cl_root),
@@ -292,8 +295,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @SuppressWarnings("unused")
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onGpsStatusChangeEvent(PostServiceStateChangedEvent event) {
-        LogUtil.i(TAG, "received post service state changed:" + Boolean.toString(event.isPostServiceActive()));
+    public void onPostServiceStateChangeEvent(PostServiceStateChangeEvent event) {
+        LogUtil.i(TAG, "received post service state changed: " + Boolean.toString(event.isPostServiceActive()));
         mPostServiceSetProgress = event.isPostServiceActive();
         mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ? View.VISIBLE : View.INVISIBLE);
     }

@@ -23,14 +23,14 @@ import pl.temomuko.autostoprace.injection.AppContext;
 @Singleton
 public class PrefsHelper {
 
-    private SharedPreferences mPrefs;
     public final static String PREF_FILE_NAME = "asr_pref_file";
     public final static String PREF_AUTH_TOKEN = "auth_token";
     public final static String PREF_AUTH_CLIENT = "auth_client";
     public final static String PREF_AUTH_UID = "auth_uid";
     private static final String PREF_CURRENT_USER_JSON = "pref_current_user_json";
-
     public final static String PREF_LOGOUT = "pref_logout";
+
+    private SharedPreferences mPrefs;
 
     @Inject
     public PrefsHelper(@AppContext Context context) {

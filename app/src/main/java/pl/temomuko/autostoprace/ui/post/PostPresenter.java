@@ -26,15 +26,16 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class PostPresenter extends BasePresenter<PostMvpView> {
 
+    private final static String TAG = PostPresenter.class.getSimpleName();
+
     private DataManager mDataManager;
     private CompositeSubscription mSubscriptions;
     private CompositeSubscription mLocationSubscriptions;
+
     private boolean mIsLocationSettingsStatusForResultCalled = false;
-
     private Address mLatestAddress;
-    private boolean mIsLocationSaved;
 
-    private final static String TAG = PostPresenter.class.getSimpleName();
+    private boolean mIsLocationSaved;
 
     @Inject
     public PostPresenter(DataManager dataManager) {

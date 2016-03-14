@@ -27,10 +27,11 @@ import pl.temomuko.autostoprace.ui.teams.TeamsActivity;
  */
 public class NavigationListener implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final long DELAY_AFTER_START_CLOSE_DRAWER = 250;
+
     private final NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
     private DrawerActivity mCurrentDrawerActivity;
-    private static final long DELAY_AFTER_START_CLOSE_DRAWER = 250;
 
     private static final List<DrawerItemTarget> ACTIVITIES = Arrays.asList(
             new DrawerItemTarget(MainActivity.class, R.id.activity_main),

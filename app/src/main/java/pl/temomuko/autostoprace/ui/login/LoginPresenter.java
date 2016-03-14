@@ -18,11 +18,12 @@ import rx.Subscription;
  */
 public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
+    private final static String TAG = LoginPresenter.class.getSimpleName();
+
     private DataManager mDataManager;
     private ErrorHandler mErrorHandler;
     private Subscription mSubscription;
     private RxCacheHelper<Response<SignInResponse>> mRxLoginCacheHelper;
-    private final static String TAG = LoginPresenter.class.getSimpleName();
 
     @Inject
     public LoginPresenter(DataManager dataManager, ErrorHandler errorHandler) {

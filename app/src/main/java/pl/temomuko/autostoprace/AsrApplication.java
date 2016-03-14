@@ -17,7 +17,7 @@ import pl.temomuko.autostoprace.injection.module.ApplicationModule;
  */
 public class AsrApplication extends Application {
 
-    ApplicationComponent mApplicationComponent;
+    private ApplicationComponent mApplicationComponent;
 
     @Override
     public void onCreate() {

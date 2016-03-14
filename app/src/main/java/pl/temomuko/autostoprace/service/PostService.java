@@ -12,7 +12,7 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.event.PostServiceStateChangedEvent;
+import pl.temomuko.autostoprace.data.event.PostServiceStateChangeEvent;
 import pl.temomuko.autostoprace.data.event.SuccessfullySentLocationToServerEvent;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.ErrorHandler;
@@ -27,11 +27,12 @@ import rx.Subscription;
  */
 public class PostService extends Service {
 
+    private final static String TAG = PostService.class.getSimpleName();
+    private final static int MAX_CONCURRENT = 1;
+
     @Inject DataManager mDataManager;
     @Inject ErrorHandler mErrorHandler;
     private Subscription mSubscription;
-    private final static String TAG = PostService.class.getSimpleName();
-    private final static int MAX_CONCURRENT = 1;
 
     @Override
     public void onCreate() {
@@ -61,7 +62,7 @@ public class PostService extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
-        EventUtil.postSticky(new PostServiceStateChangedEvent(true));
+        EventUtil.postSticky(new PostServiceStateChangeEvent(true));
         synchronizeLocationsWithServer();
         return START_STICKY;
     }
@@ -93,7 +94,7 @@ public class PostService extends Service {
 
     private void handleCompleted() {
         LogUtil.i(TAG, "Service stopped");
-        EventUtil.postSticky(new PostServiceStateChangedEvent(false));
+        EventUtil.postSticky(new PostServiceStateChangeEvent(false));
         stopSelf();
     }
 
@@ -101,7 +102,7 @@ public class PostService extends Service {
         LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
         LogUtil.e(TAG, throwable.toString());
         LogUtil.i(TAG, "Service stopped");
-        EventUtil.postSticky(new PostServiceStateChangedEvent(false));
+        EventUtil.postSticky(new PostServiceStateChangeEvent(false));
         stopSelf();
     }
 

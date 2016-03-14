@@ -27,6 +27,10 @@ import pl.temomuko.autostoprace.util.DialogFactory;
  */
 public class LoginActivity extends BaseActivity implements LoginMvpView {
 
+    private static final String TAG_HELP_DIALOG_FRAGMENT = "help_dialog_fragment";
+    private static final String BUNDLE_IS_PROGRESS_DIALOG_SHOWN = "bundle_is_progress_dialog_shown";
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
     @Inject LoginPresenter mLoginPresenter;
     @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(R.id.et_email) EditText mEmailEditText;
@@ -36,9 +40,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @Bind(R.id.til_password) TextInputLayout mPasswordTextInputLayout;
     private MaterialDialog mProgressDialog;
     private DialogFragment mHelpDialogFragment;
-    private static final String TAG_HELP_DIALOG_FRAGMENT = "help_dialog_fragment";
-    private static final String BUNDLE_IS_PROGRESS_DIALOG_SHOWN = "bundle_is_progress_dialog_shown";
-    private static final String TAG = LoginActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -31,8 +31,9 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
-    private ErrorHandler mErrorHandler;
     private final static String TAG = MainPresenter.class.getSimpleName();
+
+    private ErrorHandler mErrorHandler;
     private CompositeSubscription mSubscriptions;
     private RxCacheHelper<Response<List<LocationRecord>>> mRxDownloadLocationsCacheHelper;
     private boolean mIsLocationSettingsStatusForResultCalled = false;
