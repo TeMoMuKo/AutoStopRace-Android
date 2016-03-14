@@ -25,7 +25,7 @@ public class GmtDateDeserializer implements JsonDeserializer<Date> {
     public Date deserialize(JsonElement json, Type type, JsonDeserializationContext deserializationContext) throws JsonParseException {
         String date = json.getAsString();
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.JSON_DATE_FORMAT, Locale.getDefault());
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        dateFormat.setTimeZone(TimeZone.getTimeZone(Constants.SERVER_TIMEZONE));
         try {
             return dateFormat.parse(date);
         } catch (ParseException e) {

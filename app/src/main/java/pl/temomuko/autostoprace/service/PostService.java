@@ -27,12 +27,11 @@ import rx.Subscription;
  */
 public class PostService extends Service {
 
-    private final static String TAG = PostService.class.getSimpleName();
-    private final static int MAX_CONCURRENT = 1;
-
     @Inject DataManager mDataManager;
     @Inject ErrorHandler mErrorHandler;
     private Subscription mSubscription;
+    private final static String TAG = PostService.class.getSimpleName();
+    private final static int MAX_CONCURRENT = 1;
 
     @Override
     public void onCreate() {

@@ -6,13 +6,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import pl.temomuko.autostoprace.Constants;
+
 /**
  * Created by Rafał Naniewicz on 06.03.2016.
  */
 public final class DateUtil {
 
-    private static final SimpleDateFormat DAY_AND_MONTH_SDF = new SimpleDateFormat("d.LL", Locale.getDefault());
-    private static final SimpleDateFormat HOUR_SDF = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private static final SimpleDateFormat DAY_AND_MONTH_SDF = new SimpleDateFormat(
+            Constants.APP_DATE_FORMAT,
+            Locale.getDefault());
+    private static final SimpleDateFormat HOUR_SDF = new SimpleDateFormat(
+            Constants.APP_TIME_FORMAT,
+            Locale.getDefault());
 
     private DateUtil() {
         throw new AssertionError();
