@@ -12,8 +12,8 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.event.PostServiceStateChangedEvent;
 import pl.temomuko.autostoprace.data.event.SuccessfullySentLocationToServerEvent;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.EventUtil;
@@ -27,10 +27,12 @@ import rx.Subscription;
  */
 public class PostService extends Service {
 
+    private final static String TAG = PostService.class.getSimpleName();
+    private final static int MAX_CONCURRENT = 1;
+
     @Inject DataManager mDataManager;
     @Inject ErrorHandler mErrorHandler;
     private Subscription mSubscription;
-    private final static String TAG = PostService.class.getSimpleName();
 
     @Override
     public void onCreate() {
@@ -60,7 +62,7 @@ public class PostService extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
-
+        EventUtil.postSticky(new PostServiceStateChangedEvent(true));
         postUnsentLocationsToServer();
         return START_STICKY;
     }
@@ -73,17 +75,17 @@ public class PostService extends Service {
         if (mSubscription == null || mSubscription.isUnsubscribed()) {
             LogUtil.i(TAG, "Checking for unsent location records...");
             mSubscription = mDataManager.getUnsentLocationRecords()
-                    .concatMap((LocationRecord unsentLocationRecord) ->
-                            mDataManager.postLocationRecordToServer(unsentLocationRecord)
-                                    .compose(RxUtil.applySchedulers())
-                                    .flatMap(mDataManager::handlePostLocationRecordResponse)
-                                    .flatMap(mDataManager::saveSentLocationRecordToDatabase)
-                                    .flatMap(mDataManager::saveSentLocationRecordToDatabase)
-                                    .zipWith(mDataManager.deleteUnsentLocationRecord(unsentLocationRecord), Pair::create))
+                    .flatMap(mDataManager::postLocationRecordToServer, Pair::create, MAX_CONCURRENT)
+                    .flatMap(locationRecordResponsePair ->
+                                    mDataManager.handlePostLocationRecordResponse(locationRecordResponsePair.second),
+                            (locationRecordResponsePair, locationRecord) ->
+                                    Pair.create(locationRecordResponsePair.first, locationRecord))
+                    .flatMap(mDataManager::moveLocationRecordToSent)
+                    .compose(RxUtil.applySchedulers())
                     .subscribe(pair -> {
-                                EventUtil.postSticky(new SuccessfullySentLocationToServerEvent(pair.second, pair.first));
-                                LogUtil.i(TAG, "Removed local location record: " + pair.second.toString());
-                                LogUtil.i(TAG, "Received location record: " + pair.first.toString());
+                                EventUtil.post(new SuccessfullySentLocationToServerEvent(pair.first, pair.second));
+                                LogUtil.i(TAG, "Removed local location record: " + pair.first.toString());
+                                LogUtil.i(TAG, "Received location record: " + pair.second.toString());
                             },
                             this::handleError,
                             this::handleCompleted);
@@ -92,6 +94,7 @@ public class PostService extends Service {
 
     private void handleCompleted() {
         LogUtil.i(TAG, "Service stopped");
+        EventUtil.postSticky(new PostServiceStateChangedEvent(false));
         stopSelf();
     }
 
@@ -99,6 +102,7 @@ public class PostService extends Service {
         LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
         LogUtil.e(TAG, throwable.toString());
         LogUtil.i(TAG, "Service stopped");
+        EventUtil.postSticky(new PostServiceStateChangedEvent(false));
         stopSelf();
     }
 
