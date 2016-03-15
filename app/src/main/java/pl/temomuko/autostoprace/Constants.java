@@ -25,4 +25,8 @@ public final class Constants {
 
     public static final float MAX_LOCATION_ACCURACY = 150.0f;
     public static final long SPLASH_DURATION = 700;
+
+    public static final int LOCATION_UPDATE_INTERVAL_MILLISECONDS = 7000;
+    public static final int LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS = LOCATION_UPDATE_INTERVAL_MILLISECONDS / 2;
+    public static final int GEO_CODING_TIMEOUT_MILLISECONDS = LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS;
 }

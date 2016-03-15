@@ -7,6 +7,8 @@ import android.location.Geocoder;
 import java.io.IOException;
 import java.util.List;
 
+import pl.temomuko.autostoprace.util.LogUtil;
+import pl.temomuko.autostoprace.util.NetworkUtil;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -35,6 +37,9 @@ public class GeocoderObservable implements Observable.OnSubscribe<Address> {
             try {
                 if (!Geocoder.isPresent()) {
                     throw new GeocoderNotPresentException();
+                }
+                if (!NetworkUtil.isConnected(mContext)) {
+                    throw new IOException("No internet connection");
                 }
                 Geocoder geocoder = new Geocoder(mContext);
                 List<Address> addresses = geocoder.getFromLocation(mLatitude, mLongitude, 1);

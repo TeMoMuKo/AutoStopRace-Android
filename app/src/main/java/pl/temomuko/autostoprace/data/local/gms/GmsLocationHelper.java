@@ -11,6 +11,7 @@ import com.google.android.gms.location.LocationSettingsResult;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.injection.AppContext;
 import rx.Observable;
 
@@ -21,8 +22,6 @@ import rx.Observable;
 public class GmsLocationHelper {
 
     public final static LocationRequest APP_LOCATION_REQUEST = getLocationRequest();
-    private static final int LOCATION_UPDATE_INTERVAL_MILLISECONDS = 7000;
-    private static final int LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS = LOCATION_UPDATE_INTERVAL_MILLISECONDS / 2;
     private static final int LOCATION_ACCURACY = LocationRequest.PRIORITY_HIGH_ACCURACY;
 
     private Context mContext;
@@ -52,8 +51,8 @@ public class GmsLocationHelper {
 
     private static LocationRequest getLocationRequest() {
         return new LocationRequest()
-                .setFastestInterval(LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS)
-                .setInterval(LOCATION_UPDATE_INTERVAL_MILLISECONDS)
+                .setFastestInterval(Constants.LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS)
+                .setInterval(Constants.LOCATION_UPDATE_INTERVAL_MILLISECONDS)
                 .setPriority(LOCATION_ACCURACY);
     }
 }
