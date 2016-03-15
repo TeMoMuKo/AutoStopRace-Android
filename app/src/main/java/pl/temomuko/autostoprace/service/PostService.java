@@ -112,15 +112,15 @@ public class PostService extends Service {
         LogUtil.i(TAG, "Received location record: " + locationRecordFromResponse.toString());
     }
 
-    private void handleCompleted() {
+    private void handleError(Throwable throwable) {
+        LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
+        LogUtil.e(TAG, throwable.toString());
         LogUtil.i(TAG, "Service stopped");
         EventUtil.postSticky(new PostServiceStateChangeEvent(false));
         stopSelf();
     }
 
-    private void handleError(Throwable throwable) {
-        LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
-        LogUtil.e(TAG, throwable.toString());
+    private void handleCompleted() {
         LogUtil.i(TAG, "Service stopped");
         EventUtil.postSticky(new PostServiceStateChangeEvent(false));
         stopSelf();

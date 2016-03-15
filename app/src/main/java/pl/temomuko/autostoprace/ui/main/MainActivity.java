@@ -309,7 +309,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         if (!event.isPostServiceActive()) {
             if (mPendingRefresh) {
                 mMainPresenter.loadLocations();
-                mPendingRefresh=false;
+                mPendingRefresh = false;
             } else {
                 mMainPresenter.loadLocationsFromDatabase();
             }

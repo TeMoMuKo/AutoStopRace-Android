@@ -60,7 +60,7 @@
     <string name="saved_location">Zapisano lokalizację</string>
     <string name="about_app">Aplikację przygotowali członkowie koła naukowego TeMoMuKo działającego przy Politechnice Wrocławskiej.</string>
     <string name="authors"><b>Autorzy:</b>\n- Szymon Kozak\n- Rafał Naniewicz\n- Michał Zając</string>
-    <string name="app_version">Wersja 0.0.1-alpha</string>
+    <string name="app_version">Wersja 0.0.1-beta</string>
     <string name="warning_no_fine_location_permission">Brak uprawnień dostępu do lokalizacji.</string>
     <string name="settings">Ustawienia</string>
     <string name="error_email_confirmation">Najpierw aktywuj swoje konto, instrukcje znajdziesz w mailu od organizatorów.</string>

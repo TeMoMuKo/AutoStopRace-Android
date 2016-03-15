@@ -12,7 +12,7 @@ public final class UnsentAndServerResponsePair {
     private Response<LocationRecord> mLocationRecordResponse;
 
     private UnsentAndServerResponsePair(LocationRecord unsentLocationRecord,
-                                       Response<LocationRecord> locationRecordResponse) {
+                                        Response<LocationRecord> locationRecordResponse) {
         mLocationRecordResponse = locationRecordResponse;
         mUnsentLocationRecord = unsentLocationRecord;
     }
