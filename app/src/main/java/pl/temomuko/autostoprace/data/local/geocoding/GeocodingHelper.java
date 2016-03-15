@@ -11,11 +11,11 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.util.LogUtil;
+import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Rafał Naniewicz on 19.02.2016.
@@ -23,10 +23,9 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class GeocodingHelper {
 
-    private static final int TIMEOUT_IN_SECONDS = 5;
     private static final String TAG = "GeocodingHelper";
 
-    Context mContext;
+    private Context mContext;
 
     @Inject
     public GeocodingHelper(@AppContext Context context) {
@@ -35,13 +34,12 @@ public class GeocodingHelper {
 
     public Observable<Address> getAddressFromLocation(@NonNull Location location) {
         return GeocoderObservable.create(mContext, location.getLatitude(), location.getLongitude())
-                .timeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+                .timeout(Constants.GEO_CODING_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .onErrorResumeNext(throwable -> {
                     LogUtil.i(TAG, throwable.toString() + ", returning basic address instead");
                     return Observable.just(getBasicAddress(location));
                 })
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(RxUtil.applySchedulers());
     }
 
     private Address getBasicAddress(Location location) {

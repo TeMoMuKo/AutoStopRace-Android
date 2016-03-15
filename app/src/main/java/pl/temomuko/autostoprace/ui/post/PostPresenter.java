@@ -149,6 +149,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private void startLocationUpdates() {
         mLocationSubscriptions.add(mDataManager.getDeviceLocation(GmsLocationHelper.APP_LOCATION_REQUEST)
+                .compose(RxUtil.applySchedulers())
                 .filter(location -> location.getAccuracy() <= Constants.MAX_LOCATION_ACCURACY)
                 .switchMap(location -> {
                     getMvpView().updateAccuracyInfo(location.getAccuracy());
