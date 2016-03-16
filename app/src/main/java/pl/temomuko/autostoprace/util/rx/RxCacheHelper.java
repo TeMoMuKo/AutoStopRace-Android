@@ -73,10 +73,9 @@ public class RxCacheHelper<T> {
      * Cache observable and allows restore it after configuration change.
      */
     @SuppressWarnings("unchecked")
-    public RxCacheHelper cache(Observable<T> observable) {
+    public void cache(Observable<T> observable) {
         if (mRetainedFragment == null) throw new RuntimeException("First setup RxCacheHelper.");
         mRetainedFragment.setCurrentObservable(observable.cache());
-        return this;
     }
 
     /**
