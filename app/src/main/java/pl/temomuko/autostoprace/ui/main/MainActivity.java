@@ -321,11 +321,9 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         //// TODO: 14.03.2016 Temporary
         if (!event.isPostServiceActive()) {
             if (mPendingRefresh) {
-                LogUtil.i("from DV","pending tru");
                 mMainPresenter.loadLocations();
                 mPendingRefresh = false;
             } else {
-                LogUtil.i("from DV","");
                 mMainPresenter.loadLocationsFromDatabase();
             }
         }
