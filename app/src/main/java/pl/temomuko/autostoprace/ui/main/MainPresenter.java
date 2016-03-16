@@ -64,10 +64,6 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         mRxDownloadLocationsCacheHelper.setup(activity);
     }
 
-    private void clearCurrentRequestObservable() {
-        mRxDownloadLocationsCacheHelper.clearCache();
-    }
-
     public void checkAuth() {
         if (isAuthorized()) {
             validateToken();
@@ -105,6 +101,10 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                             getMvpView().setItemsExpandingEnabled(true);
                         },
                         this::handleError));
+    }
+
+    private void clearCurrentRequestObservable() {
+        mRxDownloadLocationsCacheHelper.clearCache();
     }
 
     public void loadLocations() {

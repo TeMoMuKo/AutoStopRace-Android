@@ -56,66 +56,101 @@ public class PostPresenterTest {
 
     @Test
     public void testSaveLocation() throws Exception {
+        //given
         when(mMockDataManager.saveUnsentLocationRecordToDatabase(any(LocationRecord.class)))
                 .thenReturn(Observable.<LocationRecord>empty());
         when(mMockLatestAddress.getLatitude()).thenReturn(12.34);
         when(mMockLatestAddress.getLongitude()).thenReturn(45.67);
+
+        //when
         mPostPresenter.tryToSaveLocation(FAKE_MESSAGE);
+
+        //then
         verify(mMockDataManager).saveUnsentLocationRecordToDatabase(any(LocationRecord.class));
         verify(mMockPostMvpView).closeActivity();
     }
 
     @Test
     public void testStartLocationServiceWithoutPermission() {
+        //given
         when(mMockDataManager.hasFineLocationPermission()).thenReturn(false);
+
+        //when
         mPostPresenter.startLocationService();
+
+        //then
         verify(mMockDataManager, never()).checkLocationSettings(any(LocationRequest.class));
         verify(mMockPostMvpView).compatRequestFineLocationPermission();
     }
 
     @Test
     public void testStartLocationServiceWithPermission() {
+        //given
         when(mMockDataManager.hasFineLocationPermission()).thenReturn(true);
         when(mMockDataManager.checkLocationSettings(any(LocationRequest.class))).thenReturn(Observable.empty());
+
+        //when
         mPostPresenter.startLocationService();
+
+        //then
         verify(mMockDataManager).checkLocationSettings(any(LocationRequest.class));
         verify(mMockPostMvpView, never()).compatRequestFineLocationPermission();
     }
 
     @Test
     public void testHandlePermissionResultGranted() throws Exception {
+        //given
         when(mMockDataManager.checkLocationSettings(any(LocationRequest.class)))
                 .thenReturn(Observable.empty());
+
+        //when
         mPostPresenter.handleLocationPermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
                 new int[]{PackageManager.PERMISSION_GRANTED});
+
+        //then
         verify(mMockDataManager).checkLocationSettings(any(LocationRequest.class));
         verify(mMockPostMvpView, never()).finishWithInadequateSettingsWarning();
     }
 
     @Test
     public void testHandlePermissionResultDenied() throws Exception {
+        //given
         when(mMockDataManager.checkLocationSettings(any(LocationRequest.class)))
                 .thenReturn(Observable.empty());
+
+        //when
         mPostPresenter.handleLocationPermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
                 new int[]{PackageManager.PERMISSION_DENIED});
+
+        //then
         verify(mMockDataManager, never()).checkLocationSettings(any(LocationRequest.class));
         verify(mMockPostMvpView).finishWithInadequateSettingsWarning();
     }
 
     @Test
     public void testHandleLocationSettingsDialogResultOk() {
+        //given
         when(mMockDataManager.getDeviceLocation((any(LocationRequest.class))))
                 .thenReturn(Observable.empty());
+
+        //when
         mPostPresenter.handleLocationSettingsDialogResult(Activity.RESULT_OK);
+
+        //then
         verify(mMockDataManager).getDeviceLocation(any(LocationRequest.class));
         verify(mMockPostMvpView, never()).finishWithInadequateSettingsWarning();
     }
 
     @Test
     public void testHandleLocationSettingsDialogResultCanceled() {
+        //given
         when(mMockDataManager.getDeviceLocation((any(LocationRequest.class))))
                 .thenReturn(Observable.empty());
+
+        //when
         mPostPresenter.handleLocationSettingsDialogResult(Activity.RESULT_CANCELED);
+
+        //then
         verify(mMockDataManager, never()).getDeviceLocation(any(LocationRequest.class));
         verify(mMockPostMvpView).finishWithInadequateSettingsWarning();
     }

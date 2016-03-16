@@ -51,30 +51,45 @@ public class SettingsPresenterTest {
 
     @Test
     public void testSetupLogoutPreferenceForLoggedUser() throws Exception {
+        //given
         when(mMockDataManager.isLoggedWithToken()).thenReturn(true);
         User fakeUser = new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL);
         when(mMockDataManager.getCurrentUser()).thenReturn(fakeUser);
+
+        //when
         mSettingsPresenter.setupLogoutPreference();
+
+        //then
         verify(mMockSettingsMvpView).setupLogoutPreferenceEnabled(true);
         verify(mMockSettingsMvpView).setupUserLogoutPreferenceSummary(FAKE_FIRST_NAME.concat(" ").concat(FAKE_LAST_NAME));
     }
 
     @Test
     public void testSetupLogoutPreferenceForGuest() throws Exception {
+        //given
         when(mMockDataManager.isLoggedWithToken()).thenReturn(false);
         User fakeUser = new User(1, 1, "", "", "");
         when(mMockDataManager.getCurrentUser()).thenReturn(fakeUser);
+
+        //when
         mSettingsPresenter.setupLogoutPreference();
+
+        //then
         verify(mMockSettingsMvpView).setupLogoutPreferenceEnabled(false);
         verify(mMockSettingsMvpView).setupGuestLogoutPreferenceSummary();
     }
 
     @Test
     public void testLogout() throws Exception {
+        //given
         when(mMockDataManager.signOut())
                 .thenReturn(Observable.<Response<SignOutResponse>>empty());
         when(mMockDataManager.clearUserData()).thenReturn(Observable.empty());
+
+        //when
         mSettingsPresenter.logout();
+
+        //then
         verify(mMockDataManager).clearUserData();
         verify(mMockSettingsMvpView).showLogoutMessage();
         verify(mMockSettingsMvpView).startLauncherActivity();

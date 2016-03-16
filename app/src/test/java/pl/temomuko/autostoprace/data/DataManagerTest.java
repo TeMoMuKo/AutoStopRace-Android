@@ -78,77 +78,111 @@ public class DataManagerTest {
 
     @Test
     public void testGetTeamLocationsFromServer() throws Exception {
+        //given
         when(mMockPrefsHelper.getCurrentUser()).thenReturn(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
         Observable<Response<List<LocationRecord>>> expectedObservable =
                 mMockAsrService.getLocationRecordsWithObservable(mMockPrefsHelper.getCurrentUser().getTeamId());
         Observable<Response<List<LocationRecord>>> actualObservable =
                 mDataManager.getTeamLocationRecordsFromServer();
+        //assert
         assertEquals(expectedObservable, actualObservable);
     }
 
     @Test
     public void testValidateToken() throws Exception {
+        //given
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
         when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
         when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
+
+        //when
         mDataManager.validateToken();
+
+        //then
         verify(mMockAsrService).validateTokenWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
     }
 
     @Test
     public void testSaveUnsentLocationsToDatabase() throws Exception {
+        //given
         LocationRecord unsentLocationRecord = new LocationRecord(18.05, 17.17, "Yo", "Somewhere, Poland", "Poland", "PL");
         when(mMockDatabaseHelper.addUnsentLocationRecord(unsentLocationRecord)).thenReturn(Observable.empty());
+
+        //when
         mDataManager.saveUnsentLocationRecordToDatabase(unsentLocationRecord);
+
+        //then
         verify(mMockDatabaseHelper).addUnsentLocationRecord(unsentLocationRecord);
     }
 
     @Test
     public void testSaveSentLocationsToDatabase() throws Exception {
+        //given
         LocationRecord sentLocationRecord = new LocationRecord(18.05, 17.17, "Yo", "Somewhere, Poland", "Poland", "PL");
         UnsentAndRecordFromResponsePair pair = UnsentAndRecordFromResponsePair.create(sentLocationRecord, null);
         when(mMockDatabaseHelper.moveLocationRecordToSent(pair)).thenReturn(Observable.empty());
+
+        //when
         mDataManager.saveUnsentLocationRecordToDatabase(sentLocationRecord);
+
+        //then
         verify(mMockDatabaseHelper).addUnsentLocationRecord(sentLocationRecord);
     }
 
     @Test
     public void testGetTeamLocationsFromDatabase() throws Exception {
+        //when
         mDataManager.getTeamLocationRecordsFromDatabase();
+
+        //then
         verify(mMockDatabaseHelper).getUnsentLocationRecordList();
         verify(mMockDatabaseHelper).getSentLocationRecordList();
     }
 
     @Test
     public void testPostLocationToServer() throws Exception {
+        //given
         LocationRecord locationRecordToSend = new LocationRecord(12.34, 56.78, "Yo", "Somewhere, Poland", "Poland", "PL");
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
         when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
         when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
+
+        //when
         mDataManager.postLocationRecordToServer(locationRecordToSend);
+
+        //then
         verify(mMockAsrService).postLocationRecordWithObservable(
                 eq(FAKE_ACCESS_TOKEN), eq(FAKE_CLIENT), eq(FAKE_UID), any(CreateLocationRecordRequest.class));
     }
 
     @Test
     public void testSignIn() throws Exception {
+        //given
         Observable<Response<SignInResponse>> expectedObservable
                 = mMockAsrService.signInWithObservable(FAKE_EMAIL, FAKE_PASS);
         Observable<Response<SignInResponse>> actualObservable = mDataManager.signIn(FAKE_EMAIL, FAKE_PASS);
+
+        //assert
         assertEquals(expectedObservable, actualObservable);
     }
 
     @Test
     public void testSignOut() throws Exception {
+        //given
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
         when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
         when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
+
+        //when
         mDataManager.signOut();
+
+        //then
         verify(mMockAsrService).signOutWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
     }
 
     @Test
     public void testSaveAuthorizationResponse() throws Exception {
+        //given
         okhttp3.Response okHttpResponse = mOkHttpResponseBuilder
                 .addHeader(Constants.HEADER_FIELD_TOKEN, FAKE_ACCESS_TOKEN)
                 .addHeader(Constants.HEADER_FIELD_CLIENT, FAKE_CLIENT)
@@ -158,24 +192,37 @@ public class DataManagerTest {
         SignInResponse signInResponse = new SignInResponse();
         signInResponse.setUser(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
         Response<SignInResponse> response = Response.success(signInResponse, okHttpResponse);
+
+        //when
         mDataManager.saveAuthorizationResponse(response);
+
+        //then
         verify(mMockPrefsHelper).setAuthorizationHeaders(response.headers());
         verify(mMockPrefsHelper).setCurrentUser(response.body().getUser());
     }
 
     @Test
     public void testIsLoggedWithToken() throws Exception {
+        //given
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
+
+        //assert
         assertTrue(mDataManager.isLoggedWithToken());
+
+        //given
         when(mMockPrefsHelper.getAuthAccessToken()).thenReturn("");
+
+        //assert
         assertFalse(mDataManager.isLoggedWithToken());
     }
 
     @Test
     public void testGetCurrentUser() throws Exception {
+        //given
         User fakeUser = new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL);
-        when(mMockPrefsHelper.getCurrentUser())
-                .thenReturn(fakeUser);
+        when(mMockPrefsHelper.getCurrentUser()).thenReturn(fakeUser);
+
+        //assert
         Assert.assertEquals(fakeUser, mDataManager.getCurrentUser());
     }
 }
