@@ -78,4 +78,5 @@
     <string name="accuracy_label">(+/- %1$sm)</string>
     <string name="action_refresh">Odśwież</string>
     <string name="label_sponsor">Sponsorem edycji 2016 jest m.in.:</string>
+    <string name="warning_inadequeate_settings">Błąd, prawdopodobnie włączony tryb samolotowy.</string>
 </resources>

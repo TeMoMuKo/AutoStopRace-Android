@@ -41,6 +41,8 @@ public interface MainMvpView extends DrawerMvpView {
 
     void showLocationSettingsWarning();
 
+    void showInadequateSettingsWarning();
+
     void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult);
 
     void onGmsConnectionResultNoResolution(int errorCode);

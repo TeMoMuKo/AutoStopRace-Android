@@ -22,11 +22,17 @@ public final class IntentUtil {
     }
 
     public static void goToAppSettings(Context context) {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        Intent appSettingsIntent = new Intent();
+        appSettingsIntent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 .addCategory(Intent.CATEGORY_DEFAULT)
                 .setData(Uri.parse("package:" + context.getPackageName()));
-        context.startActivity(intent);
+        context.startActivity(appSettingsIntent);
+    }
+
+    public static void goToAirplaneModeSettings(Context context) {
+        Intent airplaneModeSettingsIntent = new Intent();
+        airplaneModeSettingsIntent.setAction(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+        context.startActivity(airplaneModeSettingsIntent);
     }
 
     public static void startGmsConnectionResultForResolution(Activity activity,

@@ -157,8 +157,9 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                 getMvpView().onUserResolvableLocationSettings(status);
                 break;
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                Log.i(TAG, "Location settings are inadequate, and cannot be fixed here. Dialog " +
-                        "not created.");
+                Log.i(TAG, "Locations settings are inadequate and cannot be resolved by Dialog." +
+                        " Mostly Airplane mode is on!");
+                getMvpView().showInadequateSettingsWarning();
                 break;
         }
     }
