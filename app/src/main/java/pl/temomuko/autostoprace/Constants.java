@@ -24,7 +24,7 @@ public final class Constants {
     public final static String HEADER_VALUE_APPLICATION_JSON = "application/json";
 
     public static final float MAX_LOCATION_ACCURACY = 150.0f;
-    public static final long SPLASH_DURATION = 700;
+    public static final long SPLASH_DURATION = 1800;
 
     public static final int LOCATION_UPDATE_INTERVAL_MILLISECONDS = 7000;
     public static final int LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS = LOCATION_UPDATE_INTERVAL_MILLISECONDS / 2;

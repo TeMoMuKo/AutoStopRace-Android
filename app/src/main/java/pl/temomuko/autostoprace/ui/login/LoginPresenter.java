@@ -6,9 +6,9 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
-import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import retrofit2.Response;
 import rx.Subscription;
@@ -67,18 +67,16 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     }
 
     private void requestSignIn(String email, String password) {
-        mRxLoginCacheHelper.cache(mDataManager.signIn(email, password)
-                .compose(RxUtil.applyIoSchedulers()));
+        mRxLoginCacheHelper.cache(mDataManager.signIn(email, password));
         continueCachedRequest();
     }
 
     private void continueCachedRequest() {
         mSubscription = mRxLoginCacheHelper.getRestoredCachedObservable()
-                .flatMap(response -> {
-                    clearCurrentRequestObservable();
-                    return mDataManager.handleLoginResponse(response);
-                })
+                .flatMap(mDataManager::handleLoginResponse)
+                .compose(RxUtil.applyIoSchedulers())
                 .subscribe(response -> {
+                    clearCurrentRequestObservable();
                     mDataManager.saveAuthorizationResponse(response);
                     getMvpView().startMainActivity();
                 }, this::handleError, this::stopProgress);
@@ -103,6 +101,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     }
 
     private void handleError(Throwable throwable) {
+        clearCurrentRequestObservable();
         getMvpView().setProgress(false);
         getMvpView().showError(mErrorHandler.getMessage(throwable));
     }
