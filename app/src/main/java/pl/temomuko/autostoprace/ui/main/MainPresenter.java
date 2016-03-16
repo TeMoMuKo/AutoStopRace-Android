@@ -2,7 +2,6 @@ package pl.temomuko.autostoprace.ui.main;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
@@ -60,22 +59,13 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         super.detachView();
     }
 
-    private void continueCachedDownloadLocationsRequest() {
-        getMvpView().setProgress(true);
-        mSubscriptions.add(mRxDownloadLocationsCacheHelper.getRestoredCachedObservable()
-                .flatMap(mDataManager::syncWithDatabase)
-                .subscribe(locationRecords -> {
-                            updateLocationsView(locationRecords);
-                            getMvpView().setItemsExpandingEnabled(true);
-                        },
-                        throwable -> {
-                            handleError(throwable);
-                        }));
-    }
-
     public void setupRxCacheHelper(Activity activity, RxCacheHelper<Response<List<LocationRecord>>> helper) {
         mRxDownloadLocationsCacheHelper = helper;
         mRxDownloadLocationsCacheHelper.setup(activity);
+    }
+
+    private void clearCurrentRequestObservable() {
+        mRxDownloadLocationsCacheHelper.clearCache();
     }
 
     public void checkAuth() {
@@ -92,7 +82,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     private void validateToken() {
         mSubscriptions.add(mDataManager.validateToken()
-                .compose(RxUtil.applySchedulers())
+                .compose(RxUtil.applyIoSchedulers())
                 .subscribe(response -> {
                     if (response.code() == HttpStatus.OK) {
                         mDataManager.saveAuthorizationResponse(response);
@@ -102,6 +92,19 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                         getMvpView().startLoginActivity();
                     }
                 }, this::handleError));
+    }
+
+    private void continueCachedDownloadLocationsRequest() {
+        getMvpView().setProgress(true);
+        mSubscriptions.add(mRxDownloadLocationsCacheHelper.getRestoredCachedObservable()
+                .flatMap(mDataManager::syncWithDatabase)
+                .compose(RxUtil.applyIoSchedulers())
+                .subscribe(locationRecords -> {
+                            clearCurrentRequestObservable();
+                            updateLocationsView(locationRecords);
+                            getMvpView().setItemsExpandingEnabled(true);
+                        },
+                        this::handleError));
     }
 
     public void loadLocations() {
@@ -116,9 +119,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     private void downloadLocationsFromServer() {
-        mRxDownloadLocationsCacheHelper.cache(
-                mDataManager.getTeamLocationRecordsFromServer()
-                        .compose(RxUtil.applySchedulers()));
+        mRxDownloadLocationsCacheHelper.cache(mDataManager.getTeamLocationRecordsFromServer());
         continueCachedDownloadLocationsRequest();
     }
 
@@ -191,6 +192,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     private void handleError(Throwable throwable) {
+        clearCurrentRequestObservable();
         getMvpView().setProgress(false);
         getMvpView().showError(mErrorHandler.getMessage(throwable));
     }

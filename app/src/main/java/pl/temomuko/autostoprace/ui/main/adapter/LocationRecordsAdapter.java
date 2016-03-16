@@ -35,19 +35,19 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     private static final int EXPANDED_ITEM_MESSAGE_MAX_LINES = Integer.MAX_VALUE;
     private static final int RESIZING_ANIMATION_DURATION = 250;
 
-    private List<LocationRecordItem> mLocationRecordItems;
+    private List<LocationRecordItem> mSortedLocationRecordItems;
     private Context mAppContext;
 
     private boolean mIsExpandingEnabled = false;
 
     @Inject
     public LocationRecordsAdapter(@AppContext Context context) {
-        mLocationRecordItems = new ArrayList<>();
+        mSortedLocationRecordItems = new ArrayList<>();
         mAppContext = context;
     }
 
-    public void setLocationRecordItems(List<LocationRecordItem> locationRecordItems) {
-        mLocationRecordItems = locationRecordItems;
+    public void setSortedLocationRecordItems(List<LocationRecordItem> newSortedLocationRecordItems) {
+        mSortedLocationRecordItems = newSortedLocationRecordItems;
         notifyDataSetChanged();
     }
 
@@ -64,7 +64,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
 
     @Override
     public void onBindViewHolder(LocationRecordsAdapter.ViewHolder holder, int position) {
-        LocationRecordItem item = mLocationRecordItems.get(position);
+        LocationRecordItem item = mSortedLocationRecordItems.get(position);
         LocationRecord locationRecord = item.getLocationRecord();
         setupCountryCodeCircleView(holder, locationRecord);
         setupServerSynchronizationState(holder.mImageServerSynchronizationState, locationRecord);
@@ -136,13 +136,13 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         }
     }
 
-    public List<LocationRecordItem> getLocationRecordItems() {
-        return mLocationRecordItems;
+    public List<LocationRecordItem> getSortedLocationRecordItems() {
+        return mSortedLocationRecordItems;
     }
 
     @Override
     public int getItemCount() {
-        return mLocationRecordItems.size();
+        return mSortedLocationRecordItems.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

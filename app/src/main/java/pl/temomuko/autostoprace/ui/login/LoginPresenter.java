@@ -48,18 +48,6 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     public void setupRxCacheHelper(Activity activity, RxCacheHelper<Response<SignInResponse>> helper) {
         mRxLoginCacheHelper = helper;
         mRxLoginCacheHelper.setup(activity);
-      //  mRxLoginCacheHelper.onContinue(this::continueCachedRequest);
-    }
-
-    private void continueCachedRequest() {
-        mSubscription = mRxLoginCacheHelper.getRestoredCachedObservable()
-                .flatMap(mDataManager::handleLoginResponse)
-                .compose(RxUtil.applySchedulers())
-                .subscribe(response -> {
-                    clearCurrentRequestObservable();
-                    mDataManager.saveAuthorizationResponse(response);
-                    getMvpView().startMainActivity();
-                }, this::handleError, this::stopProgress);
     }
 
     public void signIn(String email, String password) {
@@ -81,6 +69,17 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     private void requestSignIn(String email, String password) {
         mRxLoginCacheHelper.cache(mDataManager.signIn(email, password));
         continueCachedRequest();
+    }
+
+    private void continueCachedRequest() {
+        mSubscription = mRxLoginCacheHelper.getRestoredCachedObservable()
+                .flatMap(mDataManager::handleLoginResponse)
+                .compose(RxUtil.applyIoSchedulers())
+                .subscribe(response -> {
+                    clearCurrentRequestObservable();
+                    mDataManager.saveAuthorizationResponse(response);
+                    getMvpView().startMainActivity();
+                }, this::handleError, this::stopProgress);
     }
 
     private void stopProgress() {

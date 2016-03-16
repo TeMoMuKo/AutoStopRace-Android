@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -10,7 +11,7 @@ import java.util.Date;
 /**
  * Created by Szymon Kozak on 2016-01-22.
  */
-public class LocationRecord implements Parcelable {
+public class LocationRecord implements Parcelable, Comparable<LocationRecord> {
 
     @SerializedName("id") private int mId;
     @SerializedName("latitude") private double mLatitude;
@@ -145,4 +146,28 @@ public class LocationRecord implements Parcelable {
             return new LocationRecord[size];
         }
     };
+
+    @Override
+    public int compareTo(@NonNull LocationRecord another) {
+        int dateCompareResult = getDateCompareResult(another);
+        if (dateCompareResult == 0) {
+            return Integer.valueOf(another.getId()).compareTo(mId);
+        } else {
+            return dateCompareResult;
+        }
+    }
+
+    private int getDateCompareResult(@NonNull LocationRecord another) {
+        int dateCompareResult;
+        if (mServerReceiptDate == null && another.getServerReceiptDate() == null) {
+            dateCompareResult = 0;
+        } else if (mServerReceiptDate == null) {
+            dateCompareResult = -1;
+        } else if (another.getServerReceiptDate() == null) {
+            dateCompareResult = 1;
+        } else {
+            dateCompareResult = another.getServerReceiptDate().compareTo(mServerReceiptDate);
+        }
+        return dateCompareResult;
+    }
 }
