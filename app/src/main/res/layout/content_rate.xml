@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/default_margin_halved"
         android:paddingLeft="@dimen/default_margin"
-        android:paddingRight="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin_halved"
         android:paddingTop="@dimen/default_margin"
         >
 
