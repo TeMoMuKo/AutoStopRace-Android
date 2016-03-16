@@ -24,6 +24,7 @@ public class RxCacheHelper<T> {
 
     private RxRetainedFragment mRetainedFragment;
     private String mTag;
+    private OnContinueListener mOnContinueListener;
 
     /**
      * @return Instance of RxCacheHelper by individual tag,
@@ -73,9 +74,10 @@ public class RxCacheHelper<T> {
      * Cache observable and allows restore it after configuration change.
      */
     @SuppressWarnings("unchecked")
-    public void cache(Observable<T> observable) {
+    public RxCacheHelper cache(Observable<T> observable) {
         if (mRetainedFragment == null) throw new RuntimeException("First setup RxCacheHelper.");
         mRetainedFragment.setCurrentObservable(observable.cache());
+        return this;
     }
 
     /**
@@ -87,6 +89,22 @@ public class RxCacheHelper<T> {
     @SuppressWarnings("unchecked")
     public Observable<T> getRestoredCachedObservable() {
         return mRetainedFragment.getCurrentObservable();
+    }
+
+    /**
+     * Setup optional listener if you want use {@link #continueRequest()}.
+     */
+    public void onContinue(OnContinueListener onContinueListener) {
+        mOnContinueListener = onContinueListener;
+    }
+
+    /**
+     * Continue action saved in {@link #onContinue(OnContinueListener)} ()}.
+     */
+    public void continueRequest() {
+        if(mOnContinueListener != null) {
+            mOnContinueListener.onContinue();
+        }
     }
 
     /**
@@ -121,5 +139,9 @@ public class RxCacheHelper<T> {
         public void clearCurrentObservable() {
             mCurrentObservable = null;
         }
+    }
+
+    public static interface OnContinueListener {
+        void onContinue();
     }
 }
