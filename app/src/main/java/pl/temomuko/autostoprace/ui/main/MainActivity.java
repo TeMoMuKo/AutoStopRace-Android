@@ -22,6 +22,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -43,7 +44,9 @@ import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
+import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Szymon Kozak on 2016-01-06.
@@ -63,6 +66,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.tv_empty_info) TextView mEmptyInfoTextView;
     private Snackbar mWarningSnackbar;
+    private CompositeSubscription mSubscriptions;
     private boolean mPostServiceSetProgress;
     private boolean mPresenterSetProgress;
     private boolean mPendingRefresh;
@@ -74,6 +78,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         getActivityComponent().inject(this);
         mMainPresenter.setupRxCacheHelper(this, RxCacheHelper.get(TAG));
         mMainPresenter.attachView(this);
+        mSubscriptions = new CompositeSubscription();
         setupToolbarWithToggle();
         setupRecyclerView();
         setListeners();
@@ -95,7 +100,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         LocationRecordItem[] locationRecordItems =
                 (LocationRecordItem[]) savedInstanceState.getParcelableArray(BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS);
         if (locationRecordItems != null) {
-            mLocationRecordsAdapter.setLocationRecordItems(Arrays.asList(locationRecordItems));
+            mLocationRecordsAdapter.setSortedLocationRecordItems(Arrays.asList(locationRecordItems));
             //// TODO: 11.03.2016 Temporary
             setItemsExpandingEnabled(true);
         } else {
@@ -119,7 +124,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        List<LocationRecordItem> locationRecordItems = mLocationRecordsAdapter.getLocationRecordItems();
+        List<LocationRecordItem> locationRecordItems = mLocationRecordsAdapter.getSortedLocationRecordItems();
         LocationRecordItem[] locationRecordItemsArray =
                 locationRecordItems.toArray(new LocationRecordItem[locationRecordItems.size()]);
         outState.putParcelableArray(BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS, locationRecordItemsArray);
@@ -149,6 +154,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     protected void onDestroy() {
         mMainPresenter.detachView();
+        if (mSubscriptions != null) mSubscriptions.unsubscribe();
         super.onDestroy();
     }
 
@@ -186,13 +192,19 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void updateLocationRecordsList(List<LocationRecord> locationRecords) {
-        Observable.from(locationRecords)
+        mSubscriptions.add(Observable.from(locationRecords)
                 .map(LocationRecordItem::new)
                 .toList()
-                .subscribe(items -> {
-                    mLocationRecordsAdapter.setLocationRecordItems(items);
+                .map(locationRecordItems -> {
+                    Collections.sort(locationRecordItems);
+                    return locationRecordItems;
+                })
+                .compose(RxUtil.applyComputationSchedulers())
+                .subscribe(sortedLocationItems -> {
+                    mLocationRecordsAdapter.setSortedLocationRecordItems(sortedLocationItems);
+                    mRecyclerView.setVisibility(View.VISIBLE);
                     mEmptyInfoTextView.setVisibility(View.GONE);
-                });
+                }));
     }
 
     @Override
@@ -222,6 +234,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void showEmptyInfo() {
+        mRecyclerView.setVisibility(View.GONE);
         mEmptyInfoTextView.setVisibility(View.VISIBLE);
     }
 
@@ -308,9 +321,11 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         //// TODO: 14.03.2016 Temporary
         if (!event.isPostServiceActive()) {
             if (mPendingRefresh) {
+                LogUtil.i("from DV","pending tru");
                 mMainPresenter.loadLocations();
                 mPendingRefresh = false;
             } else {
+                LogUtil.i("from DV","");
                 mMainPresenter.loadLocationsFromDatabase();
             }
         }

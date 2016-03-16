@@ -2,7 +2,6 @@ package pl.temomuko.autostoprace.ui.main;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
@@ -64,6 +63,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         getMvpView().setProgress(true);
         mSubscriptions.add(mRxDownloadLocationsCacheHelper.getRestoredCachedObservable()
                 .flatMap(mDataManager::syncWithDatabase)
+                .compose(RxUtil.applyIoSchedulers())
                 .subscribe(locationRecords -> {
                             updateLocationsView(locationRecords);
                             getMvpView().setItemsExpandingEnabled(true);
@@ -92,7 +92,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     private void validateToken() {
         mSubscriptions.add(mDataManager.validateToken()
-                .compose(RxUtil.applySchedulers())
+                .compose(RxUtil.applyIoSchedulers())
                 .subscribe(response -> {
                     if (response.code() == HttpStatus.OK) {
                         mDataManager.saveAuthorizationResponse(response);
@@ -116,9 +116,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     private void downloadLocationsFromServer() {
-        mRxDownloadLocationsCacheHelper.cache(
-                mDataManager.getTeamLocationRecordsFromServer()
-                        .compose(RxUtil.applySchedulers()));
+        mRxDownloadLocationsCacheHelper.cache(mDataManager.getTeamLocationRecordsFromServer());
         continueCachedDownloadLocationsRequest();
     }
 

@@ -47,6 +47,7 @@ public class PostService extends Service {
     @Override
     public void onDestroy() {
         LogUtil.i(TAG, "Service destroyed.");
+        EventUtil.postSticky(new PostServiceStateChangeEvent(false));
         super.onDestroy();
     }
 
@@ -59,13 +60,13 @@ public class PostService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogUtil.i(TAG, "Service started.");
+        EventUtil.postSticky(new PostServiceStateChangeEvent(true));
         if (!NetworkUtil.isConnected(this)) {
             AndroidComponentUtil.toggleComponent(this, NetworkChangeReceiver.class, true);
             LogUtil.i(TAG, "Connection not available. Service stopped.");
             stopSelf();
             return START_NOT_STICKY;
         }
-        EventUtil.postSticky(new PostServiceStateChangeEvent(true));
         synchronizeLocationsWithServer();
         return START_STICKY;
     }
@@ -82,7 +83,7 @@ public class PostService extends Service {
                             MAX_CONCURRENT)
                     .flatMap(this::getLocationRecordFromResponseInPair)
                     .flatMap(mDataManager::moveLocationRecordToSent)
-                    .compose(RxUtil.applySchedulers())
+                    .compose(RxUtil.applyIoSchedulers())
                     .subscribe(
                             this::handleUnsentAndRecordFromResponse,
                             this::handleError,
@@ -116,13 +117,11 @@ public class PostService extends Service {
         LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
         LogUtil.e(TAG, throwable.toString());
         LogUtil.i(TAG, "Service stopped");
-        EventUtil.postSticky(new PostServiceStateChangeEvent(false));
         stopSelf();
     }
 
     private void handleCompleted() {
         LogUtil.i(TAG, "Service stopped");
-        EventUtil.postSticky(new PostServiceStateChangeEvent(false));
         stopSelf();
     }
 

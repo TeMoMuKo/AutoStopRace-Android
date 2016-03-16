@@ -13,8 +13,20 @@ public final class RxUtil {
         throw new AssertionError();
     }
 
-    public static <T> Observable.Transformer<T, T> applySchedulers() {
+    public static <T> Observable.Transformer<T, T> applyIoSchedulers() {
         return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T> Observable.Transformer<T, T> applyComputationSchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
+
+    public static <T> Observable.Transformer<T, T> applyNewThreadSchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

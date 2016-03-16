@@ -2,13 +2,16 @@ package pl.temomuko.autostoprace.ui.main.adapter;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
+import java.util.Comparator;
 
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 
 /**
  * Created by Szymon Kozak on 2016-03-10.
  */
-public class LocationRecordItem implements Parcelable {
+public class LocationRecordItem implements Parcelable, Comparable<LocationRecordItem> {
 
     private LocationRecord mLocationRecord;
     private boolean mIsExpanded = false;
@@ -57,4 +60,9 @@ public class LocationRecordItem implements Parcelable {
             return new LocationRecordItem[size];
         }
     };
+
+    @Override
+    public int compareTo(@NonNull LocationRecordItem anotherLocationRecordItem) {
+        return this.getLocationRecord().compareTo(anotherLocationRecordItem.getLocationRecord());
+    }
 }

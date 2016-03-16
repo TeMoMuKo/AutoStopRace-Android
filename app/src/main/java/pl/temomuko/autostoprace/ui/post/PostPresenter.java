@@ -73,7 +73,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
                     mLatestAddress.getCountryName(),
                     mLatestAddress.getCountryCode());
             mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
-                    .compose(RxUtil.applySchedulers())
+                    .compose(RxUtil.applyIoSchedulers())
                     .subscribe();
             setLocationSaved();
             getMvpView().showSuccessInfo();
@@ -149,13 +149,13 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private void startLocationUpdates() {
         mLocationSubscriptions.add(mDataManager.getDeviceLocation(GmsLocationHelper.APP_LOCATION_REQUEST)
-                .compose(RxUtil.applySchedulers())
                 .filter(location -> location.getAccuracy() <= Constants.MAX_LOCATION_ACCURACY)
-                .switchMap(location -> {
+                .concatMap(location -> {
                     getMvpView().updateAccuracyInfo(location.getAccuracy());
                     LogUtil.i(TAG, "Accuracy: " + Float.toString(location.getAccuracy()));
                     return mDataManager.getAddressFromLocation(location);
                 })
+                .compose(RxUtil.applyIoSchedulers())
                 .subscribe(this::handleAddress, this::handleGmsError));
     }
 

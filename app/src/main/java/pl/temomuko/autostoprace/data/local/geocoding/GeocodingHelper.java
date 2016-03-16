@@ -16,6 +16,7 @@ import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Rafał Naniewicz on 19.02.2016.
@@ -38,8 +39,7 @@ public class GeocodingHelper {
                 .onErrorResumeNext(throwable -> {
                     LogUtil.i(TAG, throwable.toString() + ", returning basic address instead");
                     return Observable.just(getBasicAddress(location));
-                })
-                .compose(RxUtil.applySchedulers());
+                });
     }
 
     private Address getBasicAddress(Location location) {

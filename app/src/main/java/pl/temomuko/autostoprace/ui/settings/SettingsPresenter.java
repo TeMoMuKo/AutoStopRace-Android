@@ -46,7 +46,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
     public void logout() {
         mSubscription = mDataManager.signOut()
-                .compose(RxUtil.applySchedulers())
+                .compose(RxUtil.applyIoSchedulers())
                 .subscribe(response -> {
                     LogUtil.i(TAG, response.body().toString());
                 }, throwable -> {
