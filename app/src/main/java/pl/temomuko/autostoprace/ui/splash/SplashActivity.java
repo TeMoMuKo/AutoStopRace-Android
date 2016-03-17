@@ -86,7 +86,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private int getRandomSponsorLogoDrawableId() {
-        int randomDrawableIndex = new Random().nextInt(mSponsorDrawablesIds.length - 1);
+        int randomDrawableIndex = new Random().nextInt(mSponsorDrawablesIds.length);
         return mSponsorDrawablesIds[randomDrawableIndex];
     }
 
