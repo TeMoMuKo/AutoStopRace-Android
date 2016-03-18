@@ -21,9 +21,6 @@ import rx.Observable;
 @Singleton
 public class GmsLocationHelper {
 
-    public final static LocationRequest APP_LOCATION_REQUEST = getLocationRequest();
-    private static final int LOCATION_ACCURACY = LocationRequest.PRIORITY_HIGH_ACCURACY;
-
     private Context mContext;
 
     @Inject
@@ -31,15 +28,15 @@ public class GmsLocationHelper {
         mContext = context;
     }
 
-    public Observable<Location> getDeviceLocation(LocationRequest locationRequest) {
-        return LocationObservable.create(mContext, locationRequest);
+    public Observable<Location> getDeviceLocation() {
+        return LocationObservable.create(mContext, getLocationRequest());
     }
 
-    public Observable<LocationSettingsResult> checkLocationSettings(LocationRequest locationRequest) {
+    public Observable<LocationSettingsResult> checkLocationSettings() {
         return ApiClientObservable.create(mContext, LocationServices.API)
                 .flatMap(googleApiClient -> PendingResultObservable.create(
                         LocationServices.SettingsApi.checkLocationSettings(googleApiClient,
-                                getLocationSettingsRequest(locationRequest))));
+                                getLocationSettingsRequest(getLocationRequest()))));
     }
 
     private LocationSettingsRequest getLocationSettingsRequest(LocationRequest locationRequest) {
@@ -53,6 +50,6 @@ public class GmsLocationHelper {
         return new LocationRequest()
                 .setFastestInterval(Constants.LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS)
                 .setInterval(Constants.LOCATION_UPDATE_INTERVAL_MILLISECONDS)
-                .setPriority(LOCATION_ACCURACY);
+                .setPriority(Constants.APP_LOCATION_ACCURACY);
     }
 }

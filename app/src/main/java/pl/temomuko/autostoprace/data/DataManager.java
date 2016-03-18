@@ -158,12 +158,12 @@ public class DataManager {
         return mPrefsHelper.getCurrentUser();
     }
 
-    public Observable<Location> getDeviceLocation(LocationRequest locationRequest) {
-        return mGmsLocationHelper.getDeviceLocation(locationRequest);
+    public Observable<Location> getDeviceLocation() {
+        return mGmsLocationHelper.getDeviceLocation();
     }
 
-    public Observable<LocationSettingsResult> checkLocationSettings(LocationRequest locationRequest) {
-        return mGmsLocationHelper.checkLocationSettings(locationRequest);
+    public Observable<LocationSettingsResult> checkLocationSettings() {
+        return mGmsLocationHelper.checkLocationSettings();
     }
 
     public boolean hasFineLocationPermission() {

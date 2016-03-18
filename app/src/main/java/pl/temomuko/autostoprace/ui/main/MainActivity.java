@@ -1,6 +1,8 @@
 package pl.temomuko.autostoprace.ui.main;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationSettingsStates;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,6 +45,7 @@ import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
+import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
@@ -143,7 +147,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
             mMainPresenter.setIsLocationSettingsStatusForResultCalled(false);
-            mMainPresenter.handleLocationSettingsDialogResult(resultCode);
+            mMainPresenter.handleLocationSettingsDialogResult(resultCode,data);
         }
     }
 
@@ -292,7 +296,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         mMainPresenter.setIsLocationSettingsStatusForResultCalled(true);
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void showLocationSettingsWarning() {
         mWarningSnackbar = Snackbar.make(mCoordinatorLayoutRoot,

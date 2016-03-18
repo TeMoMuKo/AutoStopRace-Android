@@ -134,7 +134,7 @@ public class PostPresenterTest {
                 .thenReturn(Observable.empty());
 
         //when
-        mPostPresenter.handleLocationSettingsDialogResult(Activity.RESULT_OK);
+        mPostPresenter.handleLocationSettingsDialogResult(Activity.RESULT_OK, data);
 
         //then
         verify(mMockDataManager).getDeviceLocation(any(LocationRequest.class));
@@ -148,7 +148,7 @@ public class PostPresenterTest {
                 .thenReturn(Observable.empty());
 
         //when
-        mPostPresenter.handleLocationSettingsDialogResult(Activity.RESULT_CANCELED);
+        mPostPresenter.handleLocationSettingsDialogResult(Activity.RESULT_CANCELED, data);
 
         //then
         verify(mMockDataManager, never()).getDeviceLocation(any(LocationRequest.class));

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import pl.temomuko.autostoprace.util.LogUtil;
 import rx.Observable;
 import rx.Subscriber;
 

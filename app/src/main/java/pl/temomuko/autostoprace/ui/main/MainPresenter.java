@@ -1,10 +1,10 @@
 package pl.temomuko.autostoprace.ui.main;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
@@ -15,11 +15,11 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
-import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
@@ -115,6 +115,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     public void loadLocationsFromDatabase() {
         mSubscriptions.add(
                 mDataManager.getTeamLocationRecordsFromDatabase()
+                        .compose(RxUtil.applyIoSchedulers())
                         .subscribe(this::updateLocationsView));
     }
 
@@ -141,30 +142,32 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     public void checkLocationSettings() {
         if (!mIsLocationSettingsStatusForResultCalled) {
-            mSubscriptions.add(mDataManager.checkLocationSettings(GmsLocationHelper.APP_LOCATION_REQUEST)
+            mSubscriptions.add(mDataManager.checkLocationSettings()
+                    .compose(RxUtil.applyIoSchedulers())
                     .subscribe(this::handleLocationSettings,
                             this::handleGmsError));
         }
     }
 
     private void handleLocationSettings(LocationSettingsResult locationSettingsResult) {
-        final Status status = locationSettingsResult.getStatus();
-        switch (status.getStatusCode()) {
+        final int statusCode = locationSettingsResult.getStatus().getStatusCode();
+        switch (statusCode) {
             case LocationSettingsStatusCodes.SUCCESS:
                 getMvpView().startPostActivity();
                 break;
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                getMvpView().onUserResolvableLocationSettings(status);
+                getMvpView().onUserResolvableLocationSettings(locationSettingsResult.getStatus());
                 break;
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                Log.i(TAG, "Locations settings are inadequate and cannot be resolved by Dialog." +
-                        " Mostly Airplane mode is on!");
+                Log.i(TAG, "Locations settings are inadequate and cannot be resolved by Dialog. " +
+                        "Mostly Airplane mode is on!");
                 getMvpView().showInadequateSettingsWarning();
                 break;
         }
     }
 
-    public void handleLocationSettingsDialogResult(int resultCode) {
+    public void handleLocationSettingsDialogResult(int resultCode, Intent data) {
+        resultCode = LocationSettingsUtil.getApiDependentResultCode(resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             getMvpView().startPostActivity();
         } else {

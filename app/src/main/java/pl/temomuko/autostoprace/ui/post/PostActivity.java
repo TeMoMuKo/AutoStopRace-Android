@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.data.event.AirplaneModeStatusChangeEvent;
 import pl.temomuko.autostoprace.data.event.GpsStatusChangeEvent;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.util.IntentUtil;
@@ -70,7 +71,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
             mPostPresenter.setIsLocationSettingsStatusForResultCalled(false);
-            mPostPresenter.handleLocationSettingsDialogResult(resultCode);
+            mPostPresenter.handleLocationSettingsDialogResult(resultCode,data);
         }
     }
 
@@ -180,6 +181,13 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGpsStatusChangeEvent(GpsStatusChangeEvent event) {
-        mPostPresenter.handleGpsStatusChange();
+        mPostPresenter.handleLocationSettingsStatusChange();
     }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAirplaneModeStatusChange(AirplaneModeStatusChangeEvent event){
+        mPostPresenter.handleLocationSettingsStatusChange();
+    }
+
 }

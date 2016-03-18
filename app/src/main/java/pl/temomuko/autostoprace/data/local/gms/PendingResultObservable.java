@@ -3,6 +3,7 @@ package pl.temomuko.autostoprace.data.local.gms;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Result;
 
+import pl.temomuko.autostoprace.util.LogUtil;
 import rx.Observable;
 import rx.Subscriber;
 import rx.subscriptions.Subscriptions;

@@ -1,10 +1,10 @@
 package pl.temomuko.autostoprace.ui.post;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
@@ -13,9 +13,9 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
-import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
+import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
@@ -95,32 +95,35 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private void checkLocationSettings() {
         if (!mIsLocationSettingsStatusForResultCalled) {
-            mLocationSubscriptions.add(mDataManager.checkLocationSettings(GmsLocationHelper.APP_LOCATION_REQUEST)
+            mLocationSubscriptions.add(mDataManager.checkLocationSettings()
+                    .compose(RxUtil.applyIoSchedulers())
                     .subscribe(this::handleLocationSettings,
                             this::handleGmsError));
         }
     }
 
     private void handleLocationSettings(LocationSettingsResult locationSettingsResult) {
-        final Status status = locationSettingsResult.getStatus();
-        switch (status.getStatusCode()) {
+        final int statusCode = LocationSettingsUtil.getApiDependentStatusCode(locationSettingsResult);
+        switch (statusCode) {
             case LocationSettingsStatusCodes.SUCCESS:
                 startLocationUpdates();
                 break;
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                getMvpView().onUserResolvableLocationSettings(status);
+                getMvpView().onUserResolvableLocationSettings(locationSettingsResult.getStatus());
                 break;
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                 LogUtil.i(TAG, "Location settings are inadequate, and cannot be fixed here. Dialog " +
                         "not created.");
+                getMvpView().finishWithInadequateSettingsWarning();
                 break;
         }
     }
 
-    public void handleLocationSettingsDialogResult(int resultCode) {
+    public void handleLocationSettingsDialogResult(int resultCode, Intent data) {
+        resultCode = LocationSettingsUtil.getApiDependentResultCode(resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             startLocationUpdates();
-        } else {
+        } else if (resultCode == Activity.RESULT_CANCELED) {
             getMvpView().finishWithInadequateSettingsWarning();
         }
     }
@@ -148,7 +151,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     }
 
     private void startLocationUpdates() {
-        mLocationSubscriptions.add(mDataManager.getDeviceLocation(GmsLocationHelper.APP_LOCATION_REQUEST)
+        mLocationSubscriptions.add(mDataManager.getDeviceLocation()
                 .filter(location -> location.getAccuracy() <= Constants.MAX_LOCATION_ACCURACY)
                 .concatMap(location -> {
                     getMvpView().updateAccuracyInfo(location.getAccuracy());
@@ -188,7 +191,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         mLocationSubscriptions.clear();
     }
 
-    public void handleGpsStatusChange() {
+    public void handleLocationSettingsStatusChange() {
         stopLocationService();
         startLocationService();
     }
@@ -200,4 +203,5 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public void setLatestAddress(Address latestAddress) {
         mLatestAddress = latestAddress;
     }
+
 }

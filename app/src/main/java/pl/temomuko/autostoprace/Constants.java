@@ -1,5 +1,7 @@
 package pl.temomuko.autostoprace;
 
+import com.google.android.gms.location.LocationRequest;
+
 /**
  * Created by Szymon Kozak on 2016-01-06.
  */
@@ -26,6 +28,7 @@ public final class Constants {
     public static final float MAX_LOCATION_ACCURACY = 150.0f;
     public static final long SPLASH_DURATION = 1800;
 
+    public static final int APP_LOCATION_ACCURACY = LocationRequest.PRIORITY_HIGH_ACCURACY;
     public static final int LOCATION_UPDATE_INTERVAL_MILLISECONDS = 7000;
     public static final int LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS = LOCATION_UPDATE_INTERVAL_MILLISECONDS / 2;
     public static final int GEO_CODING_TIMEOUT_MILLISECONDS = LOCATION_FASTEST_UPDATE_INTERVAL_MILLISECONDS;

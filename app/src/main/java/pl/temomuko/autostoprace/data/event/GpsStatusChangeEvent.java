@@ -5,6 +5,4 @@ package pl.temomuko.autostoprace.data.event;
  */
 public class GpsStatusChangeEvent {
 
-    public GpsStatusChangeEvent() {
-    }
 }

@@ -39,7 +39,8 @@ public class GeocodingHelper {
                 .onErrorResumeNext(throwable -> {
                     LogUtil.i(TAG, throwable.toString() + ", returning basic address instead");
                     return Observable.just(getBasicAddress(location));
-                });
+                })
+                .subscribeOn(Schedulers.io());
     }
 
     private Address getBasicAddress(Location location) {
