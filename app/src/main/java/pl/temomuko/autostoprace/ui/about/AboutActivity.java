@@ -2,7 +2,9 @@ package pl.temomuko.autostoprace.ui.about;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -28,11 +30,18 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         setupToolbarWithBack();
+        setupButtonsTextStyleOnPreLollipop();
         setListeners();
     }
 
     private void setListeners() {
         mGoToStoreButton.setOnClickListener(v -> goToStore());
+    }
+
+    private void setupButtonsTextStyleOnPreLollipop() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            mGoToStoreButton.setTypeface(null, Typeface.BOLD);
+        }
     }
 
     private void goToStore() {

@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/bg"/>
+                    tools:src="@drawable/bg"/>
 
                 <ImageView
                     android:id="@+id/iv_launcher_logo"
@@ -47,7 +47,7 @@
                     android:layout_above="@+id/linearLayout"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    android:src="@drawable/logo"/>
+                    tools:src="@drawable/logo"/>
 
                 <LinearLayout
                     android:id="@+id/linearLayout"

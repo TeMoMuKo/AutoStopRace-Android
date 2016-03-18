@@ -147,13 +147,11 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     public void setInvalidEmailValidationError(boolean state) {
         mEmailTextInputLayout.setErrorEnabled(state);
-        mEmailTextInputLayout.setError(null);
-        if (state) mEmailTextInputLayout.setError(getString(R.string.error_invalid_email));
+        mEmailTextInputLayout.setError(state ? getString(R.string.error_invalid_email) : null);
     }
 
     public void setInvalidPasswordValidationError(boolean state) {
         mPasswordTextInputLayout.setErrorEnabled(state);
-        mEmailTextInputLayout.setError(null);
-        if (state) mPasswordTextInputLayout.setError(getString(R.string.error_empty_pass));
+        mPasswordTextInputLayout.setError(state ? getString(R.string.error_empty_pass) : null);
     }
 }
