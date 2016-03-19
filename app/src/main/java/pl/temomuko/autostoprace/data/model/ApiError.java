@@ -19,6 +19,8 @@ public class ApiError {
     private List<String> mErrors = new ArrayList<>();
     private final static String EMAIL_CONFIRMATION_ERROR_SUFFIX =
             "You must follow the instructions in the email before your account can be activated";
+    private final static String RESET_PASS_ERROR_PREFIX =
+            "Unable to find user with email";
     private final static String TAG = ApiError.class.getSimpleName();
 
     private ApiError(int status) {
@@ -28,6 +30,20 @@ public class ApiError {
     public ApiError(Response response) {
         this(response.code());
         setupSignInResponseErrors(response);
+        setupResetPassResponseErrors(response);
+    }
+
+    private void setupResetPassResponseErrors(Response response) {
+        try {
+            Converter<ResponseBody, ResetPassResponse> converter
+                    = AsrService.Factory.getResetPassErrorResponseConverter();
+            if (converter != null) {
+                ResetPassResponse resetPassResponse = converter.convert(response.errorBody());
+                mErrors = resetPassResponse.getErrors();
+            }
+        } catch (IOException e) {
+            LogUtil.i(TAG, "It isn't ResetPassResponse error.");
+        }
     }
 
     private void setupSignInResponseErrors(Response response) {
@@ -46,6 +62,13 @@ public class ApiError {
     public boolean isEmailConfirmationError() {
         for (String errorMessage : mErrors) {
             if (errorMessage.endsWith(EMAIL_CONFIRMATION_ERROR_SUFFIX)) return true;
+        }
+        return false;
+    }
+
+    public boolean isResetPassError() {
+        for (String errorMessage : mErrors) {
+            if (errorMessage.startsWith(RESET_PASS_ERROR_PREFIX)) return true;
         }
         return false;
     }

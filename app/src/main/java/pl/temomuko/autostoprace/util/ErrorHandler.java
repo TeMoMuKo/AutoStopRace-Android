@@ -39,11 +39,19 @@ public class ErrorHandler {
         }
     }
 
+    public int getStatus(Throwable throwable) {
+        if (throwable instanceof StandardResponseException) {
+            return ((StandardResponseException) throwable).getResponse().code();
+        } else {
+            return 0;
+        }
+    }
+
     private String getMessageFromResponse(Response<?> response) {
         ApiError apiError = new ApiError(response);
         switch (apiError.getStatus()) {
             case HttpStatus.NOT_FOUND:
-                return mContext.getString(R.string.error_404);
+                return getNotFoundDetails(apiError);
             case HttpStatus.FORBIDDEN:
                 return mContext.getString(R.string.error_403);
             case HttpStatus.UNAUTHORIZED:
@@ -56,6 +64,14 @@ public class ErrorHandler {
                 return mContext.getString(R.string.error_502);
             default:
                 return mContext.getString(R.string.error_unknown);
+        }
+    }
+
+    private String getNotFoundDetails(ApiError apiError) {
+        if(apiError.isResetPassError()) {
+            return mContext.getString(R.string.error_reset_pass);
+        } else {
+            return mContext.getString(R.string.error_404);
         }
     }
 

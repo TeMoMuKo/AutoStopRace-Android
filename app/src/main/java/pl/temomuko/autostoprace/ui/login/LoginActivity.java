@@ -69,6 +69,15 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         super.onSaveInstanceState(outState);
     }
 
+    private void saveProgressDialogState(Bundle outState) {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, true);
+        } else {
+            outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, false);
+        }
+    }
+
     private void setListeners() {
         mLoginButton.setOnClickListener(v -> {
             String email = mEmailEditText.getText().toString().trim();
@@ -81,15 +90,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     private void startResetPassActivity() {
         Intent intent = new Intent(this, ResetPassActivity.class);
         startActivity(intent);
-    }
-
-    private void saveProgressDialogState(Bundle outState) {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-            outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, true);
-        } else {
-            outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, false);
-        }
     }
 
     private void setupToolbarWithBack() {
@@ -143,8 +143,8 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     }
 
     @Override
-    public void setProgress(boolean status) {
-        if (status) mProgressDialog.show();
+    public void setProgress(boolean state) {
+        if (state) mProgressDialog.show();
         else mProgressDialog.dismiss();
     }
 

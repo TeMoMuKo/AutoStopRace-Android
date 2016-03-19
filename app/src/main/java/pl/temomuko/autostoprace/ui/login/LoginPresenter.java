@@ -73,7 +73,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     private void continueCachedRequest() {
         mSubscription = mRxLoginCacheHelper.getRestoredCachedObservable()
-                .flatMap(mDataManager::handleLoginResponse)
+                .flatMap(mDataManager::handleStandardResponse)
                 .compose(RxUtil.applyIoSchedulers())
                 .subscribe(response -> {
                     clearCurrentRequestObservable();

@@ -15,6 +15,7 @@ import pl.temomuko.autostoprace.BuildConfig;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.data.model.ResetPassResponse;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.Team;
@@ -40,38 +41,45 @@ import rx.Observable;
 public interface AsrService {
 
     @GET("teams")
-    Observable<Response<List<Team>>> getTeamsWithObservable();
+    Observable<Response<List<Team>>> getTeams();
 
     @GET("teams/{team_id}")
-    Observable<Response<Team>> getTeamWithObservable(@Path("team_id") int teamId);
+    Observable<Response<Team>> getTeam(@Path("team_id") int teamId);
 
     @GET("teams/{team_id}/locations")
-    Observable<Response<List<LocationRecord>>> getLocationRecordsWithObservable(@Path("team_id") int teamId);
+    Observable<Response<List<LocationRecord>>> getLocationRecords(@Path("team_id") int teamId);
 
     @FormUrlEncoded
     @POST("api/v1/auth/sign_in")
-    Observable<Response<SignInResponse>> signInWithObservable(
+    Observable<Response<SignInResponse>> signIn(
             @Field("email") String email,
             @Field("password") String password
     );
 
     @DELETE("api/v1/auth/sign_out")
-    Observable<Response<SignOutResponse>> signOutWithObservable(
+    Observable<Response<SignOutResponse>> signOut(
             @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
             @Header(Constants.HEADER_FIELD_CLIENT) String client,
             @Header(Constants.HEADER_FIELD_UID) String uid
     );
 
     @GET("api/v1/auth/validate_token")
-    Observable<Response<SignInResponse>> validateTokenWithObservable(
+    Observable<Response<SignInResponse>> validateToken(
             @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
             @Header(Constants.HEADER_FIELD_CLIENT) String client,
             @Header(Constants.HEADER_FIELD_UID) String uid
     );
 
+    @FormUrlEncoded
+    @POST("api/v1/auth/password")
+    Observable<Response<ResetPassResponse>> resetPassword(
+            @Field("email") String email,
+            @Field("redirect_url") String redirectUrl
+    );
+
     @Headers("Content-Type: " + Constants.HEADER_VALUE_APPLICATION_JSON)
     @POST("locations")
-    Observable<Response<LocationRecord>> postLocationRecordWithObservable(
+    Observable<Response<LocationRecord>> postLocationRecord(
             @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
             @Header(Constants.HEADER_FIELD_CLIENT) String client,
             @Header(Constants.HEADER_FIELD_UID) String uid,
@@ -81,6 +89,7 @@ public interface AsrService {
     class Factory {
 
         private static Converter<ResponseBody, SignInResponse> SIGN_IN_ERROR_RESPONSE_CONVERTER;
+        private static Converter<ResponseBody, ResetPassResponse> RESET_PASS_ERROR_RESPONSE_CONVERTER;
 
         public static AsrService createAsrService() {
             Gson gson = new GsonBuilder()
@@ -92,13 +101,23 @@ public interface AsrService {
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
+            setupErrorsConverters(retrofit);
+            return retrofit.create(AsrService.class);
+        }
+
+        private static void setupErrorsConverters(Retrofit retrofit) {
             SIGN_IN_ERROR_RESPONSE_CONVERTER = retrofit
                     .responseBodyConverter(SignInResponse.class, new Annotation[0]);
-            return retrofit.create(AsrService.class);
+            RESET_PASS_ERROR_RESPONSE_CONVERTER = retrofit
+                    .responseBodyConverter(ResetPassResponse.class, new Annotation[0]);
         }
 
         public static Converter<ResponseBody, SignInResponse> getSignInErrorResponseConverter() {
             return SIGN_IN_ERROR_RESPONSE_CONVERTER;
+        }
+
+        public static Converter<ResponseBody, ResetPassResponse> getResetPassErrorResponseConverter() {
+            return RESET_PASS_ERROR_RESPONSE_CONVERTER;
         }
 
         private static OkHttpClient getOkHttpClient() {

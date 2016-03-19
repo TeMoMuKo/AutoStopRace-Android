@@ -75,7 +75,7 @@ public class LoginPresenterTest {
         when(mMockErrorHandler.isEmailValid(FAKE_EMAIL)).thenReturn(true);
         when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(Observable.just(response));
         when(mMockRxCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
-        when(mMockDataManager.handleLoginResponse(response)).thenReturn(Observable.just(response));
+        when(mMockDataManager.handleStandardResponse(response)).thenReturn(Observable.just(response));
         when(mMockRxCacheHelper.isCached()).thenReturn(true);
 
         //when
@@ -100,7 +100,7 @@ public class LoginPresenterTest {
         Observable<Response<SignInResponse>> signInResponseObservable = Observable.just(response);
         when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(signInResponseObservable);
         when(mMockRxCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
-        when(mMockDataManager.handleLoginResponse(response)).thenReturn(Observable.just(response));
+        when(mMockDataManager.handleStandardResponse(response)).thenReturn(Observable.just(response));
 
         //when
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
@@ -121,7 +121,7 @@ public class LoginPresenterTest {
         when(mMockErrorHandler.isEmailValid(FAKE_EMAIL)).thenReturn(true);
         when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(Observable.just(response));
         StandardResponseException responseException = new StandardResponseException(response);
-        when(mMockDataManager.handleLoginResponse(response))
+        when(mMockDataManager.handleStandardResponse(response))
                 .thenReturn(Observable.error(responseException));
         when(mMockErrorHandler.getMessage(responseException)).thenReturn(FAKE_ERROR_MESSAGE);
         when(mMockRxCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));

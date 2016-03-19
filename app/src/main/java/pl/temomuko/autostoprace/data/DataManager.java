@@ -4,7 +4,6 @@ import android.location.Address;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
@@ -20,6 +20,7 @@ import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.data.model.ResetPassResponse;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
@@ -57,11 +58,11 @@ public class DataManager {
     }
 
     public Observable<Response<SignInResponse>> signIn(String login, String password) {
-        return mAsrService.signInWithObservable(login, password);
+        return mAsrService.signIn(login, password);
     }
 
     public Observable<Response<SignOutResponse>> signOut() {
-        return mAsrService.signOutWithObservable(
+        return mAsrService.signOut(
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
                 mPrefsHelper.getAuthUid());
@@ -73,10 +74,14 @@ public class DataManager {
     }
 
     public Observable<Response<SignInResponse>> validateToken() {
-        return mAsrService.validateTokenWithObservable(
+        return mAsrService.validateToken(
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
                 mPrefsHelper.getAuthUid());
+    }
+
+    public Observable<Response<ResetPassResponse>> resetPassword(String email) {
+        return mAsrService.resetPassword(email, Constants.API_RESET_PASS_REDIRECT_URL);
     }
 
     public Observable<List<LocationRecord>> getTeamLocationRecordsFromDatabase() {
@@ -92,7 +97,7 @@ public class DataManager {
     }
 
     public Observable<Response<List<LocationRecord>>> getTeamLocationRecordsFromServer() {
-        return mAsrService.getLocationRecordsWithObservable(mPrefsHelper.getCurrentUser().getTeamId());
+        return mAsrService.getLocationRecords(mPrefsHelper.getCurrentUser().getTeamId());
     }
 
     public Observable<List<LocationRecord>> syncWithDatabase(Response<List<LocationRecord>> response) {
@@ -113,7 +118,7 @@ public class DataManager {
         );
     }
 
-    public Observable<Response<SignInResponse>> handleLoginResponse(Response<SignInResponse> response) {
+    public <T> Observable<Response<T>> handleStandardResponse(Response<T> response) {
         return response.code() == HttpStatus.OK ?
                 Observable.just(response) :
                 Observable.error(new StandardResponseException(response));
@@ -138,7 +143,7 @@ public class DataManager {
     }
 
     public Observable<Response<LocationRecord>> postLocationRecordToServer(LocationRecord locationRecord) {
-        return mAsrService.postLocationRecordWithObservable(
+        return mAsrService.postLocationRecord(
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
                 mPrefsHelper.getAuthUid(),

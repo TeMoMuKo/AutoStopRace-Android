@@ -9,6 +9,7 @@ import pl.temomuko.autostoprace.ui.campus.CampusActivity;
 import pl.temomuko.autostoprace.ui.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;
+import pl.temomuko.autostoprace.ui.login.resetpass.ResetPassActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
@@ -28,6 +29,8 @@ public interface ActivityComponent {
     void inject(MainActivity mainActivity);
 
     void inject(LoginActivity loginActivity);
+
+    void inject(ResetPassActivity resetPassActivity);
 
     void inject(LauncherActivity launcherActivity);
 

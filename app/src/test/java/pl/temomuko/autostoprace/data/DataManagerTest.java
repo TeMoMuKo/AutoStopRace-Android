@@ -81,7 +81,7 @@ public class DataManagerTest {
         //given
         when(mMockPrefsHelper.getCurrentUser()).thenReturn(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
         Observable<Response<List<LocationRecord>>> expectedObservable =
-                mMockAsrService.getLocationRecordsWithObservable(mMockPrefsHelper.getCurrentUser().getTeamId());
+                mMockAsrService.getLocationRecords(mMockPrefsHelper.getCurrentUser().getTeamId());
         Observable<Response<List<LocationRecord>>> actualObservable =
                 mDataManager.getTeamLocationRecordsFromServer();
         //assert
@@ -99,7 +99,7 @@ public class DataManagerTest {
         mDataManager.validateToken();
 
         //then
-        verify(mMockAsrService).validateTokenWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
+        verify(mMockAsrService).validateToken(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
     }
 
     @Test
@@ -151,7 +151,7 @@ public class DataManagerTest {
         mDataManager.postLocationRecordToServer(locationRecordToSend);
 
         //then
-        verify(mMockAsrService).postLocationRecordWithObservable(
+        verify(mMockAsrService).postLocationRecord(
                 eq(FAKE_ACCESS_TOKEN), eq(FAKE_CLIENT), eq(FAKE_UID), any(CreateLocationRecordRequest.class));
     }
 
@@ -159,7 +159,7 @@ public class DataManagerTest {
     public void testSignIn() throws Exception {
         //given
         Observable<Response<SignInResponse>> expectedObservable
-                = mMockAsrService.signInWithObservable(FAKE_EMAIL, FAKE_PASS);
+                = mMockAsrService.signIn(FAKE_EMAIL, FAKE_PASS);
         Observable<Response<SignInResponse>> actualObservable = mDataManager.signIn(FAKE_EMAIL, FAKE_PASS);
 
         //assert
@@ -177,7 +177,7 @@ public class DataManagerTest {
         mDataManager.signOut();
 
         //then
-        verify(mMockAsrService).signOutWithObservable(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
+        verify(mMockAsrService).signOut(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
     }
 
     @Test
