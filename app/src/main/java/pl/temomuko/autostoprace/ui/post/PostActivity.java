@@ -71,7 +71,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
             mPostPresenter.setIsLocationSettingsStatusForResultCalled(false);
-            mPostPresenter.handleLocationSettingsDialogResult(resultCode,data);
+            mPostPresenter.handleLocationSettingsDialogResult(resultCode, data);
         }
     }
 
@@ -186,8 +186,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
 
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAirplaneModeStatusChange(AirplaneModeStatusChangeEvent event){
+    public void onAirplaneModeStatusChange(AirplaneModeStatusChangeEvent event) {
         mPostPresenter.handleLocationSettingsStatusChange();
     }
-
 }

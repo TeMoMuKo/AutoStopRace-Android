@@ -118,8 +118,8 @@ public class DataManager {
         );
     }
 
-    public <T> Observable<Response<T>> handleStandardResponse(Response<T> response) {
-        return response.code() == HttpStatus.OK ?
+    public <T> Observable<Response<T>> requireHttpStatus(Response<T> response, int requiredStatus) {
+        return response.code() == requiredStatus ?
                 Observable.just(response) :
                 Observable.error(new StandardResponseException(response));
     }

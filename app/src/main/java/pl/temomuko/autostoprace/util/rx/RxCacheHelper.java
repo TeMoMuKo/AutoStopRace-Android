@@ -88,6 +88,7 @@ public class RxCacheHelper<T> {
     public Observable<T> getRestoredCachedObservable() {
         return mRetainedFragment.getCurrentObservable();
     }
+
     /**
      * Clear cache when you need to cancel current request.
      */

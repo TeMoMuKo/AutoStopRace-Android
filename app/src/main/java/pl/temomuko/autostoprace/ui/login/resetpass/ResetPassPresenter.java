@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.ResetPassResponse;
+import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
@@ -71,7 +72,7 @@ public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
 
     private void continueCachedRequest() {
         mSubscription = mRxResetCacheHelper.getRestoredCachedObservable()
-                .flatMap(mDataManager::handleStandardResponse)
+                .flatMap(response -> mDataManager.requireHttpStatus(response, HttpStatus.CREATED))
                 .compose(RxUtil.applyIoSchedulers())
                 .subscribe(response -> {
                     clearCurrentRequestObservable();

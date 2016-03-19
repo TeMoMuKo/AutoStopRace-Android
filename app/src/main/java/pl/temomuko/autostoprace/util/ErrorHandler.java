@@ -68,7 +68,7 @@ public class ErrorHandler {
     }
 
     private String getNotFoundDetails(ApiError apiError) {
-        if(apiError.isResetPassError()) {
+        if (apiError.isResetPassError()) {
             return mContext.getString(R.string.error_reset_pass);
         } else {
             return mContext.getString(R.string.error_404);

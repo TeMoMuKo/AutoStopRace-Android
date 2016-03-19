@@ -147,7 +147,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
             mMainPresenter.setIsLocationSettingsStatusForResultCalled(false);
-            mMainPresenter.handleLocationSettingsDialogResult(resultCode,data);
+            mMainPresenter.handleLocationSettingsDialogResult(resultCode, data);
         }
     }
 
@@ -313,7 +313,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
                 .setAction(R.string.change_settings, v -> IntentUtil.goToAirplaneModeSettings(this));
         mWarningSnackbar.show();
     }
-
 
     @Override
     public void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult) {

@@ -84,7 +84,10 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
             String password = mPasswordEditText.getText().toString();
             mLoginPresenter.signIn(email, password);
         });
-        mGoToResetPassButton.setOnClickListener(v -> startResetPassActivity());
+        mGoToResetPassButton.setOnClickListener(v -> {
+            mPasswordEditText.setText(null);
+            startResetPassActivity();
+        });
     }
 
     private void startResetPassActivity() {

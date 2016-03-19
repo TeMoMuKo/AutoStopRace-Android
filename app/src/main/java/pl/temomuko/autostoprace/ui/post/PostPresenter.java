@@ -203,5 +203,4 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public void setLatestAddress(Address latestAddress) {
         mLatestAddress = latestAddress;
     }
-
 }

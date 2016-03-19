@@ -74,7 +74,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if(mSubscription != null) mSubscription.unsubscribe();
+        if (mSubscription != null) mSubscription.unsubscribe();
     }
 
     private void loadSponsorLogo() {
