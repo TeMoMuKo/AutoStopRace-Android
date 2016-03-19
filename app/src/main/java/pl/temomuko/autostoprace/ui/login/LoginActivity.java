@@ -17,10 +17,11 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.ui.login.resetpass.ResetPassActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.util.DialogFactory;
+import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 
 /**
  * Created by Szymon Kozak on 2016-01-22.
@@ -38,6 +39,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @Bind(R.id.btn_login) Button mLoginButton;
     @Bind(R.id.til_email) TextInputLayout mEmailTextInputLayout;
     @Bind(R.id.til_password) TextInputLayout mPasswordTextInputLayout;
+    @Bind(R.id.btn_go_to_reset) Button mGoToResetPassButton;
     private MaterialDialog mProgressDialog;
     private DialogFragment mHelpDialogFragment;
 
@@ -73,6 +75,12 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
             String password = mPasswordEditText.getText().toString();
             mLoginPresenter.signIn(email, password);
         });
+        mGoToResetPassButton.setOnClickListener(v -> startResetPassActivity());
+    }
+
+    private void startResetPassActivity() {
+        Intent intent = new Intent(this, ResetPassActivity.class);
+        startActivity(intent);
     }
 
     private void saveProgressDialogState(Bundle outState) {

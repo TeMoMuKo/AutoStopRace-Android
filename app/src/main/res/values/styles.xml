@@ -27,10 +27,17 @@
 
     <style name="GoToLoginButton" parent="Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/primary</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="LoginButton" parent="Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/primary</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="GoToResetButton" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/accent</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="ListItemTitle">

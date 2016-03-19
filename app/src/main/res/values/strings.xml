@@ -79,4 +79,7 @@
     <string name="action_refresh">Odśwież</string>
     <string name="label_sponsor">Sponsorem edycji 2016 jest m.in.:</string>
     <string name="warning_inadequeate_settings">Błąd, prawdopodobnie włączony tryb samolotowy.</string>
+    <string name="action_reset_pass">Przypomnij mi hasło</string>
+    <string name="forgotten_password">Przypomnij mi hasło</string>
+    <string name="title_activity_reset_pass">Resetowanie hasła</string>
 </resources>
