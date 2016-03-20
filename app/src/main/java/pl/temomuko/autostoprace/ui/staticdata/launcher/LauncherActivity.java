@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.launcher;
+package pl.temomuko.autostoprace.ui.staticdata.launcher;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
-import pl.temomuko.autostoprace.ui.contact.ContactActivity;
+import pl.temomuko.autostoprace.ui.staticdata.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;
 
 /**

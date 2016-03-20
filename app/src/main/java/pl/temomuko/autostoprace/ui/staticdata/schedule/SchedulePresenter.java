@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.teams;
+package pl.temomuko.autostoprace.ui.staticdata.schedule;
 
 import javax.inject.Inject;
 
@@ -9,10 +9,10 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 /**
  * Created by Szymon Kozak on 2016-02-05.
  */
-public class TeamsPresenter extends DrawerBasePresenter<DrawerMvpView> {
+public class SchedulePresenter extends DrawerBasePresenter<DrawerMvpView> {
 
     @Inject
-    public TeamsPresenter(DataManager dataManager) {
+    public SchedulePresenter(DataManager dataManager) {
         super(dataManager);
     }
 }

@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:textAllCaps="false"
-                android:theme="@style/GoToResetButton"
+                android:theme="@style/LoginButton"
                 android:text="@string/forgotten_password"/>
 
         </LinearLayout>

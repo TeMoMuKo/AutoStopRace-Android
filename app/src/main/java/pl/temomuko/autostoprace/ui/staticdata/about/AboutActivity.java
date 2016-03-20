@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.about;
+package pl.temomuko.autostoprace.ui.staticdata.about;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;

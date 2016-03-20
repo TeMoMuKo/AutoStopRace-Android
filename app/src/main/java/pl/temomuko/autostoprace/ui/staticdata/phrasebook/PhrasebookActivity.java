@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.phrasebook;
+package pl.temomuko.autostoprace.ui.staticdata.phrasebook;
 
 import android.os.Bundle;
 

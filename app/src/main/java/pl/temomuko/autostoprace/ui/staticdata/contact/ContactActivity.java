@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.teams;
+package pl.temomuko.autostoprace.ui.staticdata.contact;
 
 import android.os.Bundle;
 
@@ -10,23 +10,23 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 /**
  * Created by Szymon Kozak on 2016-02-05.
  */
-public class TeamsActivity extends DrawerActivity {
+public class ContactActivity extends DrawerActivity {
 
-    @Inject TeamsPresenter mTeamsPresenter;
+    @Inject ContactPresenter mContactPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teams);
+        setContentView(R.layout.activity_contact);
         getActivityComponent().inject(this);
-        mTeamsPresenter.attachView(this);
-        mTeamsPresenter.setupUserInfoInDrawer();
+        mContactPresenter.attachView(this);
+        mContactPresenter.setupUserInfoInDrawer();
         setupToolbarWithToggle();
     }
 
     @Override
     protected void onDestroy() {
-        mTeamsPresenter.detachView();
+        mContactPresenter.detachView();
         super.onDestroy();
     }
 }

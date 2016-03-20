@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.splash;
+package pl.temomuko.autostoprace.ui.staticdata.splash;
 
 import android.content.Intent;
 import android.os.Bundle;

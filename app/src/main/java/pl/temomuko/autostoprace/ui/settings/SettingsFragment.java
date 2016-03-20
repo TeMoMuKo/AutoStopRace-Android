@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
-import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
+import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.util.DialogFactory;
 
 /**

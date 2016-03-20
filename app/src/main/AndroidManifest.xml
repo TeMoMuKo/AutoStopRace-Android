@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".ui.staticdata.splash.SplashActivity"
             android:theme="@style/Theme.Translucent.Status"
             android:label="@string/app_name">
             <intent-filter>
@@ -36,7 +36,7 @@
             android:theme="@style/AppTheme.NormalStatusBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.launcher.LauncherActivity"/>
+                android:value=".ui.staticdata.launcher.LauncherActivity"/>
         </activity>
         <activity
             android:name=".ui.login.resetpass.ResetPassActivity"
@@ -47,7 +47,7 @@
                 android:value=".ui.login.LoginActivity"/>
         </activity>
         <activity
-            android:name=".ui.launcher.LauncherActivity"
+            android:name=".ui.staticdata.launcher.LauncherActivity"
             android:label="@string/app_name">
         </activity>
 
@@ -61,7 +61,7 @@
         </activity>
 
         <activity
-            android:name=".ui.teams.TeamsActivity"
+            android:name=".ui.staticdata.teams.TeamsActivity"
             android:label="@string/title_activity_teams">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -69,7 +69,7 @@
         </activity>
 
         <activity
-            android:name=".ui.schedule.ScheduleActivity"
+            android:name=".ui.staticdata.schedule.ScheduleActivity"
             android:label="@string/title_activity_schedule">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -77,7 +77,7 @@
         </activity>
 
         <activity
-            android:name=".ui.phrasebook.PhrasebookActivity"
+            android:name=".ui.staticdata.phrasebook.PhrasebookActivity"
             android:label="@string/title_activity_phrasebook">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -85,7 +85,7 @@
         </activity>
 
         <activity
-            android:name=".ui.campus.CampusActivity"
+            android:name=".ui.staticdata.campus.CampusActivity"
             android:label="@string/title_activity_campus">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -93,7 +93,7 @@
         </activity>
 
         <activity
-            android:name=".ui.contact.ContactActivity"
+            android:name=".ui.staticdata.contact.ContactActivity"
             android:label="@string/title_activity_contact">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -101,7 +101,7 @@
         </activity>
 
         <activity
-            android:name=".ui.about.AboutActivity"
+            android:name=".ui.staticdata.about.AboutActivity"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NormalStatusBar">
             <meta-data

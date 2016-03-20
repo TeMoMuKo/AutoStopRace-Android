@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.campus;
+package pl.temomuko.autostoprace.ui.staticdata.campus;
 
 import android.os.Bundle;
 

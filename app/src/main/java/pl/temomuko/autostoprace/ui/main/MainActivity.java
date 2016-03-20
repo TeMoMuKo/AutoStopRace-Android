@@ -1,8 +1,6 @@
 package pl.temomuko.autostoprace.ui.main;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -19,7 +17,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationSettingsStates;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,14 +35,13 @@ import pl.temomuko.autostoprace.data.event.PostServiceStateChangeEvent;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.service.PostService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
-import pl.temomuko.autostoprace.ui.launcher.LauncherActivity;
+import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.main.adapter.LocationRecordItem;
 import pl.temomuko.autostoprace.ui.main.adapter.LocationRecordsAdapter;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
-import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;

@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.schedule;
+package pl.temomuko.autostoprace.ui.staticdata.phrasebook;
 
 import javax.inject.Inject;
 
@@ -9,10 +9,10 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 /**
  * Created by Szymon Kozak on 2016-02-05.
  */
-public class SchedulePresenter extends DrawerBasePresenter<DrawerMvpView> {
+public class PhrasebookPresenter extends DrawerBasePresenter<DrawerMvpView> {
 
     @Inject
-    public SchedulePresenter(DataManager dataManager) {
+    public PhrasebookPresenter(DataManager dataManager) {
         super(dataManager);
     }
 }

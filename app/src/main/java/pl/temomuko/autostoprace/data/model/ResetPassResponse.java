@@ -21,4 +21,8 @@ public class ResetPassResponse {
     public List<String> getErrors() {
         return mErrors != null ? mErrors : new ArrayList<>();
     }
+
+    public void setUser(User user) {
+        mUserData = user;
+    }
 }

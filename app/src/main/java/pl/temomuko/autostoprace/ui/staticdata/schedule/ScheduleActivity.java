@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.schedule;
+package pl.temomuko.autostoprace.ui.staticdata.schedule;
 
 import android.os.Bundle;
 
