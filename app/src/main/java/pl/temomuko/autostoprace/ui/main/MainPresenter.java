@@ -23,7 +23,6 @@ import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
-import retrofit2.Response;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -35,7 +34,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     private ErrorHandler mErrorHandler;
     private CompositeSubscription mSubscriptions;
-    private RxCacheHelper<Response<List<LocationRecord>>> mRxDownloadLocationsCacheHelper;
+    private RxCacheHelper<List<LocationRecord>> mRxDownloadLocationsCacheHelper;
     private boolean mIsLocationSettingsStatusForResultCalled = false;
 
     @Inject
@@ -59,7 +58,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         super.detachView();
     }
 
-    public void setupRxCacheHelper(Activity activity, RxCacheHelper<Response<List<LocationRecord>>> helper) {
+    public void setupRxCacheHelper(Activity activity, RxCacheHelper<List<LocationRecord>> helper) {
         mRxDownloadLocationsCacheHelper = helper;
         mRxDownloadLocationsCacheHelper.setup(activity);
     }
@@ -93,8 +92,6 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private void continueCachedDownloadLocationsRequest() {
         getMvpView().setProgress(true);
         mSubscriptions.add(mRxDownloadLocationsCacheHelper.getRestoredCachedObservable()
-                .flatMap(mDataManager::syncWithDatabase)
-                .compose(RxUtil.applyIoSchedulers())
                 .subscribe(locationRecords -> {
                             clearCurrentRequestObservable();
                             updateLocationsView(locationRecords);
@@ -120,7 +117,11 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     private void downloadLocationsFromServer() {
-        mRxDownloadLocationsCacheHelper.cache(mDataManager.getTeamLocationRecordsFromServer());
+        mRxDownloadLocationsCacheHelper.cache(
+                mDataManager.getTeamLocationRecordsFromServer()
+                        .flatMap(mDataManager::syncWithDatabase)
+                        .compose(RxUtil.applyIoSchedulers())
+        );
         continueCachedDownloadLocationsRequest();
     }
 

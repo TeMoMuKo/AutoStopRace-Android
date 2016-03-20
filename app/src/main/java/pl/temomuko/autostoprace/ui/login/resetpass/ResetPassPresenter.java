@@ -66,14 +66,16 @@ public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
     }
 
     private void requestResetPassword(String email) {
-        mRxResetCacheHelper.cache(mDataManager.resetPassword(email));
+        mRxResetCacheHelper.cache(
+                mDataManager.resetPassword(email)
+                        .flatMap(response -> mDataManager.requireHttpStatus(response, HttpStatus.OK))
+                        .compose(RxUtil.applyIoSchedulers())
+        );
         continueCachedRequest();
     }
 
     private void continueCachedRequest() {
         mSubscription = mRxResetCacheHelper.getRestoredCachedObservable()
-                .flatMap(response -> mDataManager.requireHttpStatus(response, HttpStatus.OK))
-                .compose(RxUtil.applyIoSchedulers())
                 .subscribe(response -> {
                     clearCurrentRequestObservable();
                     String email = response.body().getUser().getEmail();

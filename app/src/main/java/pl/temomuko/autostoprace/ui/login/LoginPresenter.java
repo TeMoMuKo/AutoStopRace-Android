@@ -68,14 +68,16 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     }
 
     private void requestSignIn(String email, String password) {
-        mRxLoginCacheHelper.cache(mDataManager.signIn(email, password));
+        mRxLoginCacheHelper.cache(
+                mDataManager.signIn(email, password)
+                        .flatMap(response -> mDataManager.requireHttpStatus(response, HttpStatus.OK))
+                        .compose(RxUtil.applyIoSchedulers())
+        );
         continueCachedRequest();
     }
 
     private void continueCachedRequest() {
         mSubscription = mRxLoginCacheHelper.getRestoredCachedObservable()
-                .flatMap(response -> mDataManager.requireHttpStatus(response, HttpStatus.OK))
-                .compose(RxUtil.applyIoSchedulers())
                 .subscribe(response -> {
                     clearCurrentRequestObservable();
                     mDataManager.saveAuthorizationResponse(response);
