@@ -39,14 +39,6 @@ public class ErrorHandler {
         }
     }
 
-    public int getStatus(Throwable throwable) {
-        if (throwable instanceof StandardResponseException) {
-            return ((StandardResponseException) throwable).getResponse().code();
-        } else {
-            return 0;
-        }
-    }
-
     private String getMessageFromResponse(Response<?> response) {
         ApiError apiError = new ApiError(response);
         switch (apiError.getStatus()) {
@@ -90,6 +82,7 @@ public class ErrorHandler {
         } else if ((throwable instanceof IOException) && !NetworkUtil.isConnected(mContext)) {
             return mContext.getString(R.string.error_no_internet_connection);
         } else {
+            throwable.printStackTrace();
             return mContext.getString(R.string.error_unknown);
         }
     }

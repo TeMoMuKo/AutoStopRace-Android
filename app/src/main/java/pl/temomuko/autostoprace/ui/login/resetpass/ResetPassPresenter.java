@@ -72,7 +72,7 @@ public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
 
     private void continueCachedRequest() {
         mSubscription = mRxResetCacheHelper.getRestoredCachedObservable()
-                .flatMap(response -> mDataManager.requireHttpStatus(response, HttpStatus.CREATED))
+                .flatMap(response -> mDataManager.requireHttpStatus(response, HttpStatus.OK))
                 .compose(RxUtil.applyIoSchedulers())
                 .subscribe(response -> {
                     clearCurrentRequestObservable();

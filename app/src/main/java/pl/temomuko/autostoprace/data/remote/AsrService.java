@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.lang.annotation.Annotation;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -122,6 +123,9 @@ public interface AsrService {
 
         private static OkHttpClient getOkHttpClient() {
             return new OkHttpClient.Builder()
+                    .connectTimeout(Constants.HTTP_CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                    .readTimeout(Constants.HTTP_READ_TIMEOUT, TimeUnit.SECONDS)
+                    .writeTimeout(Constants.HTTP_WRITE_TIMEOUT, TimeUnit.SECONDS)
                     .addInterceptor(getLoggingInterceptor())
                     .addNetworkInterceptor(chain -> {
                         Request request = chain.request().newBuilder()

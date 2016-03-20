@@ -27,6 +27,10 @@ public final class Constants {
     public static final String API_RESET_PASS_REDIRECT_URL = "http://autostoprace.pl";
     public final static String HEADER_VALUE_APPLICATION_JSON = "application/json";
 
+    public static final int HTTP_CONNECT_TIMEOUT = 10;
+    public static final int HTTP_READ_TIMEOUT = 15;
+    public static final int HTTP_WRITE_TIMEOUT = 15;
+
     public static final float MAX_LOCATION_ACCURACY = 150.0f;
     public static final long SPLASH_DURATION = 1800;
 
