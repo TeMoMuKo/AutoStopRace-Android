@@ -124,7 +124,7 @@ public class LoginPresenterTest {
         when(mMockDataManager.requireHttpStatus(response, HttpStatus.OK))
                 .thenReturn(Observable.error(responseException));
         when(mMockErrorHandler.getMessage(responseException)).thenReturn(FAKE_ERROR_MESSAGE);
-        when(mMockRxCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
+        when(mMockRxCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.error(responseException));
 
         //when
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);

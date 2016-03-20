@@ -2,8 +2,6 @@ package pl.temomuko.autostoprace;
 
 import android.content.pm.PackageManager;
 
-import com.google.android.gms.location.LocationRequest;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -50,7 +48,7 @@ public class MainPresenterTest {
     @Mock MainMvpView mMockMainMvpView;
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
-    @Mock RxCacheHelper<Response<List<LocationRecord>>> mMockRxCacheHelper;
+    @Mock RxCacheHelper<List<LocationRecord>> mMockRxCacheHelper;
     @Mock PermissionHelper mMockPermissionHelper;
     private MainPresenter mMainPresenter;
     private static final String FAKE_ERROR_MESSAGE = "fake_error_message";
@@ -83,27 +81,23 @@ public class MainPresenterTest {
         List<LocationRecord> locationsFromApi = new ArrayList<>();
         locationsFromApi.add(new LocationRecord(12.34, 43.21, "Yo", "Somewhere, Poland", "Poland", "PL"));
         locationsFromApi.add(new LocationRecord(45.33, 73.51, "Yo", "Somewhere, Poland", "Poland", "PL"));
-        Response<List<LocationRecord>> response = Response.success(locationsFromApi);
-        when(mMockRxCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
-        when(mMockDataManager.getTeamLocationRecordsFromServer())
-                .thenReturn(Observable.just(response));
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
         locationsFromDatabase.add(new LocationRecord(99.99, 99.99, "Yo", "Somewhere, Poland", "Poland", "PL"));
+        locationsFromApi.addAll(locationsFromDatabase);
+        Response<List<LocationRecord>> response = Response.success(locationsFromApi);
+        when(mMockRxCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(locationsFromApi));
+        when(mMockDataManager.getTeamLocationRecordsFromServer())
+                .thenReturn(Observable.just(response));
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
-        List<LocationRecord> updatedDatabaseLocationRecords = new ArrayList<>(locationsFromDatabase);
-        updatedDatabaseLocationRecords.addAll(locationsFromApi);
-        when(mMockDataManager.syncWithDatabase(response))
-                .thenReturn(Observable.just(updatedDatabaseLocationRecords));
 
         //when
         mMainPresenter.loadLocations();
 
         //then
-        verify(mMockDataManager).syncWithDatabase(response);
         verify(mMockMainMvpView).setProgress(true);
         verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
-        verify(mMockMainMvpView).updateLocationRecordsList(updatedDatabaseLocationRecords);
+        verify(mMockMainMvpView).updateLocationRecordsList(locationsFromApi);
         verify(mMockMainMvpView, never()).showEmptyInfo();
         verify(mMockMainMvpView, never()).showError(any(String.class));
         verify(mMockMainMvpView, times(2)).setProgress(false);
@@ -141,9 +135,7 @@ public class MainPresenterTest {
         List<LocationRecord> locationRecords = new ArrayList<>();
         Response<List<LocationRecord>> response = Response.success(locationRecords);
         when(mMockRxCacheHelper.getRestoredCachedObservable())
-                .thenReturn(Observable.just(response));
-        when(mMockRxCacheHelper.getRestoredCachedObservable())
-                .thenReturn(Observable.just(response));
+                .thenReturn(Observable.just(response.body()));
         when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
@@ -156,7 +148,6 @@ public class MainPresenterTest {
         mMainPresenter.loadLocations();
 
         //then
-        verify(mMockDataManager).syncWithDatabase(response);
         verify(mMockMainMvpView, times(2)).showEmptyInfo();
         verify(mMockMainMvpView, never()).updateLocationRecordsList(locationsFromDatabase);
         verify(mMockMainMvpView, never()).showError(any(String.class));
@@ -171,14 +162,13 @@ public class MainPresenterTest {
                 ));
         when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
+        StandardResponseException responseException = new StandardResponseException(response);
         when(mMockRxCacheHelper.getRestoredCachedObservable())
-                .thenReturn(Observable.just(response));
+                .thenReturn(Observable.error(responseException));
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
         locationsFromDatabase.add(new LocationRecord(99.99, 99.99, "Yo", "Somewhere, Poland", "Poland", "PL"));
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
-
-        StandardResponseException responseException = new StandardResponseException(response);
         when(mMockErrorHandler.getMessage(responseException))
                 .thenReturn(FAKE_ERROR_MESSAGE);
 
@@ -190,7 +180,6 @@ public class MainPresenterTest {
 
         //then
         verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
-        verify(mMockDataManager).syncWithDatabase(response);
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockMainMvpView, never()).showEmptyInfo();
     }
@@ -204,14 +193,14 @@ public class MainPresenterTest {
                 ));
         when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
+
+        StandardResponseException responseException = new StandardResponseException(response);
         when(mMockRxCacheHelper.getRestoredCachedObservable())
-                .thenReturn(Observable.just(response));
+                .thenReturn(Observable.error(responseException));
 
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
-
-        StandardResponseException responseException = new StandardResponseException(response);
         when(mMockErrorHandler.getMessage(responseException))
                 .thenReturn(FAKE_ERROR_MESSAGE);
 
@@ -222,7 +211,6 @@ public class MainPresenterTest {
         mMainPresenter.loadLocations();
 
         //then
-        verify(mMockDataManager).syncWithDatabase(response);
         verify(mMockMainMvpView).showEmptyInfo();
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockMainMvpView, never()).updateLocationRecordsList(locationsFromDatabase);
@@ -298,7 +286,7 @@ public class MainPresenterTest {
     @Test
     public void testGoToPostLocationWithPermission() throws Exception {
         //given
-        when(mMockDataManager.checkLocationSettings(any(LocationRequest.class)))
+        when(mMockDataManager.checkLocationSettings())
                 .thenReturn(Observable.empty());
         when(mMockDataManager.hasFineLocationPermission()).thenReturn(true);
 
@@ -326,7 +314,7 @@ public class MainPresenterTest {
     @Test
     public void testHandlePermissionResultGranted() throws Exception {
         //given
-        when(mMockDataManager.checkLocationSettings(any(LocationRequest.class)))
+        when(mMockDataManager.checkLocationSettings())
                 .thenReturn(Observable.empty());
 
         //when
@@ -334,7 +322,7 @@ public class MainPresenterTest {
                 new int[]{PackageManager.PERMISSION_GRANTED});
 
         //then
-        verify(mMockDataManager).checkLocationSettings(any(LocationRequest.class));
+        verify(mMockDataManager).checkLocationSettings();
         verify(mMockMainMvpView, never()).showNoFineLocationPermissionWarning();
     }
 
