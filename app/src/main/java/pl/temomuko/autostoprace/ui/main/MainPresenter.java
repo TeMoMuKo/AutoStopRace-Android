@@ -119,6 +119,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private void downloadLocationsFromServer() {
         mRxDownloadLocationsCacheHelper.cache(
                 mDataManager.getTeamLocationRecordsFromServer()
+                        .flatMap(HttpStatus::requireOk)
                         .flatMap(mDataManager::syncWithDatabase)
                         .compose(RxUtil.applyIoSchedulers())
         );

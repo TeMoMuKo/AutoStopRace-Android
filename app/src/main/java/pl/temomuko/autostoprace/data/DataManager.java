@@ -25,8 +25,6 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
-import pl.temomuko.autostoprace.data.remote.HttpStatus;
-import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.service.helper.UnsentAndRecordFromResponsePair;
 import retrofit2.Response;
 import rx.Observable;
@@ -57,6 +55,8 @@ public class DataManager {
         mGeocodingHelper = geocodingHelper;
     }
 
+    /* API  */
+
     public Observable<Response<SignInResponse>> signIn(String login, String password) {
         return mAsrService.signIn(login, password);
     }
@@ -66,11 +66,6 @@ public class DataManager {
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
                 mPrefsHelper.getAuthUid());
-    }
-
-    public Observable<Void> clearUserData() {
-        return mDatabaseHelper.clearTables()
-                .doOnSubscribe(mPrefsHelper::clearAuth);
     }
 
     public Observable<Response<SignInResponse>> validateToken() {
@@ -84,26 +79,22 @@ public class DataManager {
         return mAsrService.resetPassword(email, Constants.API_RESET_PASS_REDIRECT_URL);
     }
 
-    public Observable<List<LocationRecord>> getTeamLocationRecordsFromDatabase() {
-        return Observable.zip(
-                mDatabaseHelper.getUnsentLocationRecordList(),
-                mDatabaseHelper.getSentLocationRecordList(),
-                (unsentLocationRecords, sentLocationRecords) -> {
-                    ArrayList<LocationRecord> result = new ArrayList<>(sentLocationRecords);
-                    result.addAll(unsentLocationRecords);
-                    return result;
-                }
-        );
-    }
-
     public Observable<Response<List<LocationRecord>>> getTeamLocationRecordsFromServer() {
         return mAsrService.getLocationRecords(mPrefsHelper.getCurrentUser().getTeamId());
     }
 
+    public Observable<Response<LocationRecord>> postLocationRecordToServer(LocationRecord locationRecord) {
+        return mAsrService.postLocationRecord(
+                mPrefsHelper.getAuthAccessToken(),
+                mPrefsHelper.getAuthClient(),
+                mPrefsHelper.getAuthUid(),
+                new CreateLocationRecordRequest(locationRecord));
+    }
+
+    /* Database + prefs */
+
     public Observable<List<LocationRecord>> syncWithDatabase(Response<List<LocationRecord>> response) {
-        return response.code() == HttpStatus.OK ?
-                saveAndEmitLocationRecordsFromDatabase(response.body()) :
-                Observable.error(new StandardResponseException(response));
+        return saveAndEmitLocationRecordsFromDatabase(response.body());
     }
 
     private Observable<List<LocationRecord>> saveAndEmitLocationRecordsFromDatabase(List<LocationRecord> receivedLocationRecords) {
@@ -118,12 +109,6 @@ public class DataManager {
         );
     }
 
-    public <T> Observable<Response<T>> requireHttpStatus(Response<T> response, int requiredStatus) {
-        return response.code() == requiredStatus ?
-                Observable.just(response) :
-                Observable.error(new StandardResponseException(response));
-    }
-
     public Observable<LocationRecord> saveUnsentLocationRecordToDatabase(LocationRecord locationRecord) {
         return mDatabaseHelper.addUnsentLocationRecord(locationRecord);
     }
@@ -136,12 +121,21 @@ public class DataManager {
         return mDatabaseHelper.moveLocationRecordToSent(locationRecordPair);
     }
 
-    public Observable<Response<LocationRecord>> postLocationRecordToServer(LocationRecord locationRecord) {
-        return mAsrService.postLocationRecord(
-                mPrefsHelper.getAuthAccessToken(),
-                mPrefsHelper.getAuthClient(),
-                mPrefsHelper.getAuthUid(),
-                new CreateLocationRecordRequest(locationRecord));
+    public Observable<List<LocationRecord>> getTeamLocationRecordsFromDatabase() {
+        return Observable.zip(
+                mDatabaseHelper.getUnsentLocationRecordList(),
+                mDatabaseHelper.getSentLocationRecordList(),
+                (unsentLocationRecords, sentLocationRecords) -> {
+                    ArrayList<LocationRecord> result = new ArrayList<>(sentLocationRecords);
+                    result.addAll(unsentLocationRecords);
+                    return result;
+                }
+        );
+    }
+
+    public Observable<Void> clearUserData() {
+        return mDatabaseHelper.clearTables()
+                .doOnSubscribe(mPrefsHelper::clearAuth);
     }
 
     public void saveAuthorizationResponse(Response<SignInResponse> response) {
@@ -157,6 +151,8 @@ public class DataManager {
         return mPrefsHelper.getCurrentUser();
     }
 
+    /* Location */
+
     public Observable<Location> getDeviceLocation() {
         return mGmsLocationHelper.getDeviceLocation();
     }
@@ -165,11 +161,13 @@ public class DataManager {
         return mGmsLocationHelper.checkLocationSettings();
     }
 
-    public boolean hasFineLocationPermission() {
-        return mPermissionHelper.hasFineLocationPermission();
-    }
-
     public Observable<Address> getAddressFromLocation(@NonNull Location location) {
         return mGeocodingHelper.getAddressFromLocation(location);
+    }
+
+    /* Other */
+
+    public boolean hasFineLocationPermission() {
+        return mPermissionHelper.hasFineLocationPermission();
     }
 }

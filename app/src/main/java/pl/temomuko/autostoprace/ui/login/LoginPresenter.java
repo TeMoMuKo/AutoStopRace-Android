@@ -70,7 +70,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
     private void requestSignIn(String email, String password) {
         mRxLoginCacheHelper.cache(
                 mDataManager.signIn(email, password)
-                        .flatMap(response -> mDataManager.requireHttpStatus(response, HttpStatus.OK))
+                        .flatMap(HttpStatus::requireOk)
                         .compose(RxUtil.applyIoSchedulers())
         );
         continueCachedRequest();

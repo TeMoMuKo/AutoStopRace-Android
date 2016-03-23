@@ -77,7 +77,6 @@ public class ResetPassPresenterTest {
         Observable<Response<ResetPassResponse>> resetResponseObservable = Observable.just(response);
         when(mMockDataManager.resetPassword(FAKE_EMAIL)).thenReturn(resetResponseObservable);
         when(mMockRxResetHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
-        when(mMockDataManager.requireHttpStatus(response, HttpStatus.OK)).thenReturn(Observable.just(response));
 
         //when
         mResetPassPresenter.resetPassword(FAKE_EMAIL);
@@ -100,8 +99,6 @@ public class ResetPassPresenterTest {
         when(mMockErrorHandler.isEmailValid(FAKE_EMAIL)).thenReturn(true);
         when(mMockDataManager.resetPassword(FAKE_EMAIL)).thenReturn(Observable.just(response));
         StandardResponseException responseException = new StandardResponseException(response);
-        when(mMockDataManager.requireHttpStatus(response, HttpStatus.OK))
-                .thenReturn(Observable.error(responseException));
         when(mMockErrorHandler.getMessage(responseException)).thenReturn(FAKE_ERROR_MESSAGE);
         when(mMockRxResetHelper.getRestoredCachedObservable()).thenReturn(Observable.error(responseException));
 

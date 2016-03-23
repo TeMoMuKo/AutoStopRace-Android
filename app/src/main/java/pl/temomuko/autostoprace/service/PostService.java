@@ -97,15 +97,15 @@ public class PostService extends Service {
             (UnsentAndServerResponsePair unsentAndResponse) {
         return Observable.just(unsentAndResponse)
                 .flatMap(unsentAndServerResponsePair ->
-                                mDataManager.requireHttpStatus(
-                                        unsentAndServerResponsePair.getLocationRecordResponse(),
-                                        HttpStatus.CREATED
+                                HttpStatus.requireCreated(
+                                        unsentAndServerResponsePair.getLocationRecordResponse()
                                 ),
                         (unsentAndServerResponsePair, receivedResponse) ->
                                 UnsentAndRecordFromResponsePair.create(
                                         unsentAndServerResponsePair.getUnsentLocationRecord(),
                                         (LocationRecord) receivedResponse.body()
-                                ));
+                                )
+                );
     }
 
     private void handleUnsentAndRecordFromResponse(UnsentAndRecordFromResponsePair unsentAndRecordFromResponse) {

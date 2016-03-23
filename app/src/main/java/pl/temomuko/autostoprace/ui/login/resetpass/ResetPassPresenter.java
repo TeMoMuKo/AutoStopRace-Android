@@ -68,7 +68,7 @@ public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
     private void requestResetPassword(String email) {
         mRxResetCacheHelper.cache(
                 mDataManager.resetPassword(email)
-                        .flatMap(response -> mDataManager.requireHttpStatus(response, HttpStatus.OK))
+                        .flatMap(HttpStatus::requireOk)
                         .compose(RxUtil.applyIoSchedulers())
         );
         continueCachedRequest();
