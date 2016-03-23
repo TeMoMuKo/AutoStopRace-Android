@@ -104,8 +104,10 @@ public class LoginPresenterTest {
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
 
         //then
+        verify(mMockLoginMvpView).setProgress(true);
         verify(mMockDataManager).saveAuthorizationResponse(response);
         verify(mMockLoginMvpView).startMainActivity();
+        verify(mMockLoginMvpView).setProgress(false);
         verify(mMockLoginMvpView, never()).showError(any(String.class));
     }
 
@@ -128,7 +130,9 @@ public class LoginPresenterTest {
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
 
         //then
+        verify(mMockLoginMvpView).setProgress(true);
         verify(mMockLoginMvpView).showError(FAKE_ERROR_MESSAGE);
+        verify(mMockLoginMvpView).setProgress(false);
         verify(mMockDataManager, never()).saveAuthorizationResponse(response);
         verify(mMockLoginMvpView, never()).startMainActivity();
     }
@@ -149,7 +153,9 @@ public class LoginPresenterTest {
         mLoginPresenter.signIn(FAKE_EMAIL, FAKE_PASS);
 
         //then
+        verify(mMockLoginMvpView).setProgress(true);
         verify(mMockLoginMvpView).showError(FAKE_ERROR_MESSAGE);
+        verify(mMockLoginMvpView).setProgress(false);
         verify(mMockDataManager, never()).saveAuthorizationResponse(Matchers.<Response<SignInResponse>>any());
         verify(mMockLoginMvpView, never()).startMainActivity();
     }
