@@ -26,7 +26,6 @@ import retrofit2.Response;
 import rx.Observable;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -58,7 +57,6 @@ public class LoginPresenterTest {
         mLoginPresenter = new LoginPresenter(mMockDataManager, mMockErrorHandler);
         mLoginPresenter.setupRxCacheHelper(null, mMockRxCacheHelper);
         when(mMockRxCacheHelper.isCached()).thenReturn(false);
-        doNothing().when(mMockRxCacheHelper).setup(null);
         mLoginPresenter.attachView(mMockLoginMvpView);
     }
 
@@ -165,7 +163,6 @@ public class LoginPresenterTest {
         mLoginPresenter.signIn(INVALID_FAKE_EMAIL, INVALID_FAKE_PASS);
 
         //then
-        verify(mMockLoginMvpView).setInvalidEmailValidationError(true);
         verify(mMockLoginMvpView).setInvalidEmailValidationError(true);
         verify(mMockDataManager, never()).saveAuthorizationResponse(Matchers.<Response<SignInResponse>>any());
         verify(mMockLoginMvpView, never()).startMainActivity();

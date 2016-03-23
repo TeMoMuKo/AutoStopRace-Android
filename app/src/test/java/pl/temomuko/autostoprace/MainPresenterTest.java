@@ -66,7 +66,6 @@ public class MainPresenterTest {
         mMainPresenter = new MainPresenter(mMockDataManager, mMockErrorHandler);
         mMainPresenter.setupRxCacheHelper(null, mMockRxCacheHelper);
         when(mMockRxCacheHelper.isCached()).thenReturn(false);
-        //    doNothing().when(mMockRxCacheHelper).setup(null);
         mMainPresenter.attachView(mMockMainMvpView);
     }
 
