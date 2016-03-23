@@ -124,12 +124,6 @@ public class DataManager {
                 Observable.error(new StandardResponseException(response));
     }
 
-    public Observable<LocationRecord> handlePostLocationRecordResponse(Response<LocationRecord> response) {
-        return response.code() == HttpStatus.CREATED ?
-                Observable.just(response.body()) :
-                Observable.error(new StandardResponseException(response));
-    }
-
     public Observable<LocationRecord> saveUnsentLocationRecordToDatabase(LocationRecord locationRecord) {
         return mDatabaseHelper.addUnsentLocationRecord(locationRecord);
     }

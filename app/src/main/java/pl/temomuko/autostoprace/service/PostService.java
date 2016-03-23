@@ -14,6 +14,7 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.event.PostServiceStateChangeEvent;
 import pl.temomuko.autostoprace.data.event.SuccessfullySentLocationToServerEvent;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.service.helper.UnsentAndRecordFromResponsePair;
 import pl.temomuko.autostoprace.service.helper.UnsentAndServerResponsePair;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
@@ -96,12 +97,14 @@ public class PostService extends Service {
             (UnsentAndServerResponsePair unsentAndResponse) {
         return Observable.just(unsentAndResponse)
                 .flatMap(unsentAndServerResponsePair ->
-                                mDataManager.handlePostLocationRecordResponse(
-                                        unsentAndServerResponsePair.getLocationRecordResponse()
+                                mDataManager.requireHttpStatus(
+                                        unsentAndServerResponsePair.getLocationRecordResponse(),
+                                        HttpStatus.CREATED
                                 ),
-                        (unsentAndServerResponsePair, receivedLocationRecord) ->
+                        (unsentAndServerResponsePair, receivedResponse) ->
                                 UnsentAndRecordFromResponsePair.create(
-                                        unsentAndServerResponsePair.getUnsentLocationRecord(), receivedLocationRecord
+                                        unsentAndServerResponsePair.getUnsentLocationRecord(),
+                                        (LocationRecord) receivedResponse.body()
                                 ));
     }
 
