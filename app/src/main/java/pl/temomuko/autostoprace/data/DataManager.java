@@ -97,7 +97,8 @@ public class DataManager {
         return saveAndEmitLocationRecordsFromDatabase(response.body());
     }
 
-    private Observable<List<LocationRecord>> saveAndEmitLocationRecordsFromDatabase(List<LocationRecord> receivedLocationRecords) {
+    private Observable<List<LocationRecord>> saveAndEmitLocationRecordsFromDatabase
+            (List<LocationRecord> receivedLocationRecords) {
         return Observable.zip(
                 mDatabaseHelper.getUnsentLocationRecordList(),
                 mDatabaseHelper.setAndEmitReceivedLocationRecordList(receivedLocationRecords),
@@ -117,7 +118,8 @@ public class DataManager {
         return mDatabaseHelper.getUnsentLocationRecords();
     }
 
-    public Observable<UnsentAndRecordFromResponsePair> moveLocationRecordToSent(UnsentAndRecordFromResponsePair locationRecordPair) {
+    public Observable<UnsentAndRecordFromResponsePair> moveLocationRecordToSent
+            (UnsentAndRecordFromResponsePair locationRecordPair) {
         return mDatabaseHelper.moveLocationRecordToSent(locationRecordPair);
     }
 
