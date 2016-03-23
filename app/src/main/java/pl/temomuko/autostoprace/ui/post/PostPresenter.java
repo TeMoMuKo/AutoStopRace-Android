@@ -15,6 +15,7 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
+import pl.temomuko.autostoprace.util.AddressUtil;
 import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
@@ -69,7 +70,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
             LocationRecord locationRecordToSend = new LocationRecord(mLatestAddress.getLatitude(),
                     mLatestAddress.getLongitude(),
                     message,
-                    getAddressStringFromAddress(mLatestAddress),
+                    AddressUtil.getAddressString(mLatestAddress),
                     mLatestAddress.getCountryName(),
                     mLatestAddress.getCountryCode());
             mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
@@ -163,28 +164,14 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     }
 
     private void handleAddress(Address address) {
-        LogUtil.i("Address update :", address.toString());
+        LogUtil.i("Address update: ", address.toString());
         mLatestAddress = address;
-        String addressString = getAddressStringFromAddress(address);
+        String addressString = AddressUtil.getAddressString(address);
         if (addressString != null) {
             getMvpView().updateCurrentLocation(address.getLatitude(), address.getLongitude(), addressString);
         } else {
             getMvpView().updateCurrentLocation(address.getLatitude(), address.getLongitude());
         }
-    }
-
-    private String getAddressStringFromAddress(Address address) {
-        if (address.getMaxAddressLineIndex() == -1) {
-            return null;
-        }
-        StringBuilder addressStringBuilder = new StringBuilder();
-        for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-            addressStringBuilder.append(address.getAddressLine(i));
-            if (i != address.getMaxAddressLineIndex()) {
-                addressStringBuilder.append(", ");
-            }
-        }
-        return addressStringBuilder.toString();
     }
 
     public void stopLocationService() {
