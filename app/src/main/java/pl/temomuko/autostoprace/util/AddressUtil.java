@@ -5,7 +5,11 @@ import android.location.Address;
 /**
  * Created by Szymon Kozak on 2016-03-23.
  */
-public class AddressUtil {
+public final class AddressUtil {
+
+    private AddressUtil() {
+        throw new AssertionError();
+    }
 
     public static String getAddressString(Address address) {
         if (address.getMaxAddressLineIndex() == -1) {

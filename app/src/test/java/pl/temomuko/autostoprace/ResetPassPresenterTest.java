@@ -53,6 +53,7 @@ public class ResetPassPresenterTest {
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();
+    private String mEmail;
 
     @Before
     public void setUp() throws Exception {

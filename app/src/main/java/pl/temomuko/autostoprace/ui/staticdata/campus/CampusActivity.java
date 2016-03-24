@@ -7,27 +7,28 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
+import pl.temomuko.autostoprace.ui.staticdata.StaticDrawerPresenter;
 
 /**
  * Created by Szymon Kozak on 2016-02-05.
  */
 public class CampusActivity extends DrawerActivity implements DrawerMvpView {
 
-    @Inject CampusPresenter mCampusPresenter;
+    @Inject StaticDrawerPresenter mPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campus);
         getActivityComponent().inject(this);
-        mCampusPresenter.attachView(this);
-        mCampusPresenter.setupUserInfoInDrawer();
+        mPresenter.attachView(this);
+        mPresenter.setupUserInfoInDrawer();
         setupToolbarWithToggle();
     }
 
     @Override
     protected void onDestroy() {
-        mCampusPresenter.detachView();
+        mPresenter.detachView();
         super.onDestroy();
     }
 }

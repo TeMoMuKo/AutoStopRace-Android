@@ -65,14 +65,16 @@ public class DataManager {
         return mAsrService.signOut(
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
-                mPrefsHelper.getAuthUid());
+                mPrefsHelper.getAuthUid()
+        );
     }
 
     public Observable<Response<SignInResponse>> validateToken() {
         return mAsrService.validateToken(
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
-                mPrefsHelper.getAuthUid());
+                mPrefsHelper.getAuthUid()
+        );
     }
 
     public Observable<Response<ResetPassResponse>> resetPassword(String email) {
@@ -88,7 +90,8 @@ public class DataManager {
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
                 mPrefsHelper.getAuthUid(),
-                new CreateLocationRecordRequest(locationRecord));
+                new CreateLocationRecordRequest(locationRecord)
+        );
     }
 
     /* Database + prefs */

@@ -6,27 +6,28 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
+import pl.temomuko.autostoprace.ui.staticdata.StaticDrawerPresenter;
 
 /**
  * Created by Szymon Kozak on 2016-02-05.
  */
 public class ContactActivity extends DrawerActivity {
 
-    @Inject ContactPresenter mContactPresenter;
+    @Inject StaticDrawerPresenter mPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
         getActivityComponent().inject(this);
-        mContactPresenter.attachView(this);
-        mContactPresenter.setupUserInfoInDrawer();
+        mPresenter.attachView(this);
+        mPresenter.setupUserInfoInDrawer();
         setupToolbarWithToggle();
     }
 
     @Override
     protected void onDestroy() {
-        mContactPresenter.detachView();
+        mPresenter.detachView();
         super.onDestroy();
     }
 }
