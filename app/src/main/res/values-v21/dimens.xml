@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="drawer_header_height">100dp</dimen>
+    <dimen name="full_screen_card_margin">0dp</dimen>
 </resources>
