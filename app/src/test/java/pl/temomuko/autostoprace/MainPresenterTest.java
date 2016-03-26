@@ -27,8 +27,8 @@ import pl.temomuko.autostoprace.ui.main.MainMvpView;
 import pl.temomuko.autostoprace.ui.main.MainPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
-import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import retrofit2.Response;
+import rx.Completable;
 import rx.Observable;
 
 import static org.junit.Assert.assertFalse;
@@ -48,7 +48,6 @@ public class MainPresenterTest {
     @Mock MainMvpView mMockMainMvpView;
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
-    @Mock RxCacheHelper<List<LocationRecord>> mMockRxCacheHelper;
     @Mock PermissionHelper mMockPermissionHelper;
     private MainPresenter mMainPresenter;
     private static final String FAKE_ERROR_MESSAGE = "fake_error_message";
@@ -64,8 +63,6 @@ public class MainPresenterTest {
     @Before
     public void setUp() throws Exception {
         mMainPresenter = new MainPresenter(mMockDataManager, mMockErrorHandler);
-        mMainPresenter.setupRxCacheHelper(null, mMockRxCacheHelper);
-        when(mMockRxCacheHelper.isCached()).thenReturn(false);
         mMainPresenter.attachView(mMockMainMvpView);
     }
 
@@ -84,18 +81,18 @@ public class MainPresenterTest {
         locationsFromDatabase.add(new LocationRecord(99.99, 99.99, "Yo", "Somewhere, Poland", "Poland", "PL"));
         locationsFromApi.addAll(locationsFromDatabase);
         Response<List<LocationRecord>> response = Response.success(locationsFromApi);
-        when(mMockRxCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(locationsFromApi));
         when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
-
+        when(mMockDataManager.syncWithDatabase(response))
+                .thenReturn(Observable.just(locationsFromApi));
         //when
         mMainPresenter.loadLocations();
 
         //then
-        verify(mMockMainMvpView).setProgress(true);
-        verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
+        verify(mMockMainMvpView, times(2)).setProgress(true);
+        verify(mMockMainMvpView).setLocationRecordsList(locationsFromDatabase);
         verify(mMockMainMvpView).updateLocationRecordsList(locationsFromApi);
         verify(mMockMainMvpView, never()).showEmptyInfo();
         verify(mMockMainMvpView, never()).showError(any(String.class));
@@ -107,8 +104,6 @@ public class MainPresenterTest {
         //given
         Throwable fakeSocketTimeoutException = new SocketTimeoutException();
         when(mMockDataManager.getTeamLocationRecordsFromServer())
-                .thenReturn(Observable.error(fakeSocketTimeoutException));
-        when(mMockRxCacheHelper.getRestoredCachedObservable())
                 .thenReturn(Observable.error(fakeSocketTimeoutException));
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
         locationsFromDatabase.add(new LocationRecord(99.99, 99.99, "Yo", "Somewhere, Poland", "Poland", "PL"));
@@ -123,7 +118,7 @@ public class MainPresenterTest {
         //then
         verify(mMockMainMvpView).showError(mMockErrorHandler
                 .getMessage(fakeSocketTimeoutException));
-        verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
+        verify(mMockMainMvpView).setLocationRecordsList(locationsFromDatabase);
         verify(mMockDataManager, never()).syncWithDatabase(Matchers.<Response<List<LocationRecord>>>any());
         verify(mMockMainMvpView, never()).showEmptyInfo();
     }
@@ -133,8 +128,7 @@ public class MainPresenterTest {
         //given
         List<LocationRecord> locationRecords = new ArrayList<>();
         Response<List<LocationRecord>> response = Response.success(locationRecords);
-        when(mMockRxCacheHelper.getRestoredCachedObservable())
-                .thenReturn(Observable.just(response.body()));
+
         when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.just(response));
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
@@ -147,7 +141,8 @@ public class MainPresenterTest {
         mMainPresenter.loadLocations();
 
         //then
-        verify(mMockMainMvpView, times(2)).showEmptyInfo();
+        verify(mMockMainMvpView).showEmptyInfo();
+        verify(mMockMainMvpView, never()).setLocationRecordsList(locationsFromDatabase);
         verify(mMockMainMvpView, never()).updateLocationRecordsList(locationsFromDatabase);
         verify(mMockMainMvpView, never()).showError(any(String.class));
     }
@@ -155,16 +150,21 @@ public class MainPresenterTest {
     @Test
     public void testLoadLocationsApiFailsWithFilledDatabase() throws Exception {
         //given
+        //// TODO: 26.03.2016
         Response<List<LocationRecord>> response = Response.error(HttpStatus.NOT_FOUND,
                 ResponseBody.create(
                         MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), NOT_FOUND_RESPONSE
                 ));
-        when(mMockDataManager.getTeamLocationRecordsFromServer())
-                .thenReturn(Observable.just(response));
+
+        /*when(mMockDataManager.getTeamLocationRecordsFromServer())
+                .thenReturn(Observable.just(response));*/
+
         StandardResponseException responseException = new StandardResponseException(response);
-        when(mMockRxCacheHelper.getRestoredCachedObservable())
+        when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.error(responseException));
+
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
+
         locationsFromDatabase.add(new LocationRecord(99.99, 99.99, "Yo", "Somewhere, Poland", "Poland", "PL"));
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Observable.just(locationsFromDatabase));
@@ -178,7 +178,8 @@ public class MainPresenterTest {
         mMainPresenter.loadLocations();
 
         //then
-        verify(mMockMainMvpView).updateLocationRecordsList(locationsFromDatabase);
+        verify(mMockMainMvpView).setLocationRecordsList(locationsFromDatabase);
+        verify(mMockMainMvpView, never()).updateLocationRecordsList(locationsFromDatabase);
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockMainMvpView, never()).showEmptyInfo();
     }
@@ -186,15 +187,17 @@ public class MainPresenterTest {
     @Test
     public void testLoadLocationsFromApiFailsWithEmptyDatabase() throws Exception {
         //given
+        //// TODO: 26.03.2016
         Response<List<LocationRecord>> response = Response.error(HttpStatus.NOT_FOUND,
                 ResponseBody.create(
                         MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), NOT_FOUND_RESPONSE
                 ));
-        when(mMockDataManager.getTeamLocationRecordsFromServer())
-                .thenReturn(Observable.just(response));
+
+        /*when(mMockDataManager.getTeamLocationRecordsFromServer())
+                .thenReturn(Observable.just(response));*/
 
         StandardResponseException responseException = new StandardResponseException(response);
-        when(mMockRxCacheHelper.getRestoredCachedObservable())
+        when(mMockDataManager.getTeamLocationRecordsFromServer())
                 .thenReturn(Observable.error(responseException));
 
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
@@ -213,6 +216,7 @@ public class MainPresenterTest {
         verify(mMockMainMvpView).showEmptyInfo();
         verify(mMockMainMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockMainMvpView, never()).updateLocationRecordsList(locationsFromDatabase);
+        verify(mMockMainMvpView, never()).setLocationRecordsList(locationsFromDatabase);
     }
 
     @Test
@@ -236,7 +240,7 @@ public class MainPresenterTest {
                         MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), UNAUTHORIZED_RESPONSE
                 ));
         when(mMockDataManager.validateToken()).thenReturn(Observable.just(response));
-        when(mMockDataManager.clearUserData()).thenReturn(Observable.empty());
+        when(mMockDataManager.clearUserData()).thenReturn(Completable.complete());
 
         //when
         mMainPresenter.checkAuth();

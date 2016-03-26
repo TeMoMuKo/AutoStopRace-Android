@@ -111,7 +111,7 @@ public class PostService extends Service {
     private void handleUnsentAndRecordFromResponse(UnsentAndRecordFromResponsePair unsentAndRecordFromResponse) {
         LocationRecord unsentLocationRecord = unsentAndRecordFromResponse.getUnsentLocationRecord();
         LocationRecord locationRecordFromResponse = unsentAndRecordFromResponse.getLocationRecordFromResponse();
-        EventUtil.post(new SuccessfullySentLocationToServerEvent(unsentLocationRecord, locationRecordFromResponse));
+        EventUtil.postSticky(new SuccessfullySentLocationToServerEvent(unsentLocationRecord, locationRecordFromResponse));
         LogUtil.i(TAG, "Removed local location record: " + unsentLocationRecord.toString());
         LogUtil.i(TAG, "Received location record: " + locationRecordFromResponse.toString());
     }

@@ -20,7 +20,7 @@ public final class EventUtil {
         EventBus.getDefault().postSticky(event);
     }
 
-    public static <T> T getSticky(Class<T> eventType) {
-        return EventBus.getDefault().getStickyEvent(eventType);
+    public static void removeStickyEvent(Object event) {
+        EventBus.getDefault().removeStickyEvent(event);
     }
 }

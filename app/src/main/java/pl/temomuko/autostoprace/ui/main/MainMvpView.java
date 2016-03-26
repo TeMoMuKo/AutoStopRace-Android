@@ -13,6 +13,8 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
  */
 public interface MainMvpView extends DrawerMvpView {
 
+    void setLocationRecordsList(List<LocationRecord> locationRecords);
+
     void updateLocationRecordsList(List<LocationRecord> locationRecords);
 
     void startPostService();
@@ -46,6 +48,4 @@ public interface MainMvpView extends DrawerMvpView {
     void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult);
 
     void onGmsConnectionResultNoResolution(int errorCode);
-
-    void setItemsExpandingEnabled(boolean state);
 }
