@@ -9,7 +9,7 @@ import android.widget.TextView;
 /**
  * Created by Rafał Naniewicz on 11.03.2016.
  */
-public class AnimationUtil {
+public final class AnimationUtil {
 
     private static final String MAX_HEIGHT_ATTR = "maxHeight";
 

@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.staticdata.contact;
+package pl.temomuko.autostoprace.ui.staticdata;
 
 import javax.inject.Inject;
 
@@ -7,12 +7,12 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 
 /**
- * Created by Szymon Kozak on 2016-02-05.
+ * Created by Szymon Kozak on 2016-03-24.
  */
-public class ContactPresenter extends DrawerBasePresenter<DrawerMvpView> {
+public class StaticDrawerPresenter extends DrawerBasePresenter<DrawerMvpView> {
 
     @Inject
-    public ContactPresenter(DataManager dataManager) {
+    public StaticDrawerPresenter(DataManager dataManager) {
         super(dataManager);
     }
 }

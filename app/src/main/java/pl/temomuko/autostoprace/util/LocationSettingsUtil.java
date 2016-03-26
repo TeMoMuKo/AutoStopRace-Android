@@ -11,7 +11,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 /**
  * Created by Rafał on 17.03.2016.
  */
-public class LocationSettingsUtil {
+public final class LocationSettingsUtil {
 
     private LocationSettingsUtil() {
         throw new AssertionError();

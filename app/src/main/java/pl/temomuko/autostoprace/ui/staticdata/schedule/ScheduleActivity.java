@@ -6,27 +6,28 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
+import pl.temomuko.autostoprace.ui.staticdata.StaticDrawerPresenter;
 
 /**
  * Created by Szymon Kozak on 2016-02-04.
  */
 public class ScheduleActivity extends DrawerActivity {
 
-    @Inject SchedulePresenter mSchedulePresenter;
+    @Inject StaticDrawerPresenter mPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         getActivityComponent().inject(this);
-        mSchedulePresenter.attachView(this);
-        mSchedulePresenter.setupUserInfoInDrawer();
+        mPresenter.attachView(this);
+        mPresenter.setupUserInfoInDrawer();
         setupToolbarWithToggle();
     }
 
     @Override
     protected void onDestroy() {
-        mSchedulePresenter.detachView();
+        mPresenter.detachView();
         super.onDestroy();
     }
 }
