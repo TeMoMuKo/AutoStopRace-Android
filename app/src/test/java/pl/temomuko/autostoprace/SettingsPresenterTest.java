@@ -16,6 +16,7 @@ import pl.temomuko.autostoprace.ui.settings.SettingsPresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import retrofit2.Response;
+import rx.Completable;
 import rx.Observable;
 
 import static org.mockito.Mockito.verify;
@@ -84,7 +85,7 @@ public class SettingsPresenterTest {
         //given
         when(mMockDataManager.signOut())
                 .thenReturn(Observable.<Response<SignOutResponse>>empty());
-        when(mMockDataManager.clearUserData()).thenReturn(Observable.empty());
+        when(mMockDataManager.clearUserData()).thenReturn(Completable.complete());
 
         //when
         mSettingsPresenter.logout();

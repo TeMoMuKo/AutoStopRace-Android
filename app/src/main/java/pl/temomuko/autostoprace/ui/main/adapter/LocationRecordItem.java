@@ -4,8 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import java.util.Comparator;
-
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 
 /**
@@ -64,5 +62,9 @@ public class LocationRecordItem implements Parcelable, Comparable<LocationRecord
     @Override
     public int compareTo(@NonNull LocationRecordItem anotherLocationRecordItem) {
         return this.getLocationRecord().compareTo(anotherLocationRecordItem.getLocationRecord());
+    }
+
+    public void setLocationRecord(LocationRecord locationRecord) {
+        mLocationRecord = locationRecord;
     }
 }

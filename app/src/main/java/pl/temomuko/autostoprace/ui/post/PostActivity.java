@@ -27,6 +27,7 @@ import pl.temomuko.autostoprace.data.event.AirplaneModeStatusChangeEvent;
 import pl.temomuko.autostoprace.data.event.GpsStatusChangeEvent;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.util.IntentUtil;
+import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 
 /**
@@ -71,7 +72,8 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
             mPostPresenter.setIsLocationSettingsStatusForResultCalled(false);
-            mPostPresenter.handleLocationSettingsDialogResult(resultCode, data);
+            resultCode = LocationSettingsUtil.getApiDependentResultCode(resultCode, data);
+            mPostPresenter.handleLocationSettingsDialogResult(resultCode);
         }
     }
 

@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.service.helper.UnsentAndRecordFromResponsePair;
+import rx.Completable;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -29,8 +30,8 @@ public class DatabaseHelper {
         mBriteDatabase = SqlBrite.create().wrapDatabaseHelper(databaseOpenHelper, Schedulers.io());
     }
 
-    public Observable<Void> clearTables() {
-        return Observable.create(subscribe -> {
+    public Completable clearTables() {
+        return Completable.create(subscribe -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 Cursor cursor = mBriteDatabase.query("SELECT name FROM sqlite_master WHERE type='table'");
@@ -101,9 +102,14 @@ public class DatabaseHelper {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
-                mBriteDatabase.insert(LocalUnsentLocationRecordTable.NAME,
+                long row = mBriteDatabase.insert(LocalUnsentLocationRecordTable.NAME,
                         LocalUnsentLocationRecordTable.toContentValues(locationRecord));
-                subscriber.onNext(locationRecord);
+                Cursor cursor = mBriteDatabase.query(
+                        "SELECT * FROM " + LocalUnsentLocationRecordTable.NAME + " WHERE ROWID=" + row
+                );
+                if (cursor.moveToNext()) {
+                    subscriber.onNext(LocalUnsentLocationRecordTable.parseCursor(cursor));
+                }
                 transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {

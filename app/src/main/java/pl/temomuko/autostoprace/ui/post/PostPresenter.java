@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.ui.post;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.location.Address;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -12,10 +11,12 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.event.SuccessfullyAddedToUnsentTableEvent;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.AddressUtil;
+import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
@@ -75,7 +76,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
                     mLatestAddress.getCountryCode());
             mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
                     .compose(RxUtil.applyIoSchedulers())
-                    .subscribe();
+                    .subscribe(insertedLocationRecord ->
+                            EventUtil.postSticky(new SuccessfullyAddedToUnsentTableEvent(insertedLocationRecord)));
             setLocationSaved();
             getMvpView().showSuccessInfo();
             getMvpView().closeActivity();
@@ -120,8 +122,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         }
     }
 
-    public void handleLocationSettingsDialogResult(int resultCode, Intent data) {
-        resultCode = LocationSettingsUtil.getApiDependentResultCode(resultCode, data);
+    public void handleLocationSettingsDialogResult(int resultCode) {
         if (resultCode == Activity.RESULT_OK) {
             startLocationUpdates();
         } else if (resultCode == Activity.RESULT_CANCELED) {

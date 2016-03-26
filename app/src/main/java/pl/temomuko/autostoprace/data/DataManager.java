@@ -27,6 +27,7 @@ import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.service.helper.UnsentAndRecordFromResponsePair;
 import retrofit2.Response;
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -135,9 +136,9 @@ public class DataManager {
         );
     }
 
-    public Observable<Void> clearUserData() {
+    public Completable clearUserData() {
         return mDatabaseHelper.clearTables()
-                .doOnSubscribe(mPrefsHelper::clearAuth);
+                .doOnComplete(mPrefsHelper::clearAuth);
     }
 
     public void saveAuthorizationResponse(Response<SignInResponse> response) {

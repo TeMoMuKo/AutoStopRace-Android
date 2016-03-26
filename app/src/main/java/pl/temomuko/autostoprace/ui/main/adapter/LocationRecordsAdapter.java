@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import pl.temomuko.autostoprace.ui.widget.TextCircleView;
 import pl.temomuko.autostoprace.util.AnimationUtil;
 import pl.temomuko.autostoprace.util.ColorGenerator;
 import pl.temomuko.autostoprace.util.DateUtil;
+import pl.temomuko.autostoprace.util.LogUtil;
 
 /**
  * Created by Rafał Naniewicz on 05.03.2016.
@@ -34,11 +36,10 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     private static final int COLLAPSED_ITEM_MESSAGE_MAX_LINES = 2;
     private static final int EXPANDED_ITEM_MESSAGE_MAX_LINES = Integer.MAX_VALUE;
     private static final int RESIZING_ANIMATION_DURATION = 250;
+    private static final String TAG = LocationRecordsAdapter.class.getSimpleName();
 
     private List<LocationRecordItem> mSortedLocationRecordItems;
     private Context mAppContext;
-
-    private boolean mIsExpandingEnabled = false;
 
     @Inject
     public LocationRecordsAdapter(@AppContext Context context) {
@@ -51,8 +52,36 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         notifyDataSetChanged();
     }
 
-    public void setEnabledExpanding(boolean state) {
-        mIsExpandingEnabled = state;
+    public void updateLocationRecordItem(LocationRecordItem updatedLocationRecordItem) {
+        int index = Collections.binarySearch(mSortedLocationRecordItems, updatedLocationRecordItem);
+        if (index >= 0) {
+            if (!mSortedLocationRecordItems.get(index).getLocationRecord().equals(
+                    updatedLocationRecordItem.getLocationRecord())) {
+                changeLocationRecordItemData(index, updatedLocationRecordItem.getLocationRecord());
+            }
+        } else {
+            int insertionIndex = -index - 1;
+            insertLocationRecordItem(insertionIndex, updatedLocationRecordItem);
+        }
+    }
+
+    public void replaceLocationRecord(LocationRecord oldLocationRecord, LocationRecord newLocationRecord) {
+        int index = Collections.binarySearch(mSortedLocationRecordItems, new LocationRecordItem(oldLocationRecord));
+        if (index >= 0) {
+            changeLocationRecordItemData(index, newLocationRecord);
+        } else {
+            LogUtil.wtf(TAG, "Location item couldn't be replaced, no such item found.");
+        }
+    }
+
+    private void changeLocationRecordItemData(int locationRecordItemIndex, LocationRecord newLocationRecord) {
+        mSortedLocationRecordItems.get(locationRecordItemIndex).setLocationRecord(newLocationRecord);
+        notifyItemChanged(locationRecordItemIndex);
+    }
+
+    private void insertLocationRecordItem(int insertionIndex, LocationRecordItem locationRecordItem) {
+        mSortedLocationRecordItems.add(insertionIndex, locationRecordItem);
+        notifyItemInserted(insertionIndex);
     }
 
     @Override
@@ -72,9 +101,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         setupReceiptDate(holder, locationRecord);
         holder.mTvLocationRecordMessage.setText(locationRecord.getMessage());
         setupMessage(holder, item);
-        holder.itemView.setOnClickListener(view -> {
-            if (mIsExpandingEnabled) switchMessageState(holder, item);
-        });
+        holder.itemView.setOnClickListener(view -> switchMessageState(holder, item));
     }
 
     private void setupMessage(ViewHolder holder, LocationRecordItem item) {
