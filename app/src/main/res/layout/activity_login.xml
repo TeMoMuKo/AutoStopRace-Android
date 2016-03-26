@@ -79,18 +79,18 @@
                         android:textColor="@android:color/white"
                         android:theme="@style/LoginButton"/>
 
+                    <Button
+                        android:id="@+id/btn_go_to_reset"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:text="@string/forgotten_password"
+                        android:textAllCaps="false"/>
+
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
-
-            <Button
-                android:id="@+id/btn_go_to_reset"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:textAllCaps="false"
-                android:theme="@style/LoginButton"
-                android:text="@string/forgotten_password"/>
 
         </LinearLayout>
 
