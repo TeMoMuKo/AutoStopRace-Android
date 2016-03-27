@@ -28,6 +28,7 @@ import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
  */
 public class LoginActivity extends BaseActivity implements LoginMvpView {
 
+    public static final String EXTRA_EMAIL = "extra_email";
     private static final String TAG_HELP_DIALOG_FRAGMENT = "help_dialog_fragment";
     private static final String BUNDLE_IS_PROGRESS_DIALOG_SHOWN = "bundle_is_progress_dialog_shown";
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -92,6 +93,8 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     private void startResetPassActivity() {
         Intent intent = new Intent(this, ResetPassActivity.class);
+        String email = mEmailEditText.getText().toString();
+        intent.putExtra(EXTRA_EMAIL, email);
         startActivity(intent);
     }
 

@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.ui.login.LoginActivity;
 import pl.temomuko.autostoprace.util.DialogFactory;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 
@@ -42,6 +43,7 @@ public class ResetPassActivity extends BaseActivity implements ResetPassMvpView 
         createProgressDialog();
         loadProgressDialogState(savedInstanceState);
         setupToolbarWithBack();
+        setupEmailTextView();
         setListeners();
     }
 
@@ -69,6 +71,12 @@ public class ResetPassActivity extends BaseActivity implements ResetPassMvpView 
             String email = mEmailEditText.getText().toString();
             mResetPassPresenter.resetPassword(email);
         });
+    }
+
+    private void setupEmailTextView() {
+        String email = getIntent().getStringExtra(LoginActivity.EXTRA_EMAIL);
+        mEmailEditText.setText(email);
+        mEmailEditText.setSelection(email.length());
     }
 
     private void loadProgressDialogState(Bundle savedInstanceState) {
