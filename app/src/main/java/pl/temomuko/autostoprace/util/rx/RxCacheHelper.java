@@ -14,9 +14,10 @@ import rx.Observable;
  * Created by Szymon Kozak on 2016-02-24.
  */
 
-/* Helps keep any request observable
-to continue it after orientation change */
-
+/**
+ * Helps keep any request observable
+ * to continue it after configuration change
+ */
 public class RxCacheHelper<T> {
 
     private static final String FRAGMENT_TAG_SUFFIX = RxCacheHelper.class.getName();
