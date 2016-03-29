@@ -169,6 +169,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     /* MVP View methods */
+
     @Override
     public void updateLocationRecordsList(@NonNull List<LocationRecord> locationRecords) {
         if (mLocationRecordsAdapter.isEmpty()) {

@@ -47,7 +47,7 @@
     <string name="pref_logout">Wyloguj się</string>
     <string name="pref_logout_summary">Zalogowany jako %1$s</string>
     <string name="pref_logout_summary_not_logged">Niezalogowany</string>
-    <string name="app_name_version">Auto Stop Race v0.0.1</string>
+    <string name="app_name_version">Auto Stop Race v0.0.2-beta</string>
     <string name="msg_logout_question">Czy na pewno chcesz się wylogować?</string>
     <string name="msg_logout_info">Wszystkie lokalizacje niewysłane na serwer zostaną usunięte.</string>
     <string name="msg_cancel">Anuluj</string>
@@ -60,7 +60,7 @@
     <string name="saved_location">Zapisano lokalizację</string>
     <string name="about_app">Aplikację przygotowali członkowie koła naukowego TeMoMuKo działającego przy Politechnice Wrocławskiej.</string>
     <string name="authors"><b>Autorzy:</b>\n- Szymon Kozak\n- Rafał Naniewicz\n- Michał Zając</string>
-    <string name="app_version">Wersja 0.0.1-beta</string>
+    <string name="app_version">Wersja 0.0.2-beta</string>
     <string name="warning_no_fine_location_permission">Brak uprawnień dostępu do lokalizacji.</string>
     <string name="settings">Ustawienia</string>
     <string name="error_email_confirmation">Najpierw aktywuj swoje konto, instrukcje znajdziesz w mailu od organizatorów.</string>
