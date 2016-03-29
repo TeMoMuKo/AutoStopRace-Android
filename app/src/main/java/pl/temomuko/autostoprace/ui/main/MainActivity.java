@@ -71,7 +71,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     private Snackbar mWarningSnackbar;
     private LinearLayoutManager mRecyclerViewLinearLayoutManager;
 
-    private CompositeSubscription mSubscriptions;
+    private CompositeSubscription mLocationRecordsUpdatesSubscriptions;
 
     private boolean mPostServiceSetProgress;
     private boolean mPresenterSetProgress;
@@ -82,7 +82,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         setContentView(R.layout.activity_main);
         getActivityComponent().inject(this);
         mMainPresenter.attachView(this);
-        mSubscriptions = new CompositeSubscription();
+        mLocationRecordsUpdatesSubscriptions = new CompositeSubscription();
         setupToolbarWithToggle();
         setupRecyclerView();
         setListeners();
@@ -130,7 +130,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     protected void onDestroy() {
         mMainPresenter.detachView();
-        if (mSubscriptions != null) mSubscriptions.unsubscribe();
+        mLocationRecordsUpdatesSubscriptions.unsubscribe();
         super.onDestroy();
     }
 
@@ -169,22 +169,37 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     /* MVP View methods */
-
     @Override
     public void updateLocationRecordsList(@NonNull List<LocationRecord> locationRecords) {
-        if (mLocationRecordsAdapter.getItemCount() != 0) {
-            mSubscriptions.add(Observable.from(locationRecords)
-                    .map(LocationRecordItem::new)
-                    .compose(RxUtil.applyComputationSchedulers())
-                    .subscribe(mLocationRecordsAdapter::updateLocationRecordItem));
-        } else {
+        if (mLocationRecordsAdapter.isEmpty()) {
             setLocationRecordsList(locationRecords);
+        } else {
+            mLocationRecordsUpdatesSubscriptions.clear();
+            mLocationRecordsUpdatesSubscriptions.add(Observable.from(locationRecords)
+                    .map(LocationRecordItem::new)
+                    .toList()
+                    .map(locationRecordItems -> {
+                        Collections.sort(locationRecordItems);
+                        return locationRecordItems;
+                    })
+                    .compose(RxUtil.applyComputationSchedulers())
+                    .subscribe(this::updateLocationRecordItemMaintainingScrollPosition));
         }
     }
 
+    private void updateLocationRecordItemMaintainingScrollPosition(List<LocationRecordItem> locationRecordItems) {
+        int oldFirstVisibleItemIndex = mRecyclerViewLinearLayoutManager.findFirstVisibleItemPosition();
+        int oldOffset = mRecyclerViewLinearLayoutManager.getChildAt(0).getTop();
+        mLocationRecordsAdapter.updateLocationRecordItems(locationRecordItems);
+        mRecyclerViewLinearLayoutManager.scrollToPositionWithOffset(oldFirstVisibleItemIndex, oldOffset);
+    }
+
     public void setLocationRecordsList(@NonNull List<LocationRecord> locationRecords) {
-        if (!locationRecords.isEmpty()) {
-            mSubscriptions.add(Observable.from(locationRecords)
+        if (locationRecords.isEmpty()) {
+            showEmptyInfo();
+        } else {
+            mLocationRecordsUpdatesSubscriptions.clear();
+            mLocationRecordsUpdatesSubscriptions.add(Observable.from(locationRecords)
                     .map(LocationRecordItem::new)
                     .toList()
                     .map(locationRecordItems -> {
@@ -197,8 +212,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mEmptyInfoTextView.setVisibility(View.GONE);
                     }));
-        } else {
-            showEmptyInfo();
         }
     }
 
@@ -315,7 +328,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationAddedToUnsentTable(SuccessfullyAddedToUnsentTableEvent event) {
         LogUtil.i(TAG, "received location record added to unsent table");
-        mLocationRecordsAdapter.updateLocationRecordItem(new LocationRecordItem(event.getUnsentLocationRecord()));
+        mLocationRecordsAdapter.insertLocationRecordItem(new LocationRecordItem(event.getUnsentLocationRecord()));
         mRecyclerView.scrollToPosition(0);
         EventUtil.removeStickyEvent(event);
     }

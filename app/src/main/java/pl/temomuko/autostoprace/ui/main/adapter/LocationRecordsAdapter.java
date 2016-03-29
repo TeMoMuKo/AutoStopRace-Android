@@ -24,7 +24,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.ui.widget.TextCircleView;
 import pl.temomuko.autostoprace.util.AnimationUtil;
-import pl.temomuko.autostoprace.util.ColorGenerator;
+import pl.temomuko.autostoprace.util.ColorGeneratorUtil;
 import pl.temomuko.autostoprace.util.DateUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 
@@ -52,16 +52,42 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         notifyDataSetChanged();
     }
 
-    public void updateLocationRecordItem(LocationRecordItem updatedLocationRecordItem) {
-        int index = Collections.binarySearch(mSortedLocationRecordItems, updatedLocationRecordItem);
-        if (index >= 0) {
-            if (!mSortedLocationRecordItems.get(index).getLocationRecord().equals(
-                    updatedLocationRecordItem.getLocationRecord())) {
-                changeLocationRecordItemData(index, updatedLocationRecordItem.getLocationRecord());
+    public void insertLocationRecordItem(LocationRecordItem locationRecordItem) {
+        int index = Collections.binarySearch(mSortedLocationRecordItems, locationRecordItem);
+        if (index < 0) {
+            index = -index - 1;
+            insertLocationRecordItem(index, locationRecordItem);
+        }
+    }
+
+    public void updateLocationRecordItems(final List<LocationRecordItem> newSortedLocationRecordItems) {
+        int newLocationIndex;
+        for (int oldLocationIndex = 0; oldLocationIndex < mSortedLocationRecordItems.size(); oldLocationIndex++) {
+            newLocationIndex = Collections.binarySearch(
+                    newSortedLocationRecordItems, mSortedLocationRecordItems.get(oldLocationIndex));
+            if (newLocationIndex >= 0) {
+                changeLocationRecordItemData(oldLocationIndex,
+                        newSortedLocationRecordItems.get(newLocationIndex).getLocationRecord());
+                newSortedLocationRecordItems.remove(newLocationIndex);
+            } else {
+                deleteLocationRecordItem(oldLocationIndex);
+                oldLocationIndex--;
             }
-        } else {
-            int insertionIndex = -index - 1;
-            insertLocationRecordItem(insertionIndex, updatedLocationRecordItem);
+        }
+        insertNewLocationRecordItems(newSortedLocationRecordItems);
+    }
+
+    private void insertNewLocationRecordItems(List<LocationRecordItem> newSortedLocationRecordItems) {
+        int index;
+        //noinspection Convert2streamapi
+        for (LocationRecordItem newLocationRecordItem : newSortedLocationRecordItems) {
+            index = Collections.binarySearch(mSortedLocationRecordItems, newLocationRecordItem);
+            if (index < 0) {
+                index = -index - 1;
+                insertLocationRecordItem(index, newLocationRecordItem);
+            } else {
+                LogUtil.wtf(TAG, "Error while inserting, such location already exist ");
+            }
         }
     }
 
@@ -75,13 +101,20 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     }
 
     private void changeLocationRecordItemData(int locationRecordItemIndex, LocationRecord newLocationRecord) {
-        mSortedLocationRecordItems.get(locationRecordItemIndex).setLocationRecord(newLocationRecord);
-        notifyItemChanged(locationRecordItemIndex);
+        if (!mSortedLocationRecordItems.get(locationRecordItemIndex).getLocationRecord().equals(newLocationRecord)) {
+            mSortedLocationRecordItems.get(locationRecordItemIndex).setLocationRecord(newLocationRecord);
+            notifyItemChanged(locationRecordItemIndex);
+        }
     }
 
     private void insertLocationRecordItem(int insertionIndex, LocationRecordItem locationRecordItem) {
         mSortedLocationRecordItems.add(insertionIndex, locationRecordItem);
         notifyItemInserted(insertionIndex);
+    }
+
+    private void deleteLocationRecordItem(int deletionIndex) {
+        mSortedLocationRecordItems.remove(deletionIndex);
+        notifyItemRemoved(deletionIndex);
     }
 
     @Override
@@ -128,7 +161,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         if (locationRecord.getCountryCode() != null) {
             holder.setCountryCodeAvailable(true);
             holder.mCountryCodeCircleView.setText(locationRecord.getCountryCode());
-            holder.mCountryCodeCircleView.setCircleColor(ColorGenerator.getStringBasedColor(
+            holder.mCountryCodeCircleView.setCircleColor(ColorGeneratorUtil.getStringBasedColor(
                     mAppContext, locationRecord.getCountryCode()));
         } else {
             holder.setCountryCodeAvailable(false);
@@ -166,6 +199,10 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     @Override
     public int getItemCount() {
         return mSortedLocationRecordItems.size();
+    }
+
+    public boolean isEmpty() {
+        return mSortedLocationRecordItems.isEmpty();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

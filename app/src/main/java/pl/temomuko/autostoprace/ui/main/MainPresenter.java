@@ -19,6 +19,7 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
+import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -30,6 +31,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     private ErrorHandler mErrorHandler;
     private CompositeSubscription mSubscriptions;
+    private Subscription mLoadLocationsSubscription;
     private boolean mIsLocationSettingsStatusForResultCalled = false;
 
     @Inject
@@ -46,7 +48,8 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     @Override
     public void detachView() {
-        if (mSubscriptions != null) mSubscriptions.unsubscribe();
+        mSubscriptions.unsubscribe();
+        if (mLoadLocationsSubscription != null) mLoadLocationsSubscription.unsubscribe();
         super.detachView();
     }
 
@@ -78,10 +81,11 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
     public void loadLocations() {
         getMvpView().setProgress(true);
-        mSubscriptions.add(mDataManager.getTeamLocationRecordsFromDatabase()
+        if (mLoadLocationsSubscription != null) mLoadLocationsSubscription.unsubscribe();
+        mLoadLocationsSubscription = mDataManager.getTeamLocationRecordsFromDatabase()
                 .compose(RxUtil.applyIoSchedulers())
                 .subscribe(this::setLocationsView,
-                        this::handleError));
+                        this::handleError);
     }
 
     private void setLocationsView(List<LocationRecord> locationRecords) {

@@ -44,7 +44,8 @@
                         android:scrollbarStyle="outsideOverlay"
                         android:clipToPadding="false"
                         android:paddingBottom="@dimen/bottom_fab_spacing"
-                        android:paddingTop="4dp"/>
+                        android:paddingTop="4dp"
+                        android:visibility="gone"/>
 
                     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
                         android:id="@+id/horizontal_progress_toolbar"
@@ -70,8 +71,7 @@
                     android:gravity="center"
                     android:lineSpacingExtra="8dp"
                     android:text="@string/msg_empty_location_records_list"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:visibility="gone"/>
+                    android:textColor="?android:attr/textColorSecondary"/>
             </FrameLayout>
 
         </LinearLayout>

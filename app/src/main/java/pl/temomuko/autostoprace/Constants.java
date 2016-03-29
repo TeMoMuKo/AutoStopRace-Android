@@ -18,6 +18,7 @@ public final class Constants {
 
     public final static String APP_DATE_FORMAT = "d.LL";
     public final static String APP_TIME_FORMAT = "HH:mm";
+    public final static String DATABASE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static String SERVER_TIMEZONE = "UTC";
     public static final String GOOGLE_PLAY_BASE_URL = "http://play.google.com/store/apps/details?id=";
 

@@ -29,7 +29,7 @@ public abstract class RemoteLocationRecordTable extends LocalUnsentLocationRecor
     public static ContentValues toContentValues(LocationRecord locationRecord) {
         ContentValues values = LocalUnsentLocationRecordTable.toContentValues(locationRecord);
         values.put(COLUMN_ID, locationRecord.getId());
-        values.put(COLUMN_SERVER_RECEIPT_DATE, DbUtil.getDateFormat().format(locationRecord.getServerReceiptDate()));
+        values.put(COLUMN_SERVER_RECEIPT_DATE, DbUtil.formatDate(locationRecord.getServerReceiptDate()));
         return values;
     }
 

@@ -107,8 +107,10 @@ public class DatabaseHelper {
             Cursor cursor = mBriteDatabase.query(
                     "SELECT * FROM " + LocalUnsentLocationRecordTable.NAME
             );
-            while (cursor.moveToNext()) {
-                subscriber.onNext(LocalUnsentLocationRecordTable.parseCursor(cursor));
+            if (!subscriber.isUnsubscribed()) {
+                while (cursor.moveToNext()) {
+                    subscriber.onNext(LocalUnsentLocationRecordTable.parseCursor(cursor));
+                }
             }
             cursor.close();
             subscriber.onCompleted();
@@ -124,11 +126,15 @@ public class DatabaseHelper {
             Cursor sentCursor = mBriteDatabase.query(
                     "SELECT * FROM " + RemoteLocationRecordTable.NAME
             );
-            while (sentCursor.moveToNext()) {
-                result.add(RemoteLocationRecordTable.parseCursor(sentCursor));
+            if (!subscriber.isUnsubscribed()) {
+                while (sentCursor.moveToNext()) {
+                    result.add(RemoteLocationRecordTable.parseCursor(sentCursor));
+                }
             }
-            while (unsentCursor.moveToNext()) {
-                result.add(LocalUnsentLocationRecordTable.parseCursor(unsentCursor));
+            if (!subscriber.isUnsubscribed()) {
+                while (unsentCursor.moveToNext()) {
+                    result.add(LocalUnsentLocationRecordTable.parseCursor(unsentCursor));
+                }
             }
             unsentCursor.close();
             sentCursor.close();
