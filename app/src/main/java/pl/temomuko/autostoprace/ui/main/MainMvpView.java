@@ -15,8 +15,6 @@ public interface MainMvpView extends DrawerMvpView {
 
     void updateLocationRecordsList(List<LocationRecord> locationRecords);
 
-    void startLocationSynchronizationService();
-
     void showEmptyInfo();
 
     void startLauncherActivity();

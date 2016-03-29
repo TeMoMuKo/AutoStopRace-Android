@@ -102,7 +102,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onResume() {
         super.onResume();
         mMainPresenter.checkAuth();
-        startLocationSynchronizationService();
+        startLocationSyncService();
     }
 
     @Override
@@ -144,10 +144,16 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                startLocationSynchronizationService();
+                startLocationSyncService();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startLocationSyncService() {
+        if (!LocationSyncService.isRunning(this)) {
+            startService(LocationSyncService.getStartIntent(this));
+        }
     }
 
     private void setupRecyclerView() {
@@ -163,6 +169,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     /* MVP View methods */
+
     @Override
     public void updateLocationRecordsList(@NonNull List<LocationRecord> locationRecords) {
         if (mLocationRecordsAdapter.getItemCount() != 0) {
@@ -192,13 +199,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
                     }));
         } else {
             showEmptyInfo();
-        }
-    }
-
-    @Override
-    public void startLocationSynchronizationService() {
-        if (!LocationSyncService.isRunning(this)) {
-            startService(LocationSyncService.getStartIntent(this));
         }
     }
 

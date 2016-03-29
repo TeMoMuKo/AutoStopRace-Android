@@ -95,8 +95,9 @@ public class LocationSyncService extends Service {
 
     public void synchronizeLocationsWithServer() {
         LogUtil.i(TAG, "Checking for unsent location records...");
-        if (mPostSubscription != null && !mPostSubscription.isUnsubscribed())
+        if (mPostSubscription != null && !mPostSubscription.isUnsubscribed()) {
             mPostSubscription.unsubscribe();
+        }
         mPostSubscription = mDataManager.getUnsentLocationRecords()
                 .flatMap(mDataManager::postLocationRecordToServer, UnsentLocationRecordAndServerResponsePair::create,
                         MAX_CONCURRENT)
@@ -112,8 +113,9 @@ public class LocationSyncService extends Service {
 
     private void refreshDatabase() {
         LogUtil.i(TAG, "Syncing sent records table...");
-        if (mRefreshSubscription != null && !mRefreshSubscription.isUnsubscribed())
+        if (mRefreshSubscription != null && !mRefreshSubscription.isUnsubscribed()) {
             mRefreshSubscription.unsubscribe();
+        }
         mRefreshSubscription = mDataManager.getTeamLocationRecordsFromServer()
                 .flatMap(HttpStatus::requireOk)
                 .map(Response::body)
