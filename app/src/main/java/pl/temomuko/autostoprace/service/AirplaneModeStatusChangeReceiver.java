@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import pl.temomuko.autostoprace.data.event.AirplaneModeStatusChangeEvent;
-import pl.temomuko.autostoprace.data.event.GpsStatusChangeEvent;
 import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 

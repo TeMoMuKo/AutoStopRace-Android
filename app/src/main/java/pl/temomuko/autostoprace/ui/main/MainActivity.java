@@ -30,18 +30,18 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.data.event.DatabaseRefreshedEvent;
 import pl.temomuko.autostoprace.data.event.PostServiceStateChangeEvent;
 import pl.temomuko.autostoprace.data.event.SuccessfullyAddedToUnsentTableEvent;
 import pl.temomuko.autostoprace.data.event.SuccessfullySentLocationToServerEvent;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
-import pl.temomuko.autostoprace.service.PostService;
+import pl.temomuko.autostoprace.service.LocationSyncService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.main.adapter.LocationRecordItem;
 import pl.temomuko.autostoprace.ui.main.adapter.LocationRecordsAdapter;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
-import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.LocationSettingsUtil;
@@ -75,7 +75,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     private boolean mPostServiceSetProgress;
     private boolean mPresenterSetProgress;
-    private boolean mPendingRefresh;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,7 +102,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onResume() {
         super.onResume();
         mMainPresenter.checkAuth();
-        startPostService();
+        startLocationSynchronizationService();
     }
 
     @Override
@@ -145,11 +144,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                if (!mPostServiceSetProgress) {
-                    mMainPresenter.downloadLocationsFromServer();
-                } else {
-                    mPendingRefresh = true;
-                }
+                startLocationSynchronizationService();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -168,47 +163,42 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     /* MVP View methods */
-
     @Override
-    public void setLocationRecordsList(List<LocationRecord> locationRecords) {
-        mSubscriptions.add(Observable.from(locationRecords)
-                .map(LocationRecordItem::new)
-                .toList()
-                .map(locationRecordItems -> {
-                    Collections.sort(locationRecordItems);
-                    return locationRecordItems;
-                })
-                .compose(RxUtil.applyComputationSchedulers())
-                .subscribe(sortedLocationItems -> {
-                    mLocationRecordsAdapter.setSortedLocationRecordItems(sortedLocationItems);
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mEmptyInfoTextView.setVisibility(View.GONE);
-                }));
-    }
-
-    @Override
-    public void updateLocationRecordsList(List<LocationRecord> locationRecords) {
+    public void updateLocationRecordsList(@NonNull List<LocationRecord> locationRecords) {
         if (mLocationRecordsAdapter.getItemCount() != 0) {
             mSubscriptions.add(Observable.from(locationRecords)
                     .map(LocationRecordItem::new)
                     .compose(RxUtil.applyComputationSchedulers())
-                    .subscribe(this::updateLocationRecordItemMaintainingScrollPosition));
+                    .subscribe(mLocationRecordsAdapter::updateLocationRecordItem));
         } else {
             setLocationRecordsList(locationRecords);
         }
     }
 
-    private void updateLocationRecordItemMaintainingScrollPosition(LocationRecordItem locationRecordItem) {
-        int oldFirstVisibleItemIndex = mRecyclerViewLinearLayoutManager.findFirstVisibleItemPosition();
-        int oldOffset = mRecyclerViewLinearLayoutManager.getChildAt(0).getTop();
-        mLocationRecordsAdapter.updateLocationRecordItem(locationRecordItem);
-        mRecyclerViewLinearLayoutManager.scrollToPositionWithOffset(oldFirstVisibleItemIndex, oldOffset);
+    public void setLocationRecordsList(@NonNull List<LocationRecord> locationRecords) {
+        if (!locationRecords.isEmpty()) {
+            mSubscriptions.add(Observable.from(locationRecords)
+                    .map(LocationRecordItem::new)
+                    .toList()
+                    .map(locationRecordItems -> {
+                        Collections.sort(locationRecordItems);
+                        return locationRecordItems;
+                    })
+                    .compose(RxUtil.applyComputationSchedulers())
+                    .subscribe(sortedLocationItems -> {
+                        mLocationRecordsAdapter.setSortedLocationRecordItems(sortedLocationItems);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mEmptyInfoTextView.setVisibility(View.GONE);
+                    }));
+        } else {
+            showEmptyInfo();
+        }
     }
 
     @Override
-    public void startPostService() {
-        if (!AndroidComponentUtil.isServiceRunning(this, PostService.class)) {
-            startService(PostService.getStartIntent(this));
+    public void startLocationSynchronizationService() {
+        if (!LocationSyncService.isRunning(this)) {
+            startService(LocationSyncService.getStartIntent(this));
         }
     }
 
@@ -319,12 +309,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         LogUtil.i(TAG, "received post service state changed: " + Boolean.toString(event.isPostServiceActive()));
         mPostServiceSetProgress = event.isPostServiceActive();
         mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ? View.VISIBLE : View.INVISIBLE);
-        if (!event.isPostServiceActive()) {
-            if (mPendingRefresh) {
-                mMainPresenter.downloadLocationsFromServer();
-                mPendingRefresh = false;
-            }
-        }
     }
 
     @SuppressWarnings("unused")
@@ -341,6 +325,14 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     public void onLocationSent(SuccessfullySentLocationToServerEvent event) {
         LogUtil.i(TAG, "received successfully sent location event");
         mLocationRecordsAdapter.replaceLocationRecord(event.getDeletedUnsentLocationRecord(), event.getReceivedLocationRecord());
+        EventUtil.removeStickyEvent(event);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onDatabaseRefreshed(DatabaseRefreshedEvent event) {
+        LogUtil.i(TAG, "received database refreshed event");
+        mMainPresenter.loadLocations();
         EventUtil.removeStickyEvent(event);
     }
 }

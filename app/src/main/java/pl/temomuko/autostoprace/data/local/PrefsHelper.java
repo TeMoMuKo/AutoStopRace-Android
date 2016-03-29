@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.List;
 import java.util.Map;
@@ -82,7 +83,7 @@ public class PrefsHelper {
         mPrefs.edit().putString(PREF_CURRENT_USER_JSON, userJson).apply();
     }
 
-    public User getCurrentUser() {
+    public User getCurrentUser() throws JsonSyntaxException {
         String userJson = mPrefs.getString(PREF_CURRENT_USER_JSON, "");
         return new Gson().fromJson(userJson, User.class);
     }

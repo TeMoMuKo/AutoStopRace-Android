@@ -131,13 +131,13 @@
         </receiver>
 
         <receiver
-            android:name=".service.PostService$NetworkChangeReceiver"
+            android:name=".service.LocationSyncService$NetworkChangeReceiver"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.PostService"/>
+        <service android:name=".service.LocationSyncService"/>
     </application>
 </manifest>

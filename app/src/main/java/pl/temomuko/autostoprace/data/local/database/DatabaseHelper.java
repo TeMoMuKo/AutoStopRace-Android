@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.data.model.LocationRecord;
-import pl.temomuko.autostoprace.service.helper.UnsentAndRecordFromResponsePair;
+import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import rx.Completable;
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -47,22 +47,7 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<List<LocationRecord>> getSentLocationRecordList() {
-        return Observable.create(subscriber -> {
-            List<LocationRecord> result = new ArrayList<>();
-            Cursor cursor = mBriteDatabase.query(
-                    "SELECT * FROM " + RemoteLocationRecordTable.NAME
-            );
-            while (cursor.moveToNext()) {
-                result.add(RemoteLocationRecordTable.parseCursor(cursor));
-            }
-            cursor.close();
-            subscriber.onNext(result);
-            subscriber.onCompleted();
-        });
-    }
-
-    public Observable<List<LocationRecord>> setAndEmitReceivedLocationRecordList(final List<LocationRecord> locationRecords) {
+    public Observable<Void> saveToSentLocationsTable(List<LocationRecord> locationRecords) {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
@@ -71,7 +56,6 @@ public class DatabaseHelper {
                     mBriteDatabase.insert(RemoteLocationRecordTable.NAME,
                             RemoteLocationRecordTable.toContentValues(locationRecord));
                 }
-                subscriber.onNext(locationRecords);
                 transaction.markSuccessful();
                 subscriber.onCompleted();
             } finally {
@@ -80,7 +64,7 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<UnsentAndRecordFromResponsePair> moveLocationRecordToSent(UnsentAndRecordFromResponsePair unsentAndFromResponse) {
+    public Observable<UnsentAndResponseLocationRecordPair> moveLocationRecordToSent(UnsentAndResponseLocationRecordPair unsentAndFromResponse) {
         return Observable.create(subscriber -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
@@ -131,16 +115,23 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<List<LocationRecord>> getUnsentLocationRecordList() {
+    public Observable<List<LocationRecord>> getLocationRecordList() {
         return Observable.create(subscriber -> {
             List<LocationRecord> result = new ArrayList<>();
-            Cursor cursor = mBriteDatabase.query(
+            Cursor unsentCursor = mBriteDatabase.query(
                     "SELECT * FROM " + LocalUnsentLocationRecordTable.NAME
             );
-            while (cursor.moveToNext()) {
-                result.add(LocalUnsentLocationRecordTable.parseCursor(cursor));
+            Cursor sentCursor = mBriteDatabase.query(
+                    "SELECT * FROM " + RemoteLocationRecordTable.NAME
+            );
+            while (sentCursor.moveToNext()) {
+                result.add(RemoteLocationRecordTable.parseCursor(sentCursor));
             }
-            cursor.close();
+            while (unsentCursor.moveToNext()) {
+                result.add(LocalUnsentLocationRecordTable.parseCursor(unsentCursor));
+            }
+            unsentCursor.close();
+            sentCursor.close();
             subscriber.onNext(result);
             subscriber.onCompleted();
         });

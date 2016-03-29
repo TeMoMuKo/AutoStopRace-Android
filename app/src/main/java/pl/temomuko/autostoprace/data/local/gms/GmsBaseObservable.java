@@ -54,6 +54,7 @@ abstract class GmsBaseObservable<T> implements Observable.OnSubscribe<T>, Connec
         GoogleApiClient.Builder apiClientBuilder = new GoogleApiClient.Builder(mContext)
                 .addOnConnectionFailedListener(this)
                 .addConnectionCallbacks(this);
+        //noinspection Convert2streamapi
         for (Api<? extends Api.ApiOptions.NotRequiredOptions> service : mServices) {
             apiClientBuilder.addApi(service);
         }

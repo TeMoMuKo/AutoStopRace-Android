@@ -147,7 +147,6 @@ public class PostPresenterTest {
                 .thenReturn(Observable.empty());
 
         //when
-        Intent data = null;
         mPostPresenter.handleLocationSettingsDialogResult(Activity.RESULT_CANCELED);
 
         //then

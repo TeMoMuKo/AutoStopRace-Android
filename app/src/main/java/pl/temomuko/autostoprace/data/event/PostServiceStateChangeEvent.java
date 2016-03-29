@@ -1,7 +1,7 @@
 package pl.temomuko.autostoprace.data.event;
 
 /**
- * Created by Rafał Naniewicz on 13.03.2016.
+ * Created by Rafał Naniewicz on 28.03.2016.
  */
 public class PostServiceStateChangeEvent {
 

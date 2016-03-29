@@ -24,7 +24,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
-import pl.temomuko.autostoprace.service.helper.UnsentAndRecordFromResponsePair;
+import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -119,7 +119,7 @@ public class DataManagerTest {
     public void testSaveSentLocationsToDatabase() throws Exception {
         //given
         LocationRecord sentLocationRecord = new LocationRecord(18.05, 17.17, "Yo", "Somewhere, Poland", "Poland", "PL");
-        UnsentAndRecordFromResponsePair pair = UnsentAndRecordFromResponsePair.create(sentLocationRecord, null);
+        UnsentAndResponseLocationRecordPair pair = UnsentAndResponseLocationRecordPair.create(sentLocationRecord, null);
         when(mMockDatabaseHelper.moveLocationRecordToSent(pair)).thenReturn(Observable.empty());
 
         //when
@@ -135,8 +135,7 @@ public class DataManagerTest {
         mDataManager.getTeamLocationRecordsFromDatabase();
 
         //then
-        verify(mMockDatabaseHelper).getUnsentLocationRecordList();
-        verify(mMockDatabaseHelper).getSentLocationRecordList();
+        verify(mMockDatabaseHelper).getLocationRecordList();
     }
 
     @Test

@@ -23,4 +23,11 @@ public final class EventUtil {
     public static void removeStickyEvent(Object event) {
         EventBus.getDefault().removeStickyEvent(event);
     }
+
+    public static void clearStickyEvents(Class eventClass) {
+        Object event = EventBus.getDefault().getStickyEvent(eventClass);
+        if (event != null) {
+            EventBus.getDefault().removeStickyEvent((eventClass.cast(event)));
+        }
+    }
 }

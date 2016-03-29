@@ -5,12 +5,12 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 /**
  * Created by Szymon Kozak on 2016-03-14.
  */
-public class UnsentAndRecordFromResponsePair {
+public class UnsentAndResponseLocationRecordPair {
 
     LocationRecord mUnsentLocationRecord;
     LocationRecord mLocationRecordFromResponse;
 
-    private UnsentAndRecordFromResponsePair(LocationRecord unsentLocationRecord, LocationRecord locationRecordFromResponse) {
+    private UnsentAndResponseLocationRecordPair(LocationRecord unsentLocationRecord, LocationRecord locationRecordFromResponse) {
         mUnsentLocationRecord = unsentLocationRecord;
         mLocationRecordFromResponse = locationRecordFromResponse;
     }
@@ -23,7 +23,7 @@ public class UnsentAndRecordFromResponsePair {
         return mLocationRecordFromResponse;
     }
 
-    public static UnsentAndRecordFromResponsePair create(LocationRecord unsent, LocationRecord fromResponse) {
-        return new UnsentAndRecordFromResponsePair(unsent, fromResponse);
+    public static UnsentAndResponseLocationRecordPair create(LocationRecord unsent, LocationRecord fromResponse) {
+        return new UnsentAndResponseLocationRecordPair(unsent, fromResponse);
     }
 }

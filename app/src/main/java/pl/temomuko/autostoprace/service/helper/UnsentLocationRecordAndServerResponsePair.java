@@ -6,13 +6,13 @@ import retrofit2.Response;
 /**
  * Created by Szymon Kozak on 2016-03-14.
  */
-public final class UnsentAndServerResponsePair {
+public final class UnsentLocationRecordAndServerResponsePair {
 
     private LocationRecord mUnsentLocationRecord;
     private Response<LocationRecord> mLocationRecordResponse;
 
-    private UnsentAndServerResponsePair(LocationRecord unsentLocationRecord,
-                                        Response<LocationRecord> locationRecordResponse) {
+    private UnsentLocationRecordAndServerResponsePair(LocationRecord unsentLocationRecord,
+                                                      Response<LocationRecord> locationRecordResponse) {
         mLocationRecordResponse = locationRecordResponse;
         mUnsentLocationRecord = unsentLocationRecord;
     }
@@ -25,8 +25,8 @@ public final class UnsentAndServerResponsePair {
         return mLocationRecordResponse;
     }
 
-    public static UnsentAndServerResponsePair create(LocationRecord locationRecord,
+    public static UnsentLocationRecordAndServerResponsePair create(LocationRecord locationRecord,
                                                      Response<LocationRecord> locationRecordResponse) {
-        return new UnsentAndServerResponsePair(locationRecord, locationRecordResponse);
+        return new UnsentLocationRecordAndServerResponsePair(locationRecord, locationRecordResponse);
     }
 }

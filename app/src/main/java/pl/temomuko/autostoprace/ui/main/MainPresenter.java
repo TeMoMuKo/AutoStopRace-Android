@@ -80,32 +80,14 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         getMvpView().setProgress(true);
         mSubscriptions.add(mDataManager.getTeamLocationRecordsFromDatabase()
                 .compose(RxUtil.applyIoSchedulers())
-                .doOnCompleted(this::downloadLocationsFromServer)
-                .subscribe(this::setLocationsView));
-    }
-
-    public void downloadLocationsFromServer() {
-        getMvpView().setProgress(true);
-        mSubscriptions.add(
-                mDataManager.getTeamLocationRecordsFromServer()
-                        .flatMap(HttpStatus::requireOk)
-                        .flatMap(mDataManager::syncWithDatabase)
-                        .compose(RxUtil.applyIoSchedulers())
-                        .subscribe(this::updateLocationsView,
-                                this::handleError));
+                .subscribe(this::setLocationsView,
+                        this::handleError));
     }
 
     private void setLocationsView(List<LocationRecord> locationRecords) {
         if (locationRecords.isEmpty()) getMvpView().showEmptyInfo();
-        else getMvpView().setLocationRecordsList(locationRecords);
+        else getMvpView().updateLocationRecordsList(locationRecords);
         getMvpView().setProgress(false);
-    }
-
-    private void updateLocationsView(List<LocationRecord> locationRecords) {
-        if (!locationRecords.isEmpty()) {
-            getMvpView().updateLocationRecordsList(locationRecords);
-            getMvpView().setProgress(false);
-        }
     }
 
     public void goToPostLocation() {

@@ -9,7 +9,7 @@ import dagger.Component;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
-import pl.temomuko.autostoprace.service.PostService;
+import pl.temomuko.autostoprace.service.LocationSyncService;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 
 /**
@@ -19,7 +19,7 @@ import pl.temomuko.autostoprace.util.ErrorHandler;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
 
-    void inject(PostService postService);
+    void inject(LocationSyncService locationSyncService);
 
     @AppContext
     Context context();

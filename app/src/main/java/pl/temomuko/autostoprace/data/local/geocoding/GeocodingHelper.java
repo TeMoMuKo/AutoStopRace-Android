@@ -14,7 +14,6 @@ import javax.inject.Singleton;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.util.LogUtil;
-import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 

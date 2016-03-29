@@ -70,7 +70,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         if (index >= 0) {
             changeLocationRecordItemData(index, newLocationRecord);
         } else {
-            LogUtil.wtf(TAG, "Location item couldn't be replaced, no such item found.");
+            LogUtil.wtf(TAG, "Location item couldn't be replaced, no such item found. Msg: " + oldLocationRecord.getMessage());
         }
     }
 
@@ -161,10 +161,6 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         } else {
             holder.setDatesVisibility(View.GONE);
         }
-    }
-
-    public List<LocationRecordItem> getSortedLocationRecordItems() {
-        return mSortedLocationRecordItems;
     }
 
     @Override

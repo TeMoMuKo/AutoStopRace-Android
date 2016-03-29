@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.ui.base.drawer;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -31,11 +32,6 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
     private TextCircleView mTextCircleView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         mNavigationListener.setupMenuElementChecked();
@@ -50,6 +46,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         setupToolbar();
     }
 
+    @SuppressLint("RtlHardcoded")
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {

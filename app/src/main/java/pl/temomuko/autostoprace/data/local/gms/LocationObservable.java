@@ -8,7 +8,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import pl.temomuko.autostoprace.util.LogUtil;
 import rx.Observable;
 import rx.Subscriber;
 

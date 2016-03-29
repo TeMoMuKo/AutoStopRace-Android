@@ -13,11 +13,9 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
  */
 public interface MainMvpView extends DrawerMvpView {
 
-    void setLocationRecordsList(List<LocationRecord> locationRecords);
-
     void updateLocationRecordsList(List<LocationRecord> locationRecords);
 
-    void startPostService();
+    void startLocationSynchronizationService();
 
     void showEmptyInfo();
 

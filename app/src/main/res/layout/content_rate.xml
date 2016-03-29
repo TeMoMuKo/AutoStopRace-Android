@@ -14,8 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/default_margin_halved"
+        android:paddingEnd="@dimen/default_margin_halved"
         android:paddingLeft="@dimen/default_margin"
         android:paddingRight="@dimen/default_margin_halved"
+        android:paddingStart="@dimen/default_margin"
         android:paddingTop="@dimen/default_margin"
         >
 

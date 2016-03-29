@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.location.LocationSettingsResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,7 +24,7 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.AsrService;
-import pl.temomuko.autostoprace.service.helper.UnsentAndRecordFromResponsePair;
+import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import retrofit2.Response;
 import rx.Completable;
 import rx.Observable;
@@ -96,22 +95,8 @@ public class DataManager {
     }
 
     /* Database + prefs */
-
-    public Observable<List<LocationRecord>> syncWithDatabase(Response<List<LocationRecord>> response) {
-        return saveAndEmitLocationRecordsFromDatabase(response.body());
-    }
-
-    private Observable<List<LocationRecord>> saveAndEmitLocationRecordsFromDatabase
-            (List<LocationRecord> receivedLocationRecords) {
-        return Observable.zip(
-                mDatabaseHelper.getUnsentLocationRecordList(),
-                mDatabaseHelper.setAndEmitReceivedLocationRecordList(receivedLocationRecords),
-                (unsentLocationRecords, sentLocationRecords) -> {
-                    ArrayList<LocationRecord> result = new ArrayList<>(sentLocationRecords);
-                    result.addAll(unsentLocationRecords);
-                    return result;
-                }
-        );
+    public Observable<Void> saveToDatabase(List<LocationRecord> response) {
+        return mDatabaseHelper.saveToSentLocationsTable(response);
     }
 
     public Observable<LocationRecord> saveUnsentLocationRecordToDatabase(LocationRecord locationRecord) {
@@ -122,21 +107,13 @@ public class DataManager {
         return mDatabaseHelper.getUnsentLocationRecords();
     }
 
-    public Observable<UnsentAndRecordFromResponsePair> moveLocationRecordToSent
-            (UnsentAndRecordFromResponsePair locationRecordPair) {
+    public Observable<UnsentAndResponseLocationRecordPair> moveLocationRecordToSent
+            (UnsentAndResponseLocationRecordPair locationRecordPair) {
         return mDatabaseHelper.moveLocationRecordToSent(locationRecordPair);
     }
 
     public Observable<List<LocationRecord>> getTeamLocationRecordsFromDatabase() {
-        return Observable.zip(
-                mDatabaseHelper.getUnsentLocationRecordList(),
-                mDatabaseHelper.getSentLocationRecordList(),
-                (unsentLocationRecords, sentLocationRecords) -> {
-                    ArrayList<LocationRecord> result = new ArrayList<>(sentLocationRecords);
-                    result.addAll(unsentLocationRecords);
-                    return result;
-                }
-        );
+        return mDatabaseHelper.getLocationRecordList();
     }
 
     public Completable clearUserData() {
