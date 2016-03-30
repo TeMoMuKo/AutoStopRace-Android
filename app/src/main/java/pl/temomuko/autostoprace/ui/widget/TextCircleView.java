@@ -17,8 +17,10 @@ import pl.temomuko.autostoprace.R;
  */
 public class TextCircleView extends View {
 
-    private @ColorInt int mCircleColor;
-    private @ColorInt int mTextColor;
+    private
+    @ColorInt int mCircleColor;
+    private
+    @ColorInt int mTextColor;
     private int mCircleWidth;
     private int mCircleHeight;
     private float mCircleTextSize;

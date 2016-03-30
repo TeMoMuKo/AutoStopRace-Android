@@ -26,7 +26,7 @@ public final class UnsentLocationRecordAndServerResponsePair {
     }
 
     public static UnsentLocationRecordAndServerResponsePair create(LocationRecord locationRecord,
-                                                     Response<LocationRecord> locationRecordResponse) {
+                                                                   Response<LocationRecord> locationRecordResponse) {
         return new UnsentLocationRecordAndServerResponsePair(locationRecord, locationRecordResponse);
     }
 }

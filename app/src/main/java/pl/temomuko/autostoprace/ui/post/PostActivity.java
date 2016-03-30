@@ -57,8 +57,13 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     protected void onStart() {
         super.onStart();
-        mPostPresenter.startLocationService();
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPostPresenter.startLocationService();
     }
 
     @Override
@@ -78,9 +83,14 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mPostPresenter.stopLocationService();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        mPostPresenter.stopLocationService();
         EventBus.getDefault().unregister(this);
     }
 

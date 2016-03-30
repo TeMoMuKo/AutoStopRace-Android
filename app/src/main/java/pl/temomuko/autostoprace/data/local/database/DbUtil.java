@@ -18,7 +18,7 @@ public final class DbUtil {
         throw new AssertionError();
     }
 
-    private final static ThreadSafeSimpleDateFormat THREAD_SAFE_SIMPLE_DATE_FORMAT =
+    private static ThreadSafeSimpleDateFormat sThreadSafeSimpleDateFormat =
             new ThreadSafeSimpleDateFormat(Constants.DATABASE_DATE_FORMAT);
 
     public static String getString(Cursor cursor, String columnName) {
@@ -29,7 +29,7 @@ public final class DbUtil {
         Date date;
         String dateString = cursor.getString(cursor.getColumnIndexOrThrow(columnName));
         try {
-            date = THREAD_SAFE_SIMPLE_DATE_FORMAT.parse(dateString);
+            date = sThreadSafeSimpleDateFormat.parse(dateString);
             return date;
         } catch (ParseException e) {
             LogUtil.wtf("Parsing date failed for values:", dateString);
@@ -47,6 +47,6 @@ public final class DbUtil {
     }
 
     public static String formatDate(Date date) {
-        return THREAD_SAFE_SIMPLE_DATE_FORMAT.formatDate(date);
+        return sThreadSafeSimpleDateFormat.formatDate(date);
     }
 }
