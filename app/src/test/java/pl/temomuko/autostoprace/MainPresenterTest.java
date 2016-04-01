@@ -1,7 +1,5 @@
 package pl.temomuko.autostoprace;
 
-import android.content.pm.PackageManager;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -205,8 +203,7 @@ public class MainPresenterTest {
                 .thenReturn(Observable.empty());
 
         //when
-        mMainPresenter.handleFineLocationRequestPermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
-                new int[]{PackageManager.PERMISSION_GRANTED});
+        mMainPresenter.handleFineLocationRequestPermissionResult(true);
 
         //then
         verify(mMockDataManager).checkLocationSettings();
@@ -216,8 +213,7 @@ public class MainPresenterTest {
     @Test
     public void testHandlePermissionResultDenied() throws Exception {
         //when
-        mMainPresenter.handleFineLocationRequestPermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
-                new int[]{PackageManager.PERMISSION_DENIED});
+        mMainPresenter.handleFineLocationRequestPermissionResult(false);
 
         //then
         verify(mMockMainMvpView, never()).startPostActivity();
