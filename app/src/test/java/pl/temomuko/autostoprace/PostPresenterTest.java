@@ -29,12 +29,12 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PostPresenterTest {
 
+    private final static String FAKE_MESSAGE = "fake_message";
+
     @Mock PostMvpView mMockPostMvpView;
     @Mock DataManager mMockDataManager;
     @Mock Address mMockLatestAddress;
     private PostPresenter mPostPresenter;
-    private final static String FAKE_MESSAGE = "fake_message";
-    private static final int FINE_LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();
@@ -76,7 +76,8 @@ public class PostPresenterTest {
         mPostPresenter.startLocationService();
 
         //then
-        //verify(mMockDataManager, never()).checkLocationSettings(any(LocationRequest.class));
+        verify(mMockDataManager, never()).checkLocationSettings();
+        verify(mMockPostMvpView).clearCurrentLocation();
         verify(mMockPostMvpView).compatRequestFineLocationPermission();
     }
 
@@ -90,6 +91,7 @@ public class PostPresenterTest {
         mPostPresenter.startLocationService();
 
         //then
+        verify(mMockPostMvpView).clearCurrentLocation();
         verify(mMockDataManager).checkLocationSettings();
         verify(mMockPostMvpView, never()).compatRequestFineLocationPermission();
     }

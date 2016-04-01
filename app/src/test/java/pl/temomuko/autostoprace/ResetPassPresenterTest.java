@@ -35,11 +35,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ResetPassPresenterTest {
 
-    @Mock ResetPassMvpView mMockResetPassMvpView;
-    @Mock DataManager mMockDataManager;
-    @Mock ErrorHandler mMockErrorHandler;
-    @Mock RxCacheHelper<Response<ResetPassResponse>> mMockRxResetHelper;
-    private ResetPassPresenter mResetPassPresenter;
     private static final String FAKE_EMAIL = "fake@email.pl";
     private static final String FAKE_ERROR_MESSAGE = "fake_error_message";
     private static final String FAKE_FIRST_NAME = "fake_first_name";
@@ -50,6 +45,12 @@ public class ResetPassPresenterTest {
             "    \"Unable to find user with email 'fake@email.pl'.\"\n" +
             "  ]\n" +
             "}";
+
+    @Mock ResetPassMvpView mMockResetPassMvpView;
+    @Mock DataManager mMockDataManager;
+    @Mock ErrorHandler mMockErrorHandler;
+    @Mock RxCacheHelper<Response<ResetPassResponse>> mMockRxResetHelper;
+    private ResetPassPresenter mResetPassPresenter;
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();

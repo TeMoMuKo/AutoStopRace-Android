@@ -28,13 +28,14 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SettingsPresenterTest {
 
+    private static final String FAKE_FIRST_NAME = "fake_first_name";
+    private static final String FAKE_LAST_NAME = "fake_last_name";
+    private static final String FAKE_EMAIL = "fake_email";
+
     @Mock SettingsMvpView mMockSettingsMvpView;
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
     private SettingsPresenter mSettingsPresenter;
-    private static final String FAKE_FIRST_NAME = "fake_first_name";
-    private static final String FAKE_LAST_NAME = "fake_last_name";
-    private static final String FAKE_EMAIL = "fake_email";
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();

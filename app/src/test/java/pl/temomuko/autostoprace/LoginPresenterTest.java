@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
@@ -37,11 +36,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class LoginPresenterTest {
 
-    @Mock LoginMvpView mMockLoginMvpView;
-    @Mock DataManager mMockDataManager;
-    @Mock ErrorHandler mMockErrorHandler;
-    @Mock RxCacheHelper<Response<SignInResponse>> mMockRxCacheHelper;
-    private LoginPresenter mLoginPresenter;
     private static final String FAKE_EMAIL = "fake@email.pl";
     private static final String FAKE_PASS = "fake_pass";
     private static final String INVALID_FAKE_PASS = "";
@@ -49,6 +43,12 @@ public class LoginPresenterTest {
     private static final String FAKE_ERROR_MESSAGE = "fake_error_message";
     private static final String UNAUTHORIZED_RESPONSE =
             "{ \"errors\": [ \"Invalid login credentials. Please try again.\" ] }";
+
+    @Mock LoginMvpView mMockLoginMvpView;
+    @Mock DataManager mMockDataManager;
+    @Mock ErrorHandler mMockErrorHandler;
+    @Mock RxCacheHelper<Response<SignInResponse>> mMockRxCacheHelper;
+    private LoginPresenter mLoginPresenter;
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();

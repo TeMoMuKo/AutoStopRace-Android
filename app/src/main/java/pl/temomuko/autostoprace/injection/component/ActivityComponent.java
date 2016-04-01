@@ -15,7 +15,7 @@ import pl.temomuko.autostoprace.ui.staticdata.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.staticdata.schedule.ScheduleActivity;
 import pl.temomuko.autostoprace.ui.settings.SettingsFragment;
-import pl.temomuko.autostoprace.ui.staticdata.teams.TeamsActivity;
+import pl.temomuko.autostoprace.ui.teamslocationmap.TeamsLocationsMapActivity;
 
 /**
  * Created by Szymon Kozak on 2016-01-06.
@@ -36,7 +36,7 @@ public interface ActivityComponent {
 
     void inject(PostActivity postActivity);
 
-    void inject(TeamsActivity teamsActivity);
+    void inject(TeamsLocationsMapActivity teamsLocationsMapActivity);
 
     void inject(ScheduleActivity scheduleActivity);
 

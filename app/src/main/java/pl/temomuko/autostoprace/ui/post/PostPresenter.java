@@ -19,7 +19,6 @@ import pl.temomuko.autostoprace.util.AddressUtil;
 import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
-import pl.temomuko.autostoprace.util.PermissionUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.subscriptions.CompositeSubscription;
 
@@ -89,6 +88,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     }
 
     public void startLocationService() {
+        mLatestAddress = null;
+        getMvpView().clearCurrentLocation();
         if (mDataManager.hasFineLocationPermission()) {
             checkLocationSettings();
         } else {

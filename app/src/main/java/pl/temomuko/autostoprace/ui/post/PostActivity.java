@@ -155,6 +155,12 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
+    public void clearCurrentLocation() {
+        mCurrentLocationAddressTextView.setText(getString(R.string.msg_establishing_approximate_location));
+        mCurrentLocationCordsTextView.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onUserResolvableLocationSettings(Status status) {
         IntentUtil.startGmsStatusForResolution(this, status, REQUEST_CODE_CHECK_LOCATION_SETTINGS);
         mPostPresenter.setIsLocationSettingsStatusForResultCalled(true);

@@ -22,7 +22,6 @@ public class ScheduleActivity extends DrawerActivity {
         getActivityComponent().inject(this);
         mPresenter.attachView(this);
         mPresenter.setupUserInfoInDrawer();
-        setupToolbarWithToggle();
     }
 
     @Override

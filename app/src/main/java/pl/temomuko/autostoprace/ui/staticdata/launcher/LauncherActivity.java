@@ -27,7 +27,6 @@ public class LauncherActivity extends DrawerActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-        setupToolbarWithToggle();
         loadAppLogo();
         loadBackground();
         setListeners();

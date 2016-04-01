@@ -20,7 +20,7 @@ import pl.temomuko.autostoprace.ui.staticdata.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.staticdata.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.staticdata.schedule.ScheduleActivity;
-import pl.temomuko.autostoprace.ui.staticdata.teams.TeamsActivity;
+import pl.temomuko.autostoprace.ui.teamslocationmap.TeamsLocationsMapActivity;
 
 /**
  * Created by Szymon Kozak on 2016-02-07.
@@ -35,7 +35,7 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
 
     private static final List<DrawerItemTarget> ACTIVITIES = Arrays.asList(
             new DrawerItemTarget(MainActivity.class, R.id.activity_main),
-            new DrawerItemTarget(TeamsActivity.class, R.id.activity_teams),
+            new DrawerItemTarget(TeamsLocationsMapActivity.class, R.id.activity_teams),
             new DrawerItemTarget(ScheduleActivity.class, R.id.activity_schedule),
             new DrawerItemTarget(CampusActivity.class, R.id.activity_campus),
             new DrawerItemTarget(PhrasebookActivity.class, R.id.activity_phrasebook),

@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.staticdata.teams;
+package pl.temomuko.autostoprace.ui.teamslocationmap;
 
 import android.os.Bundle;
 
@@ -6,28 +6,26 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
-import pl.temomuko.autostoprace.ui.staticdata.StaticDrawerPresenter;
 
 /**
  * Created by Szymon Kozak on 2016-02-05.
  */
-public class TeamsActivity extends DrawerActivity {
+public class TeamsLocationsMapActivity extends DrawerActivity implements TeamsLocationsMapMvpView {
 
-    @Inject StaticDrawerPresenter mPresenter;
+    @Inject TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams);
         getActivityComponent().inject(this);
-        mPresenter.attachView(this);
-        mPresenter.setupUserInfoInDrawer();
-        setupToolbarWithToggle();
+        mTeamsLocationsMapPresenter.attachView(this);
+        mTeamsLocationsMapPresenter.setupUserInfoInDrawer();
     }
 
     @Override
     protected void onDestroy() {
-        mPresenter.detachView();
+        mTeamsLocationsMapPresenter.detachView();
         super.onDestroy();
     }
 }

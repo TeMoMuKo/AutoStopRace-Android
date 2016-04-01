@@ -87,7 +87,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         getActivityComponent().inject(this);
         mMainPresenter.attachView(this);
         mLocationRecordsUpdatesSubscriptions = new CompositeSubscription();
-        setupToolbarWithToggle();
         setupRecyclerView();
         setListeners();
         if (mMainPresenter.isAuthorized()) {

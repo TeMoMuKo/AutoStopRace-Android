@@ -43,7 +43,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         mNavigationListener = new NavigationListener(this, mDrawerLayout, mNavigationView);
         mNavigationView.setNavigationItemSelectedListener(mNavigationListener);
         setupHeaderFields();
-        setupToolbar();
+        setupToolbarWithToggle();
     }
 
     @SuppressLint("RtlHardcoded")
@@ -76,12 +76,8 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         mDrawerToggle.syncState();
     }
 
-    protected void setupToolbar() {
-        setSupportActionBar(mToolbar);
-    }
-
     protected void setupToolbarWithToggle() {
-        setupToolbar();
+        setSupportActionBar(mToolbar);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
                 R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.addDrawerListener(mDrawerToggle);

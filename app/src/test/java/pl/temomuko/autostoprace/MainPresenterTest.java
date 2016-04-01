@@ -39,17 +39,17 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class MainPresenterTest {
 
-    @Mock MainMvpView mMockMainMvpView;
-    @Mock DataManager mMockDataManager;
-    @Mock ErrorHandler mMockErrorHandler;
-    @Mock PermissionHelper mMockPermissionHelper;
-    private MainPresenter mMainPresenter;
     private static final String FAKE_ERROR_MESSAGE = "fake_error_message";
     private static final String NOT_FOUND_RESPONSE =
             "{ \"status\": 404, \"error\": \"Not Found\" }}";
     private static final String UNAUTHORIZED_RESPONSE =
             "{ \"errors\": [ \"Invalid login credentials. Please try again.\" ] }";
-    private static final int FINE_LOCATION_PERMISSION_REQUEST_CODE = 1;
+
+    @Mock MainMvpView mMockMainMvpView;
+    @Mock DataManager mMockDataManager;
+    @Mock ErrorHandler mMockErrorHandler;
+    @Mock PermissionHelper mMockPermissionHelper;
+    private MainPresenter mMainPresenter;
 
     @Rule
     public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();

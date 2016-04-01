@@ -22,7 +22,6 @@ public class ContactActivity extends DrawerActivity {
         getActivityComponent().inject(this);
         mPresenter.attachView(this);
         mPresenter.setupUserInfoInDrawer();
-        setupToolbarWithToggle();
     }
 
     @Override

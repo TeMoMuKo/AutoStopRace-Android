@@ -63,7 +63,7 @@
         </activity>
 
         <activity
-            android:name=".ui.staticdata.teams.TeamsActivity"
+            android:name=".ui.teamslocationmap.TeamsLocationsMapActivity"
             android:label="@string/title_activity_teams">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

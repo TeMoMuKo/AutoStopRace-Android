@@ -18,6 +18,8 @@ public interface PostMvpView extends MvpView {
 
     void updateCurrentLocation(double latitude, double longitude);
 
+    void clearCurrentLocation();
+
     void compatRequestFineLocationPermission();
 
     void onUserResolvableLocationSettings(Status status);

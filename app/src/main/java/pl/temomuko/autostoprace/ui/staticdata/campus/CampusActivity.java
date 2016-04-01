@@ -12,7 +12,7 @@ import pl.temomuko.autostoprace.ui.staticdata.StaticDrawerPresenter;
 /**
  * Created by Szymon Kozak on 2016-02-05.
  */
-public class CampusActivity extends DrawerActivity implements DrawerMvpView {
+public class CampusActivity extends DrawerActivity {
 
     @Inject StaticDrawerPresenter mPresenter;
 
@@ -23,7 +23,6 @@ public class CampusActivity extends DrawerActivity implements DrawerMvpView {
         getActivityComponent().inject(this);
         mPresenter.attachView(this);
         mPresenter.setupUserInfoInDrawer();
-        setupToolbarWithToggle();
     }
 
     @Override
