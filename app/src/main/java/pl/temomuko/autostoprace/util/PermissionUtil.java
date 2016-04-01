@@ -10,21 +10,22 @@ import android.support.v4.app.ActivityCompat;
  */
 public final class PermissionUtil {
 
-    private static final int FINE_LOCATION_PERMISSION_REQUEST_CODE = 1;
-
     private PermissionUtil() {
         throw new AssertionError();
     }
 
-    public static void requestFineLocationPermission(Activity activity) {
+    public static void requestFineLocationPermission(Activity activity, int requestCode) {
         ActivityCompat.requestPermissions(activity,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                FINE_LOCATION_PERMISSION_REQUEST_CODE);
+                requestCode);
     }
 
-    public static boolean wasFineLocationPermissionGranted(int requestCode, int[] grantResults) {
-        return requestCode == PermissionUtil.FINE_LOCATION_PERMISSION_REQUEST_CODE &&
-                grantResults.length > 0 &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED;
+    public static boolean wasAllGranted(int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
+        }
+        return true;
     }
 }

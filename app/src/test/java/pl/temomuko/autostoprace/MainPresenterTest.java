@@ -205,7 +205,7 @@ public class MainPresenterTest {
                 .thenReturn(Observable.empty());
 
         //when
-        mMainPresenter.handlePermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
+        mMainPresenter.handleFineLocationRequestPermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
                 new int[]{PackageManager.PERMISSION_GRANTED});
 
         //then
@@ -216,7 +216,7 @@ public class MainPresenterTest {
     @Test
     public void testHandlePermissionResultDenied() throws Exception {
         //when
-        mMainPresenter.handlePermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
+        mMainPresenter.handleFineLocationRequestPermissionResult(FINE_LOCATION_PERMISSION_REQUEST_CODE,
                 new int[]{PackageManager.PERMISSION_DENIED});
 
         //then

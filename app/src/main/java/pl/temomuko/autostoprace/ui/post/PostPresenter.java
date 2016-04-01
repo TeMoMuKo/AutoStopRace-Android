@@ -144,8 +144,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         }
     }
 
-    public void handleLocationPermissionResult(int requestCode, int[] grantResults) {
-        if (PermissionUtil.wasFineLocationPermissionGranted(requestCode, grantResults)) {
+    public void handleLocationPermissionResult(boolean permissionGranted) {
+        if (permissionGranted) {
             checkLocationSettings();
         } else {
             getMvpView().finishWithInadequateSettingsWarning();

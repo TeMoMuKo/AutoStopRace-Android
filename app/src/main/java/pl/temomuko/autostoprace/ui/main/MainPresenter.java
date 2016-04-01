@@ -127,6 +127,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                 getMvpView().showInadequateSettingsWarning();
                 break;
         }
+        getMvpView().setGoToPostLocationHandled();
     }
 
     public void handleLocationSettingsDialogResult(int resultCode) {
@@ -135,6 +136,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         } else {
             getMvpView().showLocationSettingsWarning();
         }
+        getMvpView().setGoToPostLocationHandled();
     }
 
     private void handleGmsError(Throwable throwable) {
@@ -146,14 +148,16 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
             } else {
                 getMvpView().onGmsConnectionResultNoResolution(connectionResult.getErrorCode());
             }
+            getMvpView().setGoToPostLocationHandled();
         }
     }
 
-    public void handlePermissionResult(int requestCode, int[] grantResults) {
-        if (PermissionUtil.wasFineLocationPermissionGranted(requestCode, grantResults)) {
+    public void handleFineLocationRequestPermissionResult(boolean permissionGranted) {
+        if (permissionGranted) {
             checkLocationSettings();
         } else {
             getMvpView().showNoFineLocationPermissionWarning();
+            getMvpView().setGoToPostLocationHandled();
         }
     }
 

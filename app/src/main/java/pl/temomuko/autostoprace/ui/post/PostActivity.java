@@ -35,8 +35,9 @@ import pl.temomuko.autostoprace.util.PermissionUtil;
  */
 public class PostActivity extends BaseActivity implements PostMvpView {
 
-    private static final int CHECK_LOCATION_SETTINGS_REQUEST_CODE = 1;
-    private static final int UNHANDLED_REQUEST_CODE = -1;
+    private static final int REQUEST_CODE_FINE_LOCATION_PERMISSION = 0;
+    private static final int REQUEST_CODE_CHECK_LOCATION_SETTINGS = 1;
+    private static final int REQUEST_CODE_UNHANDLED = -1;
 
     @Inject PostPresenter mPostPresenter;
     @Bind(R.id.toolbar) Toolbar mToolbar;
@@ -70,12 +71,14 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        mPostPresenter.handleLocationPermissionResult(requestCode, grantResults);
+        if (requestCode == REQUEST_CODE_FINE_LOCATION_PERMISSION) {
+            mPostPresenter.handleLocationPermissionResult(PermissionUtil.wasAllGranted(grantResults));
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CHECK_LOCATION_SETTINGS_REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE_CHECK_LOCATION_SETTINGS) {
             mPostPresenter.setIsLocationSettingsStatusForResultCalled(false);
             resultCode = LocationSettingsUtil.getApiDependentResultCode(resultCode, data);
             mPostPresenter.handleLocationSettingsDialogResult(resultCode);
@@ -153,23 +156,23 @@ public class PostActivity extends BaseActivity implements PostMvpView {
 
     @Override
     public void onUserResolvableLocationSettings(Status status) {
-        IntentUtil.startGmsStatusForResolution(this, status, CHECK_LOCATION_SETTINGS_REQUEST_CODE);
+        IntentUtil.startGmsStatusForResolution(this, status, REQUEST_CODE_CHECK_LOCATION_SETTINGS);
         mPostPresenter.setIsLocationSettingsStatusForResultCalled(true);
     }
 
     @Override
     public void onGmsConnectionResultResolutionRequired(ConnectionResult connectionResult) {
-        IntentUtil.startGmsConnectionResultForResolution(this, connectionResult, UNHANDLED_REQUEST_CODE);
+        IntentUtil.startGmsConnectionResultForResolution(this, connectionResult, REQUEST_CODE_UNHANDLED);
     }
 
     @Override
     public void onGmsConnectionResultNoResolution(int errorCode) {
-        GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, UNHANDLED_REQUEST_CODE).show();
+        GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, REQUEST_CODE_UNHANDLED).show();
     }
 
     @Override
     public void compatRequestFineLocationPermission() {
-        PermissionUtil.requestFineLocationPermission(this);
+        PermissionUtil.requestFineLocationPermission(this, REQUEST_CODE_FINE_LOCATION_PERMISSION);
     }
 
     @Override

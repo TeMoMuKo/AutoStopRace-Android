@@ -1,6 +1,7 @@
 package pl.temomuko.autostoprace.ui.main.adapter;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,19 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     public LocationRecordsAdapter(@AppContext Context context) {
         mSortedLocationRecordItems = new ArrayList<>();
         mAppContext = context;
+    }
+
+    public Parcelable[] onSaveInstanceState() {
+        return mSortedLocationRecordItems.toArray(
+                new LocationRecordItem[mSortedLocationRecordItems.size()]);
+    }
+
+    public void onRestoreInstanceState(Parcelable[] parcelables) {
+        List<LocationRecordItem> locationRecordItems = new ArrayList<>(parcelables.length);
+        for (Parcelable parcelable : parcelables) {
+            locationRecordItems.add((LocationRecordItem) parcelable);
+        }
+        setSortedLocationRecordItems(locationRecordItems);
     }
 
     public void setSortedLocationRecordItems(List<LocationRecordItem> newSortedLocationRecordItems) {
