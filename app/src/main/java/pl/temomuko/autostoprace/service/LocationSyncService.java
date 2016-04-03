@@ -116,7 +116,7 @@ public class LocationSyncService extends Service {
         if (mRefreshSubscription != null && !mRefreshSubscription.isUnsubscribed()) {
             mRefreshSubscription.unsubscribe();
         }
-        mRefreshSubscription = mDataManager.getTeamLocationRecordsFromServer()
+        mRefreshSubscription = mDataManager.getUserTeamLocationRecordsFromServer()
                 .flatMap(HttpStatus::requireOk)
                 .map(Response::body)
                 .flatMap(mDataManager::saveToDatabase)

@@ -84,7 +84,7 @@ public class DataManagerTest {
         Observable<Response<List<LocationRecord>>> expectedObservable =
                 mMockAsrService.getLocationRecords(mMockPrefsHelper.getCurrentUser().getTeamId());
         Observable<Response<List<LocationRecord>>> actualObservable =
-                mDataManager.getTeamLocationRecordsFromServer();
+                mDataManager.getUserTeamLocationRecordsFromServer();
         //assert
         assertEquals(expectedObservable, actualObservable);
     }

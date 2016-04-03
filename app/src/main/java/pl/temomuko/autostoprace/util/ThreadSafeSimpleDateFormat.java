@@ -22,7 +22,7 @@ public class ThreadSafeSimpleDateFormat {
         };
     }
 
-    public String formatDate(Date date) {
+    public String format(Date date) {
         return mSimpleDateFormatThreadLocal.get().format(date);
     }
 

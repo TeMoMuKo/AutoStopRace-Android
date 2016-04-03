@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_location_record_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Jesteśmy w Monachium!"
+        android:textSize="16sp"
+        android:textColor="@color/primary_text_standard"/>
+
+    <TextView
+        android:id="@+id/tv_location_record_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary_text_standard"
+        tools:text="2.04.2015 15:04"/>
+
+</LinearLayout>

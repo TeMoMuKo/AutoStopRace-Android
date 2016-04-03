@@ -1,9 +1,11 @@
 .gradle
 .idea/
 *.iml
+google_maps_api.xml
 build/
 /secrets.properties
 /local.properties
+/app/fabric.properties
+/app/build
 .DS_Store
-/build
 /captures

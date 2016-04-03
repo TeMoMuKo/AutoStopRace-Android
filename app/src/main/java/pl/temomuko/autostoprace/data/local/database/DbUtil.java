@@ -47,6 +47,6 @@ public final class DbUtil {
     }
 
     public static String formatDate(Date date) {
-        return sThreadSafeSimpleDateFormat.formatDate(date);
+        return sThreadSafeSimpleDateFormat.format(date);
     }
 }

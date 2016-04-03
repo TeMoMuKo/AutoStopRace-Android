@@ -81,8 +81,12 @@ public class DataManager {
         return mAsrService.resetPassword(email, Constants.API_RESET_PASS_REDIRECT_URL);
     }
 
-    public Observable<Response<List<LocationRecord>>> getTeamLocationRecordsFromServer() {
+    public Observable<Response<List<LocationRecord>>> getUserTeamLocationRecordsFromServer() {
         return mAsrService.getLocationRecords(mPrefsHelper.getCurrentUser().getTeamId());
+    }
+
+    public Observable<Response<List<LocationRecord>>> getTeamLocationRecordsFromServer(int teamId) {
+        return mAsrService.getLocationRecords(teamId);
     }
 
     public Observable<Response<LocationRecord>> postLocationRecordToServer(LocationRecord locationRecord) {
