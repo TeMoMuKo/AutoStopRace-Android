@@ -7,5 +7,6 @@ build/
 /local.properties
 /app/fabric.properties
 /app/build
+*.apk
 .DS_Store
 /captures
