@@ -88,4 +88,6 @@
     <string name="hint_enter_team_number">Numer drużyny...</string>
     <string name="msg_last_location_record_message">Ostatnia wiadomość:</string>
     <string name="msg_last_location_record_received">Ostatnie zameldowanie:</string>
+    <string name="msg_processing_request">Czekaj, Trwa przetwarzanie żądania...</string>
+    <string name="input_email_for_reset">Podaj adres email, na który zarejestrowane jest konto</string>
 </resources>
