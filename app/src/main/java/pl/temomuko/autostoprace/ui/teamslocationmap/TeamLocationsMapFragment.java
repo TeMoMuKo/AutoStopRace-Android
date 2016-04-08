@@ -27,7 +27,6 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.teamslocationmap.adapter.LocationRecordClusterItem;
 import pl.temomuko.autostoprace.ui.teamslocationmap.adapter.LocationRecordClusterRenderer;
 import pl.temomuko.autostoprace.ui.teamslocationmap.adapter.TeamLocationInfoWindowAdapter;
-import pl.temomuko.autostoprace.ui.teamslocations.LoadGivenTeam;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -35,7 +34,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Rafał Naniewicz on 02.04.2016.
  */
-public class TeamLocationsMapFragment extends Fragment implements TeamLocationsMapMvpView, OnMapReadyCallback, LoadGivenTeam {
+public class TeamLocationsMapFragment extends Fragment implements TeamLocationsMapMvpView, OnMapReadyCallback {
 
     @Bind(R.id.map_view) MapView mMapView;
     @Inject TeamLocationInfoWindowAdapter mTeamsLocationInfoWindowAdapter;
@@ -159,7 +158,6 @@ public class TeamLocationsMapFragment extends Fragment implements TeamLocationsM
 
     /*Load Given Teams methods*/
 
-    @Override
     public void display(int teamId) {
         mTeamLocationsMapPresenter.loadTeam(teamId);
     }
