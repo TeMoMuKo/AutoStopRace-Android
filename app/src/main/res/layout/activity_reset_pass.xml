@@ -58,6 +58,30 @@
                     android:textColor="@android:color/white"
                     android:theme="@style/LoginButton"/>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:orientation="horizontal">
+
+                    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                        android:id="@+id/mpb_progress_info"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="@dimen/default_margin_quarter"
+                        android:visibility="gone"
+                        android:layout_marginRight="@dimen/default_margin"
+                        app:mpb_progressStyle="circular"/>
+
+                    <TextView
+                        android:text="@string/input_email_for_reset"
+                        android:id="@+id/tv_progress_info"
+                        android:layout_width="match_parent"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>

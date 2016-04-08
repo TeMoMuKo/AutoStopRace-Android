@@ -75,6 +75,7 @@ public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
     }
 
     private void continueCachedRequest() {
+        getMvpView().setProgress(true);
         mSubscription = mRxResetCacheHelper.getRestoredCachedObservable()
                 .subscribe(response -> {
                     clearCurrentRequestObservable();

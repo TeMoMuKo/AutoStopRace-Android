@@ -3,19 +3,19 @@ package pl.temomuko.autostoprace.ui.login.resetpass;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;
-import pl.temomuko.autostoprace.util.DialogFactory;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 
 /**
@@ -31,7 +31,8 @@ public class ResetPassActivity extends BaseActivity implements ResetPassMvpView 
     @Bind(R.id.til_email) TextInputLayout mEmailTextInputLayout;
     @Bind(R.id.et_email) EditText mEmailEditText;
     @Bind(R.id.btn_reset) Button mResetButton;
-    private MaterialDialog mProgressDialog;
+    @Bind(R.id.tv_progress_info) TextView mProgressInfoTextView;
+    @Bind(R.id.mpb_progress_info) MaterialProgressBar mProgressCircle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,30 +41,9 @@ public class ResetPassActivity extends BaseActivity implements ResetPassMvpView 
         getActivityComponent().inject(this);
         mResetPassPresenter.setupRxCacheHelper(this, RxCacheHelper.get(TAG));
         mResetPassPresenter.attachView(this);
-        createProgressDialog();
-        loadProgressDialogState(savedInstanceState);
         setupToolbarWithBack();
         setupEmailTextView();
         setListeners();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        saveProgressDialogState(outState);
-        super.onSaveInstanceState(outState);
-    }
-
-    private void saveProgressDialogState(Bundle outState) {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-            outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, true);
-        } else {
-            outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, false);
-        }
-    }
-
-    private void createProgressDialog() {
-        mProgressDialog = DialogFactory.createResetPassProcessDialog(this, mResetPassPresenter);
     }
 
     private void setListeners() {
@@ -77,14 +57,6 @@ public class ResetPassActivity extends BaseActivity implements ResetPassMvpView 
         String email = getIntent().getStringExtra(LoginActivity.EXTRA_EMAIL);
         mEmailEditText.setText(email);
         mEmailEditText.setSelection(email.length());
-    }
-
-    private void loadProgressDialogState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            if (savedInstanceState.getBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN)) {
-                mProgressDialog.show();
-            }
-        }
     }
 
     private void setupToolbarWithBack() {
@@ -109,8 +81,12 @@ public class ResetPassActivity extends BaseActivity implements ResetPassMvpView 
 
     @Override
     public void setProgress(boolean state) {
-        if (state) mProgressDialog.show();
-        else mProgressDialog.dismiss();
+        mProgressInfoTextView.setText(state ?
+                getString(R.string.msg_processing_request) :
+                getString(R.string.input_email_for_reset));
+        mResetButton.setEnabled(!state);
+        mResetButton.setActivated(!state);
+        mProgressCircle.setVisibility(state ? View.VISIBLE : View.GONE);
     }
 
     public void setInvalidEmailValidationError(boolean state) {
