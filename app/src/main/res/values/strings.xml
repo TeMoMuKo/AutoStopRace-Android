@@ -90,4 +90,6 @@
     <string name="msg_last_location_record_received">Ostatnie zameldowanie:</string>
     <string name="msg_processing_request">Czekaj, Trwa przetwarzanie żądania...</string>
     <string name="input_email_for_reset">Podaj adres email, na który zarejestrowane jest konto</string>
+    <string name="action_change_lang">Zmień język</string>
+    <string name="dest_lang">Język docelowy:</string>
 </resources>

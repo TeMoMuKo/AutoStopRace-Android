@@ -9,35 +9,77 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.staticdata.schedule.ScheduleActivity">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/cl_root"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="0dp">
+
+            <include layout="@layout/toolbar"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/cl_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.AppBarOverlay">
 
-                <include layout="@layout/toolbar"/>
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|enterAlways|snap">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="?attr/actionBarSize"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/default_margin"
+                        android:paddingLeft="@dimen/default_margin"
+                        android:paddingRight="@dimen/default_margin_halved"
+                        android:paddingTop="@dimen/default_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dest_lang"/>
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/spinner_lang"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+                    </RelativeLayout>
+
+                </android.support.design.widget.CollapsingToolbarLayout>
 
             </android.support.design.widget.AppBarLayout>
 
-            <TextView
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:text="@string/title_activity_phrasebook"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_phrasebook"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        </LinearLayout>
+        </android.support.design.widget.CoordinatorLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"

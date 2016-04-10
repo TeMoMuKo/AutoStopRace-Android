@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
+import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
 import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
@@ -23,6 +24,7 @@ import pl.temomuko.autostoprace.data.model.ResetPassResponse;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
+import pl.temomuko.autostoprace.data.model.Phrasebook;
 import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import retrofit2.Response;
@@ -42,17 +44,19 @@ public class DataManager {
     private GmsLocationHelper mGmsLocationHelper;
     private PermissionHelper mPermissionHelper;
     private GeocodingHelper mGeocodingHelper;
+    private PhrasebookHelper mPhrasebookHelper;
 
     @Inject
     public DataManager(AsrService asrService, PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
                        GmsLocationHelper gmsLocationHelper, PermissionHelper permissionHelper,
-                       GeocodingHelper geocodingHelper) {
+                       GeocodingHelper geocodingHelper, PhrasebookHelper phrasebookHelper) {
         mAsrService = asrService;
         mPrefsHelper = prefsHelper;
         mDatabaseHelper = databaseHelper;
         mGmsLocationHelper = gmsLocationHelper;
         mPermissionHelper = permissionHelper;
         mGeocodingHelper = geocodingHelper;
+        mPhrasebookHelper = phrasebookHelper;
     }
 
     /* API  */
@@ -98,7 +102,8 @@ public class DataManager {
         );
     }
 
-    /* Database + prefs */
+    /* Database / Prefs / Phrasebook */
+
     public Observable<Void> saveToDatabase(List<LocationRecord> response) {
         return mDatabaseHelper.saveToSentLocationsTable(response);
     }
@@ -136,6 +141,18 @@ public class DataManager {
 
     public User getCurrentUser() {
         return mPrefsHelper.getCurrentUser();
+    }
+
+    public Observable<Phrasebook> getPhrasebook() {
+        return mPhrasebookHelper.getPhrasebook();
+    }
+
+    public int getCurrentPhrasebookLanguagePosition() {
+        return mPrefsHelper.getCurrentPhrasebookLanguagePosition();
+    }
+
+    public void saveCurrentPhrasebookLanguagePosition(int languagePosition) {
+        mPrefsHelper.setCurrentPhrasebookLanguagePosition(languagePosition);
     }
 
     /* Location */

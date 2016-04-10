@@ -138,8 +138,9 @@ public interface AsrService {
 
         private static HttpLoggingInterceptor getLoggingInterceptor() {
             return new HttpLoggingInterceptor()
-                    .setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
-                            : HttpLoggingInterceptor.Level.NONE);
+                    .setLevel(BuildConfig.DEBUG ?
+                            HttpLoggingInterceptor.Level.BODY :
+                            HttpLoggingInterceptor.Level.NONE);
         }
     }
 }

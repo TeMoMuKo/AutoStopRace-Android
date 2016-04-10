@@ -68,7 +68,6 @@ public class TeamsLocationsActivity extends DrawerActivity implements TeamsLocat
         super.onDestroy();
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -100,10 +99,10 @@ public class TeamsLocationsActivity extends DrawerActivity implements TeamsLocat
     public void setLocations(@NonNull List<LocationRecord> locationRecords) {
         mSubscriptions.clear();
         mSubscriptions.add(Observable.from(locationRecords)
-                        .map(LocationRecordClusterItem::new)
-                        .toList()
-                        .compose(RxUtil.applyComputationSchedulers())
-                        .subscribe(this::handleLocationsToSet)
+                .map(LocationRecordClusterItem::new)
+                .toList()
+                .compose(RxUtil.applyComputationSchedulers())
+                .subscribe(this::handleLocationsToSet)
         );
     }
 

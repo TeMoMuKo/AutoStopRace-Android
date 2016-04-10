@@ -70,6 +70,7 @@ public class ResetPassPresenterTest {
 
     @Test
     public void testResetPassSuccess() throws Exception {
+        //TODO: fix test
         //given
         ResetPassResponse resetResponse = new ResetPassResponse();
         resetResponse.setUser(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
@@ -92,6 +93,7 @@ public class ResetPassPresenterTest {
 
     @Test
     public void testResetPassFails() throws Exception {
+        //TODO: fix test
         //given
         Response<ResetPassResponse> response = Response.error(HttpStatus.NOT_FOUND,
                 ResponseBody.create(

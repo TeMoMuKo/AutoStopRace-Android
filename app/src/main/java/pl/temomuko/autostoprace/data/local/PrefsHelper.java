@@ -29,6 +29,7 @@ public class PrefsHelper {
     public final static String PREF_AUTH_CLIENT = "auth_client";
     public final static String PREF_AUTH_UID = "auth_uid";
     private static final String PREF_CURRENT_USER_JSON = "pref_current_user_json";
+    public static final String PREF_CURRENT_PHRASEBOOK_LANGUAGE = "pref_current_phrasebook_language";
     public final static String PREF_LOGOUT = "pref_logout";
 
     private SharedPreferences mPrefs;
@@ -86,5 +87,13 @@ public class PrefsHelper {
     public User getCurrentUser() throws JsonSyntaxException {
         String userJson = mPrefs.getString(PREF_CURRENT_USER_JSON, "");
         return new Gson().fromJson(userJson, User.class);
+    }
+
+    public void setCurrentPhrasebookLanguagePosition(int languagePosition) {
+        mPrefs.edit().putInt(PREF_CURRENT_PHRASEBOOK_LANGUAGE, languagePosition).apply();
+    }
+
+    public int getCurrentPhrasebookLanguagePosition() {
+        return mPrefs.getInt(PREF_CURRENT_PHRASEBOOK_LANGUAGE, Constants.DEFAULT_FOREIGN_LANG_SPINNER_POSITION);
     }
 }
