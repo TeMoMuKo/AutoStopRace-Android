@@ -1,0 +1,8 @@
+<resources>
+
+    <!-- Spinner padding fix on api v23 -->
+    <style name="Widget.Spinner" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/spinner_background_material</item>
+    </style>
+
+</resources>

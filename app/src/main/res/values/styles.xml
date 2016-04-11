@@ -50,6 +50,8 @@
         <item name="android:textColor">@color/secondary_text_standard</item>
     </style>
 
+    <style name="Widget.Spinner" parent="Widget.AppCompat.Spinner"/>
+
     <style name="Theme.Translucent.Status" parent="AppTheme.Base"/>
 
 </resources>

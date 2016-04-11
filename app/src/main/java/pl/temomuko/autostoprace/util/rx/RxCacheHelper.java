@@ -17,6 +17,7 @@ import rx.Observable;
 /**
  * Helps keep any request observable
  * to continue it after configuration change
+ * @param <T> content of observable
  */
 public class RxCacheHelper<T> {
 
@@ -96,6 +97,7 @@ public class RxCacheHelper<T> {
     public void clearCache() {
         mRetainedFragment.clearCurrentObservable();
     }
+
 
     public boolean isCached() {
         return mRetainedFragment.getCurrentObservable() != null;
