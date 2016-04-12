@@ -67,7 +67,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Inject MainPresenter mMainPresenter;
     @Inject LocationRecordsAdapter mLocationRecordsAdapter;
     @Inject VerticalDividerItemDecoration mVerticalDividerItemDecoration;
-    @Bind(R.id.horizontal_progress_toolbar) MaterialProgressBar mMaterialProgressBar;
+    @Bind(R.id.horizontal_progress_bar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.tv_empty_info) TextView mEmptyInfoTextView;

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/ic_search"
+        android:title="@string/find_team"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/team_asr"
+        android:title="@string/menu_team_asr"
+        app:showAsAction="never"/>
 </menu>

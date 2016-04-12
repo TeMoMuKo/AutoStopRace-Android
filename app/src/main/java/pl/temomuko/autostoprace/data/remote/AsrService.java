@@ -42,7 +42,7 @@ import rx.Observable;
 public interface AsrService {
 
     @GET("teams")
-    Observable<Response<List<Team>>> getTeams();
+    Observable<Response<List<Team>>> getAllTeams();
 
     @GET("teams/{team_id}")
     Observable<Response<Team>> getTeam(@Path("team_id") int teamId);

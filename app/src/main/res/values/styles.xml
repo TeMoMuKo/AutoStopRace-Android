@@ -52,4 +52,8 @@
 
     <style name="Theme.Translucent.Status" parent="AppTheme.Base"/>
 
+    <style name="ToolbarAutocompleteTextView" parent="AppTheme.Base">
+        <item name="android:textColorHint">@color/hint_light_text_standard</item>
+    </style>
+
 </resources>
