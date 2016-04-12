@@ -50,10 +50,18 @@
         <item name="android:textColor">@color/secondary_text_standard</item>
     </style>
 
+    <style name="Widget.Spinner" parent="Widget.AppCompat.Spinner"/>
+
     <style name="Theme.Translucent.Status" parent="AppTheme.Base"/>
 
     <style name="ToolbarAutocompleteTextView" parent="AppTheme.Base">
         <item name="android:textColorHint">@color/hint_light_text_standard</item>
+    </style>
+
+    <style name="Widget.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="searchHintIcon">@null</item>
+        <item name="queryBackground">@null</item>
+        <item name="submitBackground">@null</item>
     </style>
 
 </resources>

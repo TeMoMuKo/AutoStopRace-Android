@@ -133,10 +133,10 @@ public class TeamLocationsMapFragment extends Fragment implements TeamLocationsM
     public void setLocations(@NonNull List<LocationRecord> locationRecords) {
         mSubscriptions.clear();
         mSubscriptions.add(Observable.from(locationRecords)
-                        .map(LocationRecordClusterItem::new)
-                        .toList()
-                        .compose(RxUtil.applyComputationSchedulers())
-                        .subscribe(this::handleLocationsToSet)
+                .map(LocationRecordClusterItem::new)
+                .toList()
+                .compose(RxUtil.applyComputationSchedulers())
+                .subscribe(this::handleLocationsToSet)
         );
     }
 

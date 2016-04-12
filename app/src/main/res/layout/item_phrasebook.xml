@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_margin">
+
+        <ImageView
+            android:id="@+id/iv_translation"
+            android:layout_width="24dp"
+            android:alpha="0.80"
+            tools:src="@drawable/ic_message_black_24dp"
+            android:layout_height="24dp"/>
+
+        <TextView
+            android:paddingTop="2dp"
+            android:id="@+id/tv_phrase"
+            tools:text="Cześć, witaj!"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f5f5f5"
+        android:padding="@dimen/default_margin">
+
+        <TextView
+            tools:text="Hi, hello!"
+            android:id="@+id/tv_translation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"/>
+
+    </LinearLayout>
+
+</LinearLayout>

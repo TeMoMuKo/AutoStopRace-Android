@@ -93,4 +93,8 @@
     <string name="input_email_for_reset">Podaj adres email, na który zarejestrowane jest konto</string>
     <string name="menu_team_asr">Team ASR</string>
     <string name="find_team">Znajdź team</string>
+    <string name="action_change_lang">Zmień język</string>
+    <string name="dest_lang">Język docelowy:</string>
+    <string name="search">Szukaj</string>
+>>>>>>> ac67aa46646b4e89fa349d95fca86f459aa93197
 </resources>

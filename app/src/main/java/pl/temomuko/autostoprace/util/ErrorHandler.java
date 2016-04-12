@@ -33,13 +33,13 @@ public class ErrorHandler {
 
     public String getMessage(Throwable throwable) {
         if (throwable instanceof StandardResponseException) {
-            return getMessageFromResponse(((StandardResponseException) throwable).getResponse());
+            return getMessageFromHttpResponse(((StandardResponseException) throwable).getResponse());
         } else {
             return getMessageFromRetrofitThrowable(throwable);
         }
     }
 
-    private String getMessageFromResponse(Response<?> response) {
+    private String getMessageFromHttpResponse(Response<?> response) {
         ApiError apiError = new ApiError(response);
         switch (apiError.getStatus()) {
             case HttpStatus.NOT_FOUND:
