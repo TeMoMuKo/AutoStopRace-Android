@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,20 +27,59 @@ import pl.temomuko.autostoprace.injection.ActivityContext;
 /**
  * Created by Szymon Kozak on 2016-04-09.
  */
-public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.ViewHolder> {
+public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.ViewHolder> implements Filterable {
 
+    private int mLanguagePosition = Constants.DEFAULT_FOREIGN_LANG_SPINNER_POSITION;
     private Context mContext;
     private List<Phrasebook.Item> mPhrasebookItems;
-    private int mLanguagePosition = Constants.DEFAULT_FOREIGN_LANG_SPINNER_POSITION;
+    private List<Phrasebook.Item> mAllPhrasebookItems;
+    private Filter mFilter;
 
     @Inject
     public PhrasebookAdapter(@ActivityContext Context context) {
         mContext = context;
         mPhrasebookItems = new ArrayList<>();
+        setupFilter();
+    }
+
+    private void setupFilter() {
+        mFilter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                if(constraint != null && constraint.length() > 0) {
+                    List<Phrasebook.Item> filteredItems = collectFilteredItems(constraint);
+                    results.values = filteredItems;
+                    results.count = filteredItems.size();
+                } else {
+                    results.values = mAllPhrasebookItems;
+                    results.count = mAllPhrasebookItems.size();
+                }
+                return results;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mPhrasebookItems = (List<Phrasebook.Item>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    private List<Phrasebook.Item> collectFilteredItems(CharSequence constraint) {
+        List<Phrasebook.Item> filteredItems = new ArrayList<>();
+        for(Phrasebook.Item item : mAllPhrasebookItems) {
+            String originalPhrase = item.getOriginalPhrase().toLowerCase();
+            String actualPhrase = constraint.toString().toLowerCase();
+            if(originalPhrase.contains(actualPhrase)) filteredItems.add(item);
+        }
+        return filteredItems;
     }
 
     public void setPhrasebookItems(List<Phrasebook.Item> phrasebookItems) {
         mPhrasebookItems = phrasebookItems;
+        mAllPhrasebookItems = mPhrasebookItems;
     }
 
     public void setLanguagePosition(int languagePosition) {
@@ -69,6 +110,16 @@ public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.Vi
     @Override
     public int getItemCount() {
         return mPhrasebookItems.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+    public void clearFilter() {
+        setPhrasebookItems(mAllPhrasebookItems);
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
