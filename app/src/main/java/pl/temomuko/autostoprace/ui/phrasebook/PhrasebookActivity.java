@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.Phrasebook;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
@@ -33,14 +35,19 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpView {
 
+    public static final String BUNDLE_SEARCH_QUERY = "search_query";
+    private static final boolean SUBMIT_QUERY = true;
     @Inject PhrasebookPresenter mPhrasebookPresenter;
-    @Inject PhrasebookAdapter mPhrasebookAdapter;
     @Inject VerticalDividerItemDecoration mVerticalDividerItemDecoration;
     @Bind(R.id.rv_phrasebook) RecyclerView mPhrasebookRecyclerView;
     @Bind(R.id.spinner_lang) AppCompatSpinner mLangSpinner;
+    @Bind(R.id.tv_empty) TextView mEmptyResultsTextView;
+    private PhrasebookAdapter mPhrasebookAdapter;
     private SearchView mSearchView;
     private ArrayAdapter<CharSequence> mLangSpinnerAdapter;
     private Subscription mSearchViewBindingSubscription;
+    private String mLastSearchQuery;
+    private MenuItem mSearchItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,40 +59,62 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
         setupSpinner();
         setupRecyclerView();
         mPhrasebookPresenter.loadPhrasebook();
+        loadLastSearchQuery(savedInstanceState);
     }
 
     @Override
     protected void onDestroy() {
         mPhrasebookPresenter.detachView();
-        if(mSearchViewBindingSubscription != null) mSearchViewBindingSubscription.unsubscribe();
+        if (mSearchViewBindingSubscription != null) mSearchViewBindingSubscription.unsubscribe();
         super.onDestroy();
+    }
+
+    private void loadLastSearchQuery(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mLastSearchQuery = savedInstanceState.getString(BUNDLE_SEARCH_QUERY);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        saveLastSearchQuery(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    private void saveLastSearchQuery(Bundle outState) {
+        if (mSearchItem.isActionViewExpanded()) {
+            outState.putString(BUNDLE_SEARCH_QUERY, mSearchView.getQuery().toString());
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_phrasebook, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        setupSearchView();
+        setupSearchView(menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void setupSearchView(Menu menu) {
+        mSearchItem = menu.findItem(R.id.action_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
+        mSearchView.setQueryHint(getString(R.string.search_hint));
+        mSearchView.setMaxWidth(Integer.MAX_VALUE);
+        if (mLastSearchQuery != null) {
+            mSearchItem.expandActionView();
+            mSearchView.setQuery(mLastSearchQuery, SUBMIT_QUERY);
+            filterPhrases(mLastSearchQuery);
+        }
+        setupSearchBinding();
+    }
 
-    private void setupSearchView() {
+    private void setupSearchBinding() {
         mSearchViewBindingSubscription = RxSearchView.queryTextChanges(mSearchView)
-                .debounce(300, TimeUnit.MILLISECONDS)
+                .skip(1)
+                .debounce(Constants.PHRASEBOOK_FILTER_DEBOUNCE, TimeUnit.MILLISECONDS)
                 .map(CharSequence::toString)
                 .map(String::trim)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::handleSearchQuery);
-    }
-
-    private void handleSearchQuery(String query) {
-        if(query.length() > 0) {
-            mPhrasebookAdapter.getFilter().filter(query);
-        } else {
-            mPhrasebookAdapter.clearFilter();
-        }
+                .subscribe(mPhrasebookPresenter::handleSearchQuery);
     }
 
     private void setupSpinner() {
@@ -97,8 +126,13 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
     private void setupRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mPhrasebookRecyclerView.setLayoutManager(linearLayoutManager);
+        mPhrasebookAdapter = new PhrasebookAdapter(this, this::setEmptyInfoVisible);
         mPhrasebookRecyclerView.setAdapter(mPhrasebookAdapter);
         mPhrasebookRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
+    }
+
+    private void setEmptyInfoVisible(boolean state) {
+        mEmptyResultsTextView.setVisibility(state ? View.VISIBLE : View.INVISIBLE);
     }
 
     /* MVP View methods */
@@ -106,7 +140,7 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
     @Override
     public void updatePhrasebookData(int languagePosition, List<Phrasebook.Item> phraseItems) {
         mPhrasebookAdapter.setLanguagePosition(languagePosition);
-        mPhrasebookAdapter.setPhrasebookItems(phraseItems);
+        mPhrasebookAdapter.setActualPhrasebookItems(phraseItems);
         mPhrasebookAdapter.notifyDataSetChanged();
     }
 
@@ -133,5 +167,16 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
         mPhrasebookPresenter.saveCurrentLanguagePosition(position);
         mPhrasebookAdapter.setLanguagePosition(position);
         mPhrasebookAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void filterPhrases(String query) {
+        mPhrasebookAdapter.getFilter().filter(query);
+    }
+
+    @Override
+    public void clearPhrasesFilter() {
+        setEmptyInfoVisible(false);
+        mPhrasebookAdapter.clearFilter();
     }
 }

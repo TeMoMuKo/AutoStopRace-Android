@@ -12,17 +12,15 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.Phrasebook;
-import pl.temomuko.autostoprace.injection.ActivityContext;
 
 /**
  * Created by Szymon Kozak on 2016-04-09.
@@ -31,55 +29,21 @@ public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.Vi
 
     private int mLanguagePosition = Constants.DEFAULT_FOREIGN_LANG_SPINNER_POSITION;
     private Context mContext;
-    private List<Phrasebook.Item> mPhrasebookItems;
+    private OnIsEmptyResultsListener mOnIsEmptyResultsListener;
+    private List<Phrasebook.Item> mActualPhrasebookItems;
     private List<Phrasebook.Item> mAllPhrasebookItems;
     private Filter mFilter;
 
-    @Inject
-    public PhrasebookAdapter(@ActivityContext Context context) {
+    public PhrasebookAdapter(Context context, OnIsEmptyResultsListener onIsEmptyResultsListener) {
         mContext = context;
-        mPhrasebookItems = new ArrayList<>();
+        mOnIsEmptyResultsListener = onIsEmptyResultsListener;
+        mActualPhrasebookItems = new ArrayList<>();
         setupFilter();
     }
 
-    private void setupFilter() {
-        mFilter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults results = new FilterResults();
-                if(constraint != null && constraint.length() > 0) {
-                    List<Phrasebook.Item> filteredItems = collectFilteredItems(constraint);
-                    results.values = filteredItems;
-                    results.count = filteredItems.size();
-                } else {
-                    results.values = mAllPhrasebookItems;
-                    results.count = mAllPhrasebookItems.size();
-                }
-                return results;
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                mPhrasebookItems = (List<Phrasebook.Item>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
-    private List<Phrasebook.Item> collectFilteredItems(CharSequence constraint) {
-        List<Phrasebook.Item> filteredItems = new ArrayList<>();
-        for(Phrasebook.Item item : mAllPhrasebookItems) {
-            String originalPhrase = item.getOriginalPhrase().toLowerCase();
-            String actualPhrase = constraint.toString().toLowerCase();
-            if(originalPhrase.contains(actualPhrase)) filteredItems.add(item);
-        }
-        return filteredItems;
-    }
-
-    public void setPhrasebookItems(List<Phrasebook.Item> phrasebookItems) {
-        mPhrasebookItems = phrasebookItems;
-        mAllPhrasebookItems = mPhrasebookItems;
+    public void setActualPhrasebookItems(List<Phrasebook.Item> actualPhrasebookItems) {
+        mActualPhrasebookItems = actualPhrasebookItems;
+        mAllPhrasebookItems = mActualPhrasebookItems;
     }
 
     public void setLanguagePosition(int languagePosition) {
@@ -94,7 +58,7 @@ public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Phrasebook.Item phraseItem = mPhrasebookItems.get(position);
+        Phrasebook.Item phraseItem = mActualPhrasebookItems.get(position);
         holder.mPhraseTextView.setText(phraseItem.getOriginalPhrase());
         holder.mTranslationTextView.setText(phraseItem.getTranslation(mLanguagePosition));
         setupMessageIcon(holder);
@@ -109,7 +73,7 @@ public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return mPhrasebookItems.size();
+        return mActualPhrasebookItems.size();
     }
 
     @Override
@@ -118,8 +82,50 @@ public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.Vi
     }
 
     public void clearFilter() {
-        setPhrasebookItems(mAllPhrasebookItems);
+        setActualPhrasebookItems(mAllPhrasebookItems);
         notifyDataSetChanged();
+    }
+
+    private void setupFilter() {
+        mFilter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                if (constraint != null && constraint.length() > 0) {
+                    List<Phrasebook.Item> filteredItems = collectFilteredItems(constraint);
+                    results.values = filteredItems;
+                    results.count = filteredItems.size();
+                } else {
+                    results.values = mAllPhrasebookItems;
+                    results.count = mAllPhrasebookItems.size();
+                }
+                return results;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mActualPhrasebookItems = (List<Phrasebook.Item>) results.values;
+                mOnIsEmptyResultsListener.onIsEmptyResults(results.count == 0);
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    private List<Phrasebook.Item> collectFilteredItems(CharSequence constraint) {
+        List<Phrasebook.Item> filteredItems = new ArrayList<>();
+        for (Phrasebook.Item item : mAllPhrasebookItems) {
+            String originalPhrase = normalize(item.getOriginalPhrase().toLowerCase());
+            String actualPhrase = normalize(constraint.toString().toLowerCase());
+            if (originalPhrase.contains(actualPhrase)) filteredItems.add(item);
+        }
+        return filteredItems;
+    }
+
+    public String normalize(String query) {
+        query = Normalizer.normalize(query, Normalizer.Form.NFD);
+        query = query.replaceAll("[łŁ]", "l"); //fix normalizer bug.
+        return query.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

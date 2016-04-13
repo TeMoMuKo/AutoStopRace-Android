@@ -93,4 +93,6 @@
     <string name="action_change_lang">Zmień język</string>
     <string name="dest_lang">Język docelowy:</string>
     <string name="search">Szukaj</string>
+    <string name="search_hint">Szukane wyrażenie...</string>
+    <string name="no_results">Brak wyników.</string>
 </resources>

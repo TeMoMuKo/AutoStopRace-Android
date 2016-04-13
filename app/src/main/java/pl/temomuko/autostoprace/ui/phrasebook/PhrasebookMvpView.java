@@ -13,4 +13,8 @@ public interface PhrasebookMvpView extends DrawerMvpView {
     void updateSpinner(int languagePosition, Phrasebook.LanguagesHeader languagesHeader);
 
     void updatePhrasebookData(int languagePosition, List<Phrasebook.Item> translationItems);
+
+    void clearPhrasesFilter();
+
+    void filterPhrases(String query);
 }

@@ -29,15 +29,6 @@
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                <!--<android.support.v7.widget.SearchView-->
-                    <!--android:id="@+id/search_view"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:imeOptions="actionSearch|flagNoExtractUi"-->
-                    <!--android:theme="@style/Widget.SearchView"-->
-                    <!--android:layout_height="wrap_content">-->
-
-                <!--</android.support.v7.widget.SearchView>-->
-
             </android.support.v7.widget.Toolbar>
 
 
@@ -80,6 +71,14 @@
                 </RelativeLayout>
 
             </android.support.design.widget.AppBarLayout>
+
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="match_parent"
+                android:text="@string/no_results"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:layout_height="match_parent"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_phrasebook"

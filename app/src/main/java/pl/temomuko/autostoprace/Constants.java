@@ -16,28 +16,29 @@ public final class Constants {
     public static final String DEFAULT_LOCALE = "pl";
 
     public final static String API_BASE_URL = "https://api.autostoprace.pl/";
+
     public final static String JSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static String APP_DATE_FORMAT = "d.LL";
-
     public final static String APP_TIME_FORMAT = "HH:mm";
+
     public final static String DATABASE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static String MAP_FULL_DATE_FORMAT = "HH:MM d.LL";
     public final static String SERVER_TIMEZONE = "UTC";
     public static final String GOOGLE_PLAY_BASE_URL = "http://play.google.com/store/apps/details?id=";
     public final static String HEADER_FIELD_TOKEN = "access-token";
-
     public final static String HEADER_FIELD_CLIENT = "client";
+
     public final static String HEADER_FIELD_UID = "uid";
     public static final String API_RESET_PASS_REDIRECT_URL = "http://autostoprace.pl";
     public final static String HEADER_VALUE_APPLICATION_JSON = "application/json";
     public static final int HTTP_CONNECT_TIMEOUT = 10;
-
     public static final int HTTP_READ_TIMEOUT = 15;
-    public static final int HTTP_WRITE_TIMEOUT = 15;
 
+    public static final int HTTP_WRITE_TIMEOUT = 15;
     /* UI */
 
     public static final long SPLASH_DURATION = 1800;
+    public static final int PHRASEBOOK_FILTER_DEBOUNCE = 250;
 
     /* GMS */
 
