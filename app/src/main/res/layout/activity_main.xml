@@ -32,37 +32,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="vertical"
-                        android:scrollbarStyle="outsideOverlay"
-                        android:clipToPadding="false"
-                        android:paddingBottom="@dimen/bottom_fab_spacing"
-                        android:paddingTop="4dp"
-                        android:visibility="gone"/>
-
-                    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-                        android:id="@+id/horizontal_progress_toolbar"
-                        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:indeterminate="true"
-                        android:progress="30"
-                        android:secondaryProgress="60"
-                        android:visibility="gone"
-                        app:mpb_progressStyle="horizontal"
-                        app:mpb_showTrack="false"
-                        app:mpb_useIntrinsicPadding="false"/>
-
-                </RelativeLayout>
-
                 <TextView
                     android:id="@+id/tv_empty_info"
                     android:layout_width="wrap_content"
@@ -72,6 +41,32 @@
                     android:lineSpacingExtra="8dp"
                     android:text="@string/msg_empty_location_records_list"
                     android:textColor="?android:attr/textColorSecondary"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/bottom_fab_spacing"
+                    android:paddingTop="4dp"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbars="vertical"
+                    android:visibility="gone"/>
+
+                <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                    android:id="@+id/horizontal_progress_bar"
+                    style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:indeterminate="true"
+                    android:progress="30"
+                    android:secondaryProgress="60"
+                    android:visibility="gone"
+                    app:mpb_progressStyle="horizontal"
+                    app:mpb_showTrack="false"
+                    app:mpb_useIntrinsicPadding="false"/>
+
             </FrameLayout>
 
         </LinearLayout>

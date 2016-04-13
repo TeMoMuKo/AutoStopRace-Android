@@ -10,6 +10,9 @@
     <color name="divider">#12000000</color>
     <color name="primary_text_standard">#de000000</color>
     <color name="secondary_text_standard">#8a000000</color>
+    <color name="primary_light_text_standard">#fff</color>
+    <color name="secondary_light_text_standard">#B3ffffff</color>
+    <color name="hint_light_text_standard">#80ffffff</color>
     <color name="rate_app_background">#ececec</color>
     <color name="standard_background_color">#FAFAFA</color>
 

@@ -23,6 +23,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.ResetPassResponse;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
+import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.model.Phrasebook;
 import pl.temomuko.autostoprace.data.remote.AsrService;
@@ -91,6 +92,10 @@ public class DataManager {
 
     public Observable<Response<List<LocationRecord>>> getTeamLocationRecordsFromServer(int teamId) {
         return mAsrService.getLocationRecords(teamId);
+    }
+
+    public Observable<Response<List<Team>>> getAllTeams() {
+        return mAsrService.getAllTeams();
     }
 
     public Observable<Response<LocationRecord>> postLocationRecordToServer(LocationRecord locationRecord) {
