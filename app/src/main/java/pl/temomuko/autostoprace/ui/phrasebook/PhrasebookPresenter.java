@@ -38,15 +38,16 @@ public class PhrasebookPresenter extends DrawerBasePresenter<PhrasebookMvpView> 
         super.detachView();
     }
 
-    public void saveCurrentLanguagePosition(int languagePosition) {
-        mDataManager.saveCurrentPhrasebookLanguagePosition(languagePosition);
-    }
-
     public void handleSearchQuery(String query) {
         if(query.length() > 0) {
             getMvpView().filterPhrases(query);
         } else {
             getMvpView().clearPhrasesFilter();
         }
+    }
+
+    public void changePhrasebookLanguage(int position) {
+        mDataManager.saveCurrentPhrasebookLanguagePosition(position);
+        getMvpView().changePhrasebookLanguage(position);
     }
 }

@@ -152,7 +152,7 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
         mLangSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                changePhrasebookLanguage(position);
+                mPhrasebookPresenter.changePhrasebookLanguage(position);
             }
 
             @Override
@@ -163,8 +163,8 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
         mLangSpinnerAdapter.notifyDataSetChanged();
     }
 
-    private void changePhrasebookLanguage(int position) {
-        mPhrasebookPresenter.saveCurrentLanguagePosition(position);
+    @Override
+    public void changePhrasebookLanguage(int position) {
         mPhrasebookAdapter.setLanguagePosition(position);
         mPhrasebookAdapter.notifyDataSetChanged();
     }
@@ -172,6 +172,7 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
     @Override
     public void filterPhrases(String query) {
         mPhrasebookAdapter.getFilter().filter(query);
+        mPhrasebookRecyclerView.scrollToPosition(0);
     }
 
     @Override
