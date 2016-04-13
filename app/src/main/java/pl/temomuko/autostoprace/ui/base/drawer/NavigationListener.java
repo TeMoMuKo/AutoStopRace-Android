@@ -13,13 +13,12 @@ import java.util.List;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
+import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.settings.SettingsActivity;
 import pl.temomuko.autostoprace.ui.staticdata.about.AboutActivity;
 import pl.temomuko.autostoprace.ui.staticdata.campus.CampusActivity;
 import pl.temomuko.autostoprace.ui.staticdata.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
-import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
-import pl.temomuko.autostoprace.ui.staticdata.schedule.ScheduleActivity;
 import pl.temomuko.autostoprace.ui.teamslocations.TeamsLocationsActivity;
 
 /**
@@ -36,7 +35,6 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
     private static final List<DrawerItemTarget> ACTIVITIES = Arrays.asList(
             new DrawerItemTarget(MainActivity.class, R.id.activity_main),
             new DrawerItemTarget(TeamsLocationsActivity.class, R.id.activity_teams),
-            new DrawerItemTarget(ScheduleActivity.class, R.id.activity_schedule),
             new DrawerItemTarget(CampusActivity.class, R.id.activity_campus),
             new DrawerItemTarget(PhrasebookActivity.class, R.id.activity_phrasebook),
             new DrawerItemTarget(ContactActivity.class, R.id.activity_contact),
