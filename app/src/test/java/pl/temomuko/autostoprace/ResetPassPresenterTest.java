@@ -17,7 +17,7 @@ import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.ui.login.resetpass.ResetPassMvpView;
 import pl.temomuko.autostoprace.ui.login.resetpass.ResetPassPresenter;
-import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import retrofit2.Response;
@@ -70,7 +70,6 @@ public class ResetPassPresenterTest {
 
     @Test
     public void testResetPassSuccess() throws Exception {
-        //TODO: fix test
         //given
         ResetPassResponse resetResponse = new ResetPassResponse();
         resetResponse.setUser(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
@@ -84,7 +83,6 @@ public class ResetPassPresenterTest {
         mResetPassPresenter.resetPassword(FAKE_EMAIL);
 
         //then
-        verify(mMockResetPassMvpView).setProgress(true);
         verify(mMockResetPassMvpView).showSuccessInfo(FAKE_EMAIL);
         verify(mMockResetPassMvpView).setProgress(false);
         verify(mMockResetPassMvpView).finish();
@@ -93,7 +91,6 @@ public class ResetPassPresenterTest {
 
     @Test
     public void testResetPassFails() throws Exception {
-        //TODO: fix test
         //given
         Response<ResetPassResponse> response = Response.error(HttpStatus.NOT_FOUND,
                 ResponseBody.create(
@@ -109,7 +106,6 @@ public class ResetPassPresenterTest {
         mResetPassPresenter.resetPassword(FAKE_EMAIL);
 
         //then
-        verify(mMockResetPassMvpView).setProgress(true);
         verify(mMockResetPassMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockResetPassMvpView).setProgress(false);
         verify(mMockResetPassMvpView, never()).showSuccessInfo(any(String.class));

@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import pl.temomuko.autostoprace.data.remote.AsrService;
+import pl.temomuko.autostoprace.data.remote.ApiManager;
 import pl.temomuko.autostoprace.injection.AppContext;
 
 /**
@@ -36,7 +36,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    AsrService provideAsrService() {
-        return AsrService.Factory.createAsrService();
+    ApiManager provideApiManager() {
+        return new ApiManager();
     }
 }

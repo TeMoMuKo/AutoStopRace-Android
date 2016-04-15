@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.util;
+package pl.temomuko.autostoprace.data.remote;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,15 +6,16 @@ import android.util.Patterns;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.ApiError;
-import pl.temomuko.autostoprace.data.remote.HttpStatus;
-import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.injection.AppContext;
+import pl.temomuko.autostoprace.util.LogUtil;
+import pl.temomuko.autostoprace.util.NetworkUtil;
 import retrofit2.Response;
 
 /**
@@ -24,11 +25,14 @@ import retrofit2.Response;
 @Singleton
 public class ErrorHandler {
 
+    public static final String TAG = ErrorHandler.class.getSimpleName();
     private Context mContext;
+    private ApiManager mApiManager;
 
     @Inject
-    public ErrorHandler(@AppContext Context context) {
+    public ErrorHandler(@AppContext Context context, ApiManager apiManager) {
         mContext = context;
+        mApiManager = apiManager;
     }
 
     public String getMessage(Throwable throwable) {
@@ -40,14 +44,23 @@ public class ErrorHandler {
     }
 
     private String getMessageFromHttpResponse(Response<?> response) {
-        ApiError apiError = new ApiError(response);
-        switch (apiError.getStatus()) {
+        List<String> errorsFromResponseBody = getErrorsFromResponseBody(response);
+        if (errorsFromResponseBody.isEmpty()) {
+            return getStandardMessageForApiError(response);
+        } else {
+            return errorsFromResponseBody.get(0);
+        }
+    }
+
+    @NonNull
+    private String getStandardMessageForApiError(Response response) {
+        switch (response.code()) {
             case HttpStatus.NOT_FOUND:
-                return getNotFoundDetails(apiError);
+                return mContext.getString(R.string.error_404);
             case HttpStatus.FORBIDDEN:
                 return mContext.getString(R.string.error_403);
             case HttpStatus.UNAUTHORIZED:
-                return getUnauthorizedDetails(apiError);
+                return mContext.getString(R.string.error_401);
             case HttpStatus.BAD_REQUEST:
                 return mContext.getString(R.string.error_400);
             case HttpStatus.INTERNAL_SERVER_ERROR:
@@ -59,21 +72,15 @@ public class ErrorHandler {
         }
     }
 
-    private String getNotFoundDetails(ApiError apiError) {
-        if (apiError.isResetPassError()) {
-            return mContext.getString(R.string.error_reset_pass);
-        } else {
-            return mContext.getString(R.string.error_404);
+    private List<String> getErrorsFromResponseBody(Response response) {
+        try {
+            return mApiManager.getErrorResponseConverter()
+                    .convert(response.errorBody())
+                    .getErrors();
+        } catch (IOException e) {
+            LogUtil.i(TAG, "It isn't ErrorResponse object.");
         }
-    }
-
-    @NonNull
-    private String getUnauthorizedDetails(ApiError apiError) {
-        if (apiError.isEmailConfirmationError()) {
-            return mContext.getString(R.string.error_email_confirmation);
-        } else {
-            return mContext.getString(R.string.error_401);
-        }
+        return new ArrayList<>();
     }
 
     private String getMessageFromRetrofitThrowable(Throwable throwable) {
