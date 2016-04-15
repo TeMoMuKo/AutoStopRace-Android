@@ -24,10 +24,16 @@ import rx.Subscription;
 public class SplashActivity extends BaseActivity {
 
     private int[] mSponsorDrawablesIds = {
-            R.drawable.logo_linuxpl,
             R.drawable.logo_cafe_borowka,
+            R.drawable.logo_grzeski,
+            R.drawable.logo_kf,
+            R.drawable.logo_lerni,
+            R.drawable.logo_linuxpl,
+            R.drawable.logo_pot,
+            R.drawable.logo_smscenter,
             R.drawable.logo_sueno,
             R.drawable.logo_sygnet,
+            R.drawable.logo_szczypta_swiata,
             R.drawable.logo_tarczynski,
             R.drawable.logo_ttwarsaw,
             R.drawable.logo_unicar_wroclaw,
