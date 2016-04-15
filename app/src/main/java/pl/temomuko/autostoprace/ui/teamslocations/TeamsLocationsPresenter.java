@@ -8,6 +8,7 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
+import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.LogUtil;
@@ -47,47 +48,63 @@ public class TeamsLocationsPresenter extends DrawerBasePresenter<TeamsLocationsM
     }
 
     public void loadAllTeams() {
-        getMvpView().setProgress(true);
+        getMvpView().setAllTeamsProgress(true);
         if (mLoadAllTeamsSubscription != null) mLoadAllTeamsSubscription.unsubscribe();
         mLoadAllTeamsSubscription = mDataManager.getAllTeams()
                 .flatMap(HttpStatus::requireOk)
                 .map(Response::body)
                 .compose(RxUtil.applyIoSchedulers())
                 .subscribe(this::handleAllTeams,
-                        this::handleError);
+                        this::handleLoadAllTeamsError);
     }
 
     private void handleAllTeams(List<Team> teams) {
-        if (mLoadTeamSubscription == null || mLoadTeamSubscription.isUnsubscribed())
-            getMvpView().setProgress(false);
+        getMvpView().setAllTeamsProgress(false);
         getMvpView().setHints(teams);
         LogUtil.i(TAG, teams.get(0).getName());
     }
 
-    public void handleTeamCharSequence(CharSequence charSequence) {
-        int teamId = Integer.valueOf(charSequence.toString());
-        getMvpView().displayTeam(teamId);
+    private void handleLoadAllTeamsError(Throwable throwable) {
+        getMvpView().setAllTeamsProgress(false);
+        getMvpView().showError(mErrorHandler.getMessage(throwable));
+        LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
     }
 
     public void loadTeam(int teamId) {
-        getMvpView().setProgress(true);
+        getMvpView().setTeamProgress(true);
         if (mLoadTeamSubscription != null) mLoadTeamSubscription.unsubscribe();
         mLoadTeamSubscription = mDataManager.getTeamLocationRecordsFromServer(teamId)
                 .flatMap(HttpStatus::requireOk)
                 .map(Response::body)
                 .compose(RxUtil.applyIoSchedulers())
                 .subscribe(this::handleTeamLocation,
-                        this::handleError);
+                        this::handleLoadTeamError);
+    }
+
+    public void loadTeam(String text) {
+        try {
+            int teamId = Integer.parseInt(text);
+            loadTeam(teamId);
+        } catch (NumberFormatException e) {
+            getMvpView().showInvalidFormatError();
+        }
     }
 
     private void handleTeamLocation(List<LocationRecord> locations) {
-        if (mLoadAllTeamsSubscription == null || mLoadAllTeamsSubscription.isUnsubscribed())
-            getMvpView().setProgress(false);
+        getMvpView().setTeamProgress(false);
         getMvpView().setLocations(locations);
     }
 
-    private void handleError(Throwable throwable) {
-        getMvpView().showError(throwable.toString());
-        LogUtil.e(TAG, throwable.toString());
+    private void handleLoadTeamError(Throwable throwable) {
+        if (throwable instanceof StandardResponseException) {
+            int code = ((StandardResponseException) throwable).getResponse().code();
+            if (code == HttpStatus.NOT_FOUND) {
+                getMvpView().showTeamNotFoundError();
+            }
+        } else {
+            getMvpView().showError(mErrorHandler.getMessage(throwable));
+        }
+        getMvpView().setTeamProgress(false);
+        LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
     }
 }

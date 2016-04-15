@@ -98,4 +98,6 @@
     <string name="search">Szukaj</string>
     <string name="search_hint">Szukane wyrażenie…</string>
     <string name="no_results">Brak wyników.</string>
+    <string name="error_invalid_team_id">Wprowadzony identyfikator drużyny jest niepoprawny!</string>
+    <string name="team_not_found">Nie znaleziono drużyny.</string>
 </resources>

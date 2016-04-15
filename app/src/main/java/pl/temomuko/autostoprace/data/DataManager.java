@@ -13,19 +13,19 @@ import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
-import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
 import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.data.model.Phrasebook;
 import pl.temomuko.autostoprace.data.model.ResetPassResponse;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.data.model.User;
-import pl.temomuko.autostoprace.data.model.Phrasebook;
 import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import retrofit2.Response;
@@ -132,7 +132,7 @@ public class DataManager {
 
     public Completable clearUserData() {
         return mDatabaseHelper.clearTables()
-                .doOnComplete(mPrefsHelper::clearAuth);
+                .doOnCompleted(mPrefsHelper::clearAuth);
     }
 
     public void saveAuthorizationResponse(Response<SignInResponse> response) {

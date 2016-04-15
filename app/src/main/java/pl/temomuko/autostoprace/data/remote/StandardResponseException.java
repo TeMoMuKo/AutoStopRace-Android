@@ -1,5 +1,7 @@
 package pl.temomuko.autostoprace.data.remote;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 
 import retrofit2.Response;
@@ -9,12 +11,13 @@ import retrofit2.Response;
  */
 public class StandardResponseException extends IOException {
 
-    Response<?> mResponse;
+    @NonNull Response<?> mResponse;
 
-    public StandardResponseException(Response<?> response) {
+    public StandardResponseException(@NonNull Response<?> response) {
         mResponse = response;
     }
 
+    @NonNull
     public Response<?> getResponse() {
         return mResponse;
     }

@@ -43,7 +43,7 @@ public class PhrasebookPresenter extends DrawerBasePresenter<PhrasebookMvpView> 
     }
 
     public void handleSearchQuery(String query) {
-        if(query.length() > 0) {
+        if (query.length() > 0) {
             getMvpView().filterPhrases(query);
         } else {
             getMvpView().clearPhrasesFilter();

@@ -41,7 +41,7 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
     }
 
     private void setupClusterMarker(Cluster<LocationRecordClusterItem> cluster, MarkerOptions markerOptions) {
-        LocationRecordClusterItem lastClusterItem = getLastClusterItem(cluster.getItems());
+        LocationRecordClusterItem lastClusterItem = getNewestClusterItem(cluster.getItems());
         String lastMessage = lastClusterItem.getMessage();
         if (lastMessage == null) {
             markerOptions.title(mContext.getString(R.string.msg_last_location_record_received))
@@ -53,14 +53,22 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
         }
     }
 
-    private LocationRecordClusterItem getLastClusterItem(Collection<LocationRecordClusterItem> locationRecordClusterItems) {
+    private LocationRecordClusterItem getNewestClusterItem(Collection<LocationRecordClusterItem> locationRecordClusterItems) {
         if (!locationRecordClusterItems.isEmpty()) {
-            Iterator<LocationRecordClusterItem> locationRecordClusterItemIterator = locationRecordClusterItems.iterator();
-            LocationRecordClusterItem lastLocationRecordClusterItem = locationRecordClusterItemIterator.next();
+            Iterator<LocationRecordClusterItem> locationRecordClusterItemIterator
+                    = locationRecordClusterItems.iterator();
+            LocationRecordClusterItem newestLocationRecordClusterItem =
+                    locationRecordClusterItemIterator.next();
+            LocationRecordClusterItem currentLocationRecordCluster;
             while (locationRecordClusterItemIterator.hasNext()) {
-                lastLocationRecordClusterItem = locationRecordClusterItemIterator.next();
+                currentLocationRecordCluster = locationRecordClusterItemIterator.next();
+                if (newestLocationRecordClusterItem.getReceiptDate().before(
+                        currentLocationRecordCluster.getReceiptDate())) {
+                    newestLocationRecordClusterItem = currentLocationRecordCluster;
+                }
+
             }
-            return lastLocationRecordClusterItem;
+            return newestLocationRecordClusterItem;
         } else {
             return new LocationRecordClusterItem(0, 0, "something went wrong", null);
         }

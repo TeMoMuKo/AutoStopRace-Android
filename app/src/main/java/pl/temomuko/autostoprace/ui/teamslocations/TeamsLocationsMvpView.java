@@ -11,13 +11,17 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
  */
 public interface TeamsLocationsMvpView extends DrawerMvpView {
 
-    void setProgress(boolean state);
+    void setAllTeamsProgress(boolean allTeamsProgressState);
 
-    void displayTeam(int teamId);
+    void setTeamProgress(boolean teamProgressState);
 
     void setLocations(List<LocationRecord> locationRecords);
 
     void showError(String message);
 
     void setHints(List<Team> teams);
+
+    void showInvalidFormatError();
+
+    void showTeamNotFoundError();
 }

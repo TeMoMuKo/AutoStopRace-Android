@@ -11,14 +11,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
-import pl.temomuko.autostoprace.injection.AppContext;
 
 /**
  * Created by Rafał Naniewicz on 09.04.2016.
@@ -35,8 +32,7 @@ public class AutoCompleteTeamsAdapter extends ArrayAdapter<Team> {
         void onTeamHintClick(int teamId);
     }
 
-    @Inject
-    public AutoCompleteTeamsAdapter(@AppContext Context context) {
+    public AutoCompleteTeamsAdapter(Context context) {
         super(context, R.layout.item_autocomplete_team, new ArrayList<>());
         mOriginalTeamList = new ArrayList<>();
     }

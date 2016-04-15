@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
-import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 import pl.temomuko.autostoprace.ui.staticdata.StaticDrawerPresenter;
 
 /**

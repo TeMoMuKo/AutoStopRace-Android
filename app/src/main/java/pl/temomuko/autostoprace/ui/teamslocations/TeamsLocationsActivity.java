@@ -1,10 +1,11 @@
 package pl.temomuko.autostoprace.ui.teamslocations;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -23,9 +24,9 @@ import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
-import pl.temomuko.autostoprace.ui.teamslocationmap.adapter.LocationRecordClusterItem;
-import pl.temomuko.autostoprace.ui.teamslocationmap.adapter.LocationRecordClusterRenderer;
-import pl.temomuko.autostoprace.ui.teamslocations.adapter.AutoCompleteTeamsAdapter;
+import pl.temomuko.autostoprace.ui.teamslocations.adapter.LocationRecordClusterItem;
+import pl.temomuko.autostoprace.ui.teamslocations.adapter.LocationRecordClusterRenderer;
+import pl.temomuko.autostoprace.ui.teamslocations.adapter.SearchTeamView;
 import pl.temomuko.autostoprace.ui.teamslocations.adapter.TeamLocationInfoWindowAdapter;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
@@ -34,17 +35,19 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Szymon Kozak on 2016-02-05.
  */
-public class TeamsLocationsActivity extends DrawerActivity implements TeamsLocationsMvpView, OnMapReadyCallback, AutoCompleteTeamsAdapter.OnTeamHintSelectedListener {
+public class TeamsLocationsActivity extends DrawerActivity
+        implements TeamsLocationsMvpView, OnMapReadyCallback, SearchTeamView.OnTeamRequestedListener {
 
     private static final String TAG = TeamsLocationsActivity.class.getSimpleName();
 
     @Inject TeamsLocationsPresenter mTeamsLocationsPresenter;
     @Inject TeamLocationInfoWindowAdapter mTeamsLocationInfoWindowAdapter;
-    @Inject AutoCompleteTeamsAdapter mAutoCompleteTeamsAdapter;
 
     @Bind(R.id.horizontal_progress_bar) MaterialProgressBar mMaterialProgressBar;
-    @Bind(R.id.auto_complete_tv_team_number) AutoCompleteTextView mTeamNumberAutocompleteTextView;
+    @Bind(R.id.search_team_view) SearchTeamView mSearchTeamView;
 
+    private boolean mAllTeamsProgressState = false;
+    private boolean mTeamProgressState = false;
     private GoogleMap mMap;
     private CompositeSubscription mSubscriptions;
     private ConcurrentLinkedQueue<LocationRecordClusterItem> mMapNotReadyQueue;
@@ -62,12 +65,17 @@ public class TeamsLocationsActivity extends DrawerActivity implements TeamsLocat
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(this);
-        setupTeamNumberAutoCompleteTextView();
+        setupTeamSearchView();
     }
 
-    private void setupTeamNumberAutoCompleteTextView() {
-        mTeamNumberAutocompleteTextView.setAdapter(mAutoCompleteTeamsAdapter);
-        mAutoCompleteTeamsAdapter.setTeamSelectedListener(this);
+    private void setupTeamSearchView() {
+        mSearchTeamView.setOnTeamRequestedListener(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        //// TODO: 15.04.2016  
     }
 
     @Override
@@ -77,8 +85,20 @@ public class TeamsLocationsActivity extends DrawerActivity implements TeamsLocat
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                mTeamsLocationsPresenter.loadTeam(mSearchTeamView.getText().toString());
+                mSearchTeamView.closeSearch();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onDestroy() {
         mTeamsLocationsPresenter.detachView();
+        mSubscriptions.unsubscribe();
         super.onDestroy();
     }
 
@@ -86,7 +106,7 @@ public class TeamsLocationsActivity extends DrawerActivity implements TeamsLocat
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mTeamsLocationsPresenter.loadAllTeams();
-        mTeamNumberAutocompleteTextView.setEnabled(true);
+        mSearchTeamView.setEnabled(true);
         setupClusterManager();
         addMarkersFromQueue();
     }
@@ -129,8 +149,17 @@ public class TeamsLocationsActivity extends DrawerActivity implements TeamsLocat
 
     @Override
     public void setHints(List<Team> teams) {
-        mAutoCompleteTeamsAdapter.setOriginalTeamList(teams);
-        mTeamNumberAutocompleteTextView.setAdapter(mAutoCompleteTeamsAdapter);
+        mSearchTeamView.setHints(teams);
+    }
+
+    @Override
+    public void showInvalidFormatError() {
+        Toast.makeText(this, getString(R.string.error_invalid_team_id), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showTeamNotFoundError() {
+        Toast.makeText(this, R.string.team_not_found, Toast.LENGTH_SHORT).show();
     }
 
     private void handleLocationsToSet(List<LocationRecordClusterItem> locationRecordClusterItems) {
@@ -145,19 +174,28 @@ public class TeamsLocationsActivity extends DrawerActivity implements TeamsLocat
     }
 
     @Override
-    public void setProgress(boolean state) {
-        mMaterialProgressBar.setVisibility(state ? View.VISIBLE : View.INVISIBLE);
+    public void setAllTeamsProgress(boolean allTeamsProgressState) {
+        mAllTeamsProgressState = allTeamsProgressState;
+        mMaterialProgressBar.setVisibility(
+                allTeamsProgressState || mTeamProgressState ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
-    public void displayTeam(int teamId) {
-
+    public void setTeamProgress(boolean teamProgressState) {
+        mTeamProgressState = teamProgressState;
+        mMaterialProgressBar.setVisibility(
+                teamProgressState || mAllTeamsProgressState ? View.VISIBLE : View.INVISIBLE);
     }
 
+    /* SearchTeamView callback methods */
+
     @Override
-    public void onTeamHintClick(int teamId) {
+    public void onTeamRequest(int teamId) {
         mTeamsLocationsPresenter.loadTeam(teamId);
-        mTeamNumberAutocompleteTextView.setText(String.valueOf(teamId));
-        mTeamNumberAutocompleteTextView.clearFocus();
+    }
+
+    @Override
+    public void onTeamRequest(String teamString) {
+        mTeamsLocationsPresenter.loadTeam(teamString);
     }
 }

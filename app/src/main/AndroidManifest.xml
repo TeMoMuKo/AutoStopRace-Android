@@ -75,14 +75,6 @@
         </activity>
 
         <activity
-            android:name=".ui.staticdata.schedule.ScheduleActivity"
-            android:label="@string/title_activity_schedule">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
-        </activity>
-
-        <activity
             android:name=".ui.phrasebook.PhrasebookActivity"
             android:label="@string/title_activity_phrasebook">
             <meta-data

@@ -17,6 +17,7 @@ import rx.Observable;
 /**
  * Helps keep any request observable
  * to continue it after configuration change
+ *
  * @param <T> content of observable
  */
 public class RxCacheHelper<T> {

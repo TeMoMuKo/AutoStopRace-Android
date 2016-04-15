@@ -13,7 +13,8 @@ public class Team {
     @SerializedName("name") private String mName;
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    @SerializedName("last_location") private ArrayList<LocationRecord> mLastLocationRecordList;
+    @SerializedName("last_location")
+    private ArrayList<LocationRecord> mLastLocationRecordList;
 
     public int getId() {
         return mId;

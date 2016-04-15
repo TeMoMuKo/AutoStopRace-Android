@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.staticdata.schedule.ScheduleActivity">
+    tools:context=".ui.staticdata.contact.ContactActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/cl_root"

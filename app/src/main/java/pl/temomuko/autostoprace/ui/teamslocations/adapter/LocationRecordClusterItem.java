@@ -17,12 +17,12 @@ public class LocationRecordClusterItem implements ClusterItem {
 
     private LatLng mLatLng;
     private String mMessage;
-    private String mReceiptDateString;
+    private Date mReceiptDate;
 
     public LocationRecordClusterItem(double latitude, double longitude, String message, @Nullable Date receiptDate) {
         mLatLng = new LatLng(latitude, longitude);
         mMessage = message;
-        mReceiptDateString = receiptDate == null ? "" : DateUtil.getFullDateMapString(receiptDate);
+        mReceiptDate = receiptDate;
     }
 
     public LocationRecordClusterItem(LocationRecord locationRecord) {
@@ -31,8 +31,7 @@ public class LocationRecordClusterItem implements ClusterItem {
         if (mMessage.isEmpty()) {
             mMessage = null;
         }
-        Date receiptDate = locationRecord.getServerReceiptDate();
-        mReceiptDateString = receiptDate == null ? null : DateUtil.getFullDateMapString(receiptDate);
+        mReceiptDate = locationRecord.getServerReceiptDate();
     }
 
     public String getMessage() {
@@ -40,7 +39,11 @@ public class LocationRecordClusterItem implements ClusterItem {
     }
 
     public String getReceiptDateString() {
-        return mReceiptDateString;
+        return mReceiptDate == null ? null : DateUtil.getFullDateMapString(mReceiptDate);
+    }
+
+    public Date getReceiptDate() {
+        return mReceiptDate;
     }
 
     @Override

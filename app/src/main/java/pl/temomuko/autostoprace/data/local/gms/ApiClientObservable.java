@@ -33,6 +33,6 @@ public class ApiClientObservable extends GmsBaseObservable<GoogleApiClient> {
 
     @Override
     protected void onUnsubscribe(GoogleApiClient apiClient) {
-
+        //no-op
     }
 }
