@@ -1,5 +1,7 @@
 package pl.temomuko.autostoprace.ui.teamslocationsmap;
 
+import android.app.Activity;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,10 +14,10 @@ import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.LogUtil;
+import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import retrofit2.Response;
 import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Rafał Naniewicz on 01.04.2016.
@@ -23,21 +25,29 @@ import rx.subscriptions.CompositeSubscription;
 public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocationsMapMvpView> {
 
     private final static String TAG = TeamsLocationsMapPresenter.class.getSimpleName();
+    private final static String RX_CACHE_ALL_TEAMS_TAG = "RX_CACHE_ALL_TEAMS_TAG";
+    public static final String RX_CACHE_TEAM_LOCATIONS_TAG = "RX_CACHE_TEAM_LOCATIONS_TAG";
     private final ErrorHandler mErrorHandler;
-    private Subscription mLoadTeamSubscription;
     private Subscription mLoadAllTeamsSubscription;
-    private CompositeSubscription mSubscriptions;
+    private Subscription mLoadTeamSubscription;
+    private RxCacheHelper<Response<List<Team>>> mRxAllTeamsCacheHelper;
+    private RxCacheHelper<Response<List<LocationRecord>>> mRxTeamLocationsCacheHelper;
 
     @Inject
     public TeamsLocationsMapPresenter(DataManager dataManager, ErrorHandler errorHandler) {
         super(dataManager);
         mErrorHandler = errorHandler;
-        mSubscriptions = new CompositeSubscription();
     }
 
     @Override
     public void attachView(TeamsLocationsMapMvpView mvpView) {
         super.attachView(mvpView);
+        if (mRxAllTeamsCacheHelper.isCached()) {
+            continueCachedAllTeamsRequest();
+        }
+        if (mRxTeamLocationsCacheHelper.isCached()) {
+            continueCachedTeamLocationsRequest();
+        }
     }
 
     @Override
@@ -47,15 +57,34 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         super.detachView();
     }
 
+    public void setupRxCacheHelper(Activity activity) {
+        mRxAllTeamsCacheHelper = RxCacheHelper.get(RX_CACHE_ALL_TEAMS_TAG);
+        mRxAllTeamsCacheHelper.setup(activity);
+
+        mRxTeamLocationsCacheHelper = RxCacheHelper.get(RX_CACHE_TEAM_LOCATIONS_TAG);
+        mRxTeamLocationsCacheHelper.setup(activity);
+    }
+
     public void loadAllTeams() {
+        mRxAllTeamsCacheHelper.cache(
+                mDataManager.getAllTeams()
+                        .flatMap(HttpStatus::requireOk)
+                        .compose(RxUtil.applyIoSchedulers())
+        );
+        continueCachedAllTeamsRequest();
+    }
+
+    private void continueCachedAllTeamsRequest() {
         getMvpView().setAllTeamsProgress(true);
         if (mLoadAllTeamsSubscription != null) mLoadAllTeamsSubscription.unsubscribe();
-        mLoadAllTeamsSubscription = mDataManager.getAllTeams()
-                .flatMap(HttpStatus::requireOk)
-                .map(Response::body)
-                .compose(RxUtil.applyIoSchedulers())
-                .subscribe(this::handleAllTeams,
-                        this::handleLoadAllTeamsError);
+        mLoadAllTeamsSubscription = mRxAllTeamsCacheHelper.getRestoredCachedObservable()
+                .subscribe(
+                        teams -> {
+                            handleAllTeams(teams.body());
+                            mRxAllTeamsCacheHelper.clearCache();
+                        },
+                        this::handleLoadAllTeamsError
+                );
     }
 
     private void handleAllTeams(List<Team> teams) {
@@ -64,20 +93,10 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     }
 
     private void handleLoadAllTeamsError(Throwable throwable) {
+        mRxAllTeamsCacheHelper.clearCache();
         getMvpView().setAllTeamsProgress(false);
         getMvpView().showError(mErrorHandler.getMessage(throwable));
         LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
-    }
-
-    public void loadTeam(int teamId) {
-        getMvpView().setTeamProgress(true);
-        if (mLoadTeamSubscription != null) mLoadTeamSubscription.unsubscribe();
-        mLoadTeamSubscription = mDataManager.getTeamLocationRecordsFromServer(teamId)
-                .flatMap(HttpStatus::requireOk)
-                .map(Response::body)
-                .compose(RxUtil.applyIoSchedulers())
-                .subscribe(this::handleTeamLocation,
-                        this::handleLoadTeamError);
     }
 
     public void loadTeam(String text) {
@@ -89,6 +108,28 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         }
     }
 
+    public void loadTeam(int teamId) {
+        mRxTeamLocationsCacheHelper.cache(
+                mDataManager.getTeamLocationRecordsFromServer(teamId)
+                        .flatMap(HttpStatus::requireOk)
+                        .compose(RxUtil.applyIoSchedulers())
+        );
+        continueCachedTeamLocationsRequest();
+    }
+
+    private void continueCachedTeamLocationsRequest() {
+        getMvpView().setTeamProgress(true);
+        if (mLoadTeamSubscription != null) mLoadTeamSubscription.unsubscribe();
+        mLoadTeamSubscription = mRxTeamLocationsCacheHelper.getRestoredCachedObservable()
+                .subscribe(
+                        listResponse -> {
+                            handleTeamLocation(listResponse.body());
+                            mRxTeamLocationsCacheHelper.clearCache();
+                        },
+                        this::handleLoadTeamError
+                );
+    }
+
     private void handleTeamLocation(List<LocationRecord> locations) {
         getMvpView().setTeamProgress(false);
         getMvpView().setLocations(locations);
@@ -98,6 +139,7 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     }
 
     private void handleLoadTeamError(Throwable throwable) {
+        mRxTeamLocationsCacheHelper.clearCache();
         if (throwable instanceof StandardResponseException) {
             int code = ((StandardResponseException) throwable).getResponse().code();
             if (code == HttpStatus.NOT_FOUND) {

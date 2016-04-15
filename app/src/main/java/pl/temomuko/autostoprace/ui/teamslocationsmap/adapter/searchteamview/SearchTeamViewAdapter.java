@@ -25,6 +25,7 @@ public class SearchTeamViewAdapter extends ArrayAdapter<Team> {
     private static final String TAG = SearchTeamViewAdapter.class.getSimpleName();
 
     private List<Team> mOriginalTeamList;
+
     private OnTeamHintSelectedListener mTeamHintSelectedListener;
 
     public interface OnTeamHintSelectedListener {
@@ -89,6 +90,10 @@ public class SearchTeamViewAdapter extends ArrayAdapter<Team> {
             holder.mLastLocationTextView.setText(getContext().getString(R.string.msg_last_location_record_received_adapter,
                     viewTeam.getLastLocationRecord().getAddress()));
         }
+    }
+
+    public List<Team> getOriginalTeamList() {
+        return mOriginalTeamList;
     }
 
     static class ViewHolder {

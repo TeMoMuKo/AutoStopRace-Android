@@ -15,11 +15,11 @@ public interface TeamsLocationsMapMvpView extends DrawerMvpView {
 
     void setTeamProgress(boolean teamProgressState);
 
+    void setHints(List<Team> teams);
+
     void setLocations(List<LocationRecord> locationRecords);
 
     void showError(String message);
-
-    void setHints(List<Team> teams);
 
     void showInvalidFormatError();
 

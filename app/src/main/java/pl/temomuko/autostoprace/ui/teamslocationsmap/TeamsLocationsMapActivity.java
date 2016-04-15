@@ -1,7 +1,7 @@
 package pl.temomuko.autostoprace.ui.teamslocationsmap;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,9 +13,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.clustering.ClusterManager;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.inject.Inject;
 
@@ -31,7 +30,7 @@ import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.TeamLocationInfoWin
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview.SearchTeamView;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
-import rx.subscriptions.CompositeSubscription;
+import rx.Subscription;
 
 /**
  * Created by Szymon Kozak on 2016-02-05.
@@ -40,6 +39,8 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         implements TeamsLocationsMapMvpView, OnMapReadyCallback, SearchTeamView.OnTeamRequestedListener {
 
     private static final String TAG = TeamsLocationsMapActivity.class.getSimpleName();
+    private static final String BUNDLE_CURRENT_TEAM_LOCATIONS = "BUNDLE_CURRENT_TEAM_LOCATIONS";
+    private static final String BUNDLE_TEAM_LIST_HINTS = "BUNDLE_TEAM_LIST_HINTS";
 
     @Inject TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
     @Inject TeamLocationInfoWindowAdapter mTeamsLocationInfoWindowAdapter;
@@ -50,33 +51,71 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     private boolean mAllTeamsProgressState = false;
     private boolean mTeamProgressState = false;
     private GoogleMap mMap;
-    private CompositeSubscription mSubscriptions;
-    private ConcurrentLinkedQueue<LocationRecordClusterItem> mMapNotReadyQueue;
+    private Subscription mSetHintsSubscription;
+    private Subscription mSetLocationsSubscription;
     private ClusterManager<LocationRecordClusterItem> mClusterManager;
+    private List<LocationRecord> mCurrentTeamLocations;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams_location);
+        if (savedInstanceState != null) {
+            restoreInstanceState(savedInstanceState);
+        }
         getActivityComponent().inject(this);
+        setupPresenter();
+        mSearchTeamView.setOnTeamRequestedListener(this);
+        setupMapFragment();
+    }
+
+    private void restoreInstanceState(@NonNull Bundle savedInstanceState) {
+        restoreLocationRecordClusterItems(savedInstanceState);
+        mSearchTeamView.restoreHintState(savedInstanceState.getParcelableArray(BUNDLE_TEAM_LIST_HINTS));
+    }
+
+    private void restoreLocationRecordClusterItems(@NonNull Bundle savedInstanceState) {
+        Parcelable[] parcelableCurrentTeamLocations =
+                savedInstanceState.getParcelableArray(BUNDLE_CURRENT_TEAM_LOCATIONS);
+        if (parcelableCurrentTeamLocations != null) {
+            mCurrentTeamLocations = new ArrayList<>(parcelableCurrentTeamLocations.length);
+            for (Parcelable parcelable : parcelableCurrentTeamLocations) {
+                mCurrentTeamLocations.add((LocationRecord) parcelable);
+            }
+        }
+    }
+
+    private void setupPresenter() {
+        mTeamsLocationsMapPresenter.setupRxCacheHelper(this);
         mTeamsLocationsMapPresenter.attachView(this);
         mTeamsLocationsMapPresenter.setupUserInfoInDrawer();
-        mMapNotReadyQueue = new ConcurrentLinkedQueue<>();
-        mSubscriptions = new CompositeSubscription();
+    }
+
+    private void setupMapFragment() {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(this);
-        setupTeamSearchView();
-    }
-
-    private void setupTeamSearchView() {
-        mSearchTeamView.setOnTeamRequestedListener(this);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        //// TODO: 15.04.2016
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mTeamsLocationsMapPresenter.loadAllTeams();
+        mSearchTeamView.setEnabled(true);
+        setupClusterManager();
+        if (mCurrentTeamLocations != null) {
+            setLocations(mCurrentTeamLocations);
+        }
+    }
+
+    private void setupClusterManager() {
+        mClusterManager = new ClusterManager<>(getApplicationContext(), mMap);
+        mMap.setOnCameraChangeListener(mClusterManager);
+        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+        mClusterManager.setRenderer(new LocationRecordClusterRenderer(getApplicationContext(), mMap, mClusterManager));
+
+        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(mTeamsLocationInfoWindowAdapter);
+        mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(mTeamsLocationInfoWindowAdapter);
     }
 
     @Override
@@ -97,69 +136,63 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     @Override
-    protected void onDestroy() {
-        mTeamsLocationsMapPresenter.detachView();
-        mSubscriptions.unsubscribe();
-        super.onDestroy();
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mCurrentTeamLocations != null) {
+            outState.putParcelableArray(BUNDLE_CURRENT_TEAM_LOCATIONS,
+                    mCurrentTeamLocations
+                            .toArray(new LocationRecord[mCurrentTeamLocations.size()]));
+        }
+        outState.putParcelableArray(BUNDLE_TEAM_LIST_HINTS, mSearchTeamView.saveHintState());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mTeamsLocationsMapPresenter.loadAllTeams();
-        mSearchTeamView.setEnabled(true);
-        setupClusterManager();
-        addMarkersFromQueue();
-    }
-
-    private void setupClusterManager() {
-        mClusterManager = new ClusterManager<>(getApplicationContext(), mMap);
-        mMap.setOnCameraChangeListener(mClusterManager);
-        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
-        mClusterManager.setRenderer(new LocationRecordClusterRenderer(getApplicationContext(), mMap, mClusterManager));
-        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(mTeamsLocationInfoWindowAdapter);
-        mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(mTeamsLocationInfoWindowAdapter);
-    }
-
-    private void addMarkersFromQueue() {
-        if (!mMapNotReadyQueue.isEmpty()) {
-            for (LocationRecordClusterItem locationRecordClusterItem : mMapNotReadyQueue) {
-                mClusterManager.addItem(locationRecordClusterItem);
-            }
-            mMapNotReadyQueue.clear();
-        }
+    protected void onDestroy() {
+        mTeamsLocationsMapPresenter.detachView();
+        if (mSetHintsSubscription != null) mSetHintsSubscription.unsubscribe();
+        if (mSetLocationsSubscription != null) mSetLocationsSubscription.unsubscribe();
+        super.onDestroy();
     }
 
     /* MVP View methods */
 
     @Override
+    public void setAllTeamsProgress(boolean allTeamsProgressState) {
+        mAllTeamsProgressState = allTeamsProgressState;
+        mMaterialProgressBar.setVisibility(
+                allTeamsProgressState || mTeamProgressState ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @Override
+    public void setTeamProgress(boolean teamProgressState) {
+        mTeamProgressState = teamProgressState;
+        mMaterialProgressBar.setVisibility(
+                teamProgressState || mAllTeamsProgressState ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @Override
+    public void setHints(List<Team> teams) {
+        if (mSetHintsSubscription != null) mSetHintsSubscription.unsubscribe();
+        mSetHintsSubscription = Observable.from(teams)
+                .toSortedList()
+                .compose(RxUtil.applyComputationSchedulers())
+                .subscribe(mSearchTeamView::setHints);
+    }
+
+    @Override
     public void setLocations(@NonNull List<LocationRecord> locationRecords) {
-        mSubscriptions.clear();
-        mSubscriptions.add(Observable.from(locationRecords)
+        mCurrentTeamLocations = locationRecords;
+        if (mSetLocationsSubscription != null) mSetLocationsSubscription.unsubscribe();
+        mSetLocationsSubscription = Observable.from(locationRecords)
                 .map(LocationRecordClusterItem::new)
                 .toList()
                 .compose(RxUtil.applyComputationSchedulers())
-                .subscribe(this::handleLocationsToSet)
-        );
+                .subscribe(this::handleTeamLocationsToSet);
     }
 
     @Override
     public void showError(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void setHints(List<Team> teams) {
-        mSubscriptions.add(
-                Observable.just(teams)
-                        .map(unsortedTeams -> {
-                            Collections.sort(unsortedTeams);
-                            return unsortedTeams;
-                        })
-                        .compose(RxUtil.applyComputationSchedulers())
-                        .subscribe(mSearchTeamView::setHints)
-
-        );
     }
 
     @Override
@@ -177,30 +210,12 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         Toast.makeText(this, R.string.msg_no_location_records_to_display, Toast.LENGTH_SHORT).show();
     }
 
-    private void handleLocationsToSet(List<LocationRecordClusterItem> locationRecordClusterItems) {
-        if (mMap == null || mClusterManager == null) {
-            mMapNotReadyQueue.clear();
-            mMapNotReadyQueue.addAll(locationRecordClusterItems);
-        } else {
-            mClusterManager.clearItems();
-            mClusterManager.addItems(locationRecordClusterItems);
-            mClusterManager.cluster();
-        }
+    private void handleTeamLocationsToSet(List<LocationRecordClusterItem> locationRecordClusterItems) {
+        mClusterManager.clearItems();
+        mClusterManager.addItems(locationRecordClusterItems);
+        mClusterManager.cluster();
     }
 
-    @Override
-    public void setAllTeamsProgress(boolean allTeamsProgressState) {
-        mAllTeamsProgressState = allTeamsProgressState;
-        mMaterialProgressBar.setVisibility(
-                allTeamsProgressState || mTeamProgressState ? View.VISIBLE : View.INVISIBLE);
-    }
-
-    @Override
-    public void setTeamProgress(boolean teamProgressState) {
-        mTeamProgressState = teamProgressState;
-        mMaterialProgressBar.setVisibility(
-                teamProgressState || mAllTeamsProgressState ? View.VISIBLE : View.INVISIBLE);
-    }
 
     /* SearchTeamView callback methods */
 

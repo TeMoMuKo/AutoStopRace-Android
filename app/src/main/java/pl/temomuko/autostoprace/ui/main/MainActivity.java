@@ -23,7 +23,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -212,11 +211,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
             mLocationRecordsUpdatesSubscriptions.clear();
             mLocationRecordsUpdatesSubscriptions.add(Observable.from(locationRecords)
                     .map(LocationRecordItem::new)
-                    .toList()
-                    .map(locationRecordItems -> {
-                        Collections.sort(locationRecordItems);
-                        return locationRecordItems;
-                    })
+                    .toSortedList()
                     .compose(RxUtil.applyComputationSchedulers())
                     .subscribe(this::updateLocationRecordItemsMaintainingScrollPosition));
         }
@@ -240,11 +235,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
             mLocationRecordsUpdatesSubscriptions.clear();
             mLocationRecordsUpdatesSubscriptions.add(Observable.from(locationRecords)
                     .map(LocationRecordItem::new)
-                    .toList()
-                    .map(locationRecordItems -> {
-                        Collections.sort(locationRecordItems);
-                        return locationRecordItems;
-                    })
+                    .toSortedList()
                     .compose(RxUtil.applyComputationSchedulers())
                     .subscribe(sortedLocationItems -> {
                         mLocationRecordsAdapter.setSortedLocationRecordItems(sortedLocationItems);

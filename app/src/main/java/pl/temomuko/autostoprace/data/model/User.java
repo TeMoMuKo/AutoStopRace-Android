@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class User {
 
+    //// TODO: 15.04.2016 Waiting for new field in api
     @SerializedName("id") private int mId;
     @SerializedName("team_id") private int mTeamId;
     @SerializedName("first_name") private String mFirstName;

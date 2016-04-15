@@ -1,10 +1,12 @@
 package pl.temomuko.autostoprace.ui.base;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.AsrApplication;
+import pl.temomuko.autostoprace.BuildConfig;
 import pl.temomuko.autostoprace.injection.component.ActivityComponent;
 import pl.temomuko.autostoprace.injection.component.DaggerActivityComponent;
 import pl.temomuko.autostoprace.injection.module.ActivityModule;

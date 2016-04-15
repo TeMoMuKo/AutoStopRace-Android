@@ -3,12 +3,14 @@ package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.temomuko.autostoprace.R;
@@ -79,6 +81,19 @@ public class SearchTeamView extends AutoCompleteTextView
 
     public void setOnTeamRequestedListener(OnTeamRequestedListener onTeamRequestedListener) {
         mOnTeamRequestedListener = onTeamRequestedListener;
+    }
+
+    public Parcelable[] saveHintState() {
+        return mSearchTeamViewAdapter.getOriginalTeamList().toArray(
+                new Team[mSearchTeamViewAdapter.getOriginalTeamList().size()]);
+    }
+
+    public void restoreHintState(Parcelable[] hintsParcel) {
+        ArrayList<Team> mHints = new ArrayList<>(hintsParcel.length);
+        for (Parcelable parcelable : hintsParcel) {
+            mHints.add((Team) parcelable);
+        }
+        mSearchTeamViewAdapter.setOriginalTeamList(mHints);
     }
 
     public void closeSearch() {

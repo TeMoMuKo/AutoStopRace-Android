@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Created by Szymon Kozak on 2016-01-22.
  */
-public class LocationRecord implements Parcelable, Comparable<LocationRecord> {
+public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
 
     @SerializedName("id") private int mId;
     @SerializedName("latitude") private double mLatitude;

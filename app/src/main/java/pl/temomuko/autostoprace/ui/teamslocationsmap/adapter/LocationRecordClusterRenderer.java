@@ -19,6 +19,7 @@ import pl.temomuko.autostoprace.R;
  */
 public class LocationRecordClusterRenderer extends DefaultClusterRenderer<LocationRecordClusterItem> {
 
+    private static final int MIN_CLUSTER_SIZE = 10;
     private Context mContext;
 
     public LocationRecordClusterRenderer(Context context, GoogleMap map, ClusterManager<LocationRecordClusterItem> clusterManager) {
@@ -28,8 +29,10 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
 
     @Override
     protected void onBeforeClusterItemRendered(LocationRecordClusterItem item, MarkerOptions markerOptions) {
+        String message = item.getMessage();
         markerOptions
-                .title(item.getMessage())
+                .title(message == null || message.isEmpty() ?
+                        mContext.getString(R.string.msg_location_record_received) : message)
                 .snippet(item.getReceiptDateString())
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.asr_marker_48dp));
     }
@@ -37,10 +40,6 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
     @Override
     protected void onBeforeClusterRendered(Cluster<LocationRecordClusterItem> cluster, MarkerOptions markerOptions) {
         super.onBeforeClusterRendered(cluster, markerOptions);
-        setupClusterMarker(cluster, markerOptions);
-    }
-
-    private void setupClusterMarker(Cluster<LocationRecordClusterItem> cluster, MarkerOptions markerOptions) {
         LocationRecordClusterItem lastClusterItem = getNewestClusterItem(cluster.getItems());
         String lastMessage = lastClusterItem.getMessage();
         if (lastMessage == null) {
@@ -71,5 +70,10 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
         } else {
             return new LocationRecordClusterItem(0, 0, "something went wrong", null);
         }
+    }
+
+    @Override
+    protected boolean shouldRenderAsCluster(Cluster<LocationRecordClusterItem> cluster) {
+        return cluster.getSize() > MIN_CLUSTER_SIZE;
     }
 }
