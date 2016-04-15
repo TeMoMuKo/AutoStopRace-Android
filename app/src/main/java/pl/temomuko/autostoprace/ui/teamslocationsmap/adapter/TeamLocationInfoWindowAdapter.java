@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.teamslocations.adapter;
+package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

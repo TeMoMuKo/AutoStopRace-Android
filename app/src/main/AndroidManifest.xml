@@ -67,7 +67,7 @@
         </activity>
 
         <activity
-            android:name=".ui.teamslocations.TeamsLocationsActivity"
+            android:name=".ui.teamslocationsmap.TeamsLocationsMapActivity"
             android:label="@string/title_activity_teams">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

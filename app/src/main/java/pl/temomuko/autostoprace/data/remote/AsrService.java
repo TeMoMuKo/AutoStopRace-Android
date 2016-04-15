@@ -29,10 +29,10 @@ public interface AsrService {
     @GET("teams")
     Observable<Response<List<Team>>> getAllTeams();
 
-    @GET("teams/{team_id}")
+    @GET("teams/team-{team_id}")
     Observable<Response<Team>> getTeam(@Path("team_id") int teamId);
 
-    @GET("teams/{team_id}/locations")
+    @GET("teams/team-{team_id}/locations")
     Observable<Response<List<LocationRecord>>> getLocationRecords(@Path("team_id") int teamId);
 
     @FormUrlEncoded

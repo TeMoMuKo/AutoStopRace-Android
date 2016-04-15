@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.teamslocations.adapter;
+package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview;
 
 import android.support.annotation.NonNull;
 import android.widget.Filter;
@@ -12,17 +12,17 @@ import pl.temomuko.autostoprace.util.LogUtil;
 /**
  * Created by Rafał Naniewicz on 09.04.2016.
  */
-public class TeamsFilter extends Filter {
+public class SearchTeamFilter extends Filter {
 
-    private static final String TAG = TeamsFilter.class.getSimpleName();
+    private static final String TAG = SearchTeamFilter.class.getSimpleName();
 
-    private AutoCompleteTeamsAdapter mAutoCompleteTeamsAdapter;
+    private SearchTeamViewAdapter mSearchTeamViewAdapter;
     private List<Team> mOriginalTeamList;
     private List<Team> mFilteredTeamList;
 
-    public TeamsFilter(AutoCompleteTeamsAdapter autoCompleteTeamsAdapter, @NonNull List<Team> originalTeamList) {
+    public SearchTeamFilter(SearchTeamViewAdapter searchTeamViewAdapter, @NonNull List<Team> originalTeamList) {
         LogUtil.i(TAG, "New filter created");
-        mAutoCompleteTeamsAdapter = autoCompleteTeamsAdapter;
+        mSearchTeamViewAdapter = searchTeamViewAdapter;
         mOriginalTeamList = originalTeamList;
         mFilteredTeamList = new ArrayList<>(mOriginalTeamList.size());
     }
@@ -36,7 +36,7 @@ public class TeamsFilter extends Filter {
         } else {
             final String filterPattern = constraint.toString().toLowerCase().trim();
             for (Team team : mOriginalTeamList) {
-                if (Integer.toString(team.getId()).startsWith(filterPattern)) {
+                if (Integer.toString(team.getTeamNumber()).startsWith(filterPattern)) {
                     mFilteredTeamList.add(team);
                 }
             }
@@ -48,9 +48,9 @@ public class TeamsFilter extends Filter {
 
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        if (mAutoCompleteTeamsAdapter != null) {
+        if (mSearchTeamViewAdapter != null) {
             //noinspection unchecked
-            mAutoCompleteTeamsAdapter.replaceFilteredTeamList((List<Team>) results.values);
+            mSearchTeamViewAdapter.replaceFilteredTeamList((List<Team>) results.values);
         }
     }
 }

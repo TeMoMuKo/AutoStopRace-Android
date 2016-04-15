@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.teamslocations.adapter;
+package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter;
 
 import android.content.Context;
 
@@ -66,7 +66,6 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
                         currentLocationRecordCluster.getReceiptDate())) {
                     newestLocationRecordClusterItem = currentLocationRecordCluster;
                 }
-
             }
             return newestLocationRecordClusterItem;
         } else {

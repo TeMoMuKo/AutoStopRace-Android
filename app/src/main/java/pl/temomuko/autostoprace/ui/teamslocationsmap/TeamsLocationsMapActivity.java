@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.teamslocations;
+package pl.temomuko.autostoprace.ui.teamslocationsmap;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -13,6 +13,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.clustering.ClusterManager;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -24,10 +25,10 @@ import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
-import pl.temomuko.autostoprace.ui.teamslocations.adapter.LocationRecordClusterItem;
-import pl.temomuko.autostoprace.ui.teamslocations.adapter.LocationRecordClusterRenderer;
-import pl.temomuko.autostoprace.ui.teamslocations.adapter.SearchTeamView;
-import pl.temomuko.autostoprace.ui.teamslocations.adapter.TeamLocationInfoWindowAdapter;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.LocationRecordClusterItem;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.LocationRecordClusterRenderer;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.TeamLocationInfoWindowAdapter;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview.SearchTeamView;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -35,12 +36,12 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Szymon Kozak on 2016-02-05.
  */
-public class TeamsLocationsActivity extends DrawerActivity
-        implements TeamsLocationsMvpView, OnMapReadyCallback, SearchTeamView.OnTeamRequestedListener {
+public class TeamsLocationsMapActivity extends DrawerActivity
+        implements TeamsLocationsMapMvpView, OnMapReadyCallback, SearchTeamView.OnTeamRequestedListener {
 
-    private static final String TAG = TeamsLocationsActivity.class.getSimpleName();
+    private static final String TAG = TeamsLocationsMapActivity.class.getSimpleName();
 
-    @Inject TeamsLocationsPresenter mTeamsLocationsPresenter;
+    @Inject TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
     @Inject TeamLocationInfoWindowAdapter mTeamsLocationInfoWindowAdapter;
 
     @Bind(R.id.horizontal_progress_bar) MaterialProgressBar mMaterialProgressBar;
@@ -58,8 +59,8 @@ public class TeamsLocationsActivity extends DrawerActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams_location);
         getActivityComponent().inject(this);
-        mTeamsLocationsPresenter.attachView(this);
-        mTeamsLocationsPresenter.setupUserInfoInDrawer();
+        mTeamsLocationsMapPresenter.attachView(this);
+        mTeamsLocationsMapPresenter.setupUserInfoInDrawer();
         mMapNotReadyQueue = new ConcurrentLinkedQueue<>();
         mSubscriptions = new CompositeSubscription();
         SupportMapFragment mapFragment =
@@ -88,7 +89,7 @@ public class TeamsLocationsActivity extends DrawerActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                mTeamsLocationsPresenter.loadTeam(mSearchTeamView.getText().toString());
+                mTeamsLocationsMapPresenter.loadTeam(mSearchTeamView.getText().toString());
                 mSearchTeamView.closeSearch();
                 return true;
         }
@@ -97,7 +98,7 @@ public class TeamsLocationsActivity extends DrawerActivity
 
     @Override
     protected void onDestroy() {
-        mTeamsLocationsPresenter.detachView();
+        mTeamsLocationsMapPresenter.detachView();
         mSubscriptions.unsubscribe();
         super.onDestroy();
     }
@@ -105,7 +106,7 @@ public class TeamsLocationsActivity extends DrawerActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mTeamsLocationsPresenter.loadAllTeams();
+        mTeamsLocationsMapPresenter.loadAllTeams();
         mSearchTeamView.setEnabled(true);
         setupClusterManager();
         addMarkersFromQueue();
@@ -149,7 +150,16 @@ public class TeamsLocationsActivity extends DrawerActivity
 
     @Override
     public void setHints(List<Team> teams) {
-        mSearchTeamView.setHints(teams);
+        mSubscriptions.add(
+                Observable.just(teams)
+                        .map(unsortedTeams -> {
+                            Collections.sort(unsortedTeams);
+                            return unsortedTeams;
+                        })
+                        .compose(RxUtil.applyComputationSchedulers())
+                        .subscribe(mSearchTeamView::setHints)
+
+        );
     }
 
     @Override
@@ -196,11 +206,11 @@ public class TeamsLocationsActivity extends DrawerActivity
 
     @Override
     public void onTeamRequest(int teamId) {
-        mTeamsLocationsPresenter.loadTeam(teamId);
+        mTeamsLocationsMapPresenter.loadTeam(teamId);
     }
 
     @Override
     public void onTeamRequest(String teamString) {
-        mTeamsLocationsPresenter.loadTeam(teamString);
+        mTeamsLocationsMapPresenter.loadTeam(teamString);
     }
 }

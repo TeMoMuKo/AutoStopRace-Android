@@ -14,7 +14,7 @@ import pl.temomuko.autostoprace.ui.staticdata.about.AboutActivity;
 import pl.temomuko.autostoprace.ui.staticdata.campus.CampusActivity;
 import pl.temomuko.autostoprace.ui.staticdata.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
-import pl.temomuko.autostoprace.ui.teamslocations.TeamsLocationsActivity;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapActivity;
 
 /**
  * Created by Szymon Kozak on 2016-01-06.
@@ -35,7 +35,7 @@ public interface ActivityComponent {
 
     void inject(PostActivity postActivity);
 
-    void inject(TeamsLocationsActivity teamsLocationsActivity);
+    void inject(TeamsLocationsMapActivity teamsLocationsMapActivity);
 
     void inject(CampusActivity campusActivity);
 

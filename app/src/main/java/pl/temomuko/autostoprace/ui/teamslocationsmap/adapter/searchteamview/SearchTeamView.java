@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.teamslocations.adapter;
+package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -18,12 +18,12 @@ import pl.temomuko.autostoprace.data.model.Team;
  * Created by Rafał on 15.04.2016.
  */
 public class SearchTeamView extends AutoCompleteTextView
-        implements AutoCompleteTeamsAdapter.OnTeamHintSelectedListener {
+        implements SearchTeamViewAdapter.OnTeamHintSelectedListener {
 
     private static final int DEFAULT_THRESHOLD = 1;
     private static final int UNDEFINED_ATTR = -1;
 
-    AutoCompleteTeamsAdapter mAutoCompleteTeamsAdapter;
+    SearchTeamViewAdapter mSearchTeamViewAdapter;
     private OnTeamRequestedListener mOnTeamRequestedListener;
 
     public interface OnTeamRequestedListener {
@@ -64,8 +64,8 @@ public class SearchTeamView extends AutoCompleteTextView
     }
 
     private void initialize(Context context) {
-        mAutoCompleteTeamsAdapter = new AutoCompleteTeamsAdapter(context);
-        mAutoCompleteTeamsAdapter.setTeamSelectedListener(this);
+        mSearchTeamViewAdapter = new SearchTeamViewAdapter(context);
+        mSearchTeamViewAdapter.setTeamSelectedListener(this);
         setOnEditorActionListener((textView, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                     event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
@@ -88,8 +88,8 @@ public class SearchTeamView extends AutoCompleteTextView
     }
 
     public void setHints(List<Team> teamHints) {
-        mAutoCompleteTeamsAdapter.setOriginalTeamList(teamHints);
-        setAdapter(mAutoCompleteTeamsAdapter);
+        mSearchTeamViewAdapter.setOriginalTeamList(teamHints);
+        setAdapter(mSearchTeamViewAdapter);
     }
 
     @Override

@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.teamslocations.TeamsLocationsActivity">
+    tools:context=".ui.teamslocationsmap.TeamsLocationsMapActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/cl_root"
@@ -34,7 +34,7 @@
                     android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                    <pl.temomuko.autostoprace.ui.teamslocations.adapter.SearchTeamView
+                    <pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview.SearchTeamView
                         android:id="@+id/search_team_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

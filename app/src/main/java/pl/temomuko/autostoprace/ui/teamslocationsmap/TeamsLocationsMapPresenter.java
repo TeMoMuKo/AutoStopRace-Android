@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.teamslocations;
+package pl.temomuko.autostoprace.ui.teamslocationsmap;
 
 import java.util.List;
 
@@ -20,23 +20,23 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Rafał Naniewicz on 01.04.2016.
  */
-public class TeamsLocationsPresenter extends DrawerBasePresenter<TeamsLocationsMvpView> {
+public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocationsMapMvpView> {
 
-    private final static String TAG = TeamsLocationsPresenter.class.getSimpleName();
+    private final static String TAG = TeamsLocationsMapPresenter.class.getSimpleName();
     private final ErrorHandler mErrorHandler;
     private Subscription mLoadTeamSubscription;
     private Subscription mLoadAllTeamsSubscription;
     private CompositeSubscription mSubscriptions;
 
     @Inject
-    public TeamsLocationsPresenter(DataManager dataManager, ErrorHandler errorHandler) {
+    public TeamsLocationsMapPresenter(DataManager dataManager, ErrorHandler errorHandler) {
         super(dataManager);
         mErrorHandler = errorHandler;
         mSubscriptions = new CompositeSubscription();
     }
 
     @Override
-    public void attachView(TeamsLocationsMvpView mvpView) {
+    public void attachView(TeamsLocationsMapMvpView mvpView) {
         super.attachView(mvpView);
     }
 
@@ -61,7 +61,6 @@ public class TeamsLocationsPresenter extends DrawerBasePresenter<TeamsLocationsM
     private void handleAllTeams(List<Team> teams) {
         getMvpView().setAllTeamsProgress(false);
         getMvpView().setHints(teams);
-        LogUtil.i(TAG, teams.get(0).getName());
     }
 
     private void handleLoadAllTeamsError(Throwable throwable) {

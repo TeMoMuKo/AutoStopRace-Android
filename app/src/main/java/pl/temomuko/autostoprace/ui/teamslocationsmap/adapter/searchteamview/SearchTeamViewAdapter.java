@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.teamslocations.adapter;
+package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,9 +20,9 @@ import pl.temomuko.autostoprace.data.model.Team;
 /**
  * Created by Rafał Naniewicz on 09.04.2016.
  */
-public class AutoCompleteTeamsAdapter extends ArrayAdapter<Team> {
+public class SearchTeamViewAdapter extends ArrayAdapter<Team> {
 
-    private static final String TAG = AutoCompleteTeamsAdapter.class.getSimpleName();
+    private static final String TAG = SearchTeamViewAdapter.class.getSimpleName();
 
     private List<Team> mOriginalTeamList;
     private OnTeamHintSelectedListener mTeamHintSelectedListener;
@@ -32,7 +32,7 @@ public class AutoCompleteTeamsAdapter extends ArrayAdapter<Team> {
         void onTeamHintClick(int teamId);
     }
 
-    public AutoCompleteTeamsAdapter(Context context) {
+    public SearchTeamViewAdapter(Context context) {
         super(context, R.layout.item_autocomplete_team, new ArrayList<>());
         mOriginalTeamList = new ArrayList<>();
     }
@@ -53,7 +53,7 @@ public class AutoCompleteTeamsAdapter extends ArrayAdapter<Team> {
 
     @Override
     public Filter getFilter() {
-        return new TeamsFilter(this, mOriginalTeamList);
+        return new SearchTeamFilter(this, mOriginalTeamList);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class AutoCompleteTeamsAdapter extends ArrayAdapter<Team> {
             convertView.setTag(holder);
             convertView.setOnClickListener(view -> {
                 if (mTeamHintSelectedListener != null) {
-                    mTeamHintSelectedListener.onTeamHintClick(getItem(holder.position).getId());
+                    mTeamHintSelectedListener.onTeamHintClick(getItem(holder.position).getTeamNumber());
                 }
             });
         }
@@ -80,7 +80,7 @@ public class AutoCompleteTeamsAdapter extends ArrayAdapter<Team> {
     }
 
     private void setTeamRowContent(ViewHolder holder, Team viewTeam) {
-        holder.mTeamIdTextView.setText(String.valueOf(viewTeam.getId()));
+        holder.mTeamIdTextView.setText(String.valueOf(viewTeam.getTeamNumber()));
         LocationRecord lastLocationRecord = viewTeam.getLastLocationRecord();
         if (lastLocationRecord == null) {
             holder.mLastLocationTextView.setVisibility(View.GONE);

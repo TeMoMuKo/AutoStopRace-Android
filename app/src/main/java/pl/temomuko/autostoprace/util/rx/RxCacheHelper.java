@@ -99,7 +99,6 @@ public class RxCacheHelper<T> {
         mRetainedFragment.clearCurrentObservable();
     }
 
-
     public boolean isCached() {
         return mRetainedFragment.getCurrentObservable() != null;
     }
