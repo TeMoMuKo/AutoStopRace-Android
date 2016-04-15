@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pl.temomuko.autostoprace.data.model.Phrasebook;
@@ -24,11 +23,7 @@ public class PhrasebookTest {
     @Test
     public void testCreateFromCsvRows() throws Exception {
         //given
-        List<String[]> csvRows = new ArrayList<>();
-        String[] languagesContent = new String[]{"polski", "angielski", "niemiecki", "włoski"};
-        String[] translationsContent = new String[]{"Cześć", "Hi", "hallo", "Ciao"};
-        csvRows.add(languagesContent);
-        csvRows.add(translationsContent);
+        List<String[]> csvRows = CsvRowsTestFactory.getCsvRows();
 
         //when
         Phrasebook phrasebook = Phrasebook.createFromCsvRows(
@@ -54,4 +49,5 @@ public class PhrasebookTest {
         String[] actualTranslations = phrasebook.getPhraseItems().get(0).getTranslations();
         assertArrayEquals(expectedTranslations, actualTranslations);
     }
+
 }
