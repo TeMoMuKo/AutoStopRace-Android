@@ -19,7 +19,7 @@ import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import pl.temomuko.autostoprace.service.helper.UnsentLocationRecordAndServerResponsePair;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
-import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.NetworkUtil;

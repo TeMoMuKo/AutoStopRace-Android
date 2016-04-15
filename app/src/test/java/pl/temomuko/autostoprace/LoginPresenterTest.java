@@ -19,7 +19,7 @@ import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.ui.login.LoginMvpView;
 import pl.temomuko.autostoprace.ui.login.LoginPresenter;
-import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import retrofit2.Response;

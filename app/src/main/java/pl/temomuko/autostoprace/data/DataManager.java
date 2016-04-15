@@ -26,7 +26,7 @@ import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.data.model.User;
-import pl.temomuko.autostoprace.data.remote.AsrService;
+import pl.temomuko.autostoprace.data.remote.ApiManager;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import retrofit2.Response;
 import rx.Completable;
@@ -39,7 +39,7 @@ import rx.Observable;
 @Singleton
 public class DataManager {
 
-    private AsrService mAsrService;
+    private ApiManager mApiManager;
     private PrefsHelper mPrefsHelper;
     private DatabaseHelper mDatabaseHelper;
     private GmsLocationHelper mGmsLocationHelper;
@@ -48,10 +48,10 @@ public class DataManager {
     private PhrasebookHelper mPhrasebookHelper;
 
     @Inject
-    public DataManager(AsrService asrService, PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
+    public DataManager(ApiManager apiManager, PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
                        GmsLocationHelper gmsLocationHelper, PermissionHelper permissionHelper,
                        GeocodingHelper geocodingHelper, PhrasebookHelper phrasebookHelper) {
-        mAsrService = asrService;
+        mApiManager = apiManager;
         mPrefsHelper = prefsHelper;
         mDatabaseHelper = databaseHelper;
         mGmsLocationHelper = gmsLocationHelper;
@@ -63,11 +63,11 @@ public class DataManager {
     /* API  */
 
     public Observable<Response<SignInResponse>> signIn(String login, String password) {
-        return mAsrService.signIn(login, password);
+        return mApiManager.getAsrService().signIn(login, password);
     }
 
     public Observable<Response<SignOutResponse>> signOut() {
-        return mAsrService.signOut(
+        return mApiManager.getAsrService().signOut(
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
                 mPrefsHelper.getAuthUid()
@@ -75,7 +75,7 @@ public class DataManager {
     }
 
     public Observable<Response<SignInResponse>> validateToken() {
-        return mAsrService.validateToken(
+        return mApiManager.getAsrService().validateToken(
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
                 mPrefsHelper.getAuthUid()
@@ -83,23 +83,23 @@ public class DataManager {
     }
 
     public Observable<Response<ResetPassResponse>> resetPassword(String email) {
-        return mAsrService.resetPassword(email, Constants.API_RESET_PASS_REDIRECT_URL);
+        return mApiManager.getAsrService().resetPassword(email, Constants.API_RESET_PASS_REDIRECT_URL);
     }
 
     public Observable<Response<List<LocationRecord>>> getUserTeamLocationRecordsFromServer() {
-        return mAsrService.getLocationRecords(mPrefsHelper.getCurrentUser().getTeamId());
+        return mApiManager.getAsrService().getLocationRecords(mPrefsHelper.getCurrentUser().getTeamId());
     }
 
     public Observable<Response<List<LocationRecord>>> getTeamLocationRecordsFromServer(int teamId) {
-        return mAsrService.getLocationRecords(teamId);
+        return mApiManager.getAsrService().getLocationRecords(teamId);
     }
 
     public Observable<Response<List<Team>>> getAllTeams() {
-        return mAsrService.getAllTeams();
+        return mApiManager.getAsrService().getAllTeams();
     }
 
     public Observable<Response<LocationRecord>> postLocationRecordToServer(LocationRecord locationRecord) {
-        return mAsrService.postLocationRecord(
+        return mApiManager.getAsrService().postLocationRecord(
                 mPrefsHelper.getAuthAccessToken(),
                 mPrefsHelper.getAuthClient(),
                 mPrefsHelper.getAuthUid(),

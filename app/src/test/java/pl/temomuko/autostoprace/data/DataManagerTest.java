@@ -8,8 +8,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.List;
-
 import okhttp3.HttpUrl;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -20,20 +18,16 @@ import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
 import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
-import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.User;
-import pl.temomuko.autostoprace.data.remote.AsrService;
+import pl.temomuko.autostoprace.data.remote.ApiManager;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import retrofit2.Response;
 import rx.Observable;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,7 +47,7 @@ public class DataManagerTest {
     private static String FAKE_LAST_NAME = "fake_last_name";
 
     @Mock PrefsHelper mMockPrefsHelper;
-    @Mock AsrService mMockAsrService;
+    @Mock ApiManager mMockApiManager;
     @Mock DatabaseHelper mMockDatabaseHelper;
     @Mock GmsLocationHelper mMockGmsLocationHelper;
     @Mock PermissionHelper mMockPermissionHelper;
@@ -65,7 +59,7 @@ public class DataManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        mDataManager = new DataManager(mMockAsrService, mMockPrefsHelper, mMockDatabaseHelper,
+        mDataManager = new DataManager(mMockApiManager, mMockPrefsHelper, mMockDatabaseHelper,
                 mMockGmsLocationHelper, mMockPermissionHelper, mMockGeocodingHelper, mPhrasebookHelper);
         setupFakeResponseBuilder();
     }
@@ -77,32 +71,6 @@ public class DataManagerTest {
                 .request(request)
                 .protocol(Protocol.HTTP_1_1)
                 .code(200);
-    }
-
-    @Test
-    public void testGetTeamLocationsFromServer() throws Exception {
-        //given
-        when(mMockPrefsHelper.getCurrentUser()).thenReturn(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
-        Observable<Response<List<LocationRecord>>> expectedObservable =
-                mMockAsrService.getLocationRecords(mMockPrefsHelper.getCurrentUser().getTeamId());
-        Observable<Response<List<LocationRecord>>> actualObservable =
-                mDataManager.getUserTeamLocationRecordsFromServer();
-        //assert
-        assertEquals(expectedObservable, actualObservable);
-    }
-
-    @Test
-    public void testValidateToken() throws Exception {
-        //given
-        when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
-        when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
-        when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
-
-        //when
-        mDataManager.validateToken();
-
-        //then
-        verify(mMockAsrService).validateToken(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
     }
 
     @Test
@@ -139,47 +107,6 @@ public class DataManagerTest {
 
         //then
         verify(mMockDatabaseHelper).getLocationRecordList();
-    }
-
-    @Test
-    public void testPostLocationToServer() throws Exception {
-        //given
-        LocationRecord locationRecordToSend = new LocationRecord(12.34, 56.78, "Yo", "Somewhere, Poland", "Poland", "PL");
-        when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
-        when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
-        when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
-
-        //when
-        mDataManager.postLocationRecordToServer(locationRecordToSend);
-
-        //then
-        verify(mMockAsrService).postLocationRecord(
-                eq(FAKE_ACCESS_TOKEN), eq(FAKE_CLIENT), eq(FAKE_UID), any(CreateLocationRecordRequest.class));
-    }
-
-    @Test
-    public void testSignIn() throws Exception {
-        //given
-        Observable<Response<SignInResponse>> expectedObservable
-                = mMockAsrService.signIn(FAKE_EMAIL, FAKE_PASS);
-        Observable<Response<SignInResponse>> actualObservable = mDataManager.signIn(FAKE_EMAIL, FAKE_PASS);
-
-        //assert
-        assertEquals(expectedObservable, actualObservable);
-    }
-
-    @Test
-    public void testSignOut() throws Exception {
-        //given
-        when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
-        when(mMockPrefsHelper.getAuthClient()).thenReturn(FAKE_CLIENT);
-        when(mMockPrefsHelper.getAuthUid()).thenReturn(FAKE_UID);
-
-        //when
-        mDataManager.signOut();
-
-        //then
-        verify(mMockAsrService).signOut(FAKE_ACCESS_TOKEN, FAKE_CLIENT, FAKE_UID);
     }
 
     @Test

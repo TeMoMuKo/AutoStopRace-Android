@@ -16,7 +16,7 @@ import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedExceptio
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
-import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;

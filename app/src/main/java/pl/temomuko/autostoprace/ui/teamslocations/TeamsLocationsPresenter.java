@@ -7,10 +7,10 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
+import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
-import pl.temomuko.autostoprace.util.ErrorHandler;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import retrofit2.Response;
@@ -93,6 +93,9 @@ public class TeamsLocationsPresenter extends DrawerBasePresenter<TeamsLocationsM
     private void handleTeamLocation(List<LocationRecord> locations) {
         getMvpView().setTeamProgress(false);
         getMvpView().setLocations(locations);
+        if (locations.isEmpty()) {
+            getMvpView().showNoLocationRecordsInfo();
+        }
     }
 
     private void handleLoadTeamError(Throwable throwable) {

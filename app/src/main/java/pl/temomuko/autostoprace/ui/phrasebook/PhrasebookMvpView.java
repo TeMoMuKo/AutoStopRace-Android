@@ -17,4 +17,6 @@ public interface PhrasebookMvpView extends DrawerMvpView {
     void clearPhrasesFilter();
 
     void filterPhrases(String query);
+
+    void changePhrasebookLanguage(int position);
 }

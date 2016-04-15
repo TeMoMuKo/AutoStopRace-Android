@@ -10,7 +10,7 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
 import pl.temomuko.autostoprace.service.LocationSyncService;
-import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 
 /**
  * Created by Szymon Kozak on 2016-01-06.

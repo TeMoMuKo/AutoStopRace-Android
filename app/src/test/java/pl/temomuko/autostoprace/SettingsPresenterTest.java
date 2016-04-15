@@ -13,7 +13,7 @@ import pl.temomuko.autostoprace.data.model.SignOutResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.ui.settings.SettingsMvpView;
 import pl.temomuko.autostoprace.ui.settings.SettingsPresenter;
-import pl.temomuko.autostoprace.util.ErrorHandler;
+import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import retrofit2.Response;
 import rx.Completable;

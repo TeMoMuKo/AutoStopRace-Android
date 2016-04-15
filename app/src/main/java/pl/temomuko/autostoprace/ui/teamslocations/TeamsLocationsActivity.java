@@ -59,7 +59,7 @@ public class TeamsLocationsActivity extends DrawerActivity
         setContentView(R.layout.activity_teams_location);
         getActivityComponent().inject(this);
         mTeamsLocationsPresenter.attachView(this);
-        mTeamsLocationsPresenter.loadAllTeams();
+        mTeamsLocationsPresenter.setupUserInfoInDrawer();
         mMapNotReadyQueue = new ConcurrentLinkedQueue<>();
         mSubscriptions = new CompositeSubscription();
         SupportMapFragment mapFragment =
@@ -75,7 +75,7 @@ public class TeamsLocationsActivity extends DrawerActivity
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        //// TODO: 15.04.2016  
+        //// TODO: 15.04.2016
     }
 
     @Override
@@ -159,7 +159,12 @@ public class TeamsLocationsActivity extends DrawerActivity
 
     @Override
     public void showTeamNotFoundError() {
-        Toast.makeText(this, R.string.team_not_found, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.msg_team_not_found, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showNoLocationRecordsInfo() {
+        Toast.makeText(this, R.string.msg_no_location_records_to_display, Toast.LENGTH_SHORT).show();
     }
 
     private void handleLocationsToSet(List<LocationRecordClusterItem> locationRecordClusterItems) {

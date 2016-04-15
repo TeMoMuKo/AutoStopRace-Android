@@ -24,4 +24,6 @@ public interface TeamsLocationsMvpView extends DrawerMvpView {
     void showInvalidFormatError();
 
     void showTeamNotFoundError();
+
+    void showNoLocationRecordsInfo();
 }
