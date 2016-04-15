@@ -25,8 +25,6 @@ import rx.Subscription;
 public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocationsMapMvpView> {
 
     private final static String TAG = TeamsLocationsMapPresenter.class.getSimpleName();
-    private final static String RX_CACHE_ALL_TEAMS_TAG = "RX_CACHE_ALL_TEAMS_TAG";
-    public static final String RX_CACHE_TEAM_LOCATIONS_TAG = "RX_CACHE_TEAM_LOCATIONS_TAG";
     private final ErrorHandler mErrorHandler;
     private Subscription mLoadAllTeamsSubscription;
     private Subscription mLoadTeamSubscription;
@@ -57,11 +55,13 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         super.detachView();
     }
 
-    public void setupRxCacheHelper(Activity activity) {
-        mRxAllTeamsCacheHelper = RxCacheHelper.get(RX_CACHE_ALL_TEAMS_TAG);
+    public void setupRxCacheHelper(Activity activity,
+                                   RxCacheHelper<Response<List<Team>>> rxAllTeamsCacheHelper,
+                                   RxCacheHelper<Response<List<LocationRecord>>> rxTeamLocationsCacheHelper) {
+        mRxAllTeamsCacheHelper = rxAllTeamsCacheHelper;
         mRxAllTeamsCacheHelper.setup(activity);
 
-        mRxTeamLocationsCacheHelper = RxCacheHelper.get(RX_CACHE_TEAM_LOCATIONS_TAG);
+        mRxTeamLocationsCacheHelper = rxTeamLocationsCacheHelper;
         mRxTeamLocationsCacheHelper.setup(activity);
     }
 
@@ -96,7 +96,6 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         mRxAllTeamsCacheHelper.clearCache();
         getMvpView().setAllTeamsProgress(false);
         getMvpView().showError(mErrorHandler.getMessage(throwable));
-        LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
     }
 
     public void loadTeam(String text) {
@@ -149,6 +148,5 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
             getMvpView().showError(mErrorHandler.getMessage(throwable));
         }
         getMvpView().setTeamProgress(false);
-        LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
     }
 }

@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -28,6 +29,7 @@ import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.LocationRecordClust
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.LocationRecordClusterRenderer;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.TeamLocationInfoWindowAdapter;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview.SearchTeamView;
+import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 import rx.Subscription;
@@ -41,6 +43,9 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     private static final String TAG = TeamsLocationsMapActivity.class.getSimpleName();
     private static final String BUNDLE_CURRENT_TEAM_LOCATIONS = "BUNDLE_CURRENT_TEAM_LOCATIONS";
     private static final String BUNDLE_TEAM_LIST_HINTS = "BUNDLE_TEAM_LIST_HINTS";
+    private static final float DEFAULT_MAP_ZOOM = 5.5f;
+    private final static String RX_CACHE_ALL_TEAMS_TAG = "RX_CACHE_ALL_TEAMS_TAG";
+    public static final String RX_CACHE_TEAM_LOCATIONS_TAG = "RX_CACHE_TEAM_LOCATIONS_TAG";
 
     @Inject TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
     @Inject TeamLocationInfoWindowAdapter mTeamsLocationInfoWindowAdapter;
@@ -86,7 +91,9 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     private void setupPresenter() {
-        mTeamsLocationsMapPresenter.setupRxCacheHelper(this);
+        mTeamsLocationsMapPresenter.setupRxCacheHelper(this,
+                RxCacheHelper.get(RX_CACHE_ALL_TEAMS_TAG),
+                RxCacheHelper.get(RX_CACHE_TEAM_LOCATIONS_TAG));
         mTeamsLocationsMapPresenter.attachView(this);
         mTeamsLocationsMapPresenter.setupUserInfoInDrawer();
     }
@@ -185,7 +192,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         if (mSetLocationsSubscription != null) mSetLocationsSubscription.unsubscribe();
         mSetLocationsSubscription = Observable.from(locationRecords)
                 .map(LocationRecordClusterItem::new)
-                .toList()
+                .toSortedList()
                 .compose(RxUtil.applyComputationSchedulers())
                 .subscribe(this::handleTeamLocationsToSet);
     }
@@ -211,11 +218,14 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     private void handleTeamLocationsToSet(List<LocationRecordClusterItem> locationRecordClusterItems) {
+        if (!locationRecordClusterItems.isEmpty()) {
+            mMap.animateCamera(CameraUpdateFactory
+                    .newLatLngZoom(locationRecordClusterItems.get(0).getPosition(), DEFAULT_MAP_ZOOM));
+        }
         mClusterManager.clearItems();
         mClusterManager.addItems(locationRecordClusterItems);
         mClusterManager.cluster();
     }
-
 
     /* SearchTeamView callback methods */
 

@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -15,7 +16,7 @@ import pl.temomuko.autostoprace.util.DateUtil;
 /**
  * Created by Rafał Naniewicz on 02.04.2016.
  */
-public class LocationRecordClusterItem implements ClusterItem, Parcelable {
+public class LocationRecordClusterItem implements ClusterItem, Parcelable, Comparable<LocationRecordClusterItem> {
 
     private LatLng mLatLng;
     private String mMessage;
@@ -84,4 +85,23 @@ public class LocationRecordClusterItem implements ClusterItem, Parcelable {
             return new LocationRecordClusterItem[size];
         }
     };
+
+    @Override
+    public int compareTo(@NonNull LocationRecordClusterItem another) {
+        return getDateCompareResult(another);
+    }
+
+    private int getDateCompareResult(@NonNull LocationRecordClusterItem another) {
+        int dateCompareResult;
+        if (mReceiptDate == null && another.mReceiptDate == null) {
+            dateCompareResult = 0;
+        } else if (mReceiptDate == null) {
+            dateCompareResult = -1;
+        } else if (another.mReceiptDate == null) {
+            dateCompareResult = 1;
+        } else {
+            dateCompareResult = another.mReceiptDate.compareTo(mReceiptDate);
+        }
+        return dateCompareResult;
+    }
 }
