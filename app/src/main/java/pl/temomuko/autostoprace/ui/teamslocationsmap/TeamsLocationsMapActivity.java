@@ -41,11 +41,11 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         implements TeamsLocationsMapMvpView, OnMapReadyCallback, SearchTeamView.OnTeamRequestedListener {
 
     private static final String TAG = TeamsLocationsMapActivity.class.getSimpleName();
-    private static final String BUNDLE_CURRENT_TEAM_LOCATIONS = "BUNDLE_CURRENT_TEAM_LOCATIONS";
-    private static final String BUNDLE_TEAM_LIST_HINTS = "BUNDLE_TEAM_LIST_HINTS";
+    private static final String BUNDLE_CURRENT_TEAM_LOCATIONS = "bundle_current_team_locations";
+    private static final String BUNDLE_TEAM_LIST_HINTS = "bundle_team_list_hints";
     private static final float DEFAULT_MAP_ZOOM = 5.5f;
-    private final static String RX_CACHE_ALL_TEAMS_TAG = "RX_CACHE_ALL_TEAMS_TAG";
-    public static final String RX_CACHE_TEAM_LOCATIONS_TAG = "RX_CACHE_TEAM_LOCATIONS_TAG";
+    private final static String RX_CACHE_ALL_TEAMS_TAG = "rx_cache_all_teams_tag";
+    public static final String RX_CACHE_TEAM_LOCATIONS_TAG = "rx_cache_team_locations_tag";
 
     @Inject TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
     @Inject TeamLocationInfoWindowAdapter mTeamsLocationInfoWindowAdapter;
