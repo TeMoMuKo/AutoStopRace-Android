@@ -1,50 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".ui.staticdata.campus.CampusActivity">
+    android:background="@android:color/black"
+    android:orientation="vertical">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/cl_root"
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        android:id="@+id/iv_full_map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/mpb_map_loading_progress"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        app:mpb_progressStyle="circular"
+        />
 
-            <android.support.design.widget.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.AppBarOverlay">
+</FrameLayout>
 
-                <include layout="@layout/toolbar"/>
-
-            </android.support.design.widget.AppBarLayout>
-
-            <TextView
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:text="@string/title_activity_campus"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
-
-    </android.support.design.widget.CoordinatorLayout>
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="@dimen/drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_view_header"
-        app:menu="@menu/menu_navigation_view"/>
-
-</android.support.v4.widget.DrawerLayout>

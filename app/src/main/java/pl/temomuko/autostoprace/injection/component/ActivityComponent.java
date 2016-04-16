@@ -11,7 +11,6 @@ import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.settings.SettingsFragment;
 import pl.temomuko.autostoprace.ui.staticdata.about.AboutActivity;
-import pl.temomuko.autostoprace.ui.staticdata.campus.CampusActivity;
 import pl.temomuko.autostoprace.ui.staticdata.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapActivity;
@@ -36,8 +35,6 @@ public interface ActivityComponent {
     void inject(PostActivity postActivity);
 
     void inject(TeamsLocationsMapActivity teamsLocationsMapActivity);
-
-    void inject(CampusActivity campusActivity);
 
     void inject(PhrasebookActivity phrasebookActivity);
 

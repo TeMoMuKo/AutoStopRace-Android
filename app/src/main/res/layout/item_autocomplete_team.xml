@@ -14,7 +14,6 @@
     android:paddingTop="@dimen/default_padding_halved"
     android:theme="@style/AppTheme">
 
-
     <TextView
         android:id="@+id/tv_team_id"
         style="@style/ListItemTitle"

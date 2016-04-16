@@ -12,4 +12,4 @@
 -->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
         android:color="@color/control_highlight_material"
-        android:radius="20dp" />
+        android:radius="20dp"/>

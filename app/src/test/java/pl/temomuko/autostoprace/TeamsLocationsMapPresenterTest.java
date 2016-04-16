@@ -40,13 +40,11 @@ import static org.mockito.Mockito.when;
 public class TeamsLocationsMapPresenterTest {
 
     private static final int TEST_TEAM_NUMBER = 1;
-
     @Mock TeamsLocationsMapMvpView mMockTeamsLocationsMapMvpView;
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
     @Mock RxCacheHelper<Response<List<Team>>> mMockRxAllTeamsCacheHelper;
     @Mock RxCacheHelper<Response<List<LocationRecord>>> mMockRxTeamLocationsCacheHelper;
-
     private TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
 
     @Rule
@@ -74,8 +72,10 @@ public class TeamsLocationsMapPresenterTest {
         Response<List<Team>> response = Response.success(teams);
         when(mMockDataManager.getAllTeams()).thenReturn(Observable.just(response));
         when(mMockRxAllTeamsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
+
         //when
         mTeamsLocationsMapPresenter.loadAllTeams();
+
         //then
         verify(mMockDataManager, only()).getAllTeams();
         verify(mMockTeamsLocationsMapMvpView).setHints(teams);
@@ -94,8 +94,10 @@ public class TeamsLocationsMapPresenterTest {
         when(mMockDataManager.getAllTeams()).thenReturn(Observable.just(response));
         when(mMockRxAllTeamsCacheHelper.getRestoredCachedObservable())
                 .thenReturn(Observable.error(new StandardResponseException(response)));
+
         //when
         mTeamsLocationsMapPresenter.loadAllTeams();
+
         //then
         verify(mMockDataManager, only()).getAllTeams();
         verify(mMockTeamsLocationsMapMvpView, never()).setHints(any());
@@ -113,8 +115,10 @@ public class TeamsLocationsMapPresenterTest {
         Response<List<LocationRecord>> response = Response.success(locationRecords);
         when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
         when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
+
         //when
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
+
         //then
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
@@ -131,8 +135,10 @@ public class TeamsLocationsMapPresenterTest {
         Response<List<LocationRecord>> response = Response.success(locationRecords);
         when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
         when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
+
         //when
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
+
         //then
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
@@ -151,8 +157,10 @@ public class TeamsLocationsMapPresenterTest {
         when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
         when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(
                 Observable.error(new StandardResponseException(response)));
+
         //when
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
+
         //then
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
@@ -172,9 +180,12 @@ public class TeamsLocationsMapPresenterTest {
         when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
         when(mMockErrorHandler.getMessage(any())).thenReturn(teamNotFound);
         when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(
-                Observable.error(new TeamNotFoundException(response)));
+                Observable.error(new TeamNotFoundException(response))
+        );
+
         //when
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
+
         //then
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);

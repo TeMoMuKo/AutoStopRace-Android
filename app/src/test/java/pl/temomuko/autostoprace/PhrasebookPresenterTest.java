@@ -26,10 +26,10 @@ import static org.mockito.Mockito.when;
 public class PhrasebookPresenterTest {
 
     public static final int LANGUAGE_SPINNER_POSITION = 0;
+    private static final int LANGUAGES_HEADER_ROW_POSITION = 0;
+    private static final int ORIGINAL_LANG_COLUMN_POSITION = 0;
     public static final String FAKE_QUERY = "fake_query";
     public static final String EMPTY_FAKE_QUERY = "";
-
-    //TODO: write tests
 
     @Mock PhrasebookMvpView mMockPhrasebookMvpView;
     @Mock DataManager mMockDataManager;
@@ -52,7 +52,9 @@ public class PhrasebookPresenterTest {
     @Test
     public void testLoadPhrasebook() throws Exception {
         //given
-        Phrasebook fakePhrasebook = Phrasebook.createFromCsvRows(CsvRowsTestFactory.getCsvRows(), 0, 0);
+        Phrasebook fakePhrasebook = Phrasebook.createFromCsvRows(CsvRowsTestFactory.getCsvRows(),
+                LANGUAGES_HEADER_ROW_POSITION,
+                ORIGINAL_LANG_COLUMN_POSITION);
         when(mMockDataManager.getPhrasebook()).thenReturn(Observable.just(fakePhrasebook));
         when(mMockDataManager.getCurrentPhrasebookLanguagePosition()).thenReturn(LANGUAGE_SPINNER_POSITION);
 
