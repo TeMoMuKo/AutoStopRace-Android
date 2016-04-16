@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.util.LogUtil;
 
 /**
  * Created by Rafał Naniewicz on 02.04.2016.
@@ -20,6 +21,8 @@ import pl.temomuko.autostoprace.R;
 public class LocationRecordClusterRenderer extends DefaultClusterRenderer<LocationRecordClusterItem> {
 
     private static final int MIN_CLUSTER_SIZE = 10;
+    private static final String TAG = LocationRecordClusterRenderer.class.getSimpleName();
+
     private Context mContext;
 
     public LocationRecordClusterRenderer(Context context, GoogleMap map, ClusterManager<LocationRecordClusterItem> clusterManager) {
@@ -54,13 +57,11 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
 
     private LocationRecordClusterItem getNewestClusterItem(Collection<LocationRecordClusterItem> locationRecordClusterItems) {
         if (!locationRecordClusterItems.isEmpty()) {
-            Iterator<LocationRecordClusterItem> locationRecordClusterItemIterator
-                    = locationRecordClusterItems.iterator();
-            LocationRecordClusterItem newestLocationRecordClusterItem =
-                    locationRecordClusterItemIterator.next();
-            LocationRecordClusterItem currentLocationRecordCluster;
-            while (locationRecordClusterItemIterator.hasNext()) {
-                currentLocationRecordCluster = locationRecordClusterItemIterator.next();
+            Iterator<LocationRecordClusterItem> itemsIterator = locationRecordClusterItems.iterator();
+            LocationRecordClusterItem currentLocationRecordCluster,
+                    newestLocationRecordClusterItem = itemsIterator.next();
+            while (itemsIterator.hasNext()) {
+                currentLocationRecordCluster = itemsIterator.next();
                 if (newestLocationRecordClusterItem.getReceiptDate().before(
                         currentLocationRecordCluster.getReceiptDate())) {
                     newestLocationRecordClusterItem = currentLocationRecordCluster;
@@ -68,6 +69,7 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
             }
             return newestLocationRecordClusterItem;
         } else {
+            LogUtil.wtf(TAG, "Cluster collection is empty, this should never happen");
             return new LocationRecordClusterItem(0, 0, "something went wrong", null);
         }
     }

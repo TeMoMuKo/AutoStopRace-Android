@@ -19,6 +19,7 @@ import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
+import pl.temomuko.autostoprace.data.remote.TeamNotFoundException;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapMvpView;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
@@ -105,7 +106,7 @@ public class TeamsLocationsMapPresenterTest {
     }
 
     @Test
-    public void testLoadTeamsLocationsSuccessNotEmpty() {
+    public void testLoadTeamLocationsSuccessNotEmpty() {
         //given
         List<LocationRecord> locationRecords = new ArrayList<>();
         locationRecords.add(null);
@@ -120,12 +121,11 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).setLocations(locationRecords);
         verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
         verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
-        verify(mMockTeamsLocationsMapMvpView, never()).showTeamNotFoundError();
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
 
     @Test
-    public void testLoadTeamsLocationsSuccessEmpty() {
+    public void testLoadTeamLocationsSuccessEmpty() {
         //given
         List<LocationRecord> locationRecords = new ArrayList<>();
         Response<List<LocationRecord>> response = Response.success(locationRecords);
@@ -139,12 +139,11 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).setLocations(locationRecords);
         verify(mMockTeamsLocationsMapMvpView).showNoLocationRecordsInfo();
         verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
-        verify(mMockTeamsLocationsMapMvpView, never()).showTeamNotFoundError();
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
 
     @Test
-    public void testLoadTeamsLocationsFails() {
+    public void testLoadTeamLocationsFails() {
         //given
         Response<List<LocationRecord>> response = Response.error(HttpStatus.BAD_REQUEST, ResponseBody.create(
                 MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), "")
@@ -160,19 +159,20 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView, never()).setLocations(any());
         verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
         verify(mMockTeamsLocationsMapMvpView).showError(any());
-        verify(mMockTeamsLocationsMapMvpView, never()).showTeamNotFoundError();
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
 
     @Test
-    public void testLoadTeamsLocationsTeamNotFound() {
+    public void testLoadTeamLocationsTeamNotFound() {
         //given
+        final String teamNotFound = "team not found";
         Response<List<LocationRecord>> response = Response.error(HttpStatus.NOT_FOUND, ResponseBody.create(
                 MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), "")
         );
         when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
+        when(mMockErrorHandler.getMessage(any())).thenReturn(teamNotFound);
         when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(
-                Observable.error(new StandardResponseException(response)));
+                Observable.error(new TeamNotFoundException(response)));
         //when
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
         //then
@@ -180,9 +180,7 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
         verify(mMockTeamsLocationsMapMvpView, never()).setLocations(any());
         verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
-        verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
-        verify(mMockTeamsLocationsMapMvpView).showTeamNotFoundError();
+        verify(mMockTeamsLocationsMapMvpView).showError(teamNotFound);
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
-
 }

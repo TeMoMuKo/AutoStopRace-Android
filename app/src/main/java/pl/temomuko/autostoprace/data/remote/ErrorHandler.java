@@ -36,7 +36,9 @@ public class ErrorHandler {
     }
 
     public String getMessage(Throwable throwable) {
-        if (throwable instanceof StandardResponseException) {
+        if (throwable instanceof TeamNotFoundException) {
+            return getTeamNotFoundMessage();
+        } else if (throwable instanceof StandardResponseException) {
             return getMessageFromHttpResponse(((StandardResponseException) throwable).getResponse());
         } else {
             return getMessageFromRetrofitThrowable(throwable);
@@ -96,5 +98,9 @@ public class ErrorHandler {
 
     public boolean isEmailValid(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public String getTeamNotFoundMessage() {
+        return mContext.getString(R.string.error_team_not_found);
     }
 }

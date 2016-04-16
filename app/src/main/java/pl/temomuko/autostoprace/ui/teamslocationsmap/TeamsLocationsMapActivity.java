@@ -120,7 +120,10 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         mMap.setOnCameraChangeListener(mClusterManager);
         mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
         mClusterManager.setRenderer(new LocationRecordClusterRenderer(getApplicationContext(), mMap, mClusterManager));
+        setCustomClusterWindowAdapter();
+    }
 
+    private void setCustomClusterWindowAdapter() {
         mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(mTeamsLocationInfoWindowAdapter);
         mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(mTeamsLocationInfoWindowAdapter);
     }
@@ -209,11 +212,6 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @Override
     public void showInvalidFormatError() {
         Toast.makeText(this, getString(R.string.error_invalid_team_id), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showTeamNotFoundError() {
-        Toast.makeText(this, R.string.msg_team_not_found, Toast.LENGTH_SHORT).show();
     }
 
     @Override
