@@ -55,6 +55,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     private boolean mAllTeamsProgressState = false;
     private boolean mTeamProgressState = false;
+    private boolean mAnimateTeamLocationsUpdate = true;
     private GoogleMap mMap;
     private Subscription mSetHintsSubscription;
     private Subscription mSetLocationsSubscription;
@@ -75,11 +76,11 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     private void restoreInstanceState(@NonNull Bundle savedInstanceState) {
-        restoreLocationRecordClusterItems(savedInstanceState);
+        restoreCurrentTeamLocations(savedInstanceState);
         mSearchTeamView.restoreHintState(savedInstanceState.getParcelableArray(BUNDLE_TEAM_LIST_HINTS));
     }
 
-    private void restoreLocationRecordClusterItems(@NonNull Bundle savedInstanceState) {
+    private void restoreCurrentTeamLocations(@NonNull Bundle savedInstanceState) {
         Parcelable[] parcelableCurrentTeamLocations =
                 savedInstanceState.getParcelableArray(BUNDLE_CURRENT_TEAM_LOCATIONS);
         if (parcelableCurrentTeamLocations != null) {
@@ -111,6 +112,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         mSearchTeamView.setEnabled(true);
         setupClusterManager();
         if (mCurrentTeamLocations != null) {
+            mAnimateTeamLocationsUpdate = false;
             setLocations(mCurrentTeamLocations);
         }
     }
@@ -153,8 +155,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     protected void onSaveInstanceState(Bundle outState) {
         if (mCurrentTeamLocations != null) {
             outState.putParcelableArray(BUNDLE_CURRENT_TEAM_LOCATIONS,
-                    mCurrentTeamLocations
-                            .toArray(new LocationRecord[mCurrentTeamLocations.size()]));
+                    mCurrentTeamLocations.toArray(new LocationRecord[mCurrentTeamLocations.size()]));
         }
         outState.putParcelableArray(BUNDLE_TEAM_LIST_HINTS, mSearchTeamView.saveHintState());
         super.onSaveInstanceState(outState);
@@ -220,9 +221,13 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     private void handleTeamLocationsToSet(List<LocationRecordClusterItem> locationRecordClusterItems) {
-        if (!locationRecordClusterItems.isEmpty()) {
-            mMap.animateCamera(CameraUpdateFactory
-                    .newLatLngZoom(locationRecordClusterItems.get(0).getPosition(), DEFAULT_MAP_ZOOM));
+        if (mAnimateTeamLocationsUpdate) {
+            if (!locationRecordClusterItems.isEmpty()) {
+                mMap.animateCamera(CameraUpdateFactory
+                        .newLatLngZoom(locationRecordClusterItems.get(0).getPosition(), DEFAULT_MAP_ZOOM));
+            }
+        } else {
+            mAnimateTeamLocationsUpdate = true;
         }
         mClusterManager.clearItems();
         mClusterManager.addItems(locationRecordClusterItems);
