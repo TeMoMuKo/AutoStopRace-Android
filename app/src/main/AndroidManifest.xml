@@ -84,6 +84,8 @@
 
         <activity
             android:name=".ui.staticdata.campus.CampusActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.Translucent.Status"
             android:label="@string/title_activity_campus">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

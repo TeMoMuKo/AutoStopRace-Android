@@ -49,5 +49,4 @@ public class PhrasebookTest {
         String[] actualTranslations = phrasebook.getPhraseItems().get(0).getTranslations();
         assertArrayEquals(expectedTranslations, actualTranslations);
     }
-
 }

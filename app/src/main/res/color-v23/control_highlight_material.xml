@@ -14,6 +14,6 @@
     <item android:state_checked="true"
           android:state_enabled="true"
           android:alpha="@dimen/highlight_alpha_material_colored"
-          android:color="?attr/colorControlActivated" />
-    <item android:color="?attr/colorControlHighlight" />
+          android:color="?attr/colorControlActivated"/>
+    <item android:color="?attr/colorControlHighlight"/>
 </selector>

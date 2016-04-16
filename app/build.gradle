@@ -11,8 +11,8 @@ android {
         applicationId "pl.temomuko.autostoprace"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 2
-        versionName "0.0.2-beta"
+        versionCode 3
+        versionName "0.0.3-beta"
         generatedDensities = []
     }
 
@@ -53,6 +53,7 @@ dependencies {
     compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
         transitive = true
     }
+    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
 
     compile 'io.reactivex:rxjava:1.1.3'
     compile 'io.reactivex:rxandroid:1.1.0'

@@ -19,5 +19,4 @@ public class CsvRowsTestFactory {
         csvRows.add(translationsContent);
         return csvRows;
     }
-
 }
