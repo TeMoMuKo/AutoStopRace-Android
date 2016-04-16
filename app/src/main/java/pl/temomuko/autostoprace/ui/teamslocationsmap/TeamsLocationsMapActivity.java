@@ -135,8 +135,12 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                mTeamsLocationsMapPresenter.loadTeam(mSearchTeamView.getText().toString());
-                mSearchTeamView.closeSearch();
+                if (mSearchTeamView.hasFocus()) {
+                    mTeamsLocationsMapPresenter.loadTeam(mSearchTeamView.getText().toString());
+                    mSearchTeamView.closeSearch();
+                } else {
+                    mSearchTeamView.openSearch();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);

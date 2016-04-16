@@ -96,21 +96,29 @@ public class SearchTeamView extends AutoCompleteTextView
         mSearchTeamViewAdapter.setOriginalTeamList(mHints);
     }
 
-    public void closeSearch() {
-        clearFocus();
-        ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(getWindowToken(), 0);
-    }
-
     public void setHints(List<Team> teamHints) {
         mSearchTeamViewAdapter.setOriginalTeamList(teamHints);
         setAdapter(mSearchTeamViewAdapter);
     }
 
     @Override
-    public void onTeamHintClick(int teamId) {
+    public void onTeamHintClick(int teamNumber) {
         closeSearch();
-        setText(String.valueOf(teamId));
-        mOnTeamRequestedListener.onTeamRequest(teamId);
+        String teamNumberText = String.valueOf(teamNumber);
+        setText(teamNumberText);
+        setSelection(teamNumberText.length());
+        mOnTeamRequestedListener.onTeamRequest(teamNumber);
+    }
+
+    public void closeSearch() {
+        clearFocus();
+        ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(getWindowToken(), 0);
+    }
+
+    public void openSearch() {
+        requestFocus();
+        ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                .showSoftInput(this, InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
 }

@@ -28,6 +28,7 @@ import rx.Observable;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,6 +37,8 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class TeamsLocationsMapPresenterTest {
+
+    private static final int TEST_TEAM_NUMBER = 1;
 
     @Mock TeamsLocationsMapMvpView mMockTeamsLocationsMapMvpView;
     @Mock DataManager mMockDataManager;
@@ -73,17 +76,17 @@ public class TeamsLocationsMapPresenterTest {
         //when
         mTeamsLocationsMapPresenter.loadAllTeams();
         //then
-        verify(mMockDataManager).getAllTeams();
+        verify(mMockDataManager, only()).getAllTeams();
         verify(mMockTeamsLocationsMapMvpView).setHints(teams);
         verify(mMockTeamsLocationsMapMvpView).setAllTeamsProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setAllTeamsProgress(false);
         verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
+        verify(mMockRxAllTeamsCacheHelper).clearCache();
     }
 
     @Test
     public void testLoadAllTeamsFails() {
         //given
-        List<Team> teams = new ArrayList<>();
         Response<List<Team>> response = Response.error(HttpStatus.BAD_REQUEST, ResponseBody.create(
                 MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), "")
         );
@@ -93,10 +96,93 @@ public class TeamsLocationsMapPresenterTest {
         //when
         mTeamsLocationsMapPresenter.loadAllTeams();
         //then
-        verify(mMockDataManager).getAllTeams();
-        verify(mMockTeamsLocationsMapMvpView, never()).setHints(teams);
+        verify(mMockDataManager, only()).getAllTeams();
+        verify(mMockTeamsLocationsMapMvpView, never()).setHints(any());
         verify(mMockTeamsLocationsMapMvpView).setAllTeamsProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setAllTeamsProgress(false);
         verify(mMockTeamsLocationsMapMvpView).showError(any());
+        verify(mMockRxAllTeamsCacheHelper).clearCache();
     }
+
+    @Test
+    public void testLoadTeamsLocationsSuccessNotEmpty() {
+        //given
+        List<LocationRecord> locationRecords = new ArrayList<>();
+        locationRecords.add(null);
+        Response<List<LocationRecord>> response = Response.success(locationRecords);
+        when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
+        when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
+        //when
+        mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
+        //then
+        verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
+        verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
+        verify(mMockTeamsLocationsMapMvpView).setLocations(locationRecords);
+        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
+        verify(mMockTeamsLocationsMapMvpView, never()).showTeamNotFoundError();
+        verify(mMockRxTeamLocationsCacheHelper).clearCache();
+    }
+
+    @Test
+    public void testLoadTeamsLocationsSuccessEmpty() {
+        //given
+        List<LocationRecord> locationRecords = new ArrayList<>();
+        Response<List<LocationRecord>> response = Response.success(locationRecords);
+        when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
+        when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
+        //when
+        mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
+        //then
+        verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
+        verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
+        verify(mMockTeamsLocationsMapMvpView).setLocations(locationRecords);
+        verify(mMockTeamsLocationsMapMvpView).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
+        verify(mMockTeamsLocationsMapMvpView, never()).showTeamNotFoundError();
+        verify(mMockRxTeamLocationsCacheHelper).clearCache();
+    }
+
+    @Test
+    public void testLoadTeamsLocationsFails() {
+        //given
+        Response<List<LocationRecord>> response = Response.error(HttpStatus.BAD_REQUEST, ResponseBody.create(
+                MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), "")
+        );
+        when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
+        when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(
+                Observable.error(new StandardResponseException(response)));
+        //when
+        mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
+        //then
+        verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
+        verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
+        verify(mMockTeamsLocationsMapMvpView, never()).setLocations(any());
+        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView).showError(any());
+        verify(mMockTeamsLocationsMapMvpView, never()).showTeamNotFoundError();
+        verify(mMockRxTeamLocationsCacheHelper).clearCache();
+    }
+
+    @Test
+    public void testLoadTeamsLocationsTeamNotFound() {
+        //given
+        Response<List<LocationRecord>> response = Response.error(HttpStatus.NOT_FOUND, ResponseBody.create(
+                MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), "")
+        );
+        when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
+        when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(
+                Observable.error(new StandardResponseException(response)));
+        //when
+        mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
+        //then
+        verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
+        verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
+        verify(mMockTeamsLocationsMapMvpView, never()).setLocations(any());
+        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
+        verify(mMockTeamsLocationsMapMvpView).showTeamNotFoundError();
+        verify(mMockRxTeamLocationsCacheHelper).clearCache();
+    }
+
 }

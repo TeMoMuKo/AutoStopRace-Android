@@ -85,7 +85,7 @@
     <string name="msg_reset_pass_email_sent">Email zawierający dalsze instrukcje został wysłany na adres %1$s</string>
     <string name="title_reset_pass">Resetowanie hasła</string>
     <string name="error_reset_pass">Nie udało się zresetować hasła, czy na pewno podałeś poprawny adres email?</string>
-    <string name="hint_enter_team_number">Numer drużyny…</string>
+    <string name="hint_enter_team_number">Wpisz numer drużyny…</string>
     <string name="msg_last_location_record_message">Ostatnia wiadomość:</string>
     <string name="msg_last_location_record_received">Ostatnie zameldowanie: </string>
     <string name="msg_last_location_record_received_adapter">Ostatnie zameldowanie: %1$s</string>

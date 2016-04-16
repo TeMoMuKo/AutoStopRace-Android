@@ -30,7 +30,7 @@ public class SearchTeamViewAdapter extends ArrayAdapter<Team> {
 
     public interface OnTeamHintSelectedListener {
 
-        void onTeamHintClick(int teamId);
+        void onTeamHintClick(int teamNumber);
     }
 
     public SearchTeamViewAdapter(Context context) {

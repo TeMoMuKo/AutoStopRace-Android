@@ -106,9 +106,9 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         }
     }
 
-    public void loadTeam(int teamId) {
+    public void loadTeam(int teamNumber) {
         mRxTeamLocationsCacheHelper.cache(
-                mDataManager.getTeamLocationRecordsFromServer(teamId)
+                mDataManager.getTeamLocationRecordsFromServer(teamNumber)
                         .flatMap(HttpStatus::requireOk)
                         .compose(RxUtil.applyIoSchedulers())
         );
@@ -138,11 +138,9 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
 
     private void handleLoadTeamError(Throwable throwable) {
         mRxTeamLocationsCacheHelper.clearCache();
-        if (throwable instanceof StandardResponseException) {
-            int code = ((StandardResponseException) throwable).getResponse().code();
-            if (code == HttpStatus.NOT_FOUND) {
-                getMvpView().showTeamNotFoundError();
-            }
+        if (throwable instanceof StandardResponseException &&
+                ((StandardResponseException) throwable).getResponse().code() == HttpStatus.NOT_FOUND) {
+            getMvpView().showTeamNotFoundError();
         } else {
             getMvpView().showError(mErrorHandler.getMessage(throwable));
         }
