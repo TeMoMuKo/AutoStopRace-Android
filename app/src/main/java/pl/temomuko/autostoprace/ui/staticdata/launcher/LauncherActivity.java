@@ -10,8 +10,8 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
+import pl.temomuko.autostoprace.ui.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;
-import pl.temomuko.autostoprace.ui.staticdata.contact.ContactActivity;
 
 /**
  * Created by Szymon Kozak on 2016-01-22.

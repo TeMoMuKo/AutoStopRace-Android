@@ -40,7 +40,7 @@ public class PhrasebookHelper {
         });
     }
 
-    private Phrasebook receivePhrasebook() throws IOException {
+    private synchronized Phrasebook receivePhrasebook() throws IOException {
         if (mPhrasebook == null) {
             loadPhrasebookFromCsv();
         }

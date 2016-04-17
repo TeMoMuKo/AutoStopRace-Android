@@ -53,4 +53,7 @@ public final class Constants {
     public static final int DEFAULT_FOREIGN_LANG_SPINNER_POSITION = 0;
     public static final int LANGUAGES_HEADER_ROW_POSITION = 0;
     public static final int ORIGINAL_LANG_COLUMN_POSITION = 0;
+
+    /* Contact */
+    public static final String CONTACT_CSV_ASSET_PATH = "contact_data.csv";
 }

@@ -4,6 +4,7 @@ import dagger.Component;
 import pl.temomuko.autostoprace.injection.ActivityScope;
 import pl.temomuko.autostoprace.injection.module.ActivityModule;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.ui.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;
 import pl.temomuko.autostoprace.ui.login.resetpass.ResetPassActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
@@ -11,7 +12,6 @@ import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.settings.SettingsFragment;
 import pl.temomuko.autostoprace.ui.staticdata.about.AboutActivity;
-import pl.temomuko.autostoprace.ui.staticdata.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapActivity;
 
