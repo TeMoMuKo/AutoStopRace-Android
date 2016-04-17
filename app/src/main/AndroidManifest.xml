@@ -93,7 +93,7 @@
         </activity>
 
         <activity
-            android:name=".ui.staticdata.contact.ContactActivity"
+            android:name=".ui.contact.ContactActivity"
             android:label="@string/title_activity_contact">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

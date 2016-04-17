@@ -12,12 +12,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.ui.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.settings.SettingsActivity;
 import pl.temomuko.autostoprace.ui.staticdata.about.AboutActivity;
 import pl.temomuko.autostoprace.ui.staticdata.campus.CampusActivity;
-import pl.temomuko.autostoprace.ui.staticdata.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapActivity;
 

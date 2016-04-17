@@ -14,10 +14,12 @@ import javax.inject.Singleton;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.local.csv.ContactHelper;
 import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
 import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
+import pl.temomuko.autostoprace.data.model.ContactRow;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Phrasebook;
@@ -31,6 +33,7 @@ import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPa
 import retrofit2.Response;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Created by Szymon Kozak on 2016-01-09.
@@ -46,11 +49,13 @@ public class DataManager {
     private PermissionHelper mPermissionHelper;
     private GeocodingHelper mGeocodingHelper;
     private PhrasebookHelper mPhrasebookHelper;
+    private ContactHelper mContactHelper;
 
     @Inject
     public DataManager(ApiManager apiManager, PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
                        GmsLocationHelper gmsLocationHelper, PermissionHelper permissionHelper,
-                       GeocodingHelper geocodingHelper, PhrasebookHelper phrasebookHelper) {
+                       GeocodingHelper geocodingHelper, PhrasebookHelper phrasebookHelper,
+                       ContactHelper contactHelper) {
         mApiManager = apiManager;
         mPrefsHelper = prefsHelper;
         mDatabaseHelper = databaseHelper;
@@ -58,6 +63,7 @@ public class DataManager {
         mPermissionHelper = permissionHelper;
         mGeocodingHelper = geocodingHelper;
         mPhrasebookHelper = phrasebookHelper;
+        mContactHelper = contactHelper;
     }
 
     /* API  */
@@ -107,7 +113,7 @@ public class DataManager {
         );
     }
 
-    /* Database / Prefs / Phrasebook */
+    /* Database / Prefs / Phrasebook / Contact */
 
     public Observable<Void> saveToDatabase(List<LocationRecord> response) {
         return mDatabaseHelper.saveToSentLocationsTable(response);
@@ -148,7 +154,7 @@ public class DataManager {
         return mPrefsHelper.getCurrentUser();
     }
 
-    public Observable<Phrasebook> getPhrasebook() {
+    public Single<Phrasebook> getPhrasebook() {
         return mPhrasebookHelper.getPhrasebook();
     }
 
@@ -158,6 +164,10 @@ public class DataManager {
 
     public void saveCurrentPhrasebookLanguagePosition(int languagePosition) {
         mPrefsHelper.setCurrentPhrasebookLanguagePosition(languagePosition);
+    }
+
+    public Single<List<ContactRow>> getContactRows() {
+        return mContactHelper.getContacts();
     }
 
     /* Location */
