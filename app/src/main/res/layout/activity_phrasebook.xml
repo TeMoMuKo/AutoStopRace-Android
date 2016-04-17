@@ -69,15 +69,32 @@
 
                 </RelativeLayout>
 
+                <!-- Disappearing appbar during scrolling bug fix. -->
+                <!-- Google code issue: 178037 -->
+                <View
+                    android:id="@+id/appbar_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/transparent"
+                    android:visibility="invisible"/>
+
             </android.support.design.widget.AppBarLayout>
 
-            <TextView
-                android:id="@+id/tv_empty"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/no_results"
-                android:visibility="invisible"/>
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="48dp"
+                    android:gravity="center"
+                    android:text="@string/no_results"
+                    android:visibility="invisible"/>
+
+            </ScrollView>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_phrasebook"

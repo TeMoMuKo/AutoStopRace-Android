@@ -82,7 +82,7 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
     }
 
     private void saveLastSearchQuery(Bundle outState) {
-        if (mSearchItem.isActionViewExpanded()) {
+        if (mSearchItem != null && mSearchItem.isActionViewExpanded()) {
             outState.putString(BUNDLE_SEARCH_QUERY, mSearchView.getQuery().toString());
         }
     }
