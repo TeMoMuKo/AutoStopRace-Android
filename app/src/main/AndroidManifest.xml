@@ -110,6 +110,15 @@
         </activity>
 
         <activity
+            android:name=".ui.staticdata.about.LicensesActivity"
+            android:label="@string/title_activity_licenses"
+            android:theme="@style/AppTheme.NormalStatusBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.staticdata.about.AboutActivity"/>
+        </activity>
+
+        <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NormalStatusBar">

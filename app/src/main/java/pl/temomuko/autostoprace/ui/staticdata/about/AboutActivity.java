@@ -32,6 +32,10 @@ public class AboutActivity extends BaseActivity {
         setupToolbarWithBack();
         setupButtonsTextStyleOnPreLollipop();
         setListeners();
+        createLicensesDialog();
+    }
+
+    private void createLicensesDialog() {
     }
 
     private void setListeners() {
@@ -84,9 +88,15 @@ public class AboutActivity extends BaseActivity {
                 shareApp();
                 return true;
             case R.id.action_licenses:
+                startLicensesActivity();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startLicensesActivity() {
+        Intent intent = new Intent(this, LicensesActivity.class);
+        startActivity(intent);
     }
 
     private void shareApp() {

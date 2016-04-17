@@ -8,9 +8,9 @@ import pl.temomuko.autostoprace.R;
 /**
  * Created by Rafał on 02.03.2016.
  */
-public final class ColorGeneratorUtil {
+public final class ColorGenerator {
 
-    private ColorGeneratorUtil() {
+    private ColorGenerator() {
         throw new AssertionError();
     }
 

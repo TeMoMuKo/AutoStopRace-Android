@@ -103,4 +103,5 @@
     <string name="msg_location_record_received">Zameldowano:</string>
     <string name="error_team_not_found">Nie znaleziono drużyny.</string>
     <string name="team">team</string>
+    <string name="title_activity_licenses">Licencje Open Source</string>
 </resources>

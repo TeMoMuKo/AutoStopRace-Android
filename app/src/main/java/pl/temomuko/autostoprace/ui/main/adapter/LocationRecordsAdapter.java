@@ -25,7 +25,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.ui.widget.TextCircleView;
 import pl.temomuko.autostoprace.util.AnimationUtil;
-import pl.temomuko.autostoprace.util.ColorGeneratorUtil;
+import pl.temomuko.autostoprace.util.ColorGenerator;
 import pl.temomuko.autostoprace.util.CoordsUtil;
 import pl.temomuko.autostoprace.util.DateUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
@@ -176,7 +176,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         if (locationRecord.getCountryCode() != null) {
             holder.setCountryCodeAvailable(true);
             holder.mCountryCodeCircleView.setText(locationRecord.getCountryCode());
-            holder.mCountryCodeCircleView.setCircleColor(ColorGeneratorUtil.getStringBasedColor(
+            holder.mCountryCodeCircleView.setCircleColor(ColorGenerator.getStringBasedColor(
                     mAppContext, locationRecord.getCountryCode()));
         } else {
             holder.setCountryCodeAvailable(false);
