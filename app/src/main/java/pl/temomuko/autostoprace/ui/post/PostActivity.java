@@ -26,6 +26,7 @@ import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.event.AirplaneModeStatusChangeEvent;
 import pl.temomuko.autostoprace.data.event.GpsStatusChangeEvent;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.util.CoordsUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.PermissionUtil;
@@ -142,14 +143,14 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     public void updateCurrentLocation(double latitude, double longitude, String address) {
         mCurrentLocationAddressTextView.setText(address);
-        String cords = latitude + ", " + longitude;
+        String cords = CoordsUtil.getDmsTextFromDecimalDegrees(latitude, longitude);
         mCurrentLocationCordsTextView.setVisibility(View.VISIBLE);
         mCurrentLocationCordsTextView.setText(cords);
     }
 
     @Override
     public void updateCurrentLocation(double latitude, double longitude) {
-        String cords = latitude + ", " + longitude;
+        String cords = CoordsUtil.getDmsTextFromDecimalDegrees(latitude, longitude);
         mCurrentLocationCordsTextView.setVisibility(View.GONE);
         mCurrentLocationAddressTextView.setText(cords);
     }

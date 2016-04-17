@@ -26,6 +26,7 @@ import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.ui.widget.TextCircleView;
 import pl.temomuko.autostoprace.util.AnimationUtil;
 import pl.temomuko.autostoprace.util.ColorGeneratorUtil;
+import pl.temomuko.autostoprace.util.CoordsUtil;
 import pl.temomuko.autostoprace.util.DateUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 
@@ -194,7 +195,9 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         if (locationRecord.getAddress() != null) {
             locationTextView.setText(locationRecord.getAddress());
         } else {
-            String coordinates = locationRecord.getLatitude() + ", " + locationRecord.getLongitude();
+            String coordinates = CoordsUtil.getDmsTextFromDecimalDegrees(
+                    locationRecord.getLatitude(),
+                    locationRecord.getLongitude());
             locationTextView.setText(coordinates);
         }
     }
