@@ -38,6 +38,7 @@ public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.Vi
         mContext = context;
         mOnIsEmptyResultsListener = onIsEmptyResultsListener;
         mActualPhrasebookItems = new ArrayList<>();
+        mAllPhrasebookItems = new ArrayList<>();
         setupFilter();
     }
 

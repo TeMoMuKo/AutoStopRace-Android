@@ -14,7 +14,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
-import pl.temomuko.autostoprace.ui.widget.TextCircleView;
 
 /**
  * Created by Szymon Kozak on 2016-02-03.
@@ -29,7 +28,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
     private NavigationListener mNavigationListener;
     private TextView mHeaderUsernameTextView;
     private TextView mHeaderEmailTextView;
-    private TextCircleView mTextCircleView;
+    private TextView mTeamTextView;
 
     @Override
     protected void onResume() {
@@ -87,7 +86,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         View header = mNavigationView.getHeaderView(0);
         mHeaderUsernameTextView = (TextView) header.findViewById(R.id.tv_drawer_username);
         mHeaderEmailTextView = (TextView) header.findViewById(R.id.tv_drawer_email);
-        mTextCircleView = (TextCircleView) header.findViewById(R.id.team_circle_view);
+        mTeamTextView = (TextView) header.findViewById(R.id.tv_team_number);
     }
 
     /* MVP View methods */
@@ -103,8 +102,8 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
     }
 
     @Override
-    public void setupTeamCircle(int teamId) {
-        mTextCircleView.setVisibility(View.VISIBLE);
-        mTextCircleView.setText("#" + teamId);
+    public void setupTeamNumberText(int teamNumber) {
+        mTeamTextView.setVisibility(View.VISIBLE);
+        mTeamTextView.setText(String.valueOf(teamNumber));
     }
 }

@@ -20,7 +20,7 @@ public abstract class DrawerBasePresenter<T extends DrawerMvpView> extends BaseP
             User currentUser = mDataManager.getCurrentUser();
             getMvpView().setupHeaderUsername(currentUser.getUsername());
             getMvpView().setupHeaderEmail(currentUser.getEmail());
-            getMvpView().setupTeamCircle(currentUser.getTeamId());
+            getMvpView().setupTeamNumberText(currentUser.getTeamId());
         }
     }
 }
