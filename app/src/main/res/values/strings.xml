@@ -102,4 +102,5 @@
     <string name="msg_no_location_records_to_display">Brak lokalizacji do wyświetlenia.</string>
     <string name="msg_location_record_received">Zameldowano:</string>
     <string name="error_team_not_found">Nie znaleziono drużyny.</string>
+    <string name="team">team</string>
 </resources>
