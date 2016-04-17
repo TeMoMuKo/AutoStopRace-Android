@@ -22,7 +22,7 @@ public class PhrasebookPresenter extends DrawerBasePresenter<PhrasebookMvpView> 
 
     public void loadPhrasebook() {
         mSubscription = mDataManager.getPhrasebook()
-                .compose(RxUtil.applyIoSchedulers())
+                .compose(RxUtil.applySingleIoSchedulers())
                 .subscribe(this::handlePhrasebook);
     }
 

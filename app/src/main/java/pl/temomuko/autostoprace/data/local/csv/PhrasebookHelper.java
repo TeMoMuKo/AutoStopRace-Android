@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.model.Phrasebook;
 import pl.temomuko.autostoprace.injection.AppContext;
-import rx.Observable;
+import rx.Single;
 
 /**
  * Created by Szymon Kozak on 2016-04-09.
@@ -29,13 +29,12 @@ public class PhrasebookHelper {
         mAssetManager = context.getAssets();
     }
 
-    public Observable<Phrasebook> getPhrasebook() {
-        return Observable.create(subscriber -> {
+    public Single<Phrasebook> getPhrasebook() {
+        return Single.create(singleSubscriber -> {
             try {
-                subscriber.onNext(receivePhrasebook());
-                subscriber.onCompleted();
+                singleSubscriber.onSuccess(receivePhrasebook());
             } catch (IOException e) {
-                subscriber.onError(e);
+                singleSubscriber.onError(e);
             }
         });
     }

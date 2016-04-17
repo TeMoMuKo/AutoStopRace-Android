@@ -154,7 +154,7 @@ public class DataManager {
         return mPrefsHelper.getCurrentUser();
     }
 
-    public Observable<Phrasebook> getPhrasebook() {
+    public Single<Phrasebook> getPhrasebook() {
         return mPhrasebookHelper.getPhrasebook();
     }
 
