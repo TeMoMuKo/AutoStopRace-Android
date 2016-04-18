@@ -101,6 +101,14 @@
         </activity>
 
         <activity
+            android:name=".ui.staticdata.partners.PartnersActivity"
+            android:label="@string/title_activity_partners">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity"/>
+        </activity>
+
+        <activity
             android:name=".ui.staticdata.about.AboutActivity"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NormalStatusBar">

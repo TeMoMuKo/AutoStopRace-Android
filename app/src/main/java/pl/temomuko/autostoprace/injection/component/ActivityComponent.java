@@ -13,6 +13,7 @@ import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.settings.SettingsFragment;
 import pl.temomuko.autostoprace.ui.staticdata.about.AboutActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
+import pl.temomuko.autostoprace.ui.staticdata.partners.PartnersActivity;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapActivity;
 
 /**
@@ -39,6 +40,8 @@ public interface ActivityComponent {
     void inject(PhrasebookActivity phrasebookActivity);
 
     void inject(ContactActivity contactActivity);
+
+    void inject(PartnersActivity partnersActivity);
 
     void inject(SettingsFragment settingsFragment);
 

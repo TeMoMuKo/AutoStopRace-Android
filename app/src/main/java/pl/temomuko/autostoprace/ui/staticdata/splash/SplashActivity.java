@@ -14,6 +14,7 @@ import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
+import pl.temomuko.autostoprace.ui.staticdata.PartnersDrawables;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 import rx.Subscription;
@@ -23,35 +24,24 @@ import rx.Subscription;
  */
 public class SplashActivity extends BaseActivity {
 
-    private int[] mSponsorDrawablesIds = {
-            R.drawable.logo_cafe_borowka,
-            R.drawable.logo_grzeski,
-            R.drawable.logo_kf,
-            R.drawable.logo_lerni,
-            R.drawable.logo_linuxpl,
-            R.drawable.logo_pot,
-            R.drawable.logo_smscenter,
-            R.drawable.logo_sueno,
-            R.drawable.logo_sygnet,
-            R.drawable.logo_szczypta_swiata,
-            R.drawable.logo_tarczynski,
-            R.drawable.logo_ttwarsaw,
-            R.drawable.logo_unicar_wroclaw,
-            R.drawable.logo_xiaoyi,
-            R.drawable.logo_zona
-    };
     @Bind(R.id.iv_sponsor_logo) ImageView mSponsorLogoImageView;
     @Bind(R.id.iv_splash_logo) ImageView mAppLogoImageView;
     @Bind(R.id.iv_splash_bg) ImageView mBackgroundImageView;
     private Subscription mSubscription;
+    private Integer[] mPartnersDrawables;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        setupPartnersList();
         loadSponsorLogo();
         loadAppLogo();
         loadBackground();
+    }
+
+    private void setupPartnersList() {
+        mPartnersDrawables = PartnersDrawables.getAsArray();
     }
 
     private void loadAppLogo() {
@@ -84,16 +74,16 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void loadSponsorLogo() {
-        int randomDrawableId = getRandomSponsorLogoDrawableId();
+        int randomDrawableId = getRandomPartnerLogoDrawableId();
         Picasso.with(this)
                 .load(randomDrawableId)
                 .placeholder(randomDrawableId)
                 .into(mSponsorLogoImageView);
     }
 
-    private int getRandomSponsorLogoDrawableId() {
-        int randomDrawableIndex = new Random().nextInt(mSponsorDrawablesIds.length);
-        return mSponsorDrawablesIds[randomDrawableIndex];
+    private int getRandomPartnerLogoDrawableId() {
+        int randomDrawableIndex = new Random().nextInt(mPartnersDrawables.length);
+        return mPartnersDrawables[randomDrawableIndex];
     }
 
     public void startMainActivity() {
