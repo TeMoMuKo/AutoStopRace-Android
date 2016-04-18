@@ -28,6 +28,11 @@
             android:checked="false"
             android:icon="@drawable/ic_email_black_24dp"
             android:title="@string/title_activity_contact"/>
+        <item
+            android:id="@+id/activity_partners"
+            android:checked="false"
+            android:icon="@drawable/ic_favorite_black_24dp"
+            android:title="@string/title_activity_partners"/>
     </group>
     <group
         android:id="@+id/others_group"
