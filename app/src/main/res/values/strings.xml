@@ -105,4 +105,5 @@
     <string name="team">team</string>
     <string name="description_action_icon">Ikona akcji</string>
     <string name="error_action_cant_be_handled">Akcja nie mogła zostać obsłużona…</string>
+    <string name="title_activity_licenses">Licencje Open Source</string>
 </resources>

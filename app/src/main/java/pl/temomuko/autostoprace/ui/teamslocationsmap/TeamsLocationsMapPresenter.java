@@ -111,7 +111,8 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         mRxTeamLocationsCacheHelper.cache(
                 mDataManager.getTeamLocationRecordsFromServer(teamNumber)
                         .flatMap(listResponse -> listResponse.code() == HttpStatus.NOT_FOUND ?
-                                Observable.error(new TeamNotFoundException(listResponse)) : Observable.just(listResponse))
+                                Observable.error(new TeamNotFoundException(listResponse)) :
+                                Observable.just(listResponse))
                         .flatMap(HttpStatus::requireOk)
                         .compose(RxUtil.applyIoSchedulers())
         );

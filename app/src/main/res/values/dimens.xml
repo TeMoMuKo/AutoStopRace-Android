@@ -24,4 +24,5 @@
 
     <dimen name="card_content_padding_top_bottom">24dp</dimen>
     <dimen name="card_content_padding_left_right">16dp</dimen>
+    <dimen name="collapsing_toolbar_top_shadow_height">64dp</dimen>
 </resources>

@@ -15,6 +15,7 @@ import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookMvpView;
 import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import rx.Observable;
+import rx.Single;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,7 +56,7 @@ public class PhrasebookPresenterTest {
         Phrasebook fakePhrasebook = Phrasebook.createFromCsvRows(CsvRowsTestFactory.getCsvRows(),
                 LANGUAGES_HEADER_ROW_POSITION,
                 ORIGINAL_LANG_COLUMN_POSITION);
-        when(mMockDataManager.getPhrasebook()).thenReturn(Observable.just(fakePhrasebook));
+        when(mMockDataManager.getPhrasebook()).thenReturn(Single.just(fakePhrasebook));
         when(mMockDataManager.getCurrentPhrasebookLanguagePosition()).thenReturn(LANGUAGE_SPINNER_POSITION);
 
         //when

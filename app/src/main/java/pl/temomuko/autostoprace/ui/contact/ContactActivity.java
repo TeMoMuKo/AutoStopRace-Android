@@ -57,13 +57,13 @@ public class ContactActivity extends DrawerActivity implements ContactMvpView, C
         mAppBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener(mCollapsingToolbarLayout) {
             @Override
             public void onStateExpanded() {
-                getDrawerToggle().setDrawerIndicatorEnabled(true);
+                //getDrawerToggle().setDrawerIndicatorEnabled(true);
                 mCollapsingToolbarLayout.setTitle(getString(R.string.title_activity_contact));
             }
 
             @Override
             public void onStateCollapsed() {
-                getDrawerToggle().setDrawerIndicatorEnabled(false);
+                //getDrawerToggle().setDrawerIndicatorEnabled(false);
                 mCollapsingToolbarLayout.setTitle(null);
             }
         });

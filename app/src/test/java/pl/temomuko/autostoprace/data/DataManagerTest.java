@@ -14,6 +14,7 @@ import okhttp3.Request;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.local.csv.ContactHelper;
 import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
 import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
@@ -53,6 +54,7 @@ public class DataManagerTest {
     @Mock PermissionHelper mMockPermissionHelper;
     @Mock GeocodingHelper mMockGeocodingHelper;
     @Mock PhrasebookHelper mPhrasebookHelper;
+    @Mock ContactHelper mContactHelper;
     private DataManager mDataManager;
 
     private okhttp3.Response.Builder mOkHttpResponseBuilder;
@@ -60,7 +62,8 @@ public class DataManagerTest {
     @Before
     public void setUp() throws Exception {
         mDataManager = new DataManager(mMockApiManager, mMockPrefsHelper, mMockDatabaseHelper,
-                mMockGmsLocationHelper, mMockPermissionHelper, mMockGeocodingHelper, mPhrasebookHelper);
+                mMockGmsLocationHelper, mMockPermissionHelper, mMockGeocodingHelper, mPhrasebookHelper,
+                mContactHelper);
         setupFakeResponseBuilder();
     }
 

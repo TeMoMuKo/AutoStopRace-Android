@@ -9,7 +9,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.login.LoginPresenter;
-import pl.temomuko.autostoprace.ui.login.resetpass.ResetPassPresenter;
 import pl.temomuko.autostoprace.ui.settings.SettingsPresenter;
 
 /**
@@ -26,15 +25,6 @@ public final class DialogFactory {
                 .title(R.string.title_logging)
                 .content(R.string.please_wait)
                 .cancelListener(dialog -> presenter.cancelSignInRequest())
-                .progress(true, 0)
-                .build();
-    }
-
-    public static MaterialDialog createResetPassProcessDialog(Context context, ResetPassPresenter presenter) {
-        return new MaterialDialog.Builder(context)
-                .title(R.string.title_reset_pass)
-                .content(R.string.please_wait)
-                .cancelListener(dialog -> presenter.cancelResetPassRequest())
                 .progress(true, 0)
                 .build();
     }
