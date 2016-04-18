@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -108,7 +109,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
 
     @Override
     public void setupTeamNumberText(int teamNumber) {
-        mTeamTextView.setVisibility(View.VISIBLE);
+        ((LinearLayout) mTeamTextView.getParent()).setVisibility(View.VISIBLE);
         mTeamTextView.setText(String.valueOf(teamNumber));
     }
 }
