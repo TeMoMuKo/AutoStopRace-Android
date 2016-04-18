@@ -11,12 +11,12 @@ import pl.temomuko.autostoprace.data.model.ContactRow;
 public final class ContactCsvRowsParserUtil {
 
     private static final int TYPE_ROW = 0;
-    private static final int CONTENT_ROW = 1;
-    private static final int OPTIONAL_DISPLAYED_CONTENT = 2;
+    private static final int VALUE_ROW = 1;
+    private static final int OPTIONAL_DISPLAYED_VALUE = 2;
     private static final int DESCRIPTION_ROW = 3;
     private static final String TYPE_ROW_NAME = "TYPE";
-    private static final String CONTENT_ROW_NAME = "CONTENT";
-    private static final String OPTIONAL_DISPLAYED_CONTENT_ROW_NAME = "OPTIONAL_DISPLAYED_CONTENT";
+    private static final String VALUE_ROW_NAME = "VALUE";
+    private static final String OPTIONAL_DISPLAYED_VALUE_ROW_NAME = "OPTIONAL_DISPLAYED_VALUE";
     private static final String DESCRIPTION_ROW_NAME = "DESCRIPTION";
 
     private ContactCsvRowsParserUtil() {
@@ -27,12 +27,11 @@ public final class ContactCsvRowsParserUtil {
         List<ContactRow> contactRows = new ArrayList<>(csvRows.size());
         csvRows = formatCsv(csvRows);
         for (String[] csvRow : csvRows) {
-            contactRows.add(createContactRowFromFormatedCsvRows(csvRow));
+            contactRows.add(createContactRowFromFormattedCstRows(csvRow));
         }
         return contactRows;
     }
 
-    //TYPE,CONTENT,OPTIONAL_DISPLAYED_CONTENT,DESCRIPTION
     private static List<String[]> formatCsv(List<String[]> csvRows) throws CsvParseException {
         try {
             if (csvRows.isEmpty()) {
@@ -40,11 +39,11 @@ public final class ContactCsvRowsParserUtil {
             }
             String[] firstCsvRow = csvRows.remove(0);
             boolean properFirstLineFormat = (firstCsvRow[TYPE_ROW].equals(TYPE_ROW_NAME) &&
-                    firstCsvRow[CONTENT_ROW].equals(CONTENT_ROW_NAME) &&
-                    firstCsvRow[OPTIONAL_DISPLAYED_CONTENT].equals(OPTIONAL_DISPLAYED_CONTENT_ROW_NAME) &&
+                    firstCsvRow[VALUE_ROW].equals(VALUE_ROW_NAME) &&
+                    firstCsvRow[OPTIONAL_DISPLAYED_VALUE].equals(OPTIONAL_DISPLAYED_VALUE_ROW_NAME) &&
                     firstCsvRow[DESCRIPTION_ROW].equals(DESCRIPTION_ROW_NAME));
             if (!properFirstLineFormat) {
-                throw new CsvParseException("Check column name");
+                throw new CsvParseException("Check column names");
             }
             return csvRows;
         } catch (IndexOutOfBoundsException e) {
@@ -52,15 +51,15 @@ public final class ContactCsvRowsParserUtil {
         }
     }
 
-    private static ContactRow createContactRowFromFormatedCsvRows(String[] csvRow) throws CsvParseException {
+    private static ContactRow createContactRowFromFormattedCstRows(String[] csvRow) throws CsvParseException {
         try {
-            if (csvRow[OPTIONAL_DISPLAYED_CONTENT].isEmpty()) {
-                return new ContactRow(csvRow[TYPE_ROW], csvRow[CONTENT_ROW], csvRow[DESCRIPTION_ROW]);
+            if (csvRow[OPTIONAL_DISPLAYED_VALUE].isEmpty()) {
+                return new ContactRow(csvRow[TYPE_ROW], csvRow[VALUE_ROW], csvRow[DESCRIPTION_ROW]);
             } else {
-                return new ContactRow(csvRow[TYPE_ROW], csvRow[CONTENT_ROW], csvRow[OPTIONAL_DISPLAYED_CONTENT], csvRow[DESCRIPTION_ROW]);
+                return new ContactRow(csvRow[TYPE_ROW], csvRow[VALUE_ROW], csvRow[OPTIONAL_DISPLAYED_VALUE], csvRow[DESCRIPTION_ROW]);
             }
         } catch (IndexOutOfBoundsException e) {
-            throw new CsvParseException("Missing field in CSV", e);
+            throw new CsvParseException("Missing field in csv", e);
         }
     }
 }

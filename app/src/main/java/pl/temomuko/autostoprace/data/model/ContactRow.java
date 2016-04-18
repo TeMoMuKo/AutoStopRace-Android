@@ -6,20 +6,20 @@ package pl.temomuko.autostoprace.data.model;
 public class ContactRow {
 
     private String mType;
-    private String mContent;
-    private String mOptionalDisplayedContent;
+    private String mValue;
+    private String mOptionalDisplayedValue;
     private String mDescription;
 
-    public ContactRow(String type, String content, String description) {
+    public ContactRow(String type, String value, String description) {
         mType = type;
-        mContent = content;
+        mValue = value;
         mDescription = description;
     }
 
-    public ContactRow(String type, String content, String optionalDisplayedContent, String description) {
+    public ContactRow(String type, String value, String optionalDisplayedValue, String description) {
         mType = type;
-        mContent = content;
-        mOptionalDisplayedContent = optionalDisplayedContent;
+        mValue = value;
+        mOptionalDisplayedValue = optionalDisplayedValue;
         mDescription = description;
     }
 
@@ -27,15 +27,15 @@ public class ContactRow {
         return mType;
     }
 
-    public String getContent() {
-        return mContent;
+    public String getValue() {
+        return mValue;
     }
 
-    public String getDisplayedContent() {
-        if (mOptionalDisplayedContent == null) {
-            return mContent;
+    public String getDisplayedValue() {
+        if (mOptionalDisplayedValue == null) {
+            return mValue;
         }
-        return mOptionalDisplayedContent;
+        return mOptionalDisplayedValue;
     }
 
     public String getDescription() {

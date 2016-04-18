@@ -103,4 +103,6 @@
     <string name="msg_location_record_received">Zameldowano:</string>
     <string name="error_team_not_found">Nie znaleziono drużyny.</string>
     <string name="team">team</string>
+    <string name="description_action_icon">Ikona akcji</string>
+    <string name="error_action_cant_be_handled">Akcja nie mogła zostać obsłużona…</string>
 </resources>

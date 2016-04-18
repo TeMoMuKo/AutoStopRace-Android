@@ -1,6 +1,7 @@
-TYPE,CONTENT,OPTIONAL_DISPLAYED_CONTENT,DESCRIPTION
+TYPE,VALUE,OPTIONAL_DISPLAYED_VALUE,DESCRIPTION
 phone_number,112,,Telefon alarmowy
 phone_number,700880774,,Telefon do organizatorów
+sms,700880774,,Telefon do organizatorów
 email,fajnyemail@test.pl,,Email organizatorów
 web_page,http://www.autostoprace.pl/,www.autostoprace.pl,Nasza strona
-fan_page,https://www.facebook.com/StrefaKulturyStudenckiej,AutoStopRace,Fanpage
+fan_page,107460812611436,AutoStopRace,Fanpage

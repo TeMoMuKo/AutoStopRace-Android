@@ -1,11 +1,8 @@
 package pl.temomuko.autostoprace.ui.contact;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.model.ContactRow;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Subscription;
@@ -38,9 +35,6 @@ public class ContactPresenter extends DrawerBasePresenter<ContactMvpView> {
     public void loadContactRows() {
         mLoadContactRowsSubscription = mDataManager.getContactRows()
                 .compose(RxUtil.applySingleIoSchedulers())
-                .subscribe(this::handleContactRows);
-    }
-
-    private void handleContactRows(List<ContactRow> contactRows) {
+                .subscribe(getMvpView()::setContactRows);
     }
 }

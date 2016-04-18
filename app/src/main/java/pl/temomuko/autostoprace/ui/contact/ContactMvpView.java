@@ -1,5 +1,8 @@
 package pl.temomuko.autostoprace.ui.contact;
 
+import java.util.List;
+
+import pl.temomuko.autostoprace.data.model.ContactRow;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 
 /**
@@ -7,4 +10,5 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
  */
 public interface ContactMvpView extends DrawerMvpView {
 
+    void setContactRows(List<ContactRow> contactRows);
 }

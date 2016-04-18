@@ -24,6 +24,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
     @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @Bind(R.id.navigation_view) NavigationView mNavigationView;
+
     protected ActionBarDrawerToggle mDrawerToggle;
     private NavigationListener mNavigationListener;
     private TextView mHeaderUsernameTextView;
@@ -87,6 +88,10 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         mHeaderUsernameTextView = (TextView) header.findViewById(R.id.tv_drawer_username);
         mHeaderEmailTextView = (TextView) header.findViewById(R.id.tv_drawer_email);
         mTeamTextView = (TextView) header.findViewById(R.id.tv_team_number);
+    }
+
+    public ActionBarDrawerToggle getDrawerToggle() {
+        return mDrawerToggle;
     }
 
     /* MVP View methods */
