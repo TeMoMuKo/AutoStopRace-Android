@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.Constants;
-import pl.temomuko.autostoprace.data.model.ContactRow;
+import pl.temomuko.autostoprace.data.model.ContactField;
 import pl.temomuko.autostoprace.injection.AppContext;
 import rx.Single;
 
@@ -22,14 +22,14 @@ import rx.Single;
 public class ContactHelper {
 
     private AssetManager mAssetManager;
-    private List<ContactRow> mContactRows;
+    private List<ContactField> mContactFields;
 
     @Inject
     public ContactHelper(@AppContext Context context) {
         mAssetManager = context.getAssets();
     }
 
-    public Single<List<ContactRow>> getContacts() {
+    public Single<List<ContactField>> getContacts() {
         return Single.create(singleSubscriber -> {
             try {
                 singleSubscriber.onSuccess(receiveContacts());
@@ -39,16 +39,16 @@ public class ContactHelper {
         });
     }
 
-    private synchronized List<ContactRow> receiveContacts() throws IOException {
-        if (mContactRows == null) {
+    private synchronized List<ContactField> receiveContacts() throws IOException {
+        if (mContactFields == null) {
             loadContactsFromCsv();
         }
-        return mContactRows;
+        return mContactFields;
     }
 
     private void loadContactsFromCsv() throws IOException {
         InputStream csvStream = mAssetManager.open(Constants.CONTACT_CSV_ASSET_PATH);
         List<String[]> csvRows = CsvUtil.getRowsFromStream(csvStream);
-        mContactRows = ContactCsvRowsParserUtil.createContactRowsFromCsvRows(csvRows);
+        mContactFields = ContactCsvRowsParserUtil.createContactRowsFromCsvRows(csvRows);
     }
 }

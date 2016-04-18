@@ -2,4 +2,5 @@
 <resources>
     <dimen name="drawer_header_height">100dp</dimen>
     <dimen name="full_screen_card_margin">0dp</dimen>
+    <dimen name="collapsing_toolbar_top_shadow_height">71dp</dimen>
 </resources>

@@ -34,6 +34,20 @@
             android:paddingTop="16dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_contact_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:clickable="true"
+            android:visibility="gone"
+            android:tint="@color/fab_icon_color"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|right|end"
+
+            />
+
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView

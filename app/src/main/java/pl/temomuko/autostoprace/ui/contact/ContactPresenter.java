@@ -1,8 +1,11 @@
 package pl.temomuko.autostoprace.ui.contact;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.model.ContactField;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Subscription;
@@ -14,7 +17,7 @@ public class ContactPresenter extends DrawerBasePresenter<ContactMvpView> {
 
     private static final String TAG = ContactPresenter.class.getSimpleName();
 
-    private Subscription mLoadContactRowsSubscription;
+    private Subscription mLoadContactDataSubscription;
 
     @Inject
     public ContactPresenter(DataManager dataManager) {
@@ -28,13 +31,20 @@ public class ContactPresenter extends DrawerBasePresenter<ContactMvpView> {
 
     @Override
     public void detachView() {
-        if (mLoadContactRowsSubscription != null) mLoadContactRowsSubscription.unsubscribe();
+        if (mLoadContactDataSubscription != null) mLoadContactDataSubscription.unsubscribe();
         super.detachView();
     }
 
-    public void loadContactRows() {
-        mLoadContactRowsSubscription = mDataManager.getContactRows()
+    public void loadContactData() {
+        mLoadContactDataSubscription = mDataManager.getContactFields()
                 .compose(RxUtil.applySingleIoSchedulers())
-                .subscribe(getMvpView()::setContactRows);
+                .subscribe(this::handleContactFields);
+    }
+
+    private void handleContactFields(List<ContactField> contactFields) {
+        if (!contactFields.isEmpty()) {
+            getMvpView().setUpFab(contactFields.remove(0));
+        }
+        getMvpView().setContactRows(contactFields);
     }
 }

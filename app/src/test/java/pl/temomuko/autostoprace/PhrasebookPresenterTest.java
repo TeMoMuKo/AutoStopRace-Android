@@ -14,7 +14,6 @@ import pl.temomuko.autostoprace.data.model.phrasebook.CsvRowsTestFactory;
 import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookMvpView;
 import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
-import rx.Observable;
 import rx.Single;
 
 import static org.mockito.Mockito.verify;

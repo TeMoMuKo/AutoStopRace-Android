@@ -1,12 +1,15 @@
 package pl.temomuko.autostoprace.ui.contact.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +19,9 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.ContactRow;
+import pl.temomuko.autostoprace.data.model.ContactField;
 import pl.temomuko.autostoprace.injection.AppContext;
+import pl.temomuko.autostoprace.ui.contact.helper.ContactHandler;
 
 /**
  * Created by Rafał Naniewicz on 17.04.2016.
@@ -26,7 +30,7 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
 
     private static final String TAG = ContactRowsAdapter.class.getSimpleName();
 
-    private List<ContactRow> mContactRowList;
+    private List<ContactField> mContactFieldList;
     private Context mContext;
     private OnContactRowClickListener mOnContactRowClickListener;
 
@@ -37,7 +41,7 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
 
     @Inject
     public ContactRowsAdapter(@AppContext Context context) {
-        mContactRowList = new ArrayList<>();
+        mContactFieldList = new ArrayList<>();
         mContext = context;
     }
 
@@ -45,8 +49,8 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
         mOnContactRowClickListener = onContactRowClickListener;
     }
 
-    public void updateContactRows(List<ContactRow> contactRows) {
-        mContactRowList = contactRows;
+    public void updateContactRows(List<ContactField> contactFields) {
+        mContactFieldList = contactFields;
         notifyDataSetChanged();
     }
 
@@ -59,18 +63,29 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ContactRow currentContactRow = mContactRowList.get(position);
-        //// TODO: 17.04.2016 image
-        holder.mTvContent.setText(currentContactRow.getDisplayedValue());
-        holder.mTvContentDescription.setText(currentContactRow.getDescription());
+        ContactField currentContactField = mContactFieldList.get(position);
+        Picasso.with(mContext)
+                .load(ContactHandler.getIcon(currentContactField.getType()))
+                .into(holder.mActionIconImageView);
+        setColorFilter(holder, currentContactField.getType());
+        holder.mTvContent.setText(currentContactField.getDisplayedValue());
+        holder.mTvContentDescription.setText(currentContactField.getDescription());
         holder.itemView.setOnClickListener(view ->
-                mOnContactRowClickListener.onContactRowClick(currentContactRow.getType(), currentContactRow.getValue())
+                mOnContactRowClickListener.onContactRowClick(currentContactField.getType(), currentContactField.getValue())
         );
+    }
+
+    private void setColorFilter(ViewHolder holder, String currentContactRowType) {
+        if (ContactHandler.canSetColorFilter(currentContactRowType)) {
+            holder.mActionIconImageView.setColorFilter(ContextCompat.getColor(mContext, R.color.accent));
+        } else {
+            holder.mActionIconImageView.clearColorFilter();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mContactRowList.size();
+        return mContactFieldList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
