@@ -22,7 +22,7 @@
             android:layout_height="256dp"
             android:theme="@style/AppTheme.AppBarOverlay">
 
-            <include layout="@layout/collapsing_toolbar"/>
+            <include layout="@layout/contact_collapsing_toolbar"/>
 
         </android.support.design.widget.AppBarLayout>
 

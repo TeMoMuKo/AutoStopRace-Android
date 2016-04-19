@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter;
+package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map;
 
 import android.os.Parcel;
 import android.os.Parcelable;

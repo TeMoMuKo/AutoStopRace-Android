@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CollapsingToolbarLayout
+<pl.temomuko.autostoprace.ui.widget.CustomContactCollapsingToolbarLayout
     android:id="@+id/collapsing_toolbar_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -35,5 +35,5 @@
         app:layout_collapseMode="pin"
         app:theme="@style/AppTheme.AppBarOverlay"/>
 
-</android.support.design.widget.CollapsingToolbarLayout>
+</pl.temomuko.autostoprace.ui.widget.CustomContactCollapsingToolbarLayout>
 

@@ -3,6 +3,8 @@ package pl.temomuko.autostoprace.data.local.csv;
 import android.content.Context;
 import android.content.res.AssetManager;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
