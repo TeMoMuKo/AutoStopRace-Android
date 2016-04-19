@@ -36,7 +36,7 @@
     <string name="drawer_close">Zamknij menu</string>
     <string name="title_activity_schedule">Harmonogram</string>
     <string name="title_my_team_locations">Lokalizacje mojego teamu</string>
-    <string name="title_activity_teams">Lokalizacje innych teamów</string>
+    <string name="title_activity_teams">Mapa lokalizacji</string>
     <string name="title_activity_campus">Mapa campingu</string>
     <string name="title_activity_phrasebook">Krótkie rozmówki</string>
     <string name="msg_login_to_show_locations">Zaloguj się, żeby zobaczyć lokalizacje swojego teamu</string>
@@ -107,4 +107,9 @@
     <string name="error_action_cant_be_handled">Akcja nie mogła zostać obsłużona…</string>
     <string name="title_activity_licenses">Licencje Open Source</string>
     <string name="title_activity_partners">Partnerzy</string>
+    <string name="url_map">mapa.autostoprace.pl</string>
+    <string name="url_map_www">www.mapa.autostoprace.pl</string>
+    <string name="action_share_locations">Udostępnij lokacje</string>
+    <string name="msg_teams_locations">Lokalizacje teamów</string>
+    <string name="msg_team_locations">"Lokalizacje teamu %1$s"</string>
 </resources>

@@ -66,5 +66,4 @@ public class PartnersAdapter extends RecyclerView.Adapter<PartnersAdapter.ViewHo
             ButterKnife.bind(this, itemView);
         }
     }
-
 }

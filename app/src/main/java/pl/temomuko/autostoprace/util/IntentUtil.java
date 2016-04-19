@@ -12,6 +12,9 @@ import android.provider.Settings;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
 
+import pl.temomuko.autostoprace.Constants;
+import pl.temomuko.autostoprace.R;
+
 /**
  * Created by Rafał Naniewicz on 17.02.2016.
  */
@@ -58,5 +61,18 @@ public final class IntentUtil {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+    }
+
+    public static void shareLocationsMap(Context context, String teamNumberValue) {
+        String destUrl = Constants.URL_MAP;
+        String shareMapTitle = context.getString(R.string.msg_teams_locations);
+        if (!teamNumberValue.isEmpty()) {
+            destUrl += (Constants.URL_MAP_TEAM_NUMBER_QUERY_KEY + teamNumberValue);
+            shareMapTitle = context.getString(R.string.msg_team_locations, teamNumberValue);
+        }
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, destUrl);
+        context.startActivity(Intent.createChooser(intent, shareMapTitle));
     }
 }

@@ -168,4 +168,8 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     public void setIsLocationSettingsStatusForResultCalled(boolean isLocationSettingsStatusForResultCalled) {
         mIsLocationSettingsStatusForResultCalled = isLocationSettingsStatusForResultCalled;
     }
+
+    public int getCurrentUserTeamNumber() {
+        return mDataManager.getCurrentUser().getTeamNumber();
+    }
 }

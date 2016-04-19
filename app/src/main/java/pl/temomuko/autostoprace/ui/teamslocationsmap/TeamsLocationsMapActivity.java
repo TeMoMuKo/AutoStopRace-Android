@@ -1,8 +1,11 @@
 package pl.temomuko.autostoprace.ui.teamslocationsmap;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +24,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
@@ -29,6 +33,7 @@ import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.LocationRecordClust
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.LocationRecordClusterRenderer;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.TeamLocationInfoWindowAdapter;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview.SearchTeamView;
+import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
@@ -73,6 +78,33 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         setupPresenter();
         mSearchTeamView.setOnTeamRequestedListener(this);
         setupMapFragment();
+        setupIntentFilter(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setupIntentFilter(intent);
+    }
+
+    private void setupIntentFilter(Intent intent) {
+        Uri data = intent.getData();
+        if (data != null) {
+            String teamNumberParameterValue = data.getQueryParameter(Constants.URL_MAP_TEAM_NUMBER_PARAM);
+            if (teamNumberParameterValue != null) {
+                changeTeamFromIntent(teamNumberParameterValue);
+            }
+        }
+    }
+
+    private void changeTeamFromIntent(@NonNull String teamNumberParameterValue) {
+        try {
+            int teamNumber = Integer.parseInt(teamNumberParameterValue.replaceAll("[\\D]", ""));
+            mSearchTeamView.setText(String.valueOf(teamNumber));
+            mTeamsLocationsMapPresenter.loadTeam(teamNumber);
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "Invalid url query param.");
+        }
     }
 
     private void restoreInstanceState(@NonNull Bundle savedInstanceState) {
@@ -140,15 +172,26 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                if (mSearchTeamView.hasFocus()) {
-                    mTeamsLocationsMapPresenter.loadTeam(mSearchTeamView.getText().toString());
-                    mSearchTeamView.closeSearch();
-                } else {
-                    mSearchTeamView.openSearch();
-                }
+                handleActionSearch();
+                return true;
+            case R.id.action_share_map:
+                shareMap();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void handleActionSearch() {
+        if (mSearchTeamView.hasFocus()) {
+            mTeamsLocationsMapPresenter.loadTeam(mSearchTeamView.getText().toString());
+            mSearchTeamView.closeSearch();
+        } else {
+            mSearchTeamView.openSearch();
+        }
+    }
+
+    private void shareMap() {
+        IntentUtil.shareLocationsMap(this, mSearchTeamView.getText().toString());
     }
 
     @Override

@@ -162,8 +162,15 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
             case R.id.action_refresh:
                 startLocationSyncService();
                 return true;
+            case R.id.action_share_map:
+                shareMap();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void shareMap() {
+        IntentUtil.shareLocationsMap(this, String.valueOf(mMainPresenter.getCurrentUserTeamNumber()));
     }
 
     private void startLocationSyncService() {

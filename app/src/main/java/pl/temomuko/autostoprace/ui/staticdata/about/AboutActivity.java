@@ -32,10 +32,6 @@ public class AboutActivity extends BaseActivity {
         setupToolbarWithBack();
         setupButtonsTextStyleOnPreLollipop();
         setListeners();
-        createLicensesDialog();
-    }
-
-    private void createLicensesDialog() {
     }
 
     private void setListeners() {

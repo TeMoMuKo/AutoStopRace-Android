@@ -7,7 +7,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,16 +58,6 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
 
     public void backToMain() {
         super.onBackPressed();
-    }
-
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
-        } else {
-            mDrawerLayout.openDrawer(Gravity.LEFT);
-        }
-        return super.onMenuOpened(featureId, menu);
     }
 
     @Override

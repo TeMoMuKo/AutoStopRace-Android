@@ -75,10 +75,7 @@ public class SplashActivity extends BaseActivity {
 
     private void loadSponsorLogo() {
         int randomDrawableId = getRandomPartnerLogoDrawableId();
-        Picasso.with(this)
-                .load(randomDrawableId)
-                .placeholder(randomDrawableId)
-                .into(mSponsorLogoImageView);
+        mSponsorLogoImageView.setImageResource(randomDrawableId);
     }
 
     private int getRandomPartnerLogoDrawableId() {

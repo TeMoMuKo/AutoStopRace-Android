@@ -6,9 +6,9 @@
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/find_team"
         app:showAsAction="ifRoom"/>
-    <!--todo-->
-    <!--<item
-        android:id="@+id/team_asr"
-        android:title="@string/menu_team_asr"
-        app:showAsAction="never"/>-->
+    <item
+        android:id="@+id/action_share_map"
+        android:title="@string/action_share_locations"
+        android:icon="@drawable/ic_share_white_24dp"
+        app:showAsAction="ifRoom"/>
 </menu>
