@@ -5,8 +5,26 @@ Android app which allows participants of hitchhiking race to share their locatio
 Project website: http://www.autostoprace.pl/ <br>
 Google Play: Coming soon
 
+#Architecture
 Application built on MVP-based architecture powered by RxJava.  ([architecture guidelines by ribot](https://github.com/ribot/android-guidelines/blob/master/architecture_guidelines/android_architecture.md))
 
+# Used libraries
+* [ButterKnife](http://jakewharton.github.io/butterknife/)
+* [Dagger 2](http://google.github.io/dagger/)
+* [Eventbus](http://greenrobot.org/eventbus/)
+* [Google Maps Android API utility library](http://googlemaps.github.io/android-maps-utils/)
+* [Google Play Services](https://developers.google.com/android/)
+* [GSON](https://github.com/google/gson)
+* [MaterialDialogs](https://github.com/afollestad/material-dialogs)
+* [MaterialProgressBar](https://github.com/DreaminginCodeZH/MaterialProgressBar)
+* [OkHttp](http://square.github.io/okhttp/)
+* [Opencsv](http://opencsv.sourceforge.net/)
+* [Picasso](http://square.github.io/picasso/)
+* [Retrofit](http://square.github.io/retrofit/)
+* [Retrolambda](https://github.com/evant/gradle-retrolambda)
+* [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+* [RxBinding](https://github.com/JakeWharton/RxBinding)
+* [RxJava](https://github.com/ReactiveX/RxJava)
 
 ## License
 
