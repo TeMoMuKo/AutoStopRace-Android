@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -43,7 +44,7 @@ public class ContactHelper {
         if (mContactFields == null) {
             loadContactsFromCsv();
         }
-        return mContactFields;
+        return new ArrayList<>(mContactFields);
     }
 
     private void loadContactsFromCsv() throws IOException {
