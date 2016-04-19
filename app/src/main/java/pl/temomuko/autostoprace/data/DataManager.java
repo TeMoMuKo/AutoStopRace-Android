@@ -93,7 +93,7 @@ public class DataManager {
     }
 
     public Observable<Response<List<LocationRecord>>> getUserTeamLocationRecordsFromServer() {
-        return mApiManager.getAsrService().getLocationRecordsByTeamId(mPrefsHelper.getCurrentUser().getTeamId());
+        return mApiManager.getAsrService().getLocationRecords(mPrefsHelper.getCurrentUser().getTeamNumber());
     }
 
     public Observable<Response<List<LocationRecord>>> getTeamLocationRecordsFromServer(int teamNumber) {

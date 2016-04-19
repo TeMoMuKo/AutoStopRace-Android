@@ -7,16 +7,15 @@ import com.google.gson.annotations.SerializedName;
  */
 public class User {
 
-    //// TODO: 15.04.2016 Waiting for new field in api
     @SerializedName("id") private int mId;
-    @SerializedName("team_id") private int mTeamId;
+    @SerializedName("team_number") private int mTeamNumber;
     @SerializedName("first_name") private String mFirstName;
     @SerializedName("last_name") private String mLastName;
     @SerializedName("email") private String mEmail;
 
-    public User(int id, int teamId, String firstName, String lastName, String email) {
+    public User(int id, int teamNumber, String firstName, String lastName, String email) {
         mId = id;
-        mTeamId = teamId;
+        mTeamNumber = teamNumber;
         mFirstName = firstName;
         mLastName = lastName;
         mEmail = email;
@@ -26,8 +25,8 @@ public class User {
         return mId;
     }
 
-    public int getTeamId() {
-        return mTeamId;
+    public int getTeamNumber() {
+        return mTeamNumber;
     }
 
     public String getFirstName() {

@@ -35,10 +35,6 @@ public interface AsrService {
     @GET("teams/team-{team_number}/locations")
     Observable<Response<List<LocationRecord>>> getLocationRecords(@Path("team_number") int teamNumber);
 
-    //// TODO: 15.04.2016 Waiting for new field in api
-    @GET("teams/{team_id}/locations")
-    Observable<Response<List<LocationRecord>>> getLocationRecordsByTeamId(@Path("team_id") int teamId);
-
     @FormUrlEncoded
     @POST("api/v1/auth/sign_in")
     Observable<Response<SignInResponse>> signIn(

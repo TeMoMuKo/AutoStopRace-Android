@@ -91,10 +91,6 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         mTeamTextView = (TextView) header.findViewById(R.id.tv_team_number);
     }
 
-    public ActionBarDrawerToggle getDrawerToggle() {
-        return mDrawerToggle;
-    }
-
     /* MVP View methods */
 
     @Override
