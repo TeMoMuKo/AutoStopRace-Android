@@ -3,20 +3,20 @@ package pl.temomuko.autostoprace.data.model;
 /**
  * Created by Rafał Naniewicz on 17.04.2016.
  */
-public class ContactRow {
+public class ContactField {
 
     private String mType;
     private String mValue;
     private String mOptionalDisplayedValue;
     private String mDescription;
 
-    public ContactRow(String type, String value, String description) {
+    public ContactField(String type, String value, String description) {
         mType = type;
         mValue = value;
         mDescription = description;
     }
 
-    public ContactRow(String type, String value, String optionalDisplayedValue, String description) {
+    public ContactField(String type, String value, String optionalDisplayedValue, String description) {
         mType = type;
         mValue = value;
         mOptionalDisplayedValue = optionalDisplayedValue;

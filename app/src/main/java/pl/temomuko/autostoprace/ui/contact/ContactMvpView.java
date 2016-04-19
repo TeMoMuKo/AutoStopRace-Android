@@ -2,7 +2,7 @@ package pl.temomuko.autostoprace.ui.contact;
 
 import java.util.List;
 
-import pl.temomuko.autostoprace.data.model.ContactRow;
+import pl.temomuko.autostoprace.data.model.ContactField;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 
 /**
@@ -10,5 +10,7 @@ import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
  */
 public interface ContactMvpView extends DrawerMvpView {
 
-    void setContactRows(List<ContactRow> contactRows);
+    void setContactRows(List<ContactField> contactFields);
+
+    void setUpFab(ContactField fabContactField);
 }

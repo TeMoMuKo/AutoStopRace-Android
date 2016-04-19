@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.data.local.csv;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.temomuko.autostoprace.data.model.ContactRow;
+import pl.temomuko.autostoprace.data.model.ContactField;
 
 /**
  * Created by Rafał Naniewicz on 17.04.2016.
@@ -23,13 +23,13 @@ public final class ContactCsvRowsParserUtil {
         throw new AssertionError();
     }
 
-    public static List<ContactRow> createContactRowsFromCsvRows(List<String[]> csvRows) throws CsvParseException {
-        List<ContactRow> contactRows = new ArrayList<>(csvRows.size());
+    public static List<ContactField> createContactRowsFromCsvRows(List<String[]> csvRows) throws CsvParseException {
+        List<ContactField> contactFields = new ArrayList<>(csvRows.size());
         csvRows = formatCsv(csvRows);
         for (String[] csvRow : csvRows) {
-            contactRows.add(createContactRowFromFormattedCstRows(csvRow));
+            contactFields.add(createContactRowFromFormattedCstRows(csvRow));
         }
-        return contactRows;
+        return contactFields;
     }
 
     private static List<String[]> formatCsv(List<String[]> csvRows) throws CsvParseException {
@@ -51,12 +51,12 @@ public final class ContactCsvRowsParserUtil {
         }
     }
 
-    private static ContactRow createContactRowFromFormattedCstRows(String[] csvRow) throws CsvParseException {
+    private static ContactField createContactRowFromFormattedCstRows(String[] csvRow) throws CsvParseException {
         try {
             if (csvRow[OPTIONAL_DISPLAYED_VALUE].isEmpty()) {
-                return new ContactRow(csvRow[TYPE_ROW], csvRow[VALUE_ROW], csvRow[DESCRIPTION_ROW]);
+                return new ContactField(csvRow[TYPE_ROW], csvRow[VALUE_ROW], csvRow[DESCRIPTION_ROW]);
             } else {
-                return new ContactRow(csvRow[TYPE_ROW], csvRow[VALUE_ROW], csvRow[OPTIONAL_DISPLAYED_VALUE], csvRow[DESCRIPTION_ROW]);
+                return new ContactField(csvRow[TYPE_ROW], csvRow[VALUE_ROW], csvRow[OPTIONAL_DISPLAYED_VALUE], csvRow[DESCRIPTION_ROW]);
             }
         } catch (IndexOutOfBoundsException e) {
             throw new CsvParseException("Missing field in csv", e);

@@ -19,7 +19,7 @@ import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
 import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
-import pl.temomuko.autostoprace.data.model.ContactRow;
+import pl.temomuko.autostoprace.data.model.ContactField;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Phrasebook;
@@ -166,7 +166,7 @@ public class DataManager {
         mPrefsHelper.setCurrentPhrasebookLanguagePosition(languagePosition);
     }
 
-    public Single<List<ContactRow>> getContactRows() {
+    public Single<List<ContactField>> getContactFields() {
         return mContactHelper.getContacts();
     }
 
