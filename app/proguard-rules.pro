@@ -128,3 +128,6 @@
 -keep public class * extends java.lang.Exception
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
+
+#opencsv
+-dontwarn java.beans.**
