@@ -34,7 +34,6 @@ public class PartnersDrawables {
             R.drawable.logo_ttwarsaw,
             R.drawable.logo_unicar_wroclaw,
             R.drawable.logo_unilever,
-            R.drawable.logo_xiaoyi,
             R.drawable.logo_zona
     };
 
