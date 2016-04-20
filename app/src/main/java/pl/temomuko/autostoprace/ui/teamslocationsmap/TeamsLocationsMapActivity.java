@@ -29,6 +29,7 @@ import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
+import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterItem;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterRenderer;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.TeamLocationInfoWindowAdapter;
@@ -78,33 +79,40 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         setupPresenter();
         mSearchTeamView.setOnTeamRequestedListener(this);
         setupMapFragment();
-        setupIntentFilter(getIntent());
+        setupIntent(getIntent());
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        setupIntentFilter(intent);
+        setupIntent(intent);
     }
 
-    private void setupIntentFilter(Intent intent) {
+    private void setupIntent(Intent intent) {
         Uri data = intent.getData();
+        Bundle extras = intent.getExtras();
         if (data != null) {
             String teamNumberParameterValue = data.getQueryParameter(Constants.URL_MAP_TEAM_NUMBER_PARAM);
             if (teamNumberParameterValue != null) {
                 changeTeamFromIntent(teamNumberParameterValue);
             }
+        } else if (extras != null) {
+            changeTeam(extras.getInt(MainActivity.EXTRA_TEAM_NUMBER));
         }
     }
 
     private void changeTeamFromIntent(@NonNull String teamNumberParameterValue) {
         try {
             int teamNumber = Integer.parseInt(teamNumberParameterValue.replaceAll("[\\D]", ""));
-            mSearchTeamView.setText(String.valueOf(teamNumber));
-            mTeamsLocationsMapPresenter.loadTeam(teamNumber);
+            changeTeam(teamNumber);
         } catch (NumberFormatException e) {
             Log.e(TAG, "Invalid url query param.");
         }
+    }
+
+    private void changeTeam(int teamNumber) {
+        mSearchTeamView.setText(String.valueOf(teamNumber));
+        mTeamsLocationsMapPresenter.loadTeam(teamNumber);
     }
 
     private void restoreInstanceState(@NonNull Bundle savedInstanceState) {

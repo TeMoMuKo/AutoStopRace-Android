@@ -41,6 +41,7 @@ import pl.temomuko.autostoprace.ui.main.adapter.LocationRecordItem;
 import pl.temomuko.autostoprace.ui.main.adapter.LocationRecordsAdapter;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapActivity;
 import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
 import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
@@ -62,6 +63,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String BUNDLE_RECYCLER_VIEW_LINEAR_LAYOUT_STATE = "bundle_recycler_view_linear_layout_state";
     private static final String BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS = "bundle_location_record_adapter_items";
+    public static final String EXTRA_TEAM_NUMBER = "extra_team_number";
 
     @Inject MainPresenter mMainPresenter;
     @Inject LocationRecordsAdapter mLocationRecordsAdapter;
@@ -165,6 +167,9 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
             case R.id.action_share_map:
                 shareMap();
                 return true;
+            case R.id.action_team_map:
+                openCurrentTeamMapActivity();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -177,6 +182,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         if (!LocationSyncService.isRunning(this)) {
             startService(LocationSyncService.getStartIntent(this));
         }
+    }
+
+    private void openCurrentTeamMapActivity() {
+        Intent intent = new Intent(this, TeamsLocationsMapActivity.class);
+        intent.putExtra(EXTRA_TEAM_NUMBER, mMainPresenter.getCurrentUserTeamNumber());
+        startActivity(intent);
     }
 
     private void setupRecyclerView() {

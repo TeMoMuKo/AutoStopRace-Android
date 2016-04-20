@@ -118,6 +118,7 @@ public class SearchTeamView extends AutoCompleteTextView
 
     public void openSearch() {
         requestFocus();
+        setSelection(getText().length());
         ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
                 .showSoftInput(this, InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }

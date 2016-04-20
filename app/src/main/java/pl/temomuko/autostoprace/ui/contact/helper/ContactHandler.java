@@ -31,7 +31,9 @@ public class ContactHandler {
         mContext = context;
     }
 
-    public static @DrawableRes int getIcon(String contactRowType) throws UnknownFormatFlagsException {
+    public static
+    @DrawableRes
+    int getIcon(String contactRowType) throws UnknownFormatFlagsException {
         switch (contactRowType) {
             case PHONE_NUMBER:
                 return R.drawable.ic_call_black_24dp;
