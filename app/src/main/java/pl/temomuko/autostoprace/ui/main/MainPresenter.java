@@ -52,11 +52,13 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         super.detachView();
     }
 
-    public void checkAuth() {
+    public boolean checkAuth() {
         if (isAuthorized()) {
             validateToken();
+            return true;
         } else {
             getMvpView().startLauncherActivity();
+            return false;
         }
     }
 

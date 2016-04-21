@@ -30,10 +30,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.event.DatabaseRefreshedEvent;
-import pl.temomuko.autostoprace.data.event.PostServiceStateChangeEvent;
-import pl.temomuko.autostoprace.data.event.SuccessfullyAddedToUnsentTableEvent;
-import pl.temomuko.autostoprace.data.event.SuccessfullySentLocationToServerEvent;
+import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.service.LocationSyncService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
@@ -91,7 +88,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         setupRecyclerView();
         setListeners();
         if (mMainPresenter.isAuthorized()) {
-            loadLocations(savedInstanceState);
             mMainPresenter.setupUserInfoInDrawer();
         }
     }
@@ -105,27 +101,23 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     protected void onResume() {
         super.onResume();
-        mMainPresenter.checkAuth();
         startLocationSyncService();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE_FINE_LOCATION_PERMISSION) {
-            mMainPresenter.handleFineLocationRequestPermissionResult(
-                    PermissionUtil.wasAllGranted(grantResults));
+        if (mMainPresenter.checkAuth()) {
+            mMainPresenter.loadLocations();
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        resultCode = LocationSettingsUtil.getApiDependentResultCode(resultCode, data);
-        if (requestCode == REQUEST_CODE_CHECK_LOCATION_SETTINGS) {
-            mMainPresenter.setIsLocationSettingsStatusForResultCalled(false);
-            mMainPresenter.handleLocationSettingsDialogResult(resultCode);
-        }
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mMainPresenter.detachView();
+        mLocationRecordsUpdatesSubscriptions.unsubscribe();
+        super.onDestroy();
     }
 
     @Override
@@ -140,16 +132,28 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        restoreLocations(savedInstanceState);
     }
 
     @Override
-    protected void onDestroy() {
-        mMainPresenter.detachView();
-        mLocationRecordsUpdatesSubscriptions.unsubscribe();
-        super.onDestroy();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        resultCode = LocationSettingsUtil.getApiDependentResultCode(resultCode, data);
+        if (requestCode == REQUEST_CODE_CHECK_LOCATION_SETTINGS) {
+            mMainPresenter.setIsLocationSettingsStatusForResultCalled(false);
+            mMainPresenter.handleLocationSettingsDialogResult(resultCode);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE_FINE_LOCATION_PERMISSION) {
+            mMainPresenter.handleFineLocationRequestPermissionResult(
+                    PermissionUtil.wasAllGranted(grantResults));
+        }
     }
 
     @Override
@@ -174,22 +178,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         return super.onOptionsItemSelected(item);
     }
 
-    private void shareMap() {
-        IntentUtil.shareLocationsMap(this, String.valueOf(mMainPresenter.getCurrentUserTeamNumber()));
-    }
-
-    private void startLocationSyncService() {
-        if (!LocationSyncService.isRunning(this)) {
-            startService(LocationSyncService.getStartIntent(this));
-        }
-    }
-
-    private void openCurrentTeamMapActivity() {
-        Intent intent = new Intent(this, TeamsLocationsMapActivity.class);
-        intent.putExtra(EXTRA_TEAM_NUMBER, mMainPresenter.getCurrentUserTeamNumber());
-        startActivity(intent);
-    }
-
     private void setupRecyclerView() {
         mRecyclerViewLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
@@ -198,25 +186,37 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         mRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
     }
 
-    private void loadLocations(Bundle savedInstanceState) {
-        Parcelable recyclerViewLinearLayoutState;
-        Parcelable[] locationRecordAdapterItems;
-        if (savedInstanceState != null &&
-                (recyclerViewLinearLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_VIEW_LINEAR_LAYOUT_STATE)) != null &&
-                (locationRecordAdapterItems = savedInstanceState.getParcelableArray(BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS)) != null) {
-            mRecyclerViewLinearLayoutManager.onRestoreInstanceState(recyclerViewLinearLayoutState);
-            mLocationRecordsAdapter.onRestoreInstanceState(locationRecordAdapterItems);
-            showList();
-        } else {
-            mMainPresenter.loadLocations();
-        }
-    }
-
     private void setListeners() {
         mGoToPostFab.setOnClickListener(v -> {
             mGoToPostFab.setClickable(false);
             mMainPresenter.goToPostLocation();
         });
+    }
+
+    private void restoreLocations(Bundle savedInstanceState) {
+        Parcelable recyclerViewLinearLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_VIEW_LINEAR_LAYOUT_STATE);
+        Parcelable[] locationRecordAdapterItems = savedInstanceState.getParcelableArray(BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS);
+        if (recyclerViewLinearLayoutState != null && locationRecordAdapterItems != null) {
+            mRecyclerViewLinearLayoutManager.onRestoreInstanceState(recyclerViewLinearLayoutState);
+            mLocationRecordsAdapter.onRestoreInstanceState(locationRecordAdapterItems);
+            showList();
+        }
+    }
+
+    private void startLocationSyncService() {
+        if (!LocationSyncService.isRunning(this)) {
+            startService(LocationSyncService.getStartIntent(this));
+        }
+    }
+
+    private void shareMap() {
+        IntentUtil.shareLocationsMap(this, String.valueOf(mMainPresenter.getCurrentUserTeamNumber()));
+    }
+
+    private void openCurrentTeamMapActivity() {
+        Intent intent = new Intent(this, TeamsLocationsMapActivity.class);
+        intent.putExtra(EXTRA_TEAM_NUMBER, mMainPresenter.getCurrentUserTeamNumber());
+        startActivity(intent);
     }
 
     /* MVP View methods */
@@ -235,51 +235,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         }
     }
 
-    private void updateLocationRecordItemsMaintainingScrollPosition(List<LocationRecordItem> locationRecordItems) {
-        int oldFirstVisibleItemIndex = mRecyclerViewLinearLayoutManager.findFirstVisibleItemPosition();
-        int oldOffset = 0;
-        View firstChild = mRecyclerViewLinearLayoutManager.getChildAt(0);
-        if (firstChild != null) {
-            oldOffset = firstChild.getTop();
-        }
-        mLocationRecordsAdapter.updateLocationRecordItems(locationRecordItems);
-        mRecyclerViewLinearLayoutManager.scrollToPositionWithOffset(oldFirstVisibleItemIndex, oldOffset);
-    }
-
-    private void setLocationRecordsList(@NonNull List<LocationRecord> locationRecords) {
-        if (locationRecords.isEmpty()) {
-            showEmptyInfo();
-        } else {
-            mLocationRecordsUpdatesSubscriptions.clear();
-            mLocationRecordsUpdatesSubscriptions.add(Observable.from(locationRecords)
-                    .map(LocationRecordItem::new)
-                    .toSortedList()
-                    .compose(RxUtil.applyComputationSchedulers())
-                    .subscribe(sortedLocationItems -> {
-                        mLocationRecordsAdapter.setSortedLocationRecordItems(sortedLocationItems);
-                        showList();
-                    }));
-        }
-    }
-
-    private void showList() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mEmptyInfoTextView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void setProgress(boolean state) {
-        mPresenterSetProgress = state;
-        mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ?
-                View.VISIBLE :
-                View.INVISIBLE);
-    }
-
     @Override
     public void showEmptyInfo() {
         mRecyclerView.setVisibility(View.GONE);
@@ -294,6 +249,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
+    public void startPostActivity() {
+        Intent intent = new Intent(this, PostActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     public void startLoginActivity() {
         Intent intent = new Intent(this, LauncherActivity.class);
         startActivity(intent);
@@ -301,14 +262,16 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
-    public void startPostActivity() {
-        Intent intent = new Intent(this, PostActivity.class);
-        startActivity(intent);
+    public void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void setGoToPostLocationHandled() {
-        mGoToPostFab.setClickable(true);
+    public void setProgress(boolean state) {
+        mPresenterSetProgress = state;
+        mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ?
+                View.VISIBLE :
+                View.INVISIBLE);
     }
 
     @Override
@@ -371,11 +334,50 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         GoogleApiAvailability.getInstance().getErrorDialog(this, errorCode, UNHANDLED_REQUEST_CODE).show();
     }
 
+    @Override
+    public void setGoToPostLocationHandled() {
+        mGoToPostFab.setClickable(true);
+    }
+
+    /* Private helper methods */
+
+    private void updateLocationRecordItemsMaintainingScrollPosition(List<LocationRecordItem> locationRecordItems) {
+        int oldFirstVisibleItemIndex = mRecyclerViewLinearLayoutManager.findFirstVisibleItemPosition();
+        int oldOffset = 0;
+        View firstChild = mRecyclerViewLinearLayoutManager.getChildAt(0);
+        if (firstChild != null) {
+            oldOffset = firstChild.getTop();
+        }
+        mLocationRecordsAdapter.updateLocationRecordItems(locationRecordItems);
+        mRecyclerViewLinearLayoutManager.scrollToPositionWithOffset(oldFirstVisibleItemIndex, oldOffset);
+    }
+
+    private void setLocationRecordsList(@NonNull List<LocationRecord> locationRecords) {
+        if (locationRecords.isEmpty()) {
+            showEmptyInfo();
+        } else {
+            mLocationRecordsUpdatesSubscriptions.clear();
+            mLocationRecordsUpdatesSubscriptions.add(Observable.from(locationRecords)
+                    .map(LocationRecordItem::new)
+                    .toSortedList()
+                    .compose(RxUtil.applyComputationSchedulers())
+                    .subscribe(sortedLocationItems -> {
+                        mLocationRecordsAdapter.setSortedLocationRecordItems(sortedLocationItems);
+                        showList();
+                    }));
+        }
+    }
+
+    private void showList() {
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mEmptyInfoTextView.setVisibility(View.GONE);
+    }
+
     /* Events */
 
     @SuppressWarnings("unused")
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onPostServiceStateChangeEvent(PostServiceStateChangeEvent event) {
+    public void onPostServiceStateChangeEvent(Event.PostServiceStateChanged event) {
         LogUtil.i(TAG, "received post service state changed: " + Boolean.toString(event.isPostServiceActive()));
         mPostServiceSetProgress = event.isPostServiceActive();
         mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ? View.VISIBLE : View.INVISIBLE);
@@ -383,16 +385,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @SuppressWarnings("unused")
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onLocationAddedToUnsentTable(SuccessfullyAddedToUnsentTableEvent event) {
-        LogUtil.i(TAG, "received location record added to unsent table");
-        mLocationRecordsAdapter.insertLocationRecordItem(new LocationRecordItem(event.getUnsentLocationRecord()));
-        mRecyclerView.scrollToPosition(0);
-        EventUtil.removeStickyEvent(event);
-    }
-
-    @SuppressWarnings("unused")
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onLocationSent(SuccessfullySentLocationToServerEvent event) {
+    public void onLocationSent(Event.SuccessfullySentLocationToServer event) {
         LogUtil.i(TAG, "received successfully sent location event");
         mLocationRecordsAdapter.replaceLocationRecord(event.getDeletedUnsentLocationRecord(), event.getReceivedLocationRecord());
         EventUtil.removeStickyEvent(event);
@@ -400,7 +393,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @SuppressWarnings("unused")
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onDatabaseRefreshed(DatabaseRefreshedEvent event) {
+    public void onDatabaseRefreshed(Event.DatabaseRefreshed event) {
         LogUtil.i(TAG, "received database refreshed event");
         mMainPresenter.loadLocations();
         EventUtil.removeStickyEvent(event);

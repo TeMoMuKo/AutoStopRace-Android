@@ -11,9 +11,7 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.event.DatabaseRefreshedEvent;
-import pl.temomuko.autostoprace.data.event.PostServiceStateChangeEvent;
-import pl.temomuko.autostoprace.data.event.SuccessfullySentLocationToServerEvent;
+import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
@@ -51,7 +49,7 @@ public class LocationSyncService extends Service {
     @Override
     public void onDestroy() {
         LogUtil.i(TAG, "Service destroyed.");
-        EventUtil.postSticky(new PostServiceStateChangeEvent(false));
+        EventUtil.postSticky(new Event.PostServiceStateChanged(false));
         super.onDestroy();
     }
 
@@ -63,7 +61,7 @@ public class LocationSyncService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        EventUtil.postSticky(new PostServiceStateChangeEvent(true));
+        EventUtil.postSticky(new Event.PostServiceStateChanged(true));
         if (!canServiceStart()) {
             stopSelf();
             return START_NOT_STICKY;
@@ -124,7 +122,7 @@ public class LocationSyncService extends Service {
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleError,
                         () -> {
-                            EventUtil.postSticky(new DatabaseRefreshedEvent());
+                            EventUtil.postSticky(new Event.DatabaseRefreshed());
                             handleCompleted();
                         });
     }
@@ -147,7 +145,7 @@ public class LocationSyncService extends Service {
     private void handleUnsentLocationRecordAndResponse(UnsentAndResponseLocationRecordPair unsentAndRecordFromResponse) {
         LocationRecord unsentLocationRecord = unsentAndRecordFromResponse.getUnsentLocationRecord();
         LocationRecord locationRecordFromResponse = unsentAndRecordFromResponse.getLocationRecordFromResponse();
-        EventUtil.postSticky(new SuccessfullySentLocationToServerEvent(unsentLocationRecord, locationRecordFromResponse));
+        EventUtil.postSticky(new Event.SuccessfullySentLocationToServer(unsentLocationRecord, locationRecordFromResponse));
         LogUtil.i(TAG, "Removed local location record: " + unsentLocationRecord.toString());
         LogUtil.i(TAG, "Received location record: " + locationRecordFromResponse.toString());
     }

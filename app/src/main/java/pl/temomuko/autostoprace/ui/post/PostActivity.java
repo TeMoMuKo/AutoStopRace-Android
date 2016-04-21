@@ -23,8 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.event.AirplaneModeStatusChangeEvent;
-import pl.temomuko.autostoprace.data.event.GpsStatusChangeEvent;
+import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.util.CoordsUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
@@ -202,13 +201,13 @@ public class PostActivity extends BaseActivity implements PostMvpView {
 
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onGpsStatusChangeEvent(GpsStatusChangeEvent event) {
+    public void onGpsStatusChangeEvent(Event.GpsStatusChanged event) {
         mPostPresenter.handleLocationSettingsStatusChange();
     }
 
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAirplaneModeStatusChange(AirplaneModeStatusChangeEvent event) {
+    public void onAirplaneModeStatusChange(Event.AirplaneModeStatusChanged event) {
         mPostPresenter.handleLocationSettingsStatusChange();
     }
 }

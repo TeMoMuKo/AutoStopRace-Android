@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import pl.temomuko.autostoprace.data.event.AirplaneModeStatusChangeEvent;
+import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 
@@ -18,6 +18,6 @@ public class AirplaneModeStatusChangeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         LogUtil.i(TAG, "Airplane mode status changed.");
-        EventUtil.post(new AirplaneModeStatusChangeEvent());
+        EventUtil.post(new Event.AirplaneModeStatusChanged());
     }
 }

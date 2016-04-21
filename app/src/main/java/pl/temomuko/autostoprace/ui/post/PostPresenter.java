@@ -11,12 +11,10 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.event.SuccessfullyAddedToUnsentTableEvent;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.AddressUtil;
-import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
@@ -67,6 +65,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private void saveLocation(String message) {
         if (!mIsLocationSaved) {
+            mIsLocationSaved = true;
             LocationRecord locationRecordToSend = new LocationRecord(mLatestAddress.getLatitude(),
                     mLatestAddress.getLongitude(),
                     message,
@@ -75,16 +74,11 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
                     mLatestAddress.getCountryCode());
             mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
                     .compose(RxUtil.applyIoSchedulers())
-                    .subscribe(insertedLocationRecord ->
-                            EventUtil.postSticky(new SuccessfullyAddedToUnsentTableEvent(insertedLocationRecord)));
-            setLocationSaved();
-            getMvpView().showSuccessInfo();
-            getMvpView().closeActivity();
+                    .subscribe(insertedLocationRecord -> {
+                        getMvpView().showSuccessInfo();
+                        getMvpView().closeActivity();
+                    });
         }
-    }
-
-    private void setLocationSaved() {
-        mIsLocationSaved = true;
     }
 
     public void startLocationService() {
