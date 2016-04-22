@@ -34,24 +34,10 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
     private Context mContext;
     private OnContactRowClickListener mOnContactRowClickListener;
 
-    public interface OnContactRowClickListener {
-
-        void onContactRowClick(String type, String value);
-    }
-
     @Inject
     public ContactRowsAdapter(@AppContext Context context) {
         mContactFieldList = new ArrayList<>();
         mContext = context;
-    }
-
-    public void setOnContactRowClickListener(OnContactRowClickListener onContactRowClickListener) {
-        mOnContactRowClickListener = onContactRowClickListener;
-    }
-
-    public void updateContactRows(List<ContactField> contactFields) {
-        mContactFieldList = contactFields;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -64,15 +50,27 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ContactField currentContactField = mContactFieldList.get(position);
-        Picasso.with(mContext)
-                .load(ContactHandler.getIcon(currentContactField.getType()))
-                .into(holder.mActionIconImageView);
+        holder.mActionIconImageView.setImageResource(ContactHandler.getIcon(currentContactField.getType()));
         setColorFilter(holder, currentContactField.getType());
         holder.mTvContent.setText(currentContactField.getDisplayedValue());
         holder.mTvContentDescription.setText(currentContactField.getDescription());
         holder.itemView.setOnClickListener(view ->
                 mOnContactRowClickListener.onContactRowClick(currentContactField.getType(), currentContactField.getValue())
         );
+    }
+
+    @Override
+    public int getItemCount() {
+        return mContactFieldList.size();
+    }
+
+    public void setOnContactRowClickListener(OnContactRowClickListener onContactRowClickListener) {
+        mOnContactRowClickListener = onContactRowClickListener;
+    }
+
+    public void updateContactRows(List<ContactField> contactFields) {
+        mContactFieldList = contactFields;
+        notifyDataSetChanged();
     }
 
     private void setColorFilter(ViewHolder holder, String currentContactRowType) {
@@ -83,14 +81,10 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return mContactFieldList.size();
-    }
-
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.image_action_icon) ImageView mActionIconImageView;
+
         @Bind(R.id.tv_displayed_value) TextView mTvContent;
         @Bind(R.id.tv_description) TextView mTvContentDescription;
 
@@ -98,5 +92,10 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnContactRowClickListener {
+
+        void onContactRowClick(String type, String value);
     }
 }
