@@ -99,12 +99,6 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         mServerReceiptDate = serverReceiptDate;
     }
 
-    public String toString() {
-        return "(" + getCountryCode() + ")" + "(" + getLatitude() + ", " + getLongitude() + ",\n" +
-                getAddress() + ",\n "
-                + getMessage() + ")\n";
-    }
-
     protected LocationRecord(Parcel in) {
         mId = in.readInt();
         mLatitude = in.readDouble();

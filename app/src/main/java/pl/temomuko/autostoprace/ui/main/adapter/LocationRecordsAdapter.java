@@ -192,7 +192,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     }
 
     private void setupLocation(TextView locationTextView, LocationRecord locationRecord) {
-        if (locationRecord.getAddress() != null) {
+        if (locationRecord.getAddress() != null && !locationRecord.getAddress().isEmpty()) {
             locationTextView.setText(locationRecord.getAddress());
         } else {
             String coordinates = CoordsUtil.getDmsTextFromDecimalDegrees(
