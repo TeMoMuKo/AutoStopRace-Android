@@ -119,7 +119,7 @@ public class DataManager {
         return mDatabaseHelper.saveToSentLocationsTable(response);
     }
 
-    public Observable<LocationRecord> saveUnsentLocationRecordToDatabase(LocationRecord locationRecord) {
+    public Completable saveUnsentLocationRecordToDatabase(LocationRecord locationRecord) {
         return mDatabaseHelper.addUnsentLocationRecord(locationRecord);
     }
 

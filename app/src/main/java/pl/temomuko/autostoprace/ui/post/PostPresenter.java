@@ -73,12 +73,14 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
                     mLatestAddress.getCountryName(),
                     mLatestAddress.getCountryCode());
             mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
-                    .compose(RxUtil.applyIoSchedulers())
-                    .subscribe(insertedLocationRecord -> {
-                        getMvpView().showSuccessInfo();
-                        getMvpView().closeActivity();
-                    });
+                    .compose(RxUtil.applyCompletableIoSchedulers())
+                    .subscribe(this::handleLocationSaved);
         }
+    }
+
+    private void handleLocationSaved() {
+        getMvpView().showSuccessInfo();
+        getMvpView().closeActivityWithSuccessCode();
     }
 
     public void startLocationService() {

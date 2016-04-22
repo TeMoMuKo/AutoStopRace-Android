@@ -16,6 +16,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.post.PostMvpView;
 import pl.temomuko.autostoprace.ui.post.PostPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
+import rx.Completable;
 import rx.Observable;
 
 import static org.mockito.Matchers.any;
@@ -55,7 +56,7 @@ public class PostPresenterTest {
     public void testSaveLocation() throws Exception {
         //given
         when(mMockDataManager.saveUnsentLocationRecordToDatabase(any(LocationRecord.class)))
-                .thenReturn(Observable.<LocationRecord>empty());
+                .thenReturn(Completable.complete());
         when(mMockLatestAddress.getLatitude()).thenReturn(12.34);
         when(mMockLatestAddress.getLongitude()).thenReturn(45.67);
 
@@ -64,7 +65,8 @@ public class PostPresenterTest {
 
         //then
         verify(mMockDataManager).saveUnsentLocationRecordToDatabase(any(LocationRecord.class));
-        verify(mMockPostMvpView).closeActivity();
+        verify(mMockPostMvpView).showSuccessInfo();
+        verify(mMockPostMvpView).closeActivityWithSuccessCode();
     }
 
     @Test

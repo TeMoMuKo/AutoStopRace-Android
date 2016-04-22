@@ -82,20 +82,14 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<LocationRecord> addUnsentLocationRecord(LocationRecord locationRecord) {
-        return Observable.create(subscriber -> {
+    public Completable addUnsentLocationRecord(LocationRecord locationRecord) {
+        return Completable.create(subscribe -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
-                long row = mBriteDatabase.insert(LocalUnsentLocationRecordTable.NAME,
+                mBriteDatabase.insert(LocalUnsentLocationRecordTable.NAME,
                         LocalUnsentLocationRecordTable.toContentValues(locationRecord));
-                Cursor cursor = mBriteDatabase.query(
-                        "SELECT * FROM " + LocalUnsentLocationRecordTable.NAME + " WHERE ROWID=" + row
-                );
-                if (cursor.moveToNext()) {
-                    subscriber.onNext(LocalUnsentLocationRecordTable.parseCursor(cursor));
-                }
                 transaction.markSuccessful();
-                subscriber.onCompleted();
+                subscribe.onCompleted();
             } finally {
                 transaction.end();
             }

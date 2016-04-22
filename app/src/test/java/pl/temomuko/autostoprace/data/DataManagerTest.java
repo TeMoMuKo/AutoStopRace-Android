@@ -25,6 +25,7 @@ import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.ApiManager;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import retrofit2.Response;
+import rx.Completable;
 import rx.Observable;
 
 import static junit.framework.Assert.assertFalse;
@@ -80,7 +81,7 @@ public class DataManagerTest {
     public void testSaveUnsentLocationsToDatabase() throws Exception {
         //given
         LocationRecord unsentLocationRecord = new LocationRecord(18.05, 17.17, "Yo", "Somewhere, Poland", "Poland", "PL");
-        when(mMockDatabaseHelper.addUnsentLocationRecord(unsentLocationRecord)).thenReturn(Observable.empty());
+        when(mMockDatabaseHelper.addUnsentLocationRecord(unsentLocationRecord)).thenReturn(Completable.complete());
 
         //when
         mDataManager.saveUnsentLocationRecordToDatabase(unsentLocationRecord);

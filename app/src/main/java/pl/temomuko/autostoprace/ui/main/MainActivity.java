@@ -61,6 +61,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     private static final String BUNDLE_RECYCLER_VIEW_LINEAR_LAYOUT_STATE = "bundle_recycler_view_linear_layout_state";
     private static final String BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS = "bundle_location_record_adapter_items";
     public static final String EXTRA_TEAM_NUMBER = "extra_team_number";
+    public static final int REQUEST_CODE_POST_ACTIVITY = 2;
 
     @Inject MainPresenter mMainPresenter;
     @Inject LocationRecordsAdapter mLocationRecordsAdapter;
@@ -88,7 +89,13 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         setupRecyclerView();
         setListeners();
         if (mMainPresenter.isAuthorized()) {
+            if (savedInstanceState == null) {
+                mMainPresenter.loadLocations();
+            } else {
+                restoreLocations(savedInstanceState);
+            }
             mMainPresenter.setupUserInfoInDrawer();
+            startLocationSyncService();
         }
     }
 
@@ -101,10 +108,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     protected void onResume() {
         super.onResume();
-        startLocationSyncService();
-        if (mMainPresenter.checkAuth()) {
-            mMainPresenter.loadLocations();
-        }
+        mMainPresenter.checkAuth();
     }
 
     @Override
@@ -132,17 +136,20 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        restoreLocations(savedInstanceState);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        resultCode = LocationSettingsUtil.getApiDependentResultCode(resultCode, data);
-        if (requestCode == REQUEST_CODE_CHECK_LOCATION_SETTINGS) {
-            mMainPresenter.setIsLocationSettingsStatusForResultCalled(false);
-            mMainPresenter.handleLocationSettingsDialogResult(resultCode);
+
+        switch (requestCode) {
+            case REQUEST_CODE_CHECK_LOCATION_SETTINGS:
+                resultCode = LocationSettingsUtil.getApiDependentResultCode(resultCode, data);
+                mMainPresenter.setIsLocationSettingsStatusForResultCalled(false);
+                mMainPresenter.handleLocationSettingsDialogResult(resultCode);
+                break;
+            case REQUEST_CODE_POST_ACTIVITY:
+                if (resultCode == RESULT_OK) {
+                    mMainPresenter.loadLocations();
+                    startLocationSyncService();
+                }
+                break;
         }
     }
 
@@ -251,7 +258,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     public void startPostActivity() {
         Intent intent = new Intent(this, PostActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_POST_ACTIVITY);
     }
 
     @Override

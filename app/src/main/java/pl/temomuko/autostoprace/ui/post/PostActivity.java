@@ -130,7 +130,9 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     /* MVP View methods */
 
     @Override
-    public void closeActivity() {
+    public void closeActivityWithSuccessCode() {
+        Intent returnIntent = new Intent();
+        setResult(RESULT_OK, returnIntent);
         finish();
     }
 
@@ -184,7 +186,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     @Override
     public void finishWithInadequateSettingsWarning() {
         Toast.makeText(this, R.string.warning_inadequate_location_settings, Toast.LENGTH_LONG).show();
-        closeActivity();
+        closeActivityWithSuccessCode();
     }
 
     @Override
