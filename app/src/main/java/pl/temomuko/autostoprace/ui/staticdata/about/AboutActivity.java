@@ -34,14 +34,40 @@ public class AboutActivity extends BaseActivity {
         setListeners();
     }
 
-    private void setListeners() {
-        mGoToStoreButton.setOnClickListener(v -> goToStore());
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_about, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                shareApp();
+                return true;
+            case R.id.action_licenses:
+                startLicensesActivity();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setupToolbarWithBack() {
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void setupButtonsTextStyleOnPreLollipop() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             mGoToStoreButton.setTypeface(null, Typeface.BOLD);
         }
+    }
+
+    private void setListeners() {
+        mGoToStoreButton.setOnClickListener(v -> goToStore());
     }
 
     private void goToStore() {
@@ -64,42 +90,16 @@ public class AboutActivity extends BaseActivity {
         return playStoreWebPageIntent.resolveActivity(getPackageManager()) != null;
     }
 
-    private void setupToolbarWithBack() {
-        setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_about, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_share:
-                shareApp();
-                return true;
-            case R.id.action_licenses:
-                startLicensesActivity();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void startLicensesActivity() {
-        Intent intent = new Intent(this, LicensesActivity.class);
-        startActivity(intent);
-    }
-
     private void shareApp() {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, Constants.GOOGLE_PLAY_BASE_URL + getPackageName());
         shareIntent.setType("text/plain");
         startActivity(shareIntent);
+    }
+
+    private void startLicensesActivity() {
+        Intent intent = new Intent(this, LicensesActivity.class);
+        startActivity(intent);
     }
 }

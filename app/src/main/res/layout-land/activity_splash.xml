@@ -73,7 +73,7 @@
                         android:background="@android:color/white"
                         android:paddingBottom="32dp"
                         android:paddingTop="0dp"
-                        tools:src="@drawable/logo_xiaoyi"
+                        tools:src="@drawable/logo_beactive"
                         />
 
                 </LinearLayout>

@@ -51,12 +51,12 @@ public class LauncherActivity extends DrawerActivity {
         mGoToContactButton.setOnClickListener(v -> startContactActivity());
     }
 
-    public void startLoginActivity() {
+    private void startLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
-    public void startContactActivity() {
+    private void startContactActivity() {
         Intent intent = new Intent(this, ContactActivity.class);
         startActivity(intent);
     }
