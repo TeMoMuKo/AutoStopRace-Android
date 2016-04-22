@@ -68,6 +68,24 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mPostPresenter.stopLocationService();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPostPresenter.detachView();
+        super.onDestroy();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -86,31 +104,6 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mPostPresenter.stopLocationService();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        mPostPresenter.detachView();
-        super.onDestroy();
-    }
-
-    private void setupToolbarWithBack() {
-        setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_post, menu);
         return super.onCreateOptionsMenu(menu);
@@ -125,6 +118,13 @@ public class PostActivity extends BaseActivity implements PostMvpView {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupToolbarWithBack() {
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     /* MVP View methods */

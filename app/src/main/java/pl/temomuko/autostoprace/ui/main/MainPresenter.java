@@ -64,20 +64,6 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         return mDataManager.isLoggedWithToken();
     }
 
-    private void validateToken() {
-        mSubscriptions.add(mDataManager.validateToken()
-                .compose(RxUtil.applyIoSchedulers())
-                .subscribe(response -> {
-                    if (response.code() == HttpStatus.OK) {
-                        mDataManager.saveAuthorizationResponse(response);
-                    } else if (response.code() == HttpStatus.UNAUTHORIZED) {
-                        mDataManager.clearUserData().subscribe();
-                        getMvpView().showSessionExpiredError();
-                        getMvpView().startLoginActivity();
-                    }
-                }, this::handleError));
-    }
-
     public void loadLocations() {
         getMvpView().setProgress(true);
         if (mLoadLocationsSubscription != null) mLoadLocationsSubscription.unsubscribe();
@@ -85,12 +71,6 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                 .compose(RxUtil.applyIoSchedulers())
                 .subscribe(this::setLocationsView,
                         this::handleError);
-    }
-
-    private void setLocationsView(List<LocationRecord> locationRecords) {
-        if (locationRecords.isEmpty()) getMvpView().showEmptyInfo();
-        else getMvpView().updateLocationRecordsList(locationRecords);
-        getMvpView().setProgress(false);
     }
 
     public void goToPostLocation() {
@@ -111,6 +91,54 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         }
     }
 
+    public void handleLocationSettingsDialogResult(int resultCode) {
+        if (resultCode == Activity.RESULT_OK) {
+            getMvpView().startPostActivity();
+        } else {
+            getMvpView().showLocationSettingsWarning();
+        }
+        getMvpView().setGoToPostLocationHandled();
+    }
+
+    public void handleFineLocationRequestPermissionResult(boolean permissionGranted) {
+        if (permissionGranted) {
+            checkLocationSettings();
+        } else {
+            getMvpView().showNoFineLocationPermissionWarning();
+            getMvpView().setGoToPostLocationHandled();
+        }
+    }
+
+    public void setIsLocationSettingsStatusForResultCalled(boolean isLocationSettingsStatusForResultCalled) {
+        mIsLocationSettingsStatusForResultCalled = isLocationSettingsStatusForResultCalled;
+    }
+
+    public int getCurrentUserTeamNumber() {
+        return mDataManager.getCurrentUser().getTeamNumber();
+    }
+
+    /* Private helper methods */
+
+    private void validateToken() {
+        mSubscriptions.add(mDataManager.validateToken()
+                .compose(RxUtil.applyIoSchedulers())
+                .subscribe(response -> {
+                    if (response.code() == HttpStatus.OK) {
+                        mDataManager.saveAuthorizationResponse(response);
+                    } else if (response.code() == HttpStatus.UNAUTHORIZED) {
+                        mDataManager.clearUserData().subscribe();
+                        getMvpView().showSessionExpiredError();
+                        getMvpView().startLoginActivity();
+                    }
+                }, this::handleError));
+    }
+
+    private void setLocationsView(List<LocationRecord> locationRecords) {
+        if (locationRecords.isEmpty()) getMvpView().showEmptyInfo();
+        else getMvpView().updateLocationRecordsList(locationRecords);
+        getMvpView().setProgress(false);
+    }
+
     private void handleLocationSettings(LocationSettingsResult locationSettingsResult) {
         final int statusCode = locationSettingsResult.getStatus().getStatusCode();
         switch (statusCode) {
@@ -129,15 +157,6 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         getMvpView().setGoToPostLocationHandled();
     }
 
-    public void handleLocationSettingsDialogResult(int resultCode) {
-        if (resultCode == Activity.RESULT_OK) {
-            getMvpView().startPostActivity();
-        } else {
-            getMvpView().showLocationSettingsWarning();
-        }
-        getMvpView().setGoToPostLocationHandled();
-    }
-
     private void handleGmsError(Throwable throwable) {
         if (throwable instanceof ApiClientConnectionFailedException) {
             ConnectionResult connectionResult =
@@ -151,25 +170,8 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         }
     }
 
-    public void handleFineLocationRequestPermissionResult(boolean permissionGranted) {
-        if (permissionGranted) {
-            checkLocationSettings();
-        } else {
-            getMvpView().showNoFineLocationPermissionWarning();
-            getMvpView().setGoToPostLocationHandled();
-        }
-    }
-
     private void handleError(Throwable throwable) {
         getMvpView().setProgress(false);
         getMvpView().showError(mErrorHandler.getMessage(throwable));
-    }
-
-    public void setIsLocationSettingsStatusForResultCalled(boolean isLocationSettingsStatusForResultCalled) {
-        mIsLocationSettingsStatusForResultCalled = isLocationSettingsStatusForResultCalled;
-    }
-
-    public int getCurrentUserTeamNumber() {
-        return mDataManager.getCurrentUser().getTeamNumber();
     }
 }

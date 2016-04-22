@@ -137,7 +137,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         switch (requestCode) {
             case REQUEST_CODE_CHECK_LOCATION_SETTINGS:
                 resultCode = LocationSettingsUtil.getApiDependentResultCode(resultCode, data);

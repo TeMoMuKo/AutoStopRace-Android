@@ -63,6 +63,51 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         }
     }
 
+    public void startLocationService() {
+        mLatestAddress = null;
+        getMvpView().clearCurrentLocation();
+        if (mDataManager.hasFineLocationPermission()) {
+            checkLocationSettings();
+        } else {
+            getMvpView().compatRequestFineLocationPermission();
+        }
+    }
+
+    public void handleLocationSettingsDialogResult(int resultCode) {
+        if (resultCode == Activity.RESULT_OK) {
+            startLocationUpdates();
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            getMvpView().finishWithInadequateSettingsWarning();
+        }
+    }
+
+    public void handleLocationPermissionResult(boolean permissionGranted) {
+        if (permissionGranted) {
+            checkLocationSettings();
+        } else {
+            getMvpView().finishWithInadequateSettingsWarning();
+        }
+    }
+
+    public void stopLocationService() {
+        mLocationSubscriptions.clear();
+    }
+
+    public void handleLocationSettingsStatusChange() {
+        stopLocationService();
+        startLocationService();
+    }
+
+    public void setIsLocationSettingsStatusForResultCalled(boolean isLocationSettingsStatusForResultCalled) {
+        mIsLocationSettingsStatusForResultCalled = isLocationSettingsStatusForResultCalled;
+    }
+
+    public void setLatestAddress(Address latestAddress) {
+        mLatestAddress = latestAddress;
+    }
+
+    /* Private helper methods */
+
     private void saveLocation(String message) {
         if (!mIsLocationSaved) {
             mIsLocationSaved = true;
@@ -81,16 +126,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     private void handleLocationSaved() {
         getMvpView().showSuccessInfo();
         getMvpView().closeActivityWithSuccessCode();
-    }
-
-    public void startLocationService() {
-        mLatestAddress = null;
-        getMvpView().clearCurrentLocation();
-        if (mDataManager.hasFineLocationPermission()) {
-            checkLocationSettings();
-        } else {
-            getMvpView().compatRequestFineLocationPermission();
-        }
     }
 
     private void checkLocationSettings() {
@@ -119,14 +154,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         }
     }
 
-    public void handleLocationSettingsDialogResult(int resultCode) {
-        if (resultCode == Activity.RESULT_OK) {
-            startLocationUpdates();
-        } else if (resultCode == Activity.RESULT_CANCELED) {
-            getMvpView().finishWithInadequateSettingsWarning();
-        }
-    }
-
     private void handleGmsError(Throwable throwable) {
         if (throwable instanceof ApiClientConnectionFailedException) {
             ConnectionResult connectionResult =
@@ -138,14 +165,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
             }
         } else {
             LogUtil.e(TAG, throwable.toString());
-        }
-    }
-
-    public void handleLocationPermissionResult(boolean permissionGranted) {
-        if (permissionGranted) {
-            checkLocationSettings();
-        } else {
-            getMvpView().finishWithInadequateSettingsWarning();
         }
     }
 
@@ -170,22 +189,5 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         } else {
             getMvpView().updateCurrentLocation(address.getLatitude(), address.getLongitude());
         }
-    }
-
-    public void stopLocationService() {
-        mLocationSubscriptions.clear();
-    }
-
-    public void handleLocationSettingsStatusChange() {
-        stopLocationService();
-        startLocationService();
-    }
-
-    public void setIsLocationSettingsStatusForResultCalled(boolean isLocationSettingsStatusForResultCalled) {
-        mIsLocationSettingsStatusForResultCalled = isLocationSettingsStatusForResultCalled;
-    }
-
-    public void setLatestAddress(Address latestAddress) {
-        mLatestAddress = latestAddress;
     }
 }
