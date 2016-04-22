@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,10 +79,14 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
         }
     }
 
+    public interface OnContactRowClickListener {
+
+        void onContactRowClick(String type, String value);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.image_action_icon) ImageView mActionIconImageView;
-
         @Bind(R.id.tv_displayed_value) TextView mTvContent;
         @Bind(R.id.tv_description) TextView mTvContentDescription;
 
@@ -92,10 +94,5 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-    }
-
-    public interface OnContactRowClickListener {
-
-        void onContactRowClick(String type, String value);
     }
 }

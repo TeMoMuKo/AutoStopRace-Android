@@ -19,16 +19,16 @@ import butterknife.Bind;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.ContactField;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
-import pl.temomuko.autostoprace.ui.widget.CustomContactCollapsingToolbarLayout;
 import pl.temomuko.autostoprace.ui.contact.adapter.ContactRowsAdapter;
 import pl.temomuko.autostoprace.ui.contact.helper.ContactHandler;
 import pl.temomuko.autostoprace.ui.contact.helper.NoIntentHandlerException;
+import pl.temomuko.autostoprace.ui.widget.CustomContactCollapsingToolbarLayout;
 import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
 
 /**
  * Created by Szymon Kozak on 2016-02-05.
  */
-public class ContactActivity extends DrawerActivity implements ContactMvpView, ContactRowsAdapter.OnContactRowClickListener {
+public class ContactActivity extends DrawerActivity implements ContactMvpView {
 
     private static final String TAG = ContactActivity.class.getSimpleName();
 
@@ -52,7 +52,14 @@ public class ContactActivity extends DrawerActivity implements ContactMvpView, C
         mContactPresenter.setupUserInfoInDrawer();
         setupCollapsingToolbar();
         setupRecyclerView();
+        setListeners();
         mContactPresenter.loadContactData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mContactPresenter.detachView();
+        super.onDestroy();
     }
 
     private void setupCollapsingToolbar() {
@@ -65,17 +72,20 @@ public class ContactActivity extends DrawerActivity implements ContactMvpView, C
     }
 
     private void setupRecyclerView() {
-        mContactRowsAdapter.setOnContactRowClickListener(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mContactRowsAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mRecyclerView.addItemDecoration(mVerticalDividerItemDecorator);
     }
 
-    @Override
-    protected void onDestroy() {
-        mContactPresenter.detachView();
-        super.onDestroy();
+    private void setListeners() {
+        mContactRowsAdapter.setOnContactRowClickListener((type, value) -> {
+            try {
+                mContactContactHandler.startIntent(type, value);
+            } catch (NoIntentHandlerException e) {
+                showNoIntentHandlerError();
+            }
+        });
     }
 
     /* MVP View methods */
@@ -98,16 +108,7 @@ public class ContactActivity extends DrawerActivity implements ContactMvpView, C
         });
     }
 
-    /* Contact row listener methods */
-
-    @Override
-    public void onContactRowClick(String type, String value) {
-        try {
-            mContactContactHandler.startIntent(type, value);
-        } catch (NoIntentHandlerException e) {
-            showNoIntentHandlerError();
-        }
-    }
+    /* Private helper methods */
 
     private void showNoIntentHandlerError() {
         Toast.makeText(this, R.string.error_action_cant_be_handled, Toast.LENGTH_SHORT).show();
