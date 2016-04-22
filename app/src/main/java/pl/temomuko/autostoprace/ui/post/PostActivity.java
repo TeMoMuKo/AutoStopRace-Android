@@ -131,8 +131,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
 
     @Override
     public void closeActivityWithSuccessCode() {
-        Intent returnIntent = new Intent();
-        setResult(RESULT_OK, returnIntent);
+        setResult(RESULT_OK);
         finish();
     }
 
