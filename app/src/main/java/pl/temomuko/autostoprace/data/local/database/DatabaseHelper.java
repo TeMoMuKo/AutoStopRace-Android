@@ -113,27 +113,32 @@ public class DatabaseHelper {
 
     public Observable<List<LocationRecord>> getLocationRecordList() {
         return Observable.create(subscriber -> {
-            List<LocationRecord> result = new ArrayList<>();
-            Cursor unsentCursor = mBriteDatabase.query(
-                    "SELECT * FROM " + LocalUnsentLocationRecordTable.NAME
-            );
-            Cursor sentCursor = mBriteDatabase.query(
-                    "SELECT * FROM " + RemoteLocationRecordTable.NAME
-            );
-            if (!subscriber.isUnsubscribed()) {
-                while (sentCursor.moveToNext()) {
-                    result.add(RemoteLocationRecordTable.parseCursor(sentCursor));
+            BriteDatabase.Transaction transaction=mBriteDatabase.newTransaction();
+            try {
+                List<LocationRecord> result = new ArrayList<>();
+                Cursor unsentCursor = mBriteDatabase.query(
+                        "SELECT * FROM " + LocalUnsentLocationRecordTable.NAME
+                );
+                Cursor sentCursor = mBriteDatabase.query(
+                        "SELECT * FROM " + RemoteLocationRecordTable.NAME
+                );
+                if (!subscriber.isUnsubscribed()) {
+                    while (sentCursor.moveToNext()) {
+                        result.add(RemoteLocationRecordTable.parseCursor(sentCursor));
+                    }
                 }
-            }
-            if (!subscriber.isUnsubscribed()) {
-                while (unsentCursor.moveToNext()) {
-                    result.add(LocalUnsentLocationRecordTable.parseCursor(unsentCursor));
+                if (!subscriber.isUnsubscribed()) {
+                    while (unsentCursor.moveToNext()) {
+                        result.add(LocalUnsentLocationRecordTable.parseCursor(unsentCursor));
+                    }
                 }
+                unsentCursor.close();
+                sentCursor.close();
+                subscriber.onNext(result);
+                subscriber.onCompleted();
+            }finally {
+                transaction.end();
             }
-            unsentCursor.close();
-            sentCursor.close();
-            subscriber.onNext(result);
-            subscriber.onCompleted();
         });
     }
 }
