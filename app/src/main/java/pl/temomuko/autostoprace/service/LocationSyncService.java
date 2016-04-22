@@ -121,10 +121,7 @@ public class LocationSyncService extends Service {
                 .toCompletable()
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleError,
-                        () -> {
-                            EventUtil.postSticky(new Event.DatabaseRefreshed());
-                            handleCompleted();
-                        });
+                        this::handleDatabaseRefreshCompleted);
     }
 
     private Observable<UnsentAndResponseLocationRecordPair> getLocationRecordFromResponseInPair
@@ -157,8 +154,10 @@ public class LocationSyncService extends Service {
         stopSelf();
     }
 
-    private void handleCompleted() {
-        LogUtil.i(TAG, "Service stopped");
+    private void handleDatabaseRefreshCompleted() {
+        mDataManager.setLastLocationsSyncTimestamp(System.currentTimeMillis());
+        EventUtil.postSticky(new Event.DatabaseRefreshed());
+        LogUtil.i(TAG, "Database refresh completed");
         stopSelf();
     }
 

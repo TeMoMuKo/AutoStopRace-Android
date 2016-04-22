@@ -89,13 +89,13 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         setupRecyclerView();
         setListeners();
         if (mMainPresenter.isAuthorized()) {
+            mMainPresenter.setupUserInfoInDrawer();
             if (savedInstanceState == null) {
                 mMainPresenter.loadLocations();
+                startLocationSyncService();
             } else {
                 restoreLocations(savedInstanceState);
             }
-            mMainPresenter.setupUserInfoInDrawer();
-            startLocationSyncService();
         }
     }
 
@@ -109,6 +109,9 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onResume() {
         super.onResume();
         mMainPresenter.checkAuth();
+        if (mMainPresenter.isAuthorized()) {
+            mMainPresenter.syncLocationsIfRecentlyNotSynced();
+        }
     }
 
     @Override
@@ -206,12 +209,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
             mRecyclerViewLinearLayoutManager.onRestoreInstanceState(recyclerViewLinearLayoutState);
             mLocationRecordsAdapter.onRestoreInstanceState(locationRecordAdapterItems);
             showList();
-        }
-    }
-
-    private void startLocationSyncService() {
-        if (!LocationSyncService.isRunning(this)) {
-            startService(LocationSyncService.getStartIntent(this));
         }
     }
 
@@ -343,6 +340,13 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     public void setGoToPostLocationHandled() {
         mGoToPostFab.setClickable(true);
+    }
+
+    @Override
+    public void startLocationSyncService() {
+        if (!LocationSyncService.isRunning(this)) {
+            startService(LocationSyncService.getStartIntent(this));
+        }
     }
 
     /* Private helper methods */

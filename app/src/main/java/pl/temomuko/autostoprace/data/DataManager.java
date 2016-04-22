@@ -170,6 +170,14 @@ public class DataManager {
         return mContactHelper.getContacts();
     }
 
+    public void setLastLocationsSyncTimestamp(long timestamp) {
+        mPrefsHelper.setLastLocationsSyncTimestamp(timestamp);
+    }
+
+    public long getLastLocationSyncTimestamp() {
+        return mPrefsHelper.getLastLocationSyncTimestamp();
+    }
+
     /* Location */
 
     public Observable<Location> getDeviceLocation() {

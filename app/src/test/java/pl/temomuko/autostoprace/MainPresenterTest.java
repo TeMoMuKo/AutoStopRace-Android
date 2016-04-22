@@ -219,4 +219,28 @@ public class MainPresenterTest {
         verify(mMockMainMvpView, never()).startPostActivity();
         verify(mMockMainMvpView).showNoFineLocationPermissionWarning();
     }
+
+    @Test
+    public void testSyncLocationsIfRecentlyNotSyncedOneHourPassed() throws Exception {
+        //given
+        when(mMockDataManager.getLastLocationSyncTimestamp()).thenReturn((long) 0);
+
+        //when
+        mMainPresenter.syncLocationsIfRecentlyNotSynced();
+
+        //then
+        verify(mMockMainMvpView).startLocationSyncService();
+    }
+
+    @Test
+    public void testSyncLocationsIfRecentlyNotSyncedRecentlySynced() throws Exception {
+        //given
+        when(mMockDataManager.getLastLocationSyncTimestamp()).thenReturn(System.currentTimeMillis());
+
+        //when
+        mMainPresenter.syncLocationsIfRecentlyNotSynced();
+
+        //then
+        verify(mMockMainMvpView,never()).startLocationSyncService();
+    }
 }

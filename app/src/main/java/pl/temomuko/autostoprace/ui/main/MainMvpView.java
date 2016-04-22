@@ -46,4 +46,6 @@ public interface MainMvpView extends DrawerMvpView {
     void onGmsConnectionResultNoResolution(int errorCode);
 
     void setGoToPostLocationHandled();
+
+    void startLocationSyncService();
 }

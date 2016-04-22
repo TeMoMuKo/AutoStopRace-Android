@@ -31,6 +31,7 @@ public class PrefsHelper {
     private static final String PREF_CURRENT_USER_JSON = "pref_current_user_json";
     public static final String PREF_CURRENT_PHRASEBOOK_LANGUAGE = "pref_current_phrasebook_language";
     public final static String PREF_LOGOUT = "pref_logout";
+    public final static String PREF_LOCATION_SYNC_TIMESTAMP = "pref_location_sync_timestamp";
 
     private SharedPreferences mPrefs;
 
@@ -95,5 +96,13 @@ public class PrefsHelper {
 
     public int getCurrentPhrasebookLanguagePosition() {
         return mPrefs.getInt(PREF_CURRENT_PHRASEBOOK_LANGUAGE, Constants.DEFAULT_FOREIGN_LANG_SPINNER_POSITION);
+    }
+
+    public void setLastLocationsSyncTimestamp(long timestamp) {
+        mPrefs.edit().putLong(PREF_LOCATION_SYNC_TIMESTAMP, timestamp).apply();
+    }
+
+    public long getLastLocationSyncTimestamp() {
+        return mPrefs.getLong(PREF_LOCATION_SYNC_TIMESTAMP, 0);
     }
 }
