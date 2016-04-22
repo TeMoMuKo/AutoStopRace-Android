@@ -56,14 +56,14 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         }
     }
 
-    public void backToMain() {
-        super.onBackPressed();
-    }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
+    }
+
+    public void backToMain() {
+        super.onBackPressed();
     }
 
     protected void setupToolbarWithToggle() {

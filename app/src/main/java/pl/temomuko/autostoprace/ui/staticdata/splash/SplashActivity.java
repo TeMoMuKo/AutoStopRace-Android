@@ -35,27 +35,9 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         setupPartnersList();
-        loadSponsorLogo();
-        loadAppLogo();
         loadBackground();
-    }
-
-    private void setupPartnersList() {
-        mPartnersDrawables = PartnersDrawables.getAsArray();
-    }
-
-    private void loadAppLogo() {
-        Picasso.with(this)
-                .load(R.drawable.logo)
-                .placeholder(R.drawable.logo)
-                .into(mAppLogoImageView);
-    }
-
-    private void loadBackground() {
-        Picasso.with(this)
-                .load(R.drawable.bg)
-                .placeholder(R.drawable.bg)
-                .into(mBackgroundImageView);
+        loadAppLogo();
+        loadSponsorLogo();
     }
 
     @Override
@@ -73,6 +55,24 @@ public class SplashActivity extends BaseActivity {
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
+    private void setupPartnersList() {
+        mPartnersDrawables = PartnersDrawables.getAsArray();
+    }
+
+    private void loadBackground() {
+        Picasso.with(this)
+                .load(R.drawable.bg)
+                .placeholder(R.drawable.bg)
+                .into(mBackgroundImageView);
+    }
+
+    private void loadAppLogo() {
+        Picasso.with(this)
+                .load(R.drawable.logo)
+                .placeholder(R.drawable.logo)
+                .into(mAppLogoImageView);
+    }
+
     private void loadSponsorLogo() {
         int randomDrawableId = getRandomPartnerLogoDrawableId();
         mSponsorLogoImageView.setImageResource(randomDrawableId);
@@ -83,7 +83,7 @@ public class SplashActivity extends BaseActivity {
         return mPartnersDrawables[randomDrawableIndex];
     }
 
-    public void startMainActivity() {
+    private void startMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

@@ -39,10 +39,6 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
         setListeners();
     }
 
-    private void createLogoutInfoDialog() {
-        mLogoutInfoDialog = DialogFactory.createLogoutInfoDialog(getActivity(), mSettingsPresenter);
-    }
-
     @Override
     public void onDestroy() {
         mSettingsPresenter.detachView();
@@ -55,11 +51,8 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
         saveLogoutInfoDialogState(outState);
     }
 
-    private void setListeners() {
-        mLogoutPreference.setOnPreferenceClickListener(preference -> {
-            mLogoutInfoDialog.show();
-            return true;
-        });
+    private void createLogoutInfoDialog() {
+        mLogoutInfoDialog = DialogFactory.createLogoutInfoDialog(getActivity(), mSettingsPresenter);
     }
 
     private void loadLoginInfoDialogState(Bundle savedInstanceState) {
@@ -68,6 +61,13 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
                 mLogoutInfoDialog.show();
             }
         }
+    }
+
+    private void setListeners() {
+        mLogoutPreference.setOnPreferenceClickListener(preference -> {
+            mLogoutInfoDialog.show();
+            return true;
+        });
     }
 
     private void saveLogoutInfoDialogState(Bundle outState) {

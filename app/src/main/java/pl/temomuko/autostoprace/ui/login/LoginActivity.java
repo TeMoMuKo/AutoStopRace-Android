@@ -70,12 +70,44 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         super.onSaveInstanceState(outState);
     }
 
-    private void saveProgressDialogState(Bundle outState) {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-            outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, true);
-        } else {
-            outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, false);
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_login_help:
+                mHelpDialogFragment.show(getFragmentManager(),
+                        TAG_HELP_DIALOG_FRAGMENT);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void createProgressDialog() {
+        mProgressDialog = DialogFactory.createLoggingProcessDialog(this, mLoginPresenter);
+    }
+
+    private void createHelpDialog() {
+        mHelpDialogFragment = DialogFactory.HelpDialogFragment.create();
+    }
+
+    private void loadProgressDialogState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN)) {
+                mProgressDialog.show();
+            }
+        }
+    }
+
+    private void setupToolbarWithBack() {
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -98,43 +130,12 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         startActivity(intent);
     }
 
-    private void setupToolbarWithBack() {
-        setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_login_help:
-                mHelpDialogFragment.show(getFragmentManager(),
-                        TAG_HELP_DIALOG_FRAGMENT);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void createHelpDialog() {
-        mHelpDialogFragment = DialogFactory.HelpDialogFragment.create();
-    }
-
-    private void createProgressDialog() {
-        mProgressDialog = DialogFactory.createLoggingProcessDialog(this, mLoginPresenter);
-    }
-
-    private void loadProgressDialogState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            if (savedInstanceState.getBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN)) {
-                mProgressDialog.show();
-            }
+    private void saveProgressDialogState(Bundle outState) {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, true);
+        } else {
+            outState.putBoolean(BUNDLE_IS_PROGRESS_DIALOG_SHOWN, false);
         }
     }
 
@@ -159,11 +160,13 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void setInvalidEmailValidationError(boolean state) {
         mEmailTextInputLayout.setErrorEnabled(state);
         mEmailTextInputLayout.setError(state ? getString(R.string.error_invalid_email) : null);
     }
 
+    @Override
     public void setInvalidPasswordValidationError(boolean state) {
         mPasswordTextInputLayout.setErrorEnabled(state);
         mPasswordTextInputLayout.setError(state ? getString(R.string.error_empty_pass) : null);
