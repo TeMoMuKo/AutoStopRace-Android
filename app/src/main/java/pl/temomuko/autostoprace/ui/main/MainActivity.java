@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +72,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.tv_empty_info) TextView mEmptyInfoTextView;
     @Bind(R.id.cl_root) CoordinatorLayout mCoordinatorLayoutRoot;
+    @Bind(R.id.ll_empty_state) LinearLayout mEmptyStateLinearLayout;
     private Snackbar mWarningSnackbar;
     private LinearLayoutManager mRecyclerViewLinearLayoutManager;
 
@@ -241,7 +243,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Override
     public void showEmptyInfo() {
         mRecyclerView.setVisibility(View.GONE);
-        mEmptyInfoTextView.setVisibility(View.VISIBLE);
+        mEmptyStateLinearLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -379,8 +381,8 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     }
 
     private void showList() {
+        mEmptyStateLinearLayout.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
-        mEmptyInfoTextView.setVisibility(View.GONE);
     }
 
     /* Events */

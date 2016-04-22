@@ -30,17 +30,37 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true">
 
-                <TextView
-                    android:id="@+id/tv_empty_info"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/ll_empty_state"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:lineSpacingExtra="8dp"
-                    android:text="@string/msg_empty_location_records_list"
-                    android:textColor="?android:attr/textColorSecondary"/>
+                    android:orientation="vertical"
+                    android:padding="@dimen/default_padding">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/bg_asr_empty_state_400dp"
+                        android:tint="#1000"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
+                        android:id="@+id/tv_empty_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="8dp"
+                        android:paddingTop="@dimen/default_padding"
+                        android:text="@string/msg_empty_location_records_list"
+                        android:textColor="?android:attr/textColorSecondary"/>
+                </LinearLayout>
+
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
