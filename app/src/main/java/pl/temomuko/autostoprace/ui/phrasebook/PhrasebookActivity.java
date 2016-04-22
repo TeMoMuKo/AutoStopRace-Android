@@ -69,22 +69,10 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
         super.onDestroy();
     }
 
-    private void loadLastSearchQuery(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            mLastSearchQuery = savedInstanceState.getString(BUNDLE_SEARCH_QUERY);
-        }
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         saveLastSearchQuery(outState);
         super.onSaveInstanceState(outState);
-    }
-
-    private void saveLastSearchQuery(Bundle outState) {
-        if (mSearchItem != null && mSearchItem.isActionViewExpanded()) {
-            outState.putString(BUNDLE_SEARCH_QUERY, mSearchView.getQuery().toString());
-        }
     }
 
     @Override
@@ -92,6 +80,36 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
         getMenuInflater().inflate(R.menu.menu_phrasebook, menu);
         setupSearchView(menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void setupSpinner() {
+        mLangSpinnerAdapter = new ArrayAdapter<>(this, R.layout.item_spinner);
+        mLangSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mLangSpinner.setAdapter(mLangSpinnerAdapter);
+    }
+
+    private void setupRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mPhrasebookRecyclerView.setLayoutManager(linearLayoutManager);
+        mPhrasebookAdapter = new PhrasebookAdapter(this, this::setEmptyInfoVisible);
+        mPhrasebookRecyclerView.setAdapter(mPhrasebookAdapter);
+        mPhrasebookRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
+    }
+
+    private void setEmptyInfoVisible(boolean state) {
+        mEmptyResultsTextView.setVisibility(state ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    private void loadLastSearchQuery(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mLastSearchQuery = savedInstanceState.getString(BUNDLE_SEARCH_QUERY);
+        }
+    }
+
+    private void saveLastSearchQuery(Bundle outState) {
+        if (mSearchItem != null && mSearchItem.isActionViewExpanded()) {
+            outState.putString(BUNDLE_SEARCH_QUERY, mSearchView.getQuery().toString());
+        }
     }
 
     private void setupSearchView(Menu menu) {
@@ -115,24 +133,6 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
                 .map(String::trim)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mPhrasebookPresenter::handleSearchQuery);
-    }
-
-    private void setupSpinner() {
-        mLangSpinnerAdapter = new ArrayAdapter<>(this, R.layout.item_spinner);
-        mLangSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mLangSpinner.setAdapter(mLangSpinnerAdapter);
-    }
-
-    private void setupRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mPhrasebookRecyclerView.setLayoutManager(linearLayoutManager);
-        mPhrasebookAdapter = new PhrasebookAdapter(this, this::setEmptyInfoVisible);
-        mPhrasebookRecyclerView.setAdapter(mPhrasebookAdapter);
-        mPhrasebookRecyclerView.addItemDecoration(mVerticalDividerItemDecoration);
-    }
-
-    private void setEmptyInfoVisible(boolean state) {
-        mEmptyResultsTextView.setVisibility(state ? View.VISIBLE : View.INVISIBLE);
     }
 
     /* MVP View methods */
