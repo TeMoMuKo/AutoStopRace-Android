@@ -15,6 +15,7 @@ Application built on MVP-based architecture powered by RxJava.  ([architecture g
 * [Google Maps Android API utility library](http://googlemaps.github.io/android-maps-utils/)
 * [Google Play Services](https://developers.google.com/android/)
 * [GSON](https://github.com/google/gson)
+* [LeakCanary](https://github.com/square/leakcanary)
 * [MaterialDialogs](https://github.com/afollestad/material-dialogs)
 * [MaterialProgressBar](https://github.com/DreaminginCodeZH/MaterialProgressBar)
 * [OkHttp](http://square.github.io/okhttp/)

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.Locale;
 
@@ -23,6 +24,7 @@ public class AsrApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
+        LeakCanary.install(this);
         Locale.setDefault(new Locale(Constants.DEFAULT_LOCALE));
     }
 
