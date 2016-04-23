@@ -26,7 +26,8 @@ public final class LocationSettingsUtil {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             LocationSettingsStates locationSettingsStates =
                     LocationSettingsStates.fromIntent(locationSettingRequestIntentData);
-            if (locationSettingsStates.isGpsUsable()) resultCode = Activity.RESULT_OK;
+            if (locationSettingsStates != null && locationSettingsStates.isGpsUsable())
+                resultCode = Activity.RESULT_OK;
         }
         return resultCode;
     }
@@ -41,7 +42,8 @@ public final class LocationSettingsUtil {
         int statusCode = locationSettingsResult.getStatus().getStatusCode();
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             LocationSettingsStates settingsStates = locationSettingsResult.getLocationSettingsStates();
-            if (settingsStates.isGpsUsable()) statusCode = LocationSettingsStatusCodes.SUCCESS;
+            if (settingsStates != null && settingsStates.isGpsUsable())
+                statusCode = LocationSettingsStatusCodes.SUCCESS;
         }
         return statusCode;
     }

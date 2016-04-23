@@ -346,9 +346,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void startLocationSyncService() {
-        if (!LocationSyncService.isRunning(this)) {
-            startService(LocationSyncService.getStartIntent(this));
-        }
+        LocationSyncService.startServiceOrEnqueue(this);
     }
 
     /* Private helper methods */

@@ -33,6 +33,7 @@ public class LocationSyncService extends Service {
 
     private final static String TAG = LocationSyncService.class.getSimpleName();
     private final static int MAX_CONCURRENT = 1;
+    private static boolean sShouldStartAgain;
 
     @Inject DataManager mDataManager;
     @Inject ErrorHandler mErrorHandler;
@@ -41,22 +42,8 @@ public class LocationSyncService extends Service {
 
     @Override
     public void onCreate() {
-        super.onCreate();
         LogUtil.i(TAG, "Service created.");
         AsrApplication.get(this).getComponent().inject(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        LogUtil.i(TAG, "Service destroyed.");
-        EventUtil.postSticky(new Event.PostServiceStateChanged(false));
-        super.onDestroy();
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     @Override
@@ -68,6 +55,24 @@ public class LocationSyncService extends Service {
         }
         synchronizeLocationsWithServer();
         return START_STICKY;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (sShouldStartAgain) {
+            sShouldStartAgain = false;
+            startService(getStartIntent(this));
+            LogUtil.i(TAG, "Starting service again.");
+        } else {
+            LogUtil.i(TAG, "Service destroyed.");
+            EventUtil.postSticky(new Event.PostServiceStateChanged(false));
+        }
     }
 
     private boolean canServiceStart() {
@@ -83,19 +88,29 @@ public class LocationSyncService extends Service {
         return true;
     }
 
-    public static Intent getStartIntent(Context context) {
-        return new Intent(context, LocationSyncService.class);
+    public static void startServiceOrEnqueue(Context context) {
+        if (isRunning(context)) {
+            LogUtil.i(TAG, "Service will start again, once it's completed.");
+            sShouldStartAgain = true;
+        } else {
+            context.startService(getStartIntent(context));
+        }
     }
 
-    public static boolean isRunning(Context context) {
+    private static boolean isRunning(Context context) {
         return AndroidComponentUtil.isServiceRunning(context, LocationSyncService.class);
     }
 
-    public void synchronizeLocationsWithServer() {
+    private static Intent getStartIntent(Context context) {
+        return new Intent(context, LocationSyncService.class);
+    }
+
+    private void synchronizeLocationsWithServer() {
         LogUtil.i(TAG, "Checking for unsent location records...");
         if (mPostSubscription != null && !mPostSubscription.isUnsubscribed()) {
             mPostSubscription.unsubscribe();
         }
+        sShouldStartAgain = false;
         mPostSubscription = mDataManager.getUnsentLocationRecords()
                 .flatMap(mDataManager::postLocationRecordToServer, UnsentLocationRecordAndServerResponsePair::create,
                         MAX_CONCURRENT)
