@@ -18,7 +18,7 @@ import pl.temomuko.autostoprace.injection.AppContext;
  */
 public class VerticalDividerItemDecoration extends RecyclerView.ItemDecoration {
 
-    private Drawable mDivider;
+    private final Drawable mDivider;
 
     @Inject
     public VerticalDividerItemDecoration(@AppContext Context context) {

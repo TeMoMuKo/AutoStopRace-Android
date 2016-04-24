@@ -22,7 +22,7 @@ import rx.Single;
 @Singleton
 public class ContactHelper {
 
-    private AssetManager mAssetManager;
+    private final AssetManager mAssetManager;
     private List<ContactField> mContactFields;
 
     @Inject

@@ -33,7 +33,7 @@
                 android:adjustViewBounds="true"
                 android:paddingTop="32dp"
                 android:scaleType="centerInside"
-                tools:src="@drawable/logo"
+                tools:src="@drawable/logo_asr"
                 android:contentDescription="@string/description_logo_asr"/>
 
         </LinearLayout>

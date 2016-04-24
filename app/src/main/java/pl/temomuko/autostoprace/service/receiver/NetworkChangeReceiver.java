@@ -3,6 +3,7 @@ package pl.temomuko.autostoprace.service.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 
 import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.util.EventUtil;
@@ -18,9 +19,11 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        LogUtil.i(TAG, "Network status changed.");
-        if (NetworkUtil.isConnected(context)) {
-            EventUtil.post(new Event.NetworkConnected());
+        if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+            LogUtil.i(TAG, "Network status changed.");
+            if (NetworkUtil.isConnected(context)) {
+                EventUtil.post(new Event.NetworkConnected());
+            }
         }
     }
 }

@@ -7,8 +7,8 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
  */
 public class UnsentAndResponseLocationRecordPair {
 
-    LocationRecord mUnsentLocationRecord;
-    LocationRecord mLocationRecordFromResponse;
+    final LocationRecord mUnsentLocationRecord;
+    final LocationRecord mLocationRecordFromResponse;
 
     private UnsentAndResponseLocationRecordPair(LocationRecord unsentLocationRecord, LocationRecord locationRecordFromResponse) {
         mUnsentLocationRecord = unsentLocationRecord;

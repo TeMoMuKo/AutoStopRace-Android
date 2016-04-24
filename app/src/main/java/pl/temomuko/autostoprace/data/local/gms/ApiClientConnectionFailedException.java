@@ -7,13 +7,13 @@ import com.google.android.gms.common.ConnectionResult;
  */
 public class ApiClientConnectionFailedException extends Exception {
 
-    public ConnectionResult getConnectionResult() {
-        return mConnectionResult;
-    }
-
-    private ConnectionResult mConnectionResult;
+    private final ConnectionResult mConnectionResult;
 
     public ApiClientConnectionFailedException(ConnectionResult connectionResult) {
         mConnectionResult = connectionResult;
+    }
+
+    public ConnectionResult getConnectionResult() {
+        return mConnectionResult;
     }
 }

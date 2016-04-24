@@ -18,9 +18,9 @@ import pl.temomuko.autostoprace.util.DateUtil;
  */
 public class LocationRecordClusterItem implements ClusterItem, Parcelable, Comparable<LocationRecordClusterItem> {
 
-    private LatLng mLatLng;
+    private final LatLng mLatLng;
     private String mMessage;
-    private Date mReceiptDate;
+    private final Date mReceiptDate;
 
     public LocationRecordClusterItem(double latitude, double longitude, String message, @Nullable Date receiptDate) {
         mLatLng = new LatLng(latitude, longitude);

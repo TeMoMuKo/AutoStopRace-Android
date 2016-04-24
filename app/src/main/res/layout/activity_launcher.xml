@@ -48,7 +48,7 @@
                     android:layout_above="@+id/linearLayout"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    tools:src="@drawable/logo"
+                    tools:src="@drawable/logo_asr"
                     android:contentDescription="@string/description_logo_asr"/>
 
                 <LinearLayout

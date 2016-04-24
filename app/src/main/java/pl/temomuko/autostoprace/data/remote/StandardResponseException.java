@@ -11,7 +11,7 @@ import retrofit2.Response;
  */
 public class StandardResponseException extends IOException {
 
-    @NonNull Response<?> mResponse;
+    @NonNull final Response<?> mResponse;
 
     public StandardResponseException(@NonNull Response<?> response) {
         mResponse = response;

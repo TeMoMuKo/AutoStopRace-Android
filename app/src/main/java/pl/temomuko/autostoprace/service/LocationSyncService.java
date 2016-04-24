@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
@@ -182,11 +183,13 @@ public class LocationSyncService extends Service {
 
         @Override
         public void onReceive(final Context context, final Intent intent) {
-            if (NetworkUtil.isConnected(context)) {
-                LogUtil.i(TAG, "Network is connected.");
-                AndroidComponentUtil.toggleComponent(context, getClass(), false);
-                if (!LocationSyncService.isRunning(context)) {
-                    context.startService(getStartIntent(context));
+            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                if (NetworkUtil.isConnected(context)) {
+                    LogUtil.i(TAG, "Network is connected.");
+                    AndroidComponentUtil.toggleComponent(context, getClass(), false);
+                    if (!LocationSyncService.isRunning(context)) {
+                        context.startService(getStartIntent(context));
+                    }
                 }
             }
         }

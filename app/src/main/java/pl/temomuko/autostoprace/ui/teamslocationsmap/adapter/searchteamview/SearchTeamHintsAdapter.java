@@ -155,6 +155,7 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
 
         private List<Team> collectFilteredItems(String filterPattern) {
             List<Team> filteredTeamList = new ArrayList<>();
+            //noinspection Convert2streamapi
             for (Team team : mAllTeams) {
                 if (Integer.toString(team.getTeamNumber()).startsWith(filterPattern)) {
                     filteredTeamList.add(team);

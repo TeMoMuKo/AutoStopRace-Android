@@ -21,8 +21,6 @@ public class TextCircleView extends View {
     @ColorInt int mCircleColor;
     private
     @ColorInt int mTextColor;
-    private int mCircleWidth;
-    private int mCircleHeight;
     private float mCircleTextSize;
     private Paint mCirclePaint;
     private Paint mTextPaint;
@@ -72,11 +70,11 @@ public class TextCircleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mCircleWidth = getMeasuredWidth();
-        mCircleHeight = getMeasuredHeight();
-        canvas.drawCircle(mCircleWidth / 2, mCircleHeight / 2, mCircleWidth / 2, mCirclePaint);
+        int circleWidth = getMeasuredWidth();
+        int circleHeight = getMeasuredHeight();
+        canvas.drawCircle(circleWidth / 2, circleHeight / 2, circleWidth / 2, mCirclePaint);
         float xPos = canvas.getWidth() / 2;
-        float yPos = ((mCircleHeight / 2) - ((mTextPaint.descent() + mTextPaint.ascent()) / 2));
+        float yPos = ((circleHeight / 2) - ((mTextPaint.descent() + mTextPaint.ascent()) / 2));
         canvas.drawText(mText, xPos, yPos, mTextPaint);
     }
 

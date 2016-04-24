@@ -25,7 +25,7 @@ public class Event {
 
     public static class PostServiceStateChanged {
 
-        private boolean mIsPostServiceActive;
+        private final boolean mIsPostServiceActive;
 
         public PostServiceStateChanged(boolean isPostServiceActive) {
             mIsPostServiceActive = isPostServiceActive;
@@ -38,8 +38,8 @@ public class Event {
 
     public static class SuccessfullySentLocationToServer {
 
-        private LocationRecord mDeletedUnsentLocationRecord;
-        private LocationRecord mReceivedLocationRecord;
+        private final LocationRecord mDeletedUnsentLocationRecord;
+        private final LocationRecord mReceivedLocationRecord;
 
         public SuccessfullySentLocationToServer(LocationRecord deletedUnsentLocationRecord,
                                                 LocationRecord receivedLocationRecord) {

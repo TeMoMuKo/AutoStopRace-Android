@@ -5,10 +5,10 @@ package pl.temomuko.autostoprace.data.model;
  */
 public class ContactField {
 
-    private String mType;
-    private String mValue;
+    private final String mType;
+    private final String mValue;
     private String mOptionalDisplayedValue;
-    private String mDescription;
+    private final String mDescription;
 
     public ContactField(String type, String value, String description) {
         mType = type;

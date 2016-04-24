@@ -29,7 +29,7 @@ public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.Vi
 
     private int mLanguagePosition = Constants.DEFAULT_FOREIGN_LANG_SPINNER_POSITION;
     private Context mContext;
-    private OnIsEmptyResultsListener mOnIsEmptyResultsListener;
+    private final OnIsEmptyResultsListener mOnIsEmptyResultsListener;
     private List<Phrasebook.Item> mActualPhrasebookItems;
     private List<Phrasebook.Item> mAllPhrasebookItems;
     private Filter mFilter;

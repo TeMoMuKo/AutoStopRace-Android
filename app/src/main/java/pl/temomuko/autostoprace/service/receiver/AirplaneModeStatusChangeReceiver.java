@@ -17,7 +17,9 @@ public class AirplaneModeStatusChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        LogUtil.i(TAG, "Airplane mode status changed.");
-        EventUtil.post(new Event.AirplaneModeStatusChanged());
+        if (Intent.ACTION_AIRPLANE_MODE_CHANGED.equals(intent.getAction())) {
+            LogUtil.i(TAG, "Airplane mode status changed.");
+            EventUtil.post(new Event.AirplaneModeStatusChanged());
+        }
     }
 }

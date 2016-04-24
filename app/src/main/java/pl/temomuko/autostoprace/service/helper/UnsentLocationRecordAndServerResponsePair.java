@@ -8,8 +8,8 @@ import retrofit2.Response;
  */
 public final class UnsentLocationRecordAndServerResponsePair {
 
-    private LocationRecord mUnsentLocationRecord;
-    private Response<LocationRecord> mLocationRecordResponse;
+    private final LocationRecord mUnsentLocationRecord;
+    private final Response<LocationRecord> mLocationRecordResponse;
 
     private UnsentLocationRecordAndServerResponsePair(LocationRecord unsentLocationRecord,
                                                       Response<LocationRecord> locationRecordResponse) {

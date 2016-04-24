@@ -20,7 +20,6 @@
     <string name="title_activity_login">Logowanie</string>
     <string name="title_post_location">Wysyłanie lokalizacji</string>
     <string name="action_add_new_location">Dodaj nową lokalizacje</string>
-    <string name="msg_sent_location">Wysłano lokalizację na serwer</string>
     <string name="error_session_expired">Sesja wygasła, zaloguj się ponownie</string>
     <string name="msg_show_contact">Kontakt do organizatorów</string>
     <string name="msg_login_info">Zaloguj się za pomocą danych ustalonych przy aktywacji swojego konta. Instrukcje znajdują się w mailu od organizatorów.</string>
@@ -81,8 +80,6 @@
     <string name="forgotten_password">Przypomnij mi hasło</string>
     <string name="title_activity_reset_pass">Resetowanie hasła</string>
     <string name="msg_reset_pass_email_sent">Email zawierający dalsze instrukcje został wysłany na adres %1$s</string>
-    <string name="title_reset_pass">Resetowanie hasła</string>
-    <string name="error_reset_pass">Nie udało się zresetować hasła, czy na pewno podałeś poprawny adres email?</string>
     <string name="hint_enter_team_number">Wpisz numer drużyny…</string>
     <string name="msg_last_location_record_message">Ostatnia wiadomość:</string>
     <string name="msg_last_location_record_received">Ostatnie zameldowanie: </string>

@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class ThreadSafeSimpleDateFormat {
 
-    private ThreadLocal<SimpleDateFormat> mSimpleDateFormatThreadLocal;
+    private final ThreadLocal<SimpleDateFormat> mSimpleDateFormatThreadLocal;
 
     public ThreadSafeSimpleDateFormat(final String format) {
         mSimpleDateFormatThreadLocal = new ThreadLocal<SimpleDateFormat>() {

@@ -11,7 +11,6 @@
 
     <dimen name="normal_font_size">14sp</dimen>
     <dimen name="drawer_header_height">75dp</dimen>
-    <dimen name="profile_picture_height">76dp</dimen>
     <dimen name="drawer_width">300dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

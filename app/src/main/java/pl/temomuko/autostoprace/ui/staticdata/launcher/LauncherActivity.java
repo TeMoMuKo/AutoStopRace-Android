@@ -34,8 +34,8 @@ public class LauncherActivity extends DrawerActivity {
 
     private void loadAppLogo() {
         Picasso.with(this)
-                .load(R.drawable.logo)
-                .placeholder(R.drawable.logo)
+                .load(R.drawable.logo_asr)
+                .placeholder(R.drawable.logo_asr)
                 .into(mAppLogoImageView);
     }
 

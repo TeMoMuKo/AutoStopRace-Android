@@ -17,7 +17,9 @@ public class GpsStatusChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        LogUtil.i(TAG, "GPS status changed.");
-        EventUtil.post(new Event.GpsStatusChanged());
+        if (intent.getAction().equals(Intent.ACTION_PROVIDER_CHANGED)) {
+            LogUtil.i(TAG, "GPS status changed.");
+            EventUtil.post(new Event.GpsStatusChanged());
+        }
     }
 }

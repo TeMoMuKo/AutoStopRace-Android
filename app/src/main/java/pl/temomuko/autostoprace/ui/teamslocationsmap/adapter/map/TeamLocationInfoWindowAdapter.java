@@ -27,8 +27,7 @@ public class TeamLocationInfoWindowAdapter implements GoogleMap.InfoWindowAdapte
 
     @Inject
     public TeamLocationInfoWindowAdapter(@AppContext Context context) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mContentsView = inflater.inflate(R.layout.adapter_team_location_info_window, null, false);
+        mContentsView = LayoutInflater.from(context).inflate(R.layout.adapter_team_location_info_window, null, false);
         ButterKnife.bind(this, mContentsView);
     }
 

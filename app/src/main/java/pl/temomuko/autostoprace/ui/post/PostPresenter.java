@@ -28,7 +28,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     private final static String TAG = PostPresenter.class.getSimpleName();
 
     private DataManager mDataManager;
-    private CompositeSubscription mSubscriptions;
     private CompositeSubscription mLocationSubscriptions;
 
     private boolean mIsLocationSettingsStatusForResultCalled = false;
@@ -39,7 +38,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     @Inject
     public PostPresenter(DataManager dataManager) {
         mDataManager = dataManager;
-        mSubscriptions = new CompositeSubscription();
         mLocationSubscriptions = new CompositeSubscription();
     }
 
@@ -50,7 +48,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     @Override
     public void detachView() {
-        mSubscriptions.unsubscribe();
         mLocationSubscriptions.unsubscribe();
         super.detachView();
     }

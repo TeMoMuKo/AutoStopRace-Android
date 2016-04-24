@@ -18,7 +18,7 @@ public final class DbUtil {
         throw new AssertionError();
     }
 
-    private static ThreadSafeSimpleDateFormat sThreadSafeSimpleDateFormat =
+    private static final ThreadSafeSimpleDateFormat sThreadSafeSimpleDateFormat =
             new ThreadSafeSimpleDateFormat(Constants.DATABASE_DATE_FORMAT);
 
     public static String getString(Cursor cursor, String columnName) {
