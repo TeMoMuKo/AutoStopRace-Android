@@ -25,6 +25,8 @@ public final class CsvUtil {
         while ((row = csvReader.readNext()) != null) {
             csvRows.add(row);
         }
+        csvReader.close();
+        csvStreamReader.close();
         return csvRows;
     }
 }
