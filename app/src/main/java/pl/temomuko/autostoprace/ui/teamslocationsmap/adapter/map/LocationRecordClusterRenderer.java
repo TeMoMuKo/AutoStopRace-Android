@@ -23,7 +23,7 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
     private static final int MIN_CLUSTER_SIZE = 10;
     private static final String TAG = LocationRecordClusterRenderer.class.getSimpleName();
 
-    private Context mContext;
+    private final Context mContext;
 
     public LocationRecordClusterRenderer(Context context, GoogleMap map, ClusterManager<LocationRecordClusterItem> clusterManager) {
         super(context, map, clusterManager);

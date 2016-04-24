@@ -9,7 +9,7 @@ import pl.temomuko.autostoprace.ui.base.BasePresenter;
  */
 public abstract class DrawerBasePresenter<T extends DrawerMvpView> extends BasePresenter<T> {
 
-    protected DataManager mDataManager;
+    protected final DataManager mDataManager;
 
     public DrawerBasePresenter(DataManager dataManager) {
         mDataManager = dataManager;

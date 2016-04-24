@@ -65,8 +65,14 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
     @Override
     protected void onDestroy() {
         mPhrasebookPresenter.detachView();
+        destroySearchView();
         if (mSearchViewBindingSubscription != null) mSearchViewBindingSubscription.unsubscribe();
         super.onDestroy();
+    }
+
+    private void destroySearchView() {
+        mSearchView.setOnQueryTextListener(null);
+        mSearchItem = null;
     }
 
     @Override
@@ -108,7 +114,7 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
 
     private void saveLastSearchQuery(Bundle outState) {
         if (mSearchItem != null && mSearchItem.isActionViewExpanded()) {
-            outState.putString(BUNDLE_SEARCH_QUERY, mSearchView.getQuery().toString());
+            outState.putString(BUNDLE_SEARCH_QUERY, mSearchView.getQuery().toString().trim());
         }
     }
 

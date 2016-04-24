@@ -21,7 +21,7 @@ import rx.Single;
 @Singleton
 public class PhrasebookHelper {
 
-    private AssetManager mAssetManager;
+    private final AssetManager mAssetManager;
     private Phrasebook mPhrasebook;
 
     @Inject

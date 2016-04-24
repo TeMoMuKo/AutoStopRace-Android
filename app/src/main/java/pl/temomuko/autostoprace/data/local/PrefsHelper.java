@@ -33,7 +33,7 @@ public class PrefsHelper {
     public final static String PREF_LOGOUT = "pref_logout";
     public final static String PREF_LOCATION_SYNC_TIMESTAMP = "pref_location_sync_timestamp";
 
-    private SharedPreferences mPrefs;
+    private final SharedPreferences mPrefs;
 
     @Inject
     public PrefsHelper(@AppContext Context context) {

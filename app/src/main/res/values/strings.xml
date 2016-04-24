@@ -16,10 +16,8 @@
     <string name="error_400">Nieprawidłowe żądanie</string>
     <string name="error_no_internet_connection">Brak połączenia z Internetem.</string>
     <string name="hint_message">Opcjonalna relacja (max 160 znaków)</string>
-    <string name="action_cancel">Anuluj</string>
     <string name="title_activity_login">Logowanie</string>
     <string name="title_post_location">Wysyłanie lokalizacji</string>
-    <string name="action_add_new_location">Dodaj nową lokalizacje</string>
     <string name="error_session_expired">Sesja wygasła, zaloguj się ponownie</string>
     <string name="msg_show_contact">Kontakt do organizatorów</string>
     <string name="msg_login_info">Zaloguj się za pomocą danych ustalonych przy aktywacji swojego konta. Instrukcje znajdują się w mailu od organizatorów.</string>
@@ -60,7 +58,6 @@
     <string name="app_version">Wersja 0.0.4-beta</string>
     <string name="warning_no_fine_location_permission">Brak uprawnień dostępu do lokalizacji.</string>
     <string name="settings">Ustawienia</string>
-    <string name="error_email_confirmation">Najpierw aktywuj swoje konto, instrukcje znajdziesz w mailu od organizatorów.</string>
     <string name="change_settings">Zmień</string>
     <string name="warning_inadequate_location_settings">Nieodpowiednie ustawienia lokalizacji.</string>
     <string name="action_share">Udostępnij</string>

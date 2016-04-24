@@ -7,8 +7,8 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
  */
 public class DrawerItemTarget {
 
-    private Class<? extends BaseActivity> mTargetActivityClass;
-    private int mTargetActivityId;
+    private final Class<? extends BaseActivity> mTargetActivityClass;
+    private final int mTargetActivityId;
 
     public DrawerItemTarget(Class<? extends BaseActivity> targetActivityClass, int targetActivityId) {
         mTargetActivityClass = targetActivityClass;

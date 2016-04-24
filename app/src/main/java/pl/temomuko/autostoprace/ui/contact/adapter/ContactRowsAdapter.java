@@ -28,8 +28,8 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
 
     private static final String TAG = ContactRowsAdapter.class.getSimpleName();
 
+    private final Context mContext;
     private List<ContactField> mContactFieldList;
-    private Context mContext;
     private OnContactRowClickListener mOnContactRowClickListener;
 
     @Inject

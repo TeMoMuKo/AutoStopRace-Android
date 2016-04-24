@@ -21,7 +21,7 @@ import rx.Observable;
 @Singleton
 public class GmsLocationHelper {
 
-    private Context mContext;
+    private final Context mContext;
 
     @Inject
     public GmsLocationHelper(@AppContext Context context) {

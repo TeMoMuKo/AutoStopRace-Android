@@ -3,8 +3,8 @@ package pl.temomuko.autostoprace.ui.base.drawer;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -30,8 +30,8 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
     private static final long DELAY_AFTER_START_CLOSE_DRAWER = 250;
 
     private final NavigationView mNavigationView;
-    private DrawerLayout mDrawerLayout;
-    private DrawerActivity mCurrentDrawerActivity;
+    private final DrawerLayout mDrawerLayout;
+    private final DrawerActivity mCurrentDrawerActivity;
 
     private static final List<DrawerItemTarget> ACTIVITIES = Arrays.asList(
             new DrawerItemTarget(MainActivity.class, R.id.activity_main),
@@ -82,7 +82,7 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
 
     private boolean drawerItemAction(Class<?> targetActivity) {
         if (isCurrentActivity(targetActivity)) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            mDrawerLayout.closeDrawer(GravityCompat.START);
             return true;
         } else {
             return tryGoToTargetActivity(targetActivity);
@@ -103,7 +103,7 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
     }
 
     private boolean tryGoToMain() {
-        mDrawerLayout.closeDrawer(Gravity.LEFT);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         if (isCurrentActivity(LauncherActivity.class)) {
             showNotLoggedToast();
             return false;

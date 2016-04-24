@@ -16,7 +16,7 @@ import pl.temomuko.autostoprace.injection.AppContext;
 @Singleton
 public class PermissionHelper {
 
-    private Context mContext;
+    private final Context mContext;
 
     @Inject
     public PermissionHelper(@AppContext Context context) {

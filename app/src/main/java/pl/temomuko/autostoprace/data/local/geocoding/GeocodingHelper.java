@@ -25,7 +25,7 @@ public class GeocodingHelper {
 
     private static final String TAG = "GeocodingHelper";
 
-    private Context mContext;
+    private final Context mContext;
 
     @Inject
     public GeocodingHelper(@AppContext Context context) {

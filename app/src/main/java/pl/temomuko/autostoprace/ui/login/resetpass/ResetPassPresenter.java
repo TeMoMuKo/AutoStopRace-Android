@@ -19,8 +19,8 @@ import rx.Subscription;
  */
 public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
 
-    private DataManager mDataManager;
-    private ErrorHandler mErrorHandler;
+    private final DataManager mDataManager;
+    private final ErrorHandler mErrorHandler;
     private Subscription mSubscription;
     private RxCacheHelper<Response<ResetPassResponse>> mRxResetCacheHelper;
 

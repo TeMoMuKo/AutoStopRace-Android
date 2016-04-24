@@ -25,8 +25,8 @@ import pl.temomuko.autostoprace.ui.staticdata.PartnersDrawables;
  */
 public class PartnersAdapter extends RecyclerView.Adapter<PartnersAdapter.ViewHolder> {
 
-    private Context mContext;
-    private List<Integer> mPartnersDrawables;
+    private final Context mContext;
+    private final List<Integer> mPartnersDrawables;
 
     @Inject
     public PartnersAdapter(@ActivityContext Context context) {

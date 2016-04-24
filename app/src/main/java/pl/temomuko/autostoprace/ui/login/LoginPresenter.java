@@ -21,8 +21,8 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     private final static String TAG = LoginPresenter.class.getSimpleName();
 
-    private DataManager mDataManager;
-    private ErrorHandler mErrorHandler;
+    private final DataManager mDataManager;
+    private final ErrorHandler mErrorHandler;
     private Subscription mSubscription;
     private RxCacheHelper<Response<SignInResponse>> mRxLoginCacheHelper;
 

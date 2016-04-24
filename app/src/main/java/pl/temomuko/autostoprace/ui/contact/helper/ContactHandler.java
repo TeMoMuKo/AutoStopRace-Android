@@ -24,7 +24,7 @@ public class ContactHandler {
     private static final String WEB_PAGE = "web_page";
     private static final String FAN_PAGE = "fan_page";
 
-    private Context mContext;
+    private final Context mContext;
 
     @Inject
     public ContactHandler(@ActivityContext Context context) {

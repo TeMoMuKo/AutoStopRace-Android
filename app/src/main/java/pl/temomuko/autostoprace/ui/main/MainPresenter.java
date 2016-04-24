@@ -29,8 +29,8 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private final static String TAG = MainPresenter.class.getSimpleName();
     private static final long MAX_TIME_WITHOUT_LOCATIONS_SYNC_IN_SECS = 60 * 60;
 
-    private ErrorHandler mErrorHandler;
-    private CompositeSubscription mSubscriptions;
+    private final ErrorHandler mErrorHandler;
+    private final CompositeSubscription mSubscriptions;
     private Subscription mLoadLocationsSubscription;
     private boolean mIsLocationSettingsStatusForResultCalled = false;
 

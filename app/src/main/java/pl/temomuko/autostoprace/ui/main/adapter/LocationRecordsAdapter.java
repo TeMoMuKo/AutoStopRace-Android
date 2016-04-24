@@ -40,8 +40,8 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     private static final int RESIZING_ANIMATION_DURATION = 250;
     private static final String TAG = LocationRecordsAdapter.class.getSimpleName();
 
+    private final Context mAppContext;
     private List<LocationRecordItem> mSortedLocationRecordItems;
-    private Context mAppContext;
 
     @Inject
     public LocationRecordsAdapter(@AppContext Context context) {

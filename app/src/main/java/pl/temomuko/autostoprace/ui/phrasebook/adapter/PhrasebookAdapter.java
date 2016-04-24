@@ -28,7 +28,7 @@ import pl.temomuko.autostoprace.data.model.Phrasebook;
 public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.ViewHolder> implements Filterable {
 
     private int mLanguagePosition = Constants.DEFAULT_FOREIGN_LANG_SPINNER_POSITION;
-    private Context mContext;
+    private final Context mContext;
     private final OnIsEmptyResultsListener mOnIsEmptyResultsListener;
     private List<Phrasebook.Item> mActualPhrasebookItems;
     private List<Phrasebook.Item> mAllPhrasebookItems;

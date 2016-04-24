@@ -26,8 +26,8 @@ import retrofit2.Response;
 public class ErrorHandler {
 
     public static final String TAG = ErrorHandler.class.getSimpleName();
-    private Context mContext;
-    private ApiManager mApiManager;
+    private final Context mContext;
+    private final ApiManager mApiManager;
 
     @Inject
     public ErrorHandler(@AppContext Context context, ApiManager apiManager) {

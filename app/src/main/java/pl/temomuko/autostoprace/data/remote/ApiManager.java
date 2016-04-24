@@ -29,8 +29,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Singleton
 public class ApiManager {
 
-    private Retrofit mRetrofit;
-    private AsrService mAsrService;
+    private final Retrofit mRetrofit;
+    private final AsrService mAsrService;
 
     @Inject
     public ApiManager() {

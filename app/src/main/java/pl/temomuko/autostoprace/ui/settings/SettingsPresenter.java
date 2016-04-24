@@ -13,9 +13,10 @@ import rx.Subscription;
  */
 public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
-    private DataManager mDataManager;
-    private Subscription mSubscription;
     private final static String TAG = SettingsPresenter.class.getSimpleName();
+
+    private final DataManager mDataManager;
+    private Subscription mSubscription;
 
     @Inject
     public SettingsPresenter(DataManager dataManager) {

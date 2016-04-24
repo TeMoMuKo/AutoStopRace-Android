@@ -42,14 +42,14 @@ import rx.Single;
 @Singleton
 public class DataManager {
 
-    private ApiManager mApiManager;
-    private PrefsHelper mPrefsHelper;
-    private DatabaseHelper mDatabaseHelper;
-    private GmsLocationHelper mGmsLocationHelper;
-    private PermissionHelper mPermissionHelper;
-    private GeocodingHelper mGeocodingHelper;
-    private PhrasebookHelper mPhrasebookHelper;
-    private ContactHelper mContactHelper;
+    private final ApiManager mApiManager;
+    private final PrefsHelper mPrefsHelper;
+    private final DatabaseHelper mDatabaseHelper;
+    private final GmsLocationHelper mGmsLocationHelper;
+    private final PermissionHelper mPermissionHelper;
+    private final GeocodingHelper mGeocodingHelper;
+    private final PhrasebookHelper mPhrasebookHelper;
+    private final ContactHelper mContactHelper;
 
     @Inject
     public DataManager(ApiManager apiManager, PrefsHelper prefsHelper, DatabaseHelper databaseHelper,

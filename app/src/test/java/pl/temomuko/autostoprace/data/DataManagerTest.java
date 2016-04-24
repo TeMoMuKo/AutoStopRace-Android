@@ -40,13 +40,13 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DataManagerTest {
 
-    private static String FAKE_EMAIL = "fake_email";
-    private static String FAKE_PASS = "fake_pass";
-    private static String FAKE_ACCESS_TOKEN = "fake_access_token";
-    private static String FAKE_CLIENT = "fake_client";
-    private static String FAKE_UID = "fake_uid";
-    private static String FAKE_FIRST_NAME = "fake_first_name";
-    private static String FAKE_LAST_NAME = "fake_last_name";
+    private static final String FAKE_EMAIL = "fake_email";
+    private static final String FAKE_PASS = "fake_pass";
+    private static final String FAKE_ACCESS_TOKEN = "fake_access_token";
+    private static final String FAKE_CLIENT = "fake_client";
+    private static final String FAKE_UID = "fake_uid";
+    private static final String FAKE_FIRST_NAME = "fake_first_name";
+    private static final String FAKE_LAST_NAME = "fake_last_name";
 
     @Mock PrefsHelper mMockPrefsHelper;
     @Mock ApiManager mMockApiManager;

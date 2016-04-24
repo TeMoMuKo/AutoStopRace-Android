@@ -25,6 +25,7 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="14dp"
             android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility="visible"

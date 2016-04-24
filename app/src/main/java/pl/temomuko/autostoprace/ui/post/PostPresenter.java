@@ -27,8 +27,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private final static String TAG = PostPresenter.class.getSimpleName();
 
-    private DataManager mDataManager;
-    private CompositeSubscription mLocationSubscriptions;
+    private final DataManager mDataManager;
+    private final CompositeSubscription mLocationSubscriptions;
 
     private boolean mIsLocationSettingsStatusForResultCalled = false;
     private Address mLatestAddress;
