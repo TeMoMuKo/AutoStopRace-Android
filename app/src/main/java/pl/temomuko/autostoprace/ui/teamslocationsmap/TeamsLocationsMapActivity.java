@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +15,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.clustering.ClusterManager;
 
@@ -44,11 +45,11 @@ import rx.Subscription;
  * Created by Szymon Kozak on 2016-02-05.
  */
 public class TeamsLocationsMapActivity extends DrawerActivity
-        implements TeamsLocationsMapMvpView, OnMapReadyCallback, SearchTeamView.OnTeamRequestedListener {
+        implements TeamsLocationsMapMvpView {
 
     private static final String TAG = TeamsLocationsMapActivity.class.getSimpleName();
     private static final String BUNDLE_CURRENT_TEAM_LOCATIONS = "bundle_current_team_locations";
-    private static final String BUNDLE_TEAM_LIST_HINTS = "bundle_team_list_hints";
+    private static final String BUNDLE_SEARCH_TEAM_VIEW = "bundle_team_list_hints";
     private static final float DEFAULT_MAP_ZOOM = 5.5f;
     private final static String RX_CACHE_ALL_TEAMS_TAG = "rx_cache_all_teams_tag";
     public static final String RX_CACHE_TEAM_LOCATIONS_TAG = "rx_cache_team_locations_tag";
@@ -58,6 +59,8 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     @Bind(R.id.horizontal_progress_bar) MaterialProgressBar mMaterialProgressBar;
     @Bind(R.id.search_team_view) SearchTeamView mSearchTeamView;
+    @Bind(R.id.rv_team_hints) RecyclerView mTeamHintsRecyclerView;
+    @Bind(R.id.card_team_hints) CardView mTeamHintsLinearLayout;
 
     private boolean mAllTeamsProgressState = false;
     private boolean mTeamProgressState = false;
@@ -72,20 +75,101 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams_location);
-        if (savedInstanceState != null) {
-            restoreInstanceState(savedInstanceState);
-        }
         getActivityComponent().inject(this);
         setupPresenter();
-        mSearchTeamView.setOnTeamRequestedListener(this);
         setupMapFragment();
         setupIntent(getIntent());
+        setupSearchTeamView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mTeamsLocationsMapPresenter.detachView();
+        if (mSetHintsSubscription != null) mSetHintsSubscription.unsubscribe();
+        if (mSetLocationsSubscription != null) mSetLocationsSubscription.unsubscribe();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mCurrentTeamLocations != null) {
+            outState.putParcelableArray(BUNDLE_CURRENT_TEAM_LOCATIONS,
+                    mCurrentTeamLocations.toArray(new LocationRecord[mCurrentTeamLocations.size()]));
+        }
+        outState.putBundle(BUNDLE_SEARCH_TEAM_VIEW, mSearchTeamView.saveHintsState());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mSearchTeamView.restoreHintState(savedInstanceState.getBundle(BUNDLE_SEARCH_TEAM_VIEW));
+        Parcelable[] parcelableCurrentTeamLocations =
+                savedInstanceState.getParcelableArray(BUNDLE_CURRENT_TEAM_LOCATIONS);
+        if (parcelableCurrentTeamLocations != null) {
+            mCurrentTeamLocations = new ArrayList<>(parcelableCurrentTeamLocations.length);
+            for (Parcelable parcelable : parcelableCurrentTeamLocations) {
+                mCurrentTeamLocations.add((LocationRecord) parcelable);
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_teams_locations_map, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                handleActionSearch();
+                return true;
+            case R.id.action_share_map:
+                shareMap();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mSearchTeamView.hasFocus()) {
+            mSearchTeamView.clearFocus();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setupIntent(intent);
+    }
+
+    private void setupPresenter() {
+        mTeamsLocationsMapPresenter.setupRxCacheHelper(this,
+                RxCacheHelper.get(RX_CACHE_ALL_TEAMS_TAG),
+                RxCacheHelper.get(RX_CACHE_TEAM_LOCATIONS_TAG));
+        mTeamsLocationsMapPresenter.attachView(this);
+        mTeamsLocationsMapPresenter.setupUserInfoInDrawer();
+    }
+
+    private void setupSearchTeamView() {
+        mSearchTeamView.setHintsRecyclerView(mTeamHintsRecyclerView);
+        mSearchTeamView.setOptionalHintsView(mTeamHintsLinearLayout);
+        mSearchTeamView.setOnTeamRequestedListener(new SearchTeamView.OnTeamRequestedListener() {
+            @Override
+            public void onTeamRequest(int teamId) {
+                mTeamsLocationsMapPresenter.loadTeam(teamId);
+            }
+
+            @Override
+            public void onTeamRequest(String teamString) {
+                mTeamsLocationsMapPresenter.loadTeam(teamString);
+            }
+        });
     }
 
     private void setupIntent(Intent intent) {
@@ -112,49 +196,22 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     private void changeTeam(int teamNumber) {
         mSearchTeamView.setText(String.valueOf(teamNumber));
-        mTeamsLocationsMapPresenter.loadTeam(teamNumber);
-    }
-
-    private void restoreInstanceState(@NonNull Bundle savedInstanceState) {
-        restoreCurrentTeamLocations(savedInstanceState);
-        mSearchTeamView.restoreHintState(savedInstanceState.getParcelableArray(BUNDLE_TEAM_LIST_HINTS));
-    }
-
-    private void restoreCurrentTeamLocations(@NonNull Bundle savedInstanceState) {
-        Parcelable[] parcelableCurrentTeamLocations =
-                savedInstanceState.getParcelableArray(BUNDLE_CURRENT_TEAM_LOCATIONS);
-        if (parcelableCurrentTeamLocations != null) {
-            mCurrentTeamLocations = new ArrayList<>(parcelableCurrentTeamLocations.length);
-            for (Parcelable parcelable : parcelableCurrentTeamLocations) {
-                mCurrentTeamLocations.add((LocationRecord) parcelable);
-            }
-        }
-    }
-
-    private void setupPresenter() {
-        mTeamsLocationsMapPresenter.setupRxCacheHelper(this,
-                RxCacheHelper.get(RX_CACHE_ALL_TEAMS_TAG),
-                RxCacheHelper.get(RX_CACHE_TEAM_LOCATIONS_TAG));
-        mTeamsLocationsMapPresenter.attachView(this);
-        mTeamsLocationsMapPresenter.setupUserInfoInDrawer();
+        mSearchTeamView.requestSearch();
     }
 
     private void setupMapFragment() {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
-        mapFragment.getMapAsync(this);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mTeamsLocationsMapPresenter.loadAllTeams();
-        mSearchTeamView.setEnabled(true);
-        setupClusterManager();
-        if (mCurrentTeamLocations != null) {
-            mAnimateTeamLocationsUpdate = false;
-            setLocations(mCurrentTeamLocations);
-        }
+        mapFragment.getMapAsync(googleMap -> {
+            mMap = googleMap;
+            mTeamsLocationsMapPresenter.loadAllTeams();
+            mSearchTeamView.setEnabled(true);
+            setupClusterManager();
+            if (mCurrentTeamLocations != null) {
+                mAnimateTeamLocationsUpdate = false;
+                setLocations(mCurrentTeamLocations);
+            }
+        });
     }
 
     private void setupClusterManager() {
@@ -170,29 +227,9 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(mTeamsLocationInfoWindowAdapter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_teams_locations_map, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                handleActionSearch();
-                return true;
-            case R.id.action_share_map:
-                shareMap();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void handleActionSearch() {
         if (mSearchTeamView.hasFocus()) {
-            mTeamsLocationsMapPresenter.loadTeam(mSearchTeamView.getText().toString());
-            mSearchTeamView.closeSearch();
+            mSearchTeamView.requestSearch();
         } else {
             mSearchTeamView.openSearch();
         }
@@ -200,24 +237,6 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     private void shareMap() {
         IntentUtil.shareLocationsMap(this, mSearchTeamView.getText().toString());
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        if (mCurrentTeamLocations != null) {
-            outState.putParcelableArray(BUNDLE_CURRENT_TEAM_LOCATIONS,
-                    mCurrentTeamLocations.toArray(new LocationRecord[mCurrentTeamLocations.size()]));
-        }
-        outState.putParcelableArray(BUNDLE_TEAM_LIST_HINTS, mSearchTeamView.saveHintState());
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        mTeamsLocationsMapPresenter.detachView();
-        if (mSetHintsSubscription != null) mSetHintsSubscription.unsubscribe();
-        if (mSetLocationsSubscription != null) mSetLocationsSubscription.unsubscribe();
-        super.onDestroy();
     }
 
     /* MVP View methods */
@@ -271,6 +290,8 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         Toast.makeText(this, R.string.msg_no_location_records_to_display, Toast.LENGTH_SHORT).show();
     }
 
+    /* Private helper methods */
+
     private void handleTeamLocationsToSet(List<LocationRecordClusterItem> locationRecordClusterItems) {
         if (mAnimateTeamLocationsUpdate) {
             if (!locationRecordClusterItems.isEmpty()) {
@@ -283,17 +304,5 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         mClusterManager.clearItems();
         mClusterManager.addItems(locationRecordClusterItems);
         mClusterManager.cluster();
-    }
-
-    /* SearchTeamView callback methods */
-
-    @Override
-    public void onTeamRequest(int teamId) {
-        mTeamsLocationsMapPresenter.loadTeam(teamId);
-    }
-
-    @Override
-    public void onTeamRequest(String teamString) {
-        mTeamsLocationsMapPresenter.loadTeam(teamString);
     }
 }

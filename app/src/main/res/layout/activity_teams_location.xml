@@ -38,8 +38,6 @@
                         android:id="@+id/search_team_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:dropDownAnchor="@id/app_bar"
-                        android:dropDownWidth="match_parent"
                         android:enabled="false"
                         android:hint="@string/hint_enter_team_number"
                         android:inputType="number"
@@ -65,6 +63,23 @@
                     map:cameraZoom="5"
                     tools:ignore="MissingPrefix"
                     />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_team_hints"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    style="@style/CardView.FullScreenCardViewLight"
+                    android:visibility="gone">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_team_hints"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                </android.support.v7.widget.CardView>
 
                 <me.zhanghai.android.materialprogressbar.MaterialProgressBar
                     android:id="@+id/horizontal_progress_bar"

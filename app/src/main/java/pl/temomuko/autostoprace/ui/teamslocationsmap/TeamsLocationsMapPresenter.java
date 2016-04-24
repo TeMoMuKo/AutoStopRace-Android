@@ -74,6 +74,29 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         continueCachedAllTeamsRequest();
     }
 
+    public void loadTeam(String text) {
+        try {
+            int teamId = Integer.parseInt(text);
+            loadTeam(teamId);
+        } catch (NumberFormatException e) {
+            getMvpView().showInvalidFormatError();
+        }
+    }
+
+    public void loadTeam(int teamNumber) {
+        mRxTeamLocationsCacheHelper.cache(
+                mDataManager.getTeamLocationRecordsFromServer(teamNumber)
+                        .flatMap(listResponse -> listResponse.code() == HttpStatus.NOT_FOUND ?
+                                Observable.error(new TeamNotFoundException(listResponse)) :
+                                Observable.just(listResponse))
+                        .flatMap(HttpStatus::requireOk)
+                        .compose(RxUtil.applyIoSchedulers())
+        );
+        continueCachedTeamLocationsRequest();
+    }
+
+    /* Private helper methods */
+
     private void continueCachedAllTeamsRequest() {
         getMvpView().setAllTeamsProgress(true);
         if (mLoadAllTeamsSubscription != null) mLoadAllTeamsSubscription.unsubscribe();
@@ -96,27 +119,6 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         mRxAllTeamsCacheHelper.clearCache();
         getMvpView().setAllTeamsProgress(false);
         getMvpView().showError(mErrorHandler.getMessage(throwable));
-    }
-
-    public void loadTeam(String text) {
-        try {
-            int teamId = Integer.parseInt(text);
-            loadTeam(teamId);
-        } catch (NumberFormatException e) {
-            getMvpView().showInvalidFormatError();
-        }
-    }
-
-    public void loadTeam(int teamNumber) {
-        mRxTeamLocationsCacheHelper.cache(
-                mDataManager.getTeamLocationRecordsFromServer(teamNumber)
-                        .flatMap(listResponse -> listResponse.code() == HttpStatus.NOT_FOUND ?
-                                Observable.error(new TeamNotFoundException(listResponse)) :
-                                Observable.just(listResponse))
-                        .flatMap(HttpStatus::requireOk)
-                        .compose(RxUtil.applyIoSchedulers())
-        );
-        continueCachedTeamLocationsRequest();
     }
 
     private void continueCachedTeamLocationsRequest() {

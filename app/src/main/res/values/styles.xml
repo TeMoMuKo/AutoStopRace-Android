@@ -64,4 +64,12 @@
         <item name="submitBackground">@null</item>
     </style>
 
+    <style name="CardView.FullScreenCardViewLight" parent="CardView.Light">
+        <item name="android:layout_marginBottom">@dimen/full_screen_card_margin</item>
+        <item name="android:layout_marginTop">@dimen/full_screen_card_margin</item>
+        <item name="android:layout_marginLeft">@dimen/full_screen_card_margin</item>
+        <item name="android:layout_marginRight">@dimen/full_screen_card_margin</item>
+        <item name="cardCornerRadius">0dp</item>
+    </style>
+
 </resources>

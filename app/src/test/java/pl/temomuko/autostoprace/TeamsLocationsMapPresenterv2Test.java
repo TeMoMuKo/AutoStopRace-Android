@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
  * Created by Rafał Naniewicz on 15.04.2016.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class TeamsLocationsMapPresenterTest {
+public class TeamsLocationsMapPresenterv2Test {
 
     private static final int TEST_TEAM_NUMBER = 1;
     @Mock TeamsLocationsMapMvpView mMockTeamsLocationsMapMvpView;

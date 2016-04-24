@@ -37,6 +37,16 @@ public class LocationRecordClusterItem implements ClusterItem, Parcelable, Compa
         mReceiptDate = locationRecord.getServerReceiptDate();
     }
 
+    @Override
+    public LatLng getPosition() {
+        return mLatLng;
+    }
+
+    @Override
+    public int compareTo(@NonNull LocationRecordClusterItem another) {
+        return getDateCompareResult(another);
+    }
+
     public String getMessage() {
         return mMessage;
     }
@@ -49,10 +59,21 @@ public class LocationRecordClusterItem implements ClusterItem, Parcelable, Compa
         return mReceiptDate;
     }
 
-    @Override
-    public LatLng getPosition() {
-        return mLatLng;
+    private int getDateCompareResult(@NonNull LocationRecordClusterItem another) {
+        int dateCompareResult;
+        if (mReceiptDate == null && another.mReceiptDate == null) {
+            dateCompareResult = 0;
+        } else if (mReceiptDate == null) {
+            dateCompareResult = -1;
+        } else if (another.mReceiptDate == null) {
+            dateCompareResult = 1;
+        } else {
+            dateCompareResult = another.mReceiptDate.compareTo(mReceiptDate);
+        }
+        return dateCompareResult;
     }
+
+    /*Parcel*/
 
     protected LocationRecordClusterItem(Parcel in) {
         mLatLng = (LatLng) in.readValue(LatLng.class.getClassLoader());
@@ -85,23 +106,4 @@ public class LocationRecordClusterItem implements ClusterItem, Parcelable, Compa
             return new LocationRecordClusterItem[size];
         }
     };
-
-    @Override
-    public int compareTo(@NonNull LocationRecordClusterItem another) {
-        return getDateCompareResult(another);
-    }
-
-    private int getDateCompareResult(@NonNull LocationRecordClusterItem another) {
-        int dateCompareResult;
-        if (mReceiptDate == null && another.mReceiptDate == null) {
-            dateCompareResult = 0;
-        } else if (mReceiptDate == null) {
-            dateCompareResult = -1;
-        } else if (another.mReceiptDate == null) {
-            dateCompareResult = 1;
-        } else {
-            dateCompareResult = another.mReceiptDate.compareTo(mReceiptDate);
-        }
-        return dateCompareResult;
-    }
 }

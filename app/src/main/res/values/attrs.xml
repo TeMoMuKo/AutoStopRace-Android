@@ -6,9 +6,15 @@
         <attr name="textColor" format="color"/>
     </declare-styleable>
 
-    <declare-styleable name="SearchTeamView">
+    <declare-styleable name="SearchTeamViewOld">
         <attr name="android:imeOptions"/>
         <attr name="android:completionThreshold"/>
+        <attr name="android:background"/>
+        <attr name="android:popupBackground"/>
+    </declare-styleable>
+
+    <declare-styleable name="EditText">
+        <attr name="android:imeOptions"/>
         <attr name="android:background"/>
     </declare-styleable>
 </resources>
