@@ -28,15 +28,15 @@ public class TextCircleView extends View {
     private Paint mTextPaint;
     private String mText = "";
 
+    public TextCircleView(Context context) {
+        this(context, null);
+    }
+
     public TextCircleView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize(context, attrs);
         setupCirclePaint();
         setupTextPaint();
-    }
-
-    public TextCircleView(Context context) {
-        this(context, null);
     }
 
     private void initialize(Context context, AttributeSet attrs) {

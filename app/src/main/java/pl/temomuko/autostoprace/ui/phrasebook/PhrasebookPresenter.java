@@ -26,12 +26,6 @@ public class PhrasebookPresenter extends DrawerBasePresenter<PhrasebookMvpView> 
                 .subscribe(this::handlePhrasebook);
     }
 
-    private void handlePhrasebook(Phrasebook phrasebook) {
-        int languagePosition = mDataManager.getCurrentPhrasebookLanguagePosition();
-        getMvpView().updateSpinner(languagePosition, phrasebook.getLanguagesHeader());
-        getMvpView().updatePhrasebookData(languagePosition, phrasebook.getPhraseItems());
-    }
-
     @Override
     public void detachView() {
         if (mSubscription != null) mSubscription.unsubscribe();
@@ -49,5 +43,11 @@ public class PhrasebookPresenter extends DrawerBasePresenter<PhrasebookMvpView> 
     public void changePhrasebookLanguage(int position) {
         mDataManager.saveCurrentPhrasebookLanguagePosition(position);
         getMvpView().changePhrasebookLanguage(position);
+    }
+
+    private void handlePhrasebook(Phrasebook phrasebook) {
+        int languagePosition = mDataManager.getCurrentPhrasebookLanguagePosition();
+        getMvpView().updateSpinner(languagePosition, phrasebook.getLanguagesHeader());
+        getMvpView().updatePhrasebookData(languagePosition, phrasebook.getPhraseItems());
     }
 }

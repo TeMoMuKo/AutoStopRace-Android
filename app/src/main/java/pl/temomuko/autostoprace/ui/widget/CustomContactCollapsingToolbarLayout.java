@@ -59,6 +59,17 @@ public class CustomContactCollapsingToolbarLayout extends CollapsingToolbarLayou
         }
     }
 
+    public void setToolbarTitleVisibility(int titleAlpha) {
+        setTitleAlpha(titleAlpha);
+    }
+
+    public void setTitleAlpha(int titleAlpha) {
+        mTitleAlpha = titleAlpha;
+        int colorWithProperAlpha = ColorUtils.setAlphaComponent(mTitleColor, titleAlpha);
+        setCollapsedTitleTextColor(colorWithProperAlpha);
+        setExpandedTitleColor(colorWithProperAlpha);
+    }
+
     private void animateToolbarAppearance(int titleTargetAlpha) {
         if (mToolbarTitleAnimator == null) {
             mToolbarTitleAnimator = new ValueAnimator();
@@ -73,16 +84,5 @@ public class CustomContactCollapsingToolbarLayout extends CollapsingToolbarLayou
         }
         mToolbarTitleAnimator.setIntValues(mTitleAlpha, titleTargetAlpha);
         mToolbarTitleAnimator.start();
-    }
-
-    public void setToolbarTitleVisibility(int titleAlpha) {
-        setTitleAlpha(titleAlpha);
-    }
-
-    public void setTitleAlpha(int titleAlpha) {
-        mTitleAlpha = titleAlpha;
-        int colorWithProperAlpha = ColorUtils.setAlphaComponent(mTitleColor, titleAlpha);
-        setCollapsedTitleTextColor(colorWithProperAlpha);
-        setExpandedTitleColor(colorWithProperAlpha);
     }
 }

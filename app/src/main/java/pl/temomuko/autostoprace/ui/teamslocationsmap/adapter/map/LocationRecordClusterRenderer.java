@@ -55,6 +55,11 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
         }
     }
 
+    @Override
+    protected boolean shouldRenderAsCluster(Cluster<LocationRecordClusterItem> cluster) {
+        return cluster.getSize() > MIN_CLUSTER_SIZE;
+    }
+
     private LocationRecordClusterItem getNewestClusterItem(Collection<LocationRecordClusterItem> locationRecordClusterItems) {
         if (!locationRecordClusterItems.isEmpty()) {
             Iterator<LocationRecordClusterItem> itemsIterator = locationRecordClusterItems.iterator();
@@ -72,10 +77,5 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
             LogUtil.wtf(TAG, "Cluster collection is empty, this should never happen");
             return new LocationRecordClusterItem(0, 0, "something went wrong", null);
         }
-    }
-
-    @Override
-    protected boolean shouldRenderAsCluster(Cluster<LocationRecordClusterItem> cluster) {
-        return cluster.getSize() > MIN_CLUSTER_SIZE;
     }
 }

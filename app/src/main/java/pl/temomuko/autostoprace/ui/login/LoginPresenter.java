@@ -59,6 +59,11 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
         }
     }
 
+    public void cancelSignInRequest() {
+        if (mSubscription != null) mSubscription.unsubscribe();
+        clearCurrentRequestObservable();
+    }
+
     private boolean isEmailValid(String email) {
         return mErrorHandler.isEmailValid(email);
     }
@@ -87,11 +92,6 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
     private void stopProgress() {
         getMvpView().setProgress(false);
-    }
-
-    public void cancelSignInRequest() {
-        if (mSubscription != null) mSubscription.unsubscribe();
-        clearCurrentRequestObservable();
     }
 
     private void clearCurrentRequestObservable() {
