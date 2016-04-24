@@ -196,7 +196,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     private void changeTeam(int teamNumber) {
         mSearchTeamView.setText(String.valueOf(teamNumber));
-        mSearchTeamView.requestSearch();
+        mTeamsLocationsMapPresenter.loadTeam(teamNumber);
     }
 
     private void setupMapFragment() {
