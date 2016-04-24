@@ -18,15 +18,18 @@
 
     <array name="circle_text_view_colors">
         <item>#D50000</item>
-        <item>#FF4081</item>
         <item>#C51162</item>
-        <item>#D500F9</item>
-        <item>#651FFF</item>
-        <item>#00695C</item>
+        <item>#0091EA</item>
+        <item>#2979FF</item>
+        <item>#AA00FF</item>
+        <item>#6200EA</item>
+        <item>#0097A7</item>
+        <item>#64DD17</item>
         <item>#FF6D00</item>
         <item>#DD2C00</item>
+        <item>#33691E</item>
+        <item>#3D5AFE</item>
         <item>#3D5AFE</item>
         <item>#5D4037</item>
-        <item>#2979FF</item>
     </array>
 </resources>
