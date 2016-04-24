@@ -84,6 +84,7 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     }
 
     public void loadTeam(int teamNumber) {
+        getMvpView().clearCurrentTeamLocations();
         mRxTeamLocationsCacheHelper.cache(
                 mDataManager.getTeamLocationRecordsFromServer(teamNumber)
                         .flatMap(listResponse -> listResponse.code() == HttpStatus.NOT_FOUND ?

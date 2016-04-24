@@ -1,6 +1,7 @@
 package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,6 +26,8 @@ import pl.temomuko.autostoprace.data.model.Team;
 public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHintsAdapter.ViewHolder>
         implements Filterable {
 
+    private static final String BUNDLE_ALL_TEAM_LIST = "bundle_all_team_list";
+    private static final String BUNDLE_ACTUAL_TEAM_LIST = "bundle_actual_team_list";
     private Context mContext;
     private List<Team> mAllTeams;
     private List<Team> mActualTeams;
@@ -75,21 +78,33 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
     }
 
     public void setupTeams(List<Team> teams) {
-        mAllTeams = mActualTeams = teams;
+        mAllTeams = teams;
         notifyDataSetChanged();
     }
 
-    public Parcelable[] onSaveInstanceState() {
-        return mAllTeams.toArray(
-                new Team[mAllTeams.size()]);
+    public Bundle onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArray(BUNDLE_ALL_TEAM_LIST, mAllTeams.toArray(new Team[mAllTeams.size()]));
+        bundle.putParcelableArray(BUNDLE_ACTUAL_TEAM_LIST, mActualTeams.toArray(new Team[mActualTeams.size()]));
+        return bundle;
     }
 
-    public void onRestoreInstanceState(Parcelable[] searchTeamHintsState) {
-        ArrayList<Team> teams = new ArrayList<>(searchTeamHintsState.length);
-        for (Parcelable parcelable : searchTeamHintsState) {
-            teams.add((Team) parcelable);
+    public void onRestoreInstanceState(Bundle savedAdapterState) {
+        Parcelable[] allTeamsParcelables = savedAdapterState.getParcelableArray(BUNDLE_ALL_TEAM_LIST);
+        Parcelable[] actualTeamsParcelables = savedAdapterState.getParcelableArray(BUNDLE_ACTUAL_TEAM_LIST);
+        if (allTeamsParcelables != null && actualTeamsParcelables != null) {
+            ArrayList<Team> allTeams = new ArrayList<>(allTeamsParcelables.length);
+            for (Parcelable parcelable : allTeamsParcelables) {
+                allTeams.add((Team) parcelable);
+            }
+            ArrayList<Team> actualTeams = new ArrayList<>(actualTeamsParcelables.length);
+            for (Parcelable parcelable : actualTeamsParcelables) {
+                actualTeams.add((Team) parcelable);
+            }
+            mAllTeams = allTeams;
+            mActualTeams = actualTeams;
+            notifyDataSetChanged();
         }
-        setupTeams(teams);
     }
 
     public interface OnTeamHintSelectedListener {
@@ -99,7 +114,7 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
 
     public interface TeamFilterResultsListener {
 
-        void onTeamHintEmpty();
+        void onTeamHintIsEmpty(boolean isEmpty);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -134,9 +149,7 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             mActualTeams = (List<Team>) results.values;
-            if (mActualTeams.isEmpty()) {
-                mTeamFilterResultsListener.onTeamHintEmpty();
-            }
+            mTeamFilterResultsListener.onTeamHintIsEmpty(mActualTeams.isEmpty());
             notifyDataSetChanged();
         }
 

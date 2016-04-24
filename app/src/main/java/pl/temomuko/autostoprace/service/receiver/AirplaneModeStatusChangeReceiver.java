@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.service;
+package pl.temomuko.autostoprace.service.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

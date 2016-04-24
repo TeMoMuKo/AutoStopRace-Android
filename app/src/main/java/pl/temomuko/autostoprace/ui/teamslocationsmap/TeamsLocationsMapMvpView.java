@@ -17,6 +17,8 @@ public interface TeamsLocationsMapMvpView extends DrawerMvpView {
 
     void setHints(List<Team> teams);
 
+    void clearCurrentTeamLocations();
+
     void setLocations(List<LocationRecord> locationRecords);
 
     void showError(String message);

@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -33,6 +32,7 @@ public class SearchTeamView extends EditText {
     private RecyclerView mRecyclerView;
     private View mOptionalHintsView;
     private OnTeamRequestedListener mOnTeamRequestedListener;
+    private boolean mTeamHintsEmpty = true;
 
     public SearchTeamView(Context context) {
         this(context, null);
@@ -64,7 +64,7 @@ public class SearchTeamView extends EditText {
     private void initialize(Context context) {
         mSearchTeamHintsAdapter = new SearchTeamHintsAdapter(context,
                 this::handleTeamHintClick,
-                this::handleEmptyTeamHints);
+                this::handleIsTeamFilterResultEmpty);
         setTextChangeListener();
     }
 
@@ -76,8 +76,15 @@ public class SearchTeamView extends EditText {
         mOnTeamRequestedListener.onTeamRequest(teamNumber);
     }
 
-    private void handleEmptyTeamHints() {
-        setHintsVisibility(GONE);
+    private void handleIsTeamFilterResultEmpty(boolean isTeamFilterResultEmpty) {
+        mTeamHintsEmpty = isTeamFilterResultEmpty;
+        if (isTeamFilterResultEmpty) {
+            setHintsVisibility(GONE);
+        } else {
+            if (hasFocus()) {
+                setHintsVisibility(VISIBLE);
+            }
+        }
     }
 
     private void setTextChangeListener() {
@@ -89,10 +96,7 @@ public class SearchTeamView extends EditText {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (isFocused()) {
-                    setHintsVisibility(VISIBLE);
-                    filterTeamHints(s);
-                }
+                filterTeamHints(s);
             }
 
             @Override
@@ -114,7 +118,7 @@ public class SearchTeamView extends EditText {
     @Override
     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        setHintsVisibility(focused ? VISIBLE : GONE);
+        setHintsVisibility(focused && !mTeamHintsEmpty ? VISIBLE : GONE);
     }
 
     /* SearchTeamView methods*/
@@ -122,14 +126,14 @@ public class SearchTeamView extends EditText {
     public Bundle saveHintsState() {
         Bundle bundle = new Bundle();
         if (mSearchTeamHintsAdapter != null) {
-            bundle.putParcelableArray(BUNDLE_ADAPTER_TEAMS, mSearchTeamHintsAdapter.onSaveInstanceState());
+            bundle.putBundle(BUNDLE_ADAPTER_TEAMS, mSearchTeamHintsAdapter.onSaveInstanceState());
         }
         return bundle;
     }
 
     public void restoreHintState(Bundle searchTeamBundle) {
-        Parcelable[] searchTeamHintsState = searchTeamBundle.getParcelableArray(BUNDLE_ADAPTER_TEAMS);
-        if (searchTeamHintsState != null) {
+        Bundle searchTeamHintsState = searchTeamBundle.getBundle(BUNDLE_ADAPTER_TEAMS);
+        if (searchTeamHintsState != null && mSearchTeamHintsAdapter != null) {
             mSearchTeamHintsAdapter.onRestoreInstanceState(searchTeamHintsState);
         }
     }

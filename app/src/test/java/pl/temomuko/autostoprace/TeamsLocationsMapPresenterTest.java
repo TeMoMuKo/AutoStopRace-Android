@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
  * Created by Rafał Naniewicz on 15.04.2016.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class TeamsLocationsMapPresenterv2Test {
+public class TeamsLocationsMapPresenterTest {
 
     private static final int TEST_TEAM_NUMBER = 1;
     @Mock TeamsLocationsMapMvpView mMockTeamsLocationsMapMvpView;
@@ -120,6 +120,7 @@ public class TeamsLocationsMapPresenterv2Test {
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
 
         //then
+        verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
         verify(mMockTeamsLocationsMapMvpView).setLocations(locationRecords);
@@ -140,6 +141,7 @@ public class TeamsLocationsMapPresenterv2Test {
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
 
         //then
+        verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
         verify(mMockTeamsLocationsMapMvpView).setLocations(locationRecords);
@@ -162,6 +164,7 @@ public class TeamsLocationsMapPresenterv2Test {
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
 
         //then
+        verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
         verify(mMockTeamsLocationsMapMvpView, never()).setLocations(any());
@@ -187,6 +190,7 @@ public class TeamsLocationsMapPresenterv2Test {
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
 
         //then
+        verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
         verify(mMockTeamsLocationsMapMvpView, never()).setLocations(any());

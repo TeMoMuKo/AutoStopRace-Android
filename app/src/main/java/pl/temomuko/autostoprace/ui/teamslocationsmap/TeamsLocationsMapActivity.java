@@ -18,6 +18,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.clustering.ClusterManager;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +31,7 @@ import butterknife.Bind;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
@@ -36,6 +41,7 @@ import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordC
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.TeamLocationInfoWindowAdapter;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview.SearchTeamView;
 import pl.temomuko.autostoprace.util.IntentUtil;
+import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
@@ -77,9 +83,27 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         setContentView(R.layout.activity_teams_location);
         getActivityComponent().inject(this);
         setupPresenter();
-        setupMapFragment();
-        setupIntent(getIntent());
         setupSearchTeamView();
+        setupIntent(getIntent());
+        setupMapFragment();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mTeamsLocationsMapPresenter.loadAllTeams();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -204,7 +228,6 @@ public class TeamsLocationsMapActivity extends DrawerActivity
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(googleMap -> {
             mMap = googleMap;
-            mTeamsLocationsMapPresenter.loadAllTeams();
             mSearchTeamView.setEnabled(true);
             setupClusterManager();
             if (mCurrentTeamLocations != null) {
@@ -265,6 +288,15 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     @Override
+    public void clearCurrentTeamLocations() {
+        mClusterManager.clearItems();
+        mClusterManager.cluster();
+        if (mCurrentTeamLocations != null) {
+            mCurrentTeamLocations.clear();
+        }
+    }
+
+    @Override
     public void setLocations(@NonNull List<LocationRecord> locationRecords) {
         mCurrentTeamLocations = locationRecords;
         if (mSetLocationsSubscription != null) mSetLocationsSubscription.unsubscribe();
@@ -293,6 +325,8 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     /* Private helper methods */
 
     private void handleTeamLocationsToSet(List<LocationRecordClusterItem> locationRecordClusterItems) {
+        mClusterManager.addItems(locationRecordClusterItems);
+        mClusterManager.cluster();
         if (mAnimateTeamLocationsUpdate) {
             if (!locationRecordClusterItems.isEmpty()) {
                 mMap.animateCamera(CameraUpdateFactory
@@ -301,8 +335,14 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         } else {
             mAnimateTeamLocationsUpdate = true;
         }
-        mClusterManager.clearItems();
-        mClusterManager.addItems(locationRecordClusterItems);
-        mClusterManager.cluster();
+    }
+
+    /* Events */
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNetworkConnected(Event.NetworkConnected event) {
+        LogUtil.i(TAG, "received network connected event");
+        mTeamsLocationsMapPresenter.loadAllTeams();
     }
 }

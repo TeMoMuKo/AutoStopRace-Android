@@ -19,6 +19,10 @@ public class Event {
 
     }
 
+    public static class NetworkConnected {
+
+    }
+
     public static class PostServiceStateChanged {
 
         private boolean mIsPostServiceActive;
