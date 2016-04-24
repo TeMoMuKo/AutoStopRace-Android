@@ -17,6 +17,7 @@
             android:layout_marginEnd="@dimen/default_padding"
             android:layout_marginRight="@dimen/default_padding"
             android:layout_marginTop="@dimen/default_margin_halved"
+            android:contentDescription="@string/description_logo_asr"
             android:src="@mipmap/ic_launcher"/>
 
         <LinearLayout

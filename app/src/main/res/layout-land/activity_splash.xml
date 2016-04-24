@@ -11,13 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        tools:ignore="ContentDescription"
         tools:src="@drawable/bg"/>
 
     <LinearLayout
-        android:baselineAligned="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -31,6 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/description_logo_asr"
                 android:scaleType="centerInside"
                 tools:src="@drawable/logo"/>
 
@@ -52,7 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="@dimen/default_padding">
+                    android:padding="@dimen/default_padding"
+                    tools:ignore="UseCompoundDrawables">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -71,10 +74,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@android:color/white"
+                        android:contentDescription="@string/description_sponsor_logo"
                         android:paddingBottom="32dp"
                         android:paddingTop="0dp"
-                        tools:src="@drawable/logo_beactive"
-                        />
+                        tools:src="@drawable/logo_beactive"/>
 
                 </LinearLayout>
 

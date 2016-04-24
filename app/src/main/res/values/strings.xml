@@ -14,7 +14,6 @@
     <string name="msg_logout">Wyloguj</string>
     <string name="error_502">Spróbuj ponownie za chwilę.</string>
     <string name="error_400">Nieprawidłowe żądanie</string>
-    <string name="msg_welcome">Witamy w Auto Stop Race!</string>
     <string name="error_no_internet_connection">Brak połączenia z Internetem.</string>
     <string name="hint_message">Opcjonalna relacja (max 160 znaków)</string>
     <string name="action_cancel">Anuluj</string>
@@ -34,7 +33,6 @@
     <string name="subtitle_drawer_default">Auto Stop Race</string>
     <string name="drawer_open">Otwórz menu</string>
     <string name="drawer_close">Zamknij menu</string>
-    <string name="title_activity_schedule">Harmonogram</string>
     <string name="title_my_team_locations">Lokalizacje mojego teamu</string>
     <string name="title_activity_teams">Mapa lokalizacji</string>
     <string name="title_activity_campus">Mapa campingu</string>
@@ -91,9 +89,7 @@
     <string name="msg_last_location_record_received_adapter">Ostatnie zameldowanie: %1$s</string>
     <string name="msg_processing_request">Czekaj, Trwa przetwarzanie żądania…</string>
     <string name="input_email_for_reset">Podaj adres email, na który zarejestrowane jest konto</string>
-    <string name="menu_team_asr">Team ASR</string>
     <string name="find_team">Znajdź team</string>
-    <string name="action_change_lang">Zmień język</string>
     <string name="dest_lang">Język docelowy:</string>
     <string name="search">Szukaj</string>
     <string name="search_hint">Szukane wyrażenie…</string>
@@ -112,4 +108,6 @@
     <string name="action_share_locations">Udostępnij lokacje</string>
     <string name="msg_teams_locations">Lokalizacje teamów</string>
     <string name="msg_team_locations">"Lokalizacje teamu %1$s"</string>
+    <string name="description_logo_asr">Logo Auto Stop Race</string>
+    <string name="description_sponsor_logo">Logo sponsora</string>
 </resources>
