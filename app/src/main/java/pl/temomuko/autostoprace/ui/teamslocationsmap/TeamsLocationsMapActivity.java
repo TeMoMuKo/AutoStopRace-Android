@@ -289,8 +289,10 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     @Override
     public void clearCurrentTeamLocations() {
-        mClusterManager.clearItems();
-        mClusterManager.cluster();
+        if (mClusterManager != null) {
+            mClusterManager.clearItems();
+            mClusterManager.cluster();
+        }
         if (mCurrentTeamLocations != null) {
             mCurrentTeamLocations.clear();
         }
@@ -325,15 +327,17 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     /* Private helper methods */
 
     private void handleTeamLocationsToSet(List<LocationRecordClusterItem> locationRecordClusterItems) {
-        mClusterManager.addItems(locationRecordClusterItems);
-        mClusterManager.cluster();
-        if (mAnimateTeamLocationsUpdate) {
-            if (!locationRecordClusterItems.isEmpty()) {
-                mMap.animateCamera(CameraUpdateFactory
-                        .newLatLngZoom(locationRecordClusterItems.get(0).getPosition(), DEFAULT_MAP_ZOOM));
+        if (mClusterManager != null) {
+            mClusterManager.addItems(locationRecordClusterItems);
+            mClusterManager.cluster();
+            if (mAnimateTeamLocationsUpdate) {
+                if (!locationRecordClusterItems.isEmpty()) {
+                    mMap.animateCamera(CameraUpdateFactory
+                            .newLatLngZoom(locationRecordClusterItems.get(0).getPosition(), DEFAULT_MAP_ZOOM));
+                }
+            } else {
+                mAnimateTeamLocationsUpdate = true;
             }
-        } else {
-            mAnimateTeamLocationsUpdate = true;
         }
     }
 
