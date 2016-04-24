@@ -20,6 +20,11 @@ public class Team implements Comparable<Team>, Parcelable {
     @SerializedName("last_location")
     private ArrayList<LocationRecord> mLastLocationRecordList;
 
+    @Override
+    public int compareTo(@NonNull Team another) {
+        return Integer.valueOf(mTeamNumber).compareTo(another.mTeamNumber);
+    }
+
     public int getTeamNumber() {
         return mTeamNumber;
     }
@@ -32,9 +37,12 @@ public class Team implements Comparable<Team>, Parcelable {
         return mLastLocationRecordList.isEmpty() ? null : mLastLocationRecordList.get(0);
     }
 
-    @Override
-    public int compareTo(@NonNull Team another) {
-        return Integer.valueOf(mTeamNumber).compareTo(another.mTeamNumber);
+    /* Parcel */
+
+    protected Team(Parcel in) {
+        this.mTeamNumber = in.readInt();
+        this.mName = in.readString();
+        this.mLastLocationRecordList = in.createTypedArrayList(LocationRecord.CREATOR);
     }
 
     @Override
@@ -47,12 +55,6 @@ public class Team implements Comparable<Team>, Parcelable {
         dest.writeInt(this.mTeamNumber);
         dest.writeString(this.mName);
         dest.writeTypedList(mLastLocationRecordList);
-    }
-
-    protected Team(Parcel in) {
-        this.mTeamNumber = in.readInt();
-        this.mName = in.readString();
-        this.mLastLocationRecordList = in.createTypedArrayList(LocationRecord.CREATOR);
     }
 
     public static final Creator<Team> CREATOR = new Creator<Team>() {

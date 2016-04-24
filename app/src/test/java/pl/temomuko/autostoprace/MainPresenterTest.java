@@ -25,6 +25,7 @@ import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import retrofit2.Response;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -71,7 +72,7 @@ public class MainPresenterTest {
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
         locationsFromDatabase.add(new LocationRecord(99.99, 99.99, "Yo", "Somewhere, Poland", "Poland", "PL"));
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
-                .thenReturn(Observable.just(locationsFromDatabase));
+                .thenReturn(Single.just(locationsFromDatabase));
         //when
         mMainPresenter.loadLocations();
 
@@ -88,7 +89,7 @@ public class MainPresenterTest {
         //given
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
-                .thenReturn(Observable.just(locationsFromDatabase));
+                .thenReturn(Single.just(locationsFromDatabase));
 
         //when
         mMainPresenter.loadLocations();

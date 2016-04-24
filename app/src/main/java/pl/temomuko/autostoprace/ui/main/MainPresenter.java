@@ -75,7 +75,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         getMvpView().setProgress(true);
         if (mLoadLocationsSubscription != null) mLoadLocationsSubscription.unsubscribe();
         mLoadLocationsSubscription = mDataManager.getTeamLocationRecordsFromDatabase()
-                .compose(RxUtil.applyIoSchedulers())
+                .compose(RxUtil.applySingleIoSchedulers())
                 .subscribe(this::setLocationsView,
                         this::handleError);
     }

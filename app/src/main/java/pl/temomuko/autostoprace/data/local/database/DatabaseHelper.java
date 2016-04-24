@@ -15,6 +15,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.schedulers.Schedulers;
 
 /**
@@ -111,8 +112,8 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<List<LocationRecord>> getLocationRecordList() {
-        return Observable.create(subscriber -> {
+    public Single<List<LocationRecord>> getLocationRecordList() {
+        return Single.create(singleSubscriber -> {
             BriteDatabase.Transaction transaction=mBriteDatabase.newTransaction();
             try {
                 List<LocationRecord> result = new ArrayList<>();
@@ -122,20 +123,19 @@ public class DatabaseHelper {
                 Cursor sentCursor = mBriteDatabase.query(
                         "SELECT * FROM " + RemoteLocationRecordTable.NAME
                 );
-                if (!subscriber.isUnsubscribed()) {
+                if (!singleSubscriber.isUnsubscribed()) {
                     while (sentCursor.moveToNext()) {
                         result.add(RemoteLocationRecordTable.parseCursor(sentCursor));
                     }
                 }
-                if (!subscriber.isUnsubscribed()) {
+                if (!singleSubscriber.isUnsubscribed()) {
                     while (unsentCursor.moveToNext()) {
                         result.add(LocalUnsentLocationRecordTable.parseCursor(unsentCursor));
                     }
                 }
                 unsentCursor.close();
                 sentCursor.close();
-                subscriber.onNext(result);
-                subscriber.onCompleted();
+                singleSubscriber.onSuccess(result);
             }finally {
                 transaction.end();
             }

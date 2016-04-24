@@ -35,6 +35,14 @@ public class ErrorHandler {
         mApiManager = apiManager;
     }
 
+    public boolean isEmailValid(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public String getTeamNotFoundMessage() {
+        return mContext.getString(R.string.error_team_not_found);
+    }
+
     public String getMessage(Throwable throwable) {
         if (throwable instanceof TeamNotFoundException) {
             return getTeamNotFoundMessage();
@@ -94,13 +102,5 @@ public class ErrorHandler {
             throwable.printStackTrace();
             return mContext.getString(R.string.error_unknown);
         }
-    }
-
-    public boolean isEmailValid(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    public String getTeamNotFoundMessage() {
-        return mContext.getString(R.string.error_team_not_found);
     }
 }

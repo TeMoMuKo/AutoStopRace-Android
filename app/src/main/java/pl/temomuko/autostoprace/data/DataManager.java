@@ -132,7 +132,7 @@ public class DataManager {
         return mDatabaseHelper.moveLocationRecordToSent(locationRecordPair);
     }
 
-    public Observable<List<LocationRecord>> getTeamLocationRecordsFromDatabase() {
+    public Single<List<LocationRecord>> getTeamLocationRecordsFromDatabase() {
         return mDatabaseHelper.getLocationRecordList();
     }
 

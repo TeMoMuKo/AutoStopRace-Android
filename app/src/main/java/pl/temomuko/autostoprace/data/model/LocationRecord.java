@@ -35,6 +35,70 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         mCountryCode = countryCode;
     }
 
+    @Override
+    public int compareTo(@NonNull LocationRecord another) {
+        int dateCompareResult = getDateCompareResult(another);
+        if (dateCompareResult == 0) {
+            return Integer.valueOf(another.getId()).compareTo(mId);
+        } else {
+            return dateCompareResult;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LocationRecord that = (LocationRecord) o;
+
+        if (mId != that.mId) return false;
+        if (Double.compare(that.mLatitude, mLatitude) != 0) return false;
+        if (Double.compare(that.mLongitude, mLongitude) != 0) return false;
+        if (!mMessage.equals(that.mMessage)) return false;
+        if (mAddress != null ? !mAddress.equals(that.mAddress) : that.mAddress != null)
+            return false;
+        if (mCountry != null ? !mCountry.equals(that.mCountry) : that.mCountry != null)
+            return false;
+        if (mCountryCode != null ? !mCountryCode.equals(that.mCountryCode) : that.mCountryCode != null)
+            return false;
+        if (mServerReceiptDate != null ? !mServerReceiptDate.equals(that.mServerReceiptDate) : that.mServerReceiptDate != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = mId;
+        temp = Double.doubleToLongBits(mLatitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(mLongitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + mMessage.hashCode();
+        result = 31 * result + (mAddress != null ? mAddress.hashCode() : 0);
+        result = 31 * result + (mCountry != null ? mCountry.hashCode() : 0);
+        result = 31 * result + (mCountryCode != null ? mCountryCode.hashCode() : 0);
+        result = 31 * result + (mServerReceiptDate != null ? mServerReceiptDate.hashCode() : 0);
+        return result;
+    }
+
+    private int getDateCompareResult(@NonNull LocationRecord another) {
+        int dateCompareResult;
+        if (mServerReceiptDate == null && another.getServerReceiptDate() == null) {
+            dateCompareResult = 0;
+        } else if (mServerReceiptDate == null) {
+            dateCompareResult = -1;
+        } else if (another.getServerReceiptDate() == null) {
+            dateCompareResult = 1;
+        } else {
+            dateCompareResult = another.getServerReceiptDate().compareTo(mServerReceiptDate);
+        }
+        return dateCompareResult;
+    }
+
     public int getId() {
         return mId;
     }
@@ -99,6 +163,8 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         mServerReceiptDate = serverReceiptDate;
     }
 
+    /* Parcel */
+
     protected LocationRecord(Parcel in) {
         mId = in.readInt();
         mLatitude = in.readDouble();
@@ -140,68 +206,4 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
             return new LocationRecord[size];
         }
     };
-
-    @Override
-    public int compareTo(@NonNull LocationRecord another) {
-        int dateCompareResult = getDateCompareResult(another);
-        if (dateCompareResult == 0) {
-            return Integer.valueOf(another.getId()).compareTo(mId);
-        } else {
-            return dateCompareResult;
-        }
-    }
-
-    private int getDateCompareResult(@NonNull LocationRecord another) {
-        int dateCompareResult;
-        if (mServerReceiptDate == null && another.getServerReceiptDate() == null) {
-            dateCompareResult = 0;
-        } else if (mServerReceiptDate == null) {
-            dateCompareResult = -1;
-        } else if (another.getServerReceiptDate() == null) {
-            dateCompareResult = 1;
-        } else {
-            dateCompareResult = another.getServerReceiptDate().compareTo(mServerReceiptDate);
-        }
-        return dateCompareResult;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        LocationRecord that = (LocationRecord) o;
-
-        if (mId != that.mId) return false;
-        if (Double.compare(that.mLatitude, mLatitude) != 0) return false;
-        if (Double.compare(that.mLongitude, mLongitude) != 0) return false;
-        if (!mMessage.equals(that.mMessage)) return false;
-        if (mAddress != null ? !mAddress.equals(that.mAddress) : that.mAddress != null)
-            return false;
-        if (mCountry != null ? !mCountry.equals(that.mCountry) : that.mCountry != null)
-            return false;
-        if (mCountryCode != null ? !mCountryCode.equals(that.mCountryCode) : that.mCountryCode != null)
-            return false;
-        if (mServerReceiptDate != null ? !mServerReceiptDate.equals(that.mServerReceiptDate) : that.mServerReceiptDate != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = mId;
-        temp = Double.doubleToLongBits(mLatitude);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(mLongitude);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + mMessage.hashCode();
-        result = 31 * result + (mAddress != null ? mAddress.hashCode() : 0);
-        result = 31 * result + (mCountry != null ? mCountry.hashCode() : 0);
-        result = 31 * result + (mCountryCode != null ? mCountryCode.hashCode() : 0);
-        result = 31 * result + (mServerReceiptDate != null ? mServerReceiptDate.hashCode() : 0);
-        return result;
-    }
 }
