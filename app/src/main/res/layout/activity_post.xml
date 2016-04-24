@@ -27,10 +27,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/full_screen_card_margin"
-                android:layout_marginRight="@dimen/full_screen_card_margin"
-                android:layout_marginTop="@dimen/full_screen_card_margin"
-                app:cardCornerRadius="0dp">
+                style="@style/CardView.FullScreenCardViewLight">
 
                 <LinearLayout
                     android:layout_width="match_parent"
