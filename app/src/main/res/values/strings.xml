@@ -104,4 +104,5 @@
     <string name="msg_team_locations">"Lokalizacje teamu %1$s"</string>
     <string name="description_logo_asr">Logo Auto Stop Race</string>
     <string name="description_sponsor_logo">Logo sponsora</string>
+    <string name="my_team_locations_map">Mapa zameldowań drużyny</string>
 </resources>

@@ -80,7 +80,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teams_location);
+        setContentView(R.layout.activity_teams_locations_map);
         getActivityComponent().inject(this);
         setupPresenter();
         setupSearchTeamView();

@@ -3,7 +3,7 @@
     <item
         android:id="@+id/action_team_map"
         android:icon="@drawable/ic_map_white_24dp"
-        android:title="@string/action_refresh"
+        android:title="@string/my_team_locations_map"
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_refresh"
