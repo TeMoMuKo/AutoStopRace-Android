@@ -83,14 +83,18 @@ public class ErrorHandler {
     }
 
     private List<String> getErrorsFromResponseBody(Response response) {
+        List<String> errors = new ArrayList<>();
         try {
-            return mApiManager.getErrorResponseConverter()
+            List<String> responseErrors = mApiManager.getErrorResponseConverter()
                     .convert(response.errorBody())
                     .getErrors();
+            if(responseErrors != null) {
+                errors.addAll(responseErrors);
+            }
         } catch (IOException e) {
             LogUtil.i(TAG, "It isn't ErrorResponse object.");
         }
-        return new ArrayList<>();
+        return errors;
     }
 
     private String getMessageFromRetrofitThrowable(Throwable throwable) {
