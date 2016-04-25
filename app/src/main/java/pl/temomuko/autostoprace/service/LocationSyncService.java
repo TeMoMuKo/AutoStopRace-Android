@@ -8,6 +8,8 @@ import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.AsrApplication;
@@ -49,8 +51,16 @@ public class LocationSyncService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        EventUtil.postSticky(new Event.PostServiceStateChanged(true));
-        if (!canServiceStart()) {
+        EventUtil.postSticky(new Event.LocationSyncServiceStateChanged(true));
+        if (!NetworkUtil.isConnected(this)) {
+            AndroidComponentUtil.toggleComponent(this, NetworkChangeReceiver.class, true);
+            LogUtil.i(TAG, "Connection not available. Service stopped.");
+            EventUtil.post(new Event.LocationSyncServiceError(new IOException("No internet connection")));
+            stopSelf();
+            return START_NOT_STICKY;
+        } else if (!mDataManager.isLoggedWithToken()) {
+            LogUtil.i(TAG, "Is not logged in. Service stopped");
+            EventUtil.post(new Event.LocationSyncServiceError(new IOException("Is not logged in.")));
             stopSelf();
             return START_NOT_STICKY;
         }
@@ -66,27 +76,8 @@ public class LocationSyncService extends Service {
 
     @Override
     public void onDestroy() {
-        if (sShouldStartAgain) {
-            sShouldStartAgain = false;
-            startService(getStartIntent(this));
-            LogUtil.i(TAG, "Starting service again.");
-        } else {
-            LogUtil.i(TAG, "Service destroyed.");
-            EventUtil.postSticky(new Event.PostServiceStateChanged(false));
-        }
-    }
-
-    private boolean canServiceStart() {
-        if (!NetworkUtil.isConnected(this)) {
-            AndroidComponentUtil.toggleComponent(this, NetworkChangeReceiver.class, true);
-            LogUtil.i(TAG, "Connection not available. Service stopped.");
-            return false;
-        }
-        if (!mDataManager.isLoggedWithToken()) {
-            LogUtil.i(TAG, "Is not logged in. Service stopped");
-            return false;
-        }
-        return true;
+        LogUtil.i(TAG, "Service destroyed.");
+        EventUtil.postSticky(new Event.LocationSyncServiceStateChanged(false));
     }
 
     public static void startServiceOrEnqueue(Context context) {
@@ -166,7 +157,7 @@ public class LocationSyncService extends Service {
     private void handleError(Throwable throwable) {
         LogUtil.e(TAG, mErrorHandler.getMessage(throwable));
         LogUtil.e(TAG, throwable.toString());
-        LogUtil.i(TAG, "Service stopped");
+        EventUtil.post(new Event.LocationSyncServiceError(throwable));
         stopSelf();
     }
 
@@ -174,7 +165,17 @@ public class LocationSyncService extends Service {
         mDataManager.setLastLocationsSyncTimestamp(System.currentTimeMillis());
         EventUtil.postSticky(new Event.DatabaseRefreshed());
         LogUtil.i(TAG, "Database refresh completed");
-        stopSelf();
+        handleServiceFinish();
+    }
+
+    private void handleServiceFinish() {
+        if (sShouldStartAgain) {
+            sShouldStartAgain = false;
+            synchronizeLocationsWithServer();
+            LogUtil.i(TAG, "Starting service again.");
+        } else {
+            stopSelf();
+        }
     }
 
     public static class NetworkChangeReceiver extends BroadcastReceiver {

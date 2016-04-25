@@ -387,10 +387,17 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @SuppressWarnings("unused")
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onPostServiceStateChangeEvent(Event.PostServiceStateChanged event) {
+    public void onLocationSyncServiceStateChangeEvent(Event.LocationSyncServiceStateChanged event) {
         LogUtil.i(TAG, "received post service state changed: " + Boolean.toString(event.isPostServiceActive()));
         mPostServiceSetProgress = event.isPostServiceActive();
         mMaterialProgressBar.setVisibility(mPresenterSetProgress || mPostServiceSetProgress ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLocationSyncServiceError(Event.LocationSyncServiceError event) {
+        LogUtil.i(TAG, "received location sync service error");
+        mMainPresenter.handleSyncServiceError(event.getThrowable());
     }
 
     @SuppressWarnings("unused")

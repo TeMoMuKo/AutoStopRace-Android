@@ -71,8 +71,10 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
     }
 
     private void destroySearchView() {
-        mSearchView.setOnQueryTextListener(null);
-        mSearchItem = null;
+        if (mSearchView != null) {
+            mSearchView.setOnQueryTextListener(null);
+            mSearchItem = null;
+        }
     }
 
     @Override

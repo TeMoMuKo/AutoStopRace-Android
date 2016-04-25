@@ -23,16 +23,29 @@ public class Event {
 
     }
 
-    public static class PostServiceStateChanged {
+    public static class LocationSyncServiceStateChanged {
 
         private final boolean mIsPostServiceActive;
 
-        public PostServiceStateChanged(boolean isPostServiceActive) {
+        public LocationSyncServiceStateChanged(boolean isPostServiceActive) {
             mIsPostServiceActive = isPostServiceActive;
         }
 
         public boolean isPostServiceActive() {
             return mIsPostServiceActive;
+        }
+    }
+
+    public static class LocationSyncServiceError {
+
+        private final Throwable mThrowable;
+
+        public LocationSyncServiceError(Throwable throwable) {
+            mThrowable = throwable;
+        }
+
+        public Throwable getThrowable() {
+            return mThrowable;
         }
     }
 

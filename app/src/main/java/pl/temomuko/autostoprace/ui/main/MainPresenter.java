@@ -17,6 +17,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
+import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -77,7 +78,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         mLoadLocationsSubscription = mDataManager.getTeamLocationRecordsFromDatabase()
                 .compose(RxUtil.applySingleIoSchedulers())
                 .subscribe(this::setLocationsView,
-                        this::handleError);
+                        this::handleLoadLocationsError);
     }
 
     public void goToPostLocation() {
@@ -124,20 +125,25 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         return mDataManager.getCurrentUser().getTeamNumber();
     }
 
+    public void handleSyncServiceError(Throwable throwable) {
+        getMvpView().showError(mErrorHandler.getMessage(throwable));
+    }
+
     /* Private helper methods */
 
     private void validateToken() {
         mSubscriptions.add(mDataManager.validateToken()
                 .compose(RxUtil.applyIoSchedulers())
                 .subscribe(response -> {
-                    if (response.code() == HttpStatus.OK) {
-                        mDataManager.saveAuthorizationResponse(response);
-                    } else if (response.code() == HttpStatus.UNAUTHORIZED) {
-                        mDataManager.clearUserData().subscribe();
-                        getMvpView().showSessionExpiredError();
-                        getMvpView().startLoginActivity();
-                    }
-                }, this::handleError));
+                            if (response.code() == HttpStatus.OK) {
+                                mDataManager.saveAuthorizationResponse(response);
+                            } else if (response.code() == HttpStatus.UNAUTHORIZED) {
+                                mDataManager.clearUserData().subscribe();
+                                getMvpView().showSessionExpiredError();
+                                getMvpView().startLoginActivity();
+                            }
+                        },
+                        throwable -> LogUtil.i(TAG, mErrorHandler.getMessage(throwable))));
     }
 
     private void setLocationsView(List<LocationRecord> locationRecords) {
@@ -177,7 +183,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         }
     }
 
-    private void handleError(Throwable throwable) {
+    private void handleLoadLocationsError(Throwable throwable) {
         getMvpView().setProgress(false);
         getMvpView().showError(mErrorHandler.getMessage(throwable));
     }
