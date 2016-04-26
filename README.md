@@ -3,7 +3,7 @@
 
 Android app which allows participants of hitchhiking race to share their location. <br>
 Project website: http://www.autostoprace.pl/ <br>
-Google Play: Coming soon
+Google Play: https://play.google.com/store/apps/details?id=pl.temomuko.autostoprace
 
 #Architecture
 Application built on MVP-based architecture powered by RxJava.  ([architecture guidelines by ribot](https://github.com/ribot/android-guidelines/blob/master/architecture_guidelines/android_architecture.md))
