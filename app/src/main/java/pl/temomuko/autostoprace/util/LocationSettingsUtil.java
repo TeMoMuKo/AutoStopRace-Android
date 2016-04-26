@@ -3,6 +3,7 @@ package pl.temomuko.autostoprace.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
@@ -22,10 +23,10 @@ public final class LocationSettingsUtil {
      * also different behaviour of GMS on older devices often cause user to disagree with turning on wifi.
      * https://github.com/googlesamples/android-play-location/issues/19
      */
-    public static int getApiDependentResultCode(int resultCode, Intent locationSettingRequestIntentData) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+    public static int getApiDependentResultCode(int resultCode, @Nullable Intent intentData) {
+        if (intentData != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             LocationSettingsStates locationSettingsStates =
-                    LocationSettingsStates.fromIntent(locationSettingRequestIntentData);
+                    LocationSettingsStates.fromIntent(intentData);
             if (locationSettingsStates != null && locationSettingsStates.isGpsUsable())
                 resultCode = Activity.RESULT_OK;
         }
