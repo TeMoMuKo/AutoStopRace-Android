@@ -37,7 +37,9 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NormalStatusBar">
+            android:theme="@style/AppTheme.NormalStatusBar"
+            android:launchMode="singleTask">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.staticdata.launcher.LauncherActivity"/>
