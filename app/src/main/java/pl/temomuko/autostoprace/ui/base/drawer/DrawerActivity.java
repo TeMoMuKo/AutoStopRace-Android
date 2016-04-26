@@ -52,7 +52,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
         } else {
-            backToMain();
+            finish();
         }
     }
 
@@ -60,10 +60,6 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
-    }
-
-    public void backToMain() {
-        super.onBackPressed();
     }
 
     protected void setupToolbarWithToggle() {

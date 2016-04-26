@@ -108,7 +108,7 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
             showNotLoggedToast();
             return false;
         } else {
-            new Handler().postDelayed(mCurrentDrawerActivity::backToMain,
+            new Handler().postDelayed(mCurrentDrawerActivity::finish,
                     DELAY_AFTER_START_CLOSE_DRAWER);
             return true;
         }
