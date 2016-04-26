@@ -14,6 +14,7 @@ public class PartnersDrawables {
     private final static Integer[] DRAWABLES_ID_ARRAY = {
             R.drawable.logo_beactive,
             R.drawable.logo_cafe_borowka,
+            R.drawable.logo_express,
             R.drawable.logo_grzeski,
             R.drawable.logo_kf,
             R.drawable.logo_kravmaga,
