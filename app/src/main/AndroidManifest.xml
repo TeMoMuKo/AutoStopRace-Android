@@ -90,7 +90,8 @@
 
         <activity
             android:name=".ui.phrasebook.PhrasebookActivity"
-            android:label="@string/title_activity_phrasebook">
+            android:label="@string/title_activity_phrasebook"
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity"/>
@@ -100,6 +101,7 @@
             android:name=".ui.staticdata.campus.CampusActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_campus"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.Translucent.Status">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -108,7 +110,8 @@
 
         <activity
             android:name=".ui.contact.ContactActivity"
-            android:label="@string/title_activity_contact">
+            android:label="@string/title_activity_contact"
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity"/>
@@ -116,7 +119,8 @@
 
         <activity
             android:name=".ui.staticdata.partners.PartnersActivity"
-            android:label="@string/title_activity_partners">
+            android:label="@string/title_activity_partners"
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity"/>
@@ -167,7 +171,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
-
 
         <receiver
             android:name=".service.LocationSyncService$NetworkChangeReceiver"
