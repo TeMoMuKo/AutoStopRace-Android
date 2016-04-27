@@ -47,8 +47,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/bg_asr_empty_state_400dp"
-                        android:tint="#1000"
+                        android:src="@drawable/img_asr_empty_state_with_back_400dp"
                         tools:ignore="ContentDescription"/>
 
                     <TextView
