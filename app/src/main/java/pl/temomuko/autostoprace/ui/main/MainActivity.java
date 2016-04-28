@@ -150,6 +150,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
                 break;
             case REQUEST_CODE_POST_ACTIVITY:
                 if (resultCode == RESULT_OK) {
+                    mRecyclerView.scrollToPosition(0);
                     mMainPresenter.loadLocations();
                     startLocationSyncService();
                 }

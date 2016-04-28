@@ -206,6 +206,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
             }
         } else if (extras != null) {
             changeTeam(extras.getInt(MainActivity.EXTRA_TEAM_NUMBER));
+            intent.removeExtra(MainActivity.EXTRA_TEAM_NUMBER);
         }
     }
 
