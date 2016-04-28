@@ -33,10 +33,12 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
     @Override
     protected void onBeforeClusterItemRendered(LocationRecordClusterItem item, MarkerOptions markerOptions) {
         String message = item.getMessage();
+        String dateString = item.getReceiptDateString();
+        LogUtil.i(TAG, dateString);
         markerOptions
                 .title(message == null || message.isEmpty() ?
                         mContext.getString(R.string.msg_location_record_received) : message)
-                .snippet(item.getReceiptDateString())
+                .snippet(dateString)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.asr_marker_48dp));
     }
 
@@ -45,13 +47,15 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
         super.onBeforeClusterRendered(cluster, markerOptions);
         LocationRecordClusterItem lastClusterItem = getNewestClusterItem(cluster.getItems());
         String lastMessage = lastClusterItem.getMessage();
+        String dateString = lastClusterItem.getReceiptDateString();
+        LogUtil.i(TAG, dateString);
         if (lastMessage == null) {
             markerOptions.title(mContext.getString(R.string.msg_last_location_record_received))
-                    .snippet(lastClusterItem.getReceiptDateString());
+                    .snippet(dateString);
         } else {
             markerOptions.title(mContext.getString(R.string.msg_last_location_record_message) + "\n"
                     + lastClusterItem.getMessage())
-                    .snippet(lastClusterItem.getReceiptDateString());
+                    .snippet(dateString);
         }
     }
 
