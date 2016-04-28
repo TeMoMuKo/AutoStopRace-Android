@@ -203,6 +203,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
             String teamNumberParameterValue = data.getQueryParameter(Constants.URL_MAP_TEAM_NUMBER_PARAM);
             if (teamNumberParameterValue != null) {
                 changeTeamFromIntent(teamNumberParameterValue);
+                intent.setData(Uri.EMPTY);
             }
         } else if (extras != null) {
             changeTeam(extras.getInt(MainActivity.EXTRA_TEAM_NUMBER));
