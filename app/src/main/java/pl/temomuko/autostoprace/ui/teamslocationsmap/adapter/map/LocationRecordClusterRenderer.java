@@ -34,7 +34,6 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
     protected void onBeforeClusterItemRendered(LocationRecordClusterItem item, MarkerOptions markerOptions) {
         String message = item.getMessage();
         String dateString = item.getReceiptDateString();
-        LogUtil.i(TAG, dateString);
         markerOptions
                 .title(message == null || message.isEmpty() ?
                         mContext.getString(R.string.msg_location_record_received) : message)
@@ -48,7 +47,6 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
         LocationRecordClusterItem lastClusterItem = getNewestClusterItem(cluster.getItems());
         String lastMessage = lastClusterItem.getMessage();
         String dateString = lastClusterItem.getReceiptDateString();
-        LogUtil.i(TAG, dateString);
         if (lastMessage == null) {
             markerOptions.title(mContext.getString(R.string.msg_last_location_record_received))
                     .snippet(dateString);
