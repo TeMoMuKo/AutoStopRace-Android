@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_version">Wersja 1.0.3</string>
     <string name="app_name">Auto Stop Race</string>
     <string name="error_unknown">Ojojoj, coś poszło nie tak, spróbuj ponownie za chwilę…</string>
     <string name="error_404">Coś się popsuło. Spróbuj ponownie później…</string>
@@ -42,7 +43,6 @@
     <string name="pref_logout">Wyloguj się</string>
     <string name="pref_logout_summary">Zalogowany jako %1$s</string>
     <string name="pref_logout_summary_not_logged">Niezalogowany</string>
-    <string name="app_name_version">Auto Stop Race v1.0.2</string>
     <string name="msg_logout_question">Czy na pewno chcesz się wylogować?</string>
     <string name="msg_logout_info">Wszystkie lokalizacje niewysłane na serwer zostaną usunięte.</string>
     <string name="msg_cancel">Anuluj</string>
@@ -55,7 +55,6 @@
     <string name="saved_location">Zapisano lokalizację</string>
     <string name="about_app">Aplikację przygotowali członkowie koła naukowego TeMoMuKo działającego przy Politechnice Wrocławskiej.</string>
     <string name="authors"><b>Autorzy:</b>\n- Szymon Kozak\n- Rafał Naniewicz\n- Michał Zając</string>
-    <string name="app_version">Wersja 1.0.2</string>
     <string name="warning_no_fine_location_permission">Brak uprawnień dostępu do lokalizacji.</string>
     <string name="settings">Ustawienia</string>
     <string name="change_settings">Zmień</string>
