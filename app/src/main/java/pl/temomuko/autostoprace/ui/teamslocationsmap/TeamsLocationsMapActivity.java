@@ -85,6 +85,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         setupPresenter();
         setupSearchTeamView();
         setupIntent(getIntent());
+        getIntent().removeExtra(MainActivity.EXTRA_TEAM_NUMBER);
         setupMapFragment();
     }
 
