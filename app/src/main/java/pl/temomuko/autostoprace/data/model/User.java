@@ -30,11 +30,11 @@ public class User {
     }
 
     public String getFirstName() {
-        return mFirstName;
+        return mFirstName.trim();
     }
 
     public String getLastName() {
-        return mLastName;
+        return mLastName.trim();
     }
 
     public String getEmail() {
