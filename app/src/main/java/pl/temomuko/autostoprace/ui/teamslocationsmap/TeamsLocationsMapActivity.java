@@ -57,7 +57,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     private static final String BUNDLE_CURRENT_TEAM_LOCATIONS = "bundle_current_team_locations";
     private static final String BUNDLE_SEARCH_TEAM_VIEW = "bundle_team_list_hints";
     private static final float DEFAULT_MAP_ZOOM = 5.5f;
-    private final static String RX_CACHE_ALL_TEAMS_TAG = "rx_cache_all_teams_tag";
+    private static final String RX_CACHE_ALL_TEAMS_TAG = "rx_cache_all_teams_tag";
     public static final String RX_CACHE_TEAM_LOCATIONS_TAG = "rx_cache_team_locations_tag";
 
     @Inject TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;

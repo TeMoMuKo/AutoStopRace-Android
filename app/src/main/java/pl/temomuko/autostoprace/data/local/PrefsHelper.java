@@ -24,14 +24,14 @@ import pl.temomuko.autostoprace.injection.AppContext;
 @Singleton
 public class PrefsHelper {
 
-    public final static String PREF_FILE_NAME = "asr_pref_file";
-    public final static String PREF_AUTH_TOKEN = "auth_token";
-    public final static String PREF_AUTH_CLIENT = "auth_client";
-    public final static String PREF_AUTH_UID = "auth_uid";
-    private static final String PREF_CURRENT_USER_JSON = "pref_current_user_json";
+    public static final String PREF_FILE_NAME = "asr_pref_file";
+    public static final String PREF_AUTH_TOKEN = "auth_token";
+    public static final String PREF_AUTH_CLIENT = "auth_client";
+    public static final String PREF_AUTH_UID = "auth_uid";
     public static final String PREF_CURRENT_PHRASEBOOK_LANGUAGE = "pref_current_phrasebook_language";
-    public final static String PREF_LOGOUT = "pref_logout";
-    public final static String PREF_LOCATION_SYNC_TIMESTAMP = "pref_location_sync_timestamp";
+    public static final String PREF_LOGOUT = "pref_logout";
+    public static final String PREF_LOCATION_SYNC_TIMESTAMP = "pref_location_sync_timestamp";
+    private static final String PREF_CURRENT_USER_JSON = "pref_current_user_json";
 
     private final SharedPreferences mPrefs;
 

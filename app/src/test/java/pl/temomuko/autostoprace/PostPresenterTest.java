@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PostPresenterTest {
 
-    private final static String FAKE_MESSAGE = "fake_message";
+    private static final String FAKE_MESSAGE = "fake_message";
 
     @Mock PostMvpView mMockPostMvpView;
     @Mock DataManager mMockDataManager;

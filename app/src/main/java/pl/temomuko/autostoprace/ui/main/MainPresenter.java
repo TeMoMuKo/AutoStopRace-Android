@@ -27,7 +27,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
 
-    private final static String TAG = MainPresenter.class.getSimpleName();
+    private static final String TAG = MainPresenter.class.getSimpleName();
     private static final long MAX_TIME_WITHOUT_LOCATIONS_SYNC_IN_SECS = 60 * 60;
 
     private final ErrorHandler mErrorHandler;

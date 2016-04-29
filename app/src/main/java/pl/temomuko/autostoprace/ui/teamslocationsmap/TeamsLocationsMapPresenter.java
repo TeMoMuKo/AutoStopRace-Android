@@ -24,7 +24,7 @@ import rx.Subscription;
  */
 public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocationsMapMvpView> {
 
-    private final static String TAG = TeamsLocationsMapPresenter.class.getSimpleName();
+    private static final String TAG = TeamsLocationsMapPresenter.class.getSimpleName();
     private final ErrorHandler mErrorHandler;
     private Subscription mLoadAllTeamsSubscription;
     private Subscription mLoadTeamSubscription;

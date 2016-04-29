@@ -13,7 +13,7 @@ import pl.temomuko.autostoprace.util.LogUtil;
  */
 public class GpsStatusChangeReceiver extends BroadcastReceiver {
 
-    private final static String TAG = GpsStatusChangeReceiver.class.getSimpleName();
+    private static final String TAG = GpsStatusChangeReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {

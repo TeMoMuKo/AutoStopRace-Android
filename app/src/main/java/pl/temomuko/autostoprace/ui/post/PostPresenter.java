@@ -25,7 +25,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class PostPresenter extends BasePresenter<PostMvpView> {
 
-    private final static String TAG = PostPresenter.class.getSimpleName();
+    private static final String TAG = PostPresenter.class.getSimpleName();
 
     private final DataManager mDataManager;
     private final CompositeSubscription mLocationSubscriptions;

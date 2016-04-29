@@ -34,8 +34,8 @@ import rx.schedulers.Schedulers;
  */
 public class LocationSyncService extends Service {
 
-    private final static String TAG = LocationSyncService.class.getSimpleName();
-    private final static int MAX_CONCURRENT = 1;
+    private static final String TAG = LocationSyncService.class.getSimpleName();
+    private static final int MAX_CONCURRENT = 1;
     private static boolean sShouldStartAgain;
 
     @Inject DataManager mDataManager;
@@ -180,7 +180,7 @@ public class LocationSyncService extends Service {
 
     public static class NetworkChangeReceiver extends BroadcastReceiver {
 
-        private final static String TAG = NetworkChangeReceiver.class.getSimpleName();
+        private static final String TAG = NetworkChangeReceiver.class.getSimpleName();
 
         @Override
         public void onReceive(final Context context, final Intent intent) {

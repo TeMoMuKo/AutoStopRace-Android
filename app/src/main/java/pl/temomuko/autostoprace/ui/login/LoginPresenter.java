@@ -19,7 +19,7 @@ import rx.Subscription;
  */
 public class LoginPresenter extends BasePresenter<LoginMvpView> {
 
-    private final static String TAG = LoginPresenter.class.getSimpleName();
+    private static final String TAG = LoginPresenter.class.getSimpleName();
 
     private final DataManager mDataManager;
     private final ErrorHandler mErrorHandler;

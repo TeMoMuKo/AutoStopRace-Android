@@ -11,7 +11,7 @@ import pl.temomuko.autostoprace.R;
  */
 public class PartnersDrawables {
 
-    private final static Integer[] DRAWABLES_ID_ARRAY = {
+    private static final Integer[] DRAWABLES_ID_ARRAY = {
             R.drawable.logo_beactive,
             R.drawable.logo_cafe_borowka,
             R.drawable.logo_express,

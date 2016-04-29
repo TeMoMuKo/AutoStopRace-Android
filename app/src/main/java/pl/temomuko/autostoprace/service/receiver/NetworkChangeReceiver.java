@@ -15,7 +15,7 @@ import pl.temomuko.autostoprace.util.NetworkUtil;
  */
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
-    private final static String TAG = NetworkChangeReceiver.class.getSimpleName();
+    private static final String TAG = NetworkChangeReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {

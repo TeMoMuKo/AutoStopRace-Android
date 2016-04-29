@@ -7,6 +7,8 @@ import com.google.android.gms.location.LocationRequest;
  */
 public final class Constants {
 
+    public static final String TEST = "test";
+
     private Constants() {
         throw new AssertionError();
     }
@@ -14,27 +16,27 @@ public final class Constants {
     /* General / API */
     public static final String DEFAULT_LOCALE = "pl";
 
-    public final static String API_BASE_URL = "https://api.autostoprace.pl/";
+    public static final String API_BASE_URL = "https://api.autostoprace.pl/";
 
-    public final static String JSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    public final static String APP_DATE_FORMAT = "d.LL";
-    public final static String APP_TIME_FORMAT = "HH:mm";
-    public final static String DATABASE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    public final static String MAP_FULL_DATE_FORMAT = "HH:mm dd.MM";
-    public final static String SERVER_TIMEZONE = "UTC";
+    public static final String JSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    public static final String APP_DATE_FORMAT = "d.LL";
+    public static final String APP_TIME_FORMAT = "HH:mm";
+    public static final String DATABASE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    public static final String MAP_FULL_DATE_FORMAT = "HH:mm dd.MM";
+    public static final String SERVER_TIMEZONE = "UTC";
 
     public static final String GOOGLE_PLAY_BASE_URL = "http://play.google.com/store/apps/details?id=";
 
-    public final static String HEADER_FIELD_TOKEN = "access-token";
-    public final static String HEADER_FIELD_CLIENT = "client";
-    public final static String HEADER_FIELD_UID = "uid";
+    public static final String HEADER_FIELD_TOKEN = "access-token";
+    public static final String HEADER_FIELD_CLIENT = "client";
+    public static final String HEADER_FIELD_UID = "uid";
     public static final String LICENSES_ASSET_URI = "file:///android_asset/licenses.html";
     public static final String API_RESET_PASS_REDIRECT_URL = "http://autostoprace.pl";
     public static final String URL_MAP = "https://mapa.autostoprace.pl/";
     public static final String URL_MAP_TEAM_NUMBER_PARAM = "team";
     public static final String URL_MAP_TEAM_NUMBER_QUERY_KEY = "?" + URL_MAP_TEAM_NUMBER_PARAM + "=";
 
-    public final static String HEADER_VALUE_APPLICATION_JSON = "application/json";
+    public static final String HEADER_VALUE_APPLICATION_JSON = "application/json";
     public static final int HTTP_CONNECT_TIMEOUT = 10;
     public static final int HTTP_READ_TIMEOUT = 15;
     public static final int HTTP_WRITE_TIMEOUT = 15;

@@ -13,7 +13,7 @@ import pl.temomuko.autostoprace.util.LogUtil;
  */
 public class AirplaneModeStatusChangeReceiver extends BroadcastReceiver {
 
-    private final static String TAG = AirplaneModeStatusChangeReceiver.class.getSimpleName();
+    private static final String TAG = AirplaneModeStatusChangeReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {

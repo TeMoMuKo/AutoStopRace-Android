@@ -13,7 +13,7 @@ import rx.Subscription;
  */
 public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
-    private final static String TAG = SettingsPresenter.class.getSimpleName();
+    private static final String TAG = SettingsPresenter.class.getSimpleName();
 
     private final DataManager mDataManager;
     private Subscription mSubscription;
