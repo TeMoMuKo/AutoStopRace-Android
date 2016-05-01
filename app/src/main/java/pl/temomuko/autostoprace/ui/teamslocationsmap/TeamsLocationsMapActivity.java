@@ -59,6 +59,8 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     private static final float DEFAULT_MAP_ZOOM = 5.5f;
     private static final String RX_CACHE_ALL_TEAMS_TAG = "rx_cache_all_teams_tag";
     public static final String RX_CACHE_TEAM_LOCATIONS_TAG = "rx_cache_team_locations_tag";
+    public static final String BUNDLE_IS_CONSUMED_TOOLBAR_INTENT = "bundle_is_consumed_intent";
+    public static final String BUNDLE_IS_CONSUMED_URI_INTENT = "bundle_is_consumed_uri_intent";
 
     @Inject TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
     @Inject TeamLocationInfoWindowAdapter mTeamsLocationInfoWindowAdapter;
@@ -71,6 +73,8 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     private boolean mAllTeamsProgressState = false;
     private boolean mTeamProgressState = false;
     private boolean mAnimateTeamLocationsUpdate = true;
+    private boolean mIsConsumedToolbarIntent = false;
+    private boolean mIsConsumedUriIntent = false;
     private GoogleMap mMap;
     private Subscription mSetHintsSubscription;
     private Subscription mSetLocationsSubscription;
@@ -84,7 +88,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         getActivityComponent().inject(this);
         setupPresenter();
         setupSearchTeamView();
-        setupIntent(getIntent());
+        setupIntentInstanceState(savedInstanceState);
         setupMapFragment();
     }
 
@@ -121,6 +125,8 @@ public class TeamsLocationsMapActivity extends DrawerActivity
                     mCurrentTeamLocations.toArray(new LocationRecord[mCurrentTeamLocations.size()]));
         }
         outState.putBundle(BUNDLE_SEARCH_TEAM_VIEW, mSearchTeamView.saveHintsState());
+        outState.putBoolean(BUNDLE_IS_CONSUMED_TOOLBAR_INTENT, mIsConsumedToolbarIntent);
+        outState.putBoolean(BUNDLE_IS_CONSUMED_URI_INTENT, mIsConsumedUriIntent);
         super.onSaveInstanceState(outState);
     }
 
@@ -196,18 +202,26 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         });
     }
 
+    private void setupIntentInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mIsConsumedToolbarIntent = savedInstanceState.getBoolean(BUNDLE_IS_CONSUMED_TOOLBAR_INTENT);
+            mIsConsumedUriIntent = savedInstanceState.getBoolean(BUNDLE_IS_CONSUMED_URI_INTENT);
+        }
+        setupIntent(getIntent());
+    }
+
     private void setupIntent(Intent intent) {
         Uri data = intent.getData();
         Bundle extras = intent.getExtras();
-        if (data != null) {
+        if (data != null && !mIsConsumedUriIntent) {
             String teamNumberParameterValue = data.getQueryParameter(Constants.URL_MAP_TEAM_NUMBER_PARAM);
             if (teamNumberParameterValue != null) {
                 changeTeamFromIntent(teamNumberParameterValue);
-                intent.setData(Uri.EMPTY);
+                mIsConsumedUriIntent = true;
             }
-        } else if (extras != null) {
+        } else if (extras != null && !mIsConsumedToolbarIntent) {
             changeTeam(extras.getInt(MainActivity.EXTRA_TEAM_NUMBER));
-            intent.removeExtra(MainActivity.EXTRA_TEAM_NUMBER);
+            mIsConsumedToolbarIntent = true;
         }
     }
 
