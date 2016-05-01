@@ -46,11 +46,6 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         saveLogoutInfoDialogState(outState);
