@@ -3,10 +3,12 @@ package pl.temomuko.autostoprace;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.Locale;
 
+import io.fabric.sdk.android.Fabric;
 import pl.temomuko.autostoprace.injection.component.ApplicationComponent;
 import pl.temomuko.autostoprace.injection.component.DaggerApplicationComponent;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
@@ -21,7 +23,7 @@ public class AsrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-     //   Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
         LeakCanary.install(this);
         Locale.setDefault(new Locale(Constants.DEFAULT_LOCALE));
     }
