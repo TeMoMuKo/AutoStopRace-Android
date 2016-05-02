@@ -39,10 +39,6 @@ public class ErrorHandler {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    public String getTeamNotFoundMessage() {
-        return mContext.getString(R.string.error_team_not_found);
-    }
-
     public String getMessage(Throwable throwable) {
         if (throwable instanceof TeamNotFoundException) {
             return getTeamNotFoundMessage();
@@ -51,6 +47,10 @@ public class ErrorHandler {
         } else {
             return getMessageFromRetrofitThrowable(throwable);
         }
+    }
+
+    private String getTeamNotFoundMessage() {
+        return mContext.getString(R.string.error_team_not_found);
     }
 
     private String getMessageFromHttpResponse(Response<?> response) {

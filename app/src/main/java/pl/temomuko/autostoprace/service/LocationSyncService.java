@@ -184,13 +184,12 @@ public class LocationSyncService extends Service {
 
         @Override
         public void onReceive(final Context context, final Intent intent) {
-            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-                if (NetworkUtil.isConnected(context)) {
-                    LogUtil.i(TAG, "Network is connected.");
-                    AndroidComponentUtil.toggleComponent(context, getClass(), false);
-                    if (!LocationSyncService.isRunning(context)) {
-                        context.startService(getStartIntent(context));
-                    }
+            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)
+                    && NetworkUtil.isConnected(context)) {
+                LogUtil.i(TAG, "Network is connected.");
+                AndroidComponentUtil.toggleComponent(context, getClass(), false);
+                if (!LocationSyncService.isRunning(context)) {
+                    context.startService(getStartIntent(context));
                 }
             }
         }

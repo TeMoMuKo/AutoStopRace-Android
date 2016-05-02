@@ -58,7 +58,7 @@ public class ApiManager {
         return mRetrofit.responseBodyConverter(ErrorResponse.class, new Annotation[0]);
     }
 
-    private static OkHttpClient getOkHttpClient() {
+    private OkHttpClient getOkHttpClient() {
         return new OkHttpClient.Builder()
                 .connectTimeout(Constants.HTTP_CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(Constants.HTTP_READ_TIMEOUT, TimeUnit.SECONDS)
@@ -73,7 +73,7 @@ public class ApiManager {
                 .build();
     }
 
-    private static HttpLoggingInterceptor getLoggingInterceptor() {
+    private HttpLoggingInterceptor getLoggingInterceptor() {
         return new HttpLoggingInterceptor()
                 .setLevel(BuildConfig.DEBUG ?
                         HttpLoggingInterceptor.Level.BODY :
