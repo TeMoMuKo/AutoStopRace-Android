@@ -7,8 +7,6 @@ import com.google.android.gms.location.LocationRequest;
  */
 public final class Constants {
 
-    public static final String TEST = "test";
-
     private Constants() {
         throw new AssertionError();
     }
