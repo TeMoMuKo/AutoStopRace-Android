@@ -325,8 +325,10 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     public void showInadequateSettingsWarning() {
         mWarningSnackbar = Snackbar.make(mCoordinatorLayoutRoot,
                 R.string.warning_inadequeate_settings,
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.change_settings, v -> IntentUtil.goToAirplaneModeSettings(this));
+                Snackbar.LENGTH_INDEFINITE);
+        if (IntentUtil.isAirplaneModeSettingActivityAvailable(this)) {
+            mWarningSnackbar.setAction(R.string.change_settings, v -> IntentUtil.goToAirplaneModeSettings(this));
+        }
         mWarningSnackbar.show();
     }
 

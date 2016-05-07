@@ -20,6 +20,9 @@ import pl.temomuko.autostoprace.R;
  */
 public final class IntentUtil {
 
+    private static final Intent sAirplaneModeSettingsIntent =
+            new Intent().setAction(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+
     private IntentUtil() {
         throw new AssertionError();
     }
@@ -33,9 +36,11 @@ public final class IntentUtil {
     }
 
     public static void goToAirplaneModeSettings(Context context) {
-        Intent airplaneModeSettingsIntent = new Intent();
-        airplaneModeSettingsIntent.setAction(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
-        context.startActivity(airplaneModeSettingsIntent);
+        context.startActivity(sAirplaneModeSettingsIntent);
+    }
+
+    public static boolean isAirplaneModeSettingActivityAvailable(Context context) {
+        return isIntentCallable(context, sAirplaneModeSettingsIntent);
     }
 
     public static void startGmsConnectionResultForResolution(Activity activity,
@@ -74,5 +79,9 @@ public final class IntentUtil {
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, destUrl);
         context.startActivity(Intent.createChooser(intent, shareMapTitle));
+    }
+
+    private static boolean isIntentCallable(Context context, Intent intent) {
+        return intent.resolveActivity(context.getPackageManager()) != null;
     }
 }
