@@ -55,8 +55,10 @@ public class ResetPassActivity extends BaseActivity implements ResetPassMvpView 
 
     private void setupEmailTextView() {
         String email = getIntent().getStringExtra(LoginActivity.EXTRA_EMAIL);
-        mEmailEditText.setText(email);
-        mEmailEditText.setSelection(email.length());
+        if (email != null) {
+            mEmailEditText.setText(email);
+            mEmailEditText.setSelection(email.length());
+        }
     }
 
     private void setupToolbarWithBack() {
