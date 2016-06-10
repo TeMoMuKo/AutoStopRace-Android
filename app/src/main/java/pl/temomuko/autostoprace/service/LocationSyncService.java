@@ -25,6 +25,7 @@ import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.NetworkUtil;
 import retrofit2.Response;
+import rx.Completable;
 import rx.Observable;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
@@ -121,12 +122,10 @@ public class LocationSyncService extends Service {
         if (mRefreshSubscription != null && !mRefreshSubscription.isUnsubscribed()) {
             mRefreshSubscription.unsubscribe();
         }
-        mRefreshSubscription = mDataManager.getUserTeamLocationRecordsFromServer()
+        mRefreshSubscription = Completable.merge(mDataManager.getUserTeamLocationRecordsFromServer()
                 .flatMap(HttpStatus::requireOk)
                 .map(Response::body)
-                .flatMap(mDataManager::saveToDatabase)
-                .toCompletable()
-                .subscribeOn(Schedulers.io())
+                .map(mDataManager::saveToDatabase))
                 .subscribe(this::handleError,
                         this::handleDatabaseRefreshCompleted);
     }

@@ -115,7 +115,7 @@ public class DataManager {
 
     /* Database / Prefs / Phrasebook / Contact */
 
-    public Observable<Void> saveToDatabase(List<LocationRecord> response) {
+    public Completable saveToDatabase(List<LocationRecord> response) {
         return mDatabaseHelper.saveToSentLocationsTable(response);
     }
 

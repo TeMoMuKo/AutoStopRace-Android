@@ -48,8 +48,8 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<Void> saveToSentLocationsTable(List<LocationRecord> locationRecords) {
-        return Observable.create(subscriber -> {
+    public Completable saveToSentLocationsTable(List<LocationRecord> locationRecords) {
+        return Completable.create(subscribe -> {
             BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 mBriteDatabase.delete(RemoteLocationRecordTable.NAME, null);
@@ -58,7 +58,7 @@ public class DatabaseHelper {
                             RemoteLocationRecordTable.toContentValues(locationRecord));
                 }
                 transaction.markSuccessful();
-                subscriber.onCompleted();
+                subscribe.onCompleted();
             } finally {
                 transaction.end();
             }
