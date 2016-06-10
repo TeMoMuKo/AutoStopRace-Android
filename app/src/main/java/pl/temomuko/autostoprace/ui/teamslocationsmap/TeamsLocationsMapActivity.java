@@ -27,7 +27,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
@@ -65,10 +65,10 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @Inject TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
     @Inject TeamLocationInfoWindowAdapter mTeamsLocationInfoWindowAdapter;
 
-    @Bind(R.id.horizontal_progress_bar) MaterialProgressBar mMaterialProgressBar;
-    @Bind(R.id.search_team_view) SearchTeamView mSearchTeamView;
-    @Bind(R.id.rv_team_hints) RecyclerView mTeamHintsRecyclerView;
-    @Bind(R.id.card_team_hints) CardView mTeamHintsLinearLayout;
+    @BindView(R.id.horizontal_progress_bar) MaterialProgressBar mMaterialProgressBar;
+    @BindView(R.id.search_team_view) SearchTeamView mSearchTeamView;
+    @BindView(R.id.rv_team_hints) RecyclerView mTeamHintsRecyclerView;
+    @BindView(R.id.card_team_hints) CardView mTeamHintsLinearLayout;
 
     private boolean mAllTeamsProgressState = false;
     private boolean mTeamProgressState = false;

@@ -28,7 +28,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.Event;
@@ -67,12 +67,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     @Inject MainPresenter mMainPresenter;
     @Inject LocationRecordsAdapter mLocationRecordsAdapter;
     @Inject VerticalDividerItemDecoration mVerticalDividerItemDecoration;
-    @Bind(R.id.horizontal_progress_bar) MaterialProgressBar mMaterialProgressBar;
-    @Bind(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
-    @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
-    @Bind(R.id.tv_empty_info) TextView mEmptyInfoTextView;
-    @Bind(R.id.cl_root) CoordinatorLayout mCoordinatorLayoutRoot;
-    @Bind(R.id.ll_empty_state) LinearLayout mEmptyStateLinearLayout;
+    @BindView(R.id.horizontal_progress_bar) MaterialProgressBar mMaterialProgressBar;
+    @BindView(R.id.fab_go_to_post) FloatingActionButton mGoToPostFab;
+    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.tv_empty_info) TextView mEmptyInfoTextView;
+    @BindView(R.id.cl_root) CoordinatorLayout mCoordinatorLayoutRoot;
+    @BindView(R.id.ll_empty_state) LinearLayout mEmptyStateLinearLayout;
     private Snackbar mWarningSnackbar;
     private LinearLayoutManager mRecyclerViewLinearLayoutManager;
 

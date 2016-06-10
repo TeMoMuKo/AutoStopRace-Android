@@ -15,7 +15,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.login.resetpass.ResetPassActivity;
@@ -34,13 +34,13 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     @Inject LoginPresenter mLoginPresenter;
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.et_email) EditText mEmailEditText;
-    @Bind(R.id.et_password) EditText mPasswordEditText;
-    @Bind(R.id.btn_login) Button mLoginButton;
-    @Bind(R.id.til_email) TextInputLayout mEmailTextInputLayout;
-    @Bind(R.id.til_password) TextInputLayout mPasswordTextInputLayout;
-    @Bind(R.id.btn_go_to_reset) Button mGoToResetPassButton;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.et_email) EditText mEmailEditText;
+    @BindView(R.id.et_password) EditText mPasswordEditText;
+    @BindView(R.id.btn_login) Button mLoginButton;
+    @BindView(R.id.til_email) TextInputLayout mEmailTextInputLayout;
+    @BindView(R.id.til_password) TextInputLayout mPasswordTextInputLayout;
+    @BindView(R.id.btn_go_to_reset) Button mGoToResetPassButton;
     private MaterialDialog mProgressDialog;
     private DialogFragment mHelpDialogFragment;
 

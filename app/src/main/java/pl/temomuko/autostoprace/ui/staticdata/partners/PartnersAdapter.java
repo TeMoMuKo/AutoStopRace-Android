@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.injection.ActivityContext;
@@ -59,7 +59,7 @@ public class PartnersAdapter extends RecyclerView.Adapter<PartnersAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.iv_partner) ImageView mPartnerImageView;
+        @BindView(R.id.iv_partner) ImageView mPartnerImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);

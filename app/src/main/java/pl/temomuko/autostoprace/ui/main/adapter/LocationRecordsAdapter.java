@@ -18,7 +18,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
@@ -224,13 +224,13 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.country_code_circle_view) TextCircleView mCountryCodeCircleView;
-        @Bind(R.id.tv_location) TextView mTvLocation;
-        @Bind(R.id.tv_location_record_message) TextView mTvLocationRecordMessage;
-        @Bind(R.id.tv_server_receipt_day_month) TextView mTvServerReceiptDayMonth;
-        @Bind(R.id.tv_server_receipt_time) TextView mTvServerReceiptTime;
-        @Bind(R.id.image_server_synchronization_state) ImageView mImageServerSynchronizationState;
-        @Bind(R.id.image_unknown_country_code) ImageView mImageUnknownCountryCode;
+        @BindView(R.id.country_code_circle_view) TextCircleView mCountryCodeCircleView;
+        @BindView(R.id.tv_location) TextView mTvLocation;
+        @BindView(R.id.tv_location_record_message) TextView mTvLocationRecordMessage;
+        @BindView(R.id.tv_server_receipt_day_month) TextView mTvServerReceiptDayMonth;
+        @BindView(R.id.tv_server_receipt_time) TextView mTvServerReceiptTime;
+        @BindView(R.id.image_server_synchronization_state) ImageView mImageServerSynchronizationState;
+        @BindView(R.id.image_unknown_country_code) ImageView mImageUnknownCountryCode;
 
         public ViewHolder(View itemView) {
             super(itemView);

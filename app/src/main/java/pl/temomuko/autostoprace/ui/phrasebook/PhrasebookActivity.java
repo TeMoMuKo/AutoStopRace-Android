@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.Phrasebook;
@@ -39,9 +39,9 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
     private static final boolean SUBMIT_QUERY = true;
     @Inject PhrasebookPresenter mPhrasebookPresenter;
     @Inject VerticalDividerItemDecoration mVerticalDividerItemDecoration;
-    @Bind(R.id.rv_phrasebook) RecyclerView mPhrasebookRecyclerView;
-    @Bind(R.id.spinner_lang) AppCompatSpinner mLangSpinner;
-    @Bind(R.id.tv_empty) TextView mEmptyResultsTextView;
+    @BindView(R.id.rv_phrasebook) RecyclerView mPhrasebookRecyclerView;
+    @BindView(R.id.spinner_lang) AppCompatSpinner mLangSpinner;
+    @BindView(R.id.tv_empty) TextView mEmptyResultsTextView;
     private PhrasebookAdapter mPhrasebookAdapter;
     private SearchView mSearchView;
     private ArrayAdapter<CharSequence> mLangSpinnerAdapter;

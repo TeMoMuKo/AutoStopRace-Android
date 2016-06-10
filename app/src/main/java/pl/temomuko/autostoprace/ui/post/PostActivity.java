@@ -21,7 +21,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
@@ -40,11 +40,11 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     private static final int REQUEST_CODE_UNHANDLED = -1;
 
     @Inject PostPresenter mPostPresenter;
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.et_message) EditText mMessageEditText;
-    @Bind(R.id.tv_current_location_cords) TextView mCurrentLocationCordsTextView;
-    @Bind(R.id.tv_current_location_adress) TextView mCurrentLocationAddressTextView;
-    @Bind(R.id.tv_accuracy) TextView mCurrentAccuracyTextView;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.et_message) EditText mMessageEditText;
+    @BindView(R.id.tv_current_location_cords) TextView mCurrentLocationCordsTextView;
+    @BindView(R.id.tv_current_location_adress) TextView mCurrentLocationAddressTextView;
+    @BindView(R.id.tv_accuracy) TextView mCurrentAccuracyTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.ContactField;
@@ -86,9 +86,9 @@ public class ContactRowsAdapter extends RecyclerView.Adapter<ContactRowsAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.image_action_icon) ImageView mActionIconImageView;
-        @Bind(R.id.tv_displayed_value) TextView mTvContent;
-        @Bind(R.id.tv_description) TextView mTvContentDescription;
+        @BindView(R.id.image_action_icon) ImageView mActionIconImageView;
+        @BindView(R.id.tv_displayed_value) TextView mTvContent;
+        @BindView(R.id.tv_description) TextView mTvContentDescription;
 
         public ViewHolder(View itemView) {
             super(itemView);

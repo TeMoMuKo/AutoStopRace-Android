@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
@@ -119,8 +119,8 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_team_id) TextView mTeamIdTextView;
-        @Bind(R.id.tv_last_location) TextView mLastLocationTextView;
+        @BindView(R.id.tv_team_id) TextView mTeamIdTextView;
+        @BindView(R.id.tv_last_location) TextView mLastLocationTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);

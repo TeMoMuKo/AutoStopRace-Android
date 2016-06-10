@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
@@ -22,8 +22,8 @@ import pl.temomuko.autostoprace.util.IntentUtil;
  */
 public class AboutActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.btn_go_to_store) Button mGoToStoreButton;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.btn_go_to_store) Button mGoToStoreButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.contact.ContactActivity;
@@ -18,10 +18,10 @@ import pl.temomuko.autostoprace.ui.login.LoginActivity;
  */
 public class LauncherActivity extends DrawerActivity {
 
-    @Bind(R.id.btn_go_to_login) Button mGoToLoginButton;
-    @Bind(R.id.btn_go_to_contact) Button mGoToContactButton;
-    @Bind(R.id.iv_launcher_logo) ImageView mAppLogoImageView;
-    @Bind(R.id.iv_launcher_bg) ImageView mBackgroundImageView;
+    @BindView(R.id.btn_go_to_login) Button mGoToLoginButton;
+    @BindView(R.id.btn_go_to_contact) Button mGoToContactButton;
+    @BindView(R.id.iv_launcher_logo) ImageView mAppLogoImageView;
+    @BindView(R.id.iv_launcher_bg) ImageView mBackgroundImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

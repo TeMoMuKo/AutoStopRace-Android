@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.ui.settings;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 
@@ -13,7 +13,7 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
 public class SettingsActivity extends BaseActivity {
 
     private static final String TAG_SETTINGS_FRAGMENT = "settings_fragment";
-    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

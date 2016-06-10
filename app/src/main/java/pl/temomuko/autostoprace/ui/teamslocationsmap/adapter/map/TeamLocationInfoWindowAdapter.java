@@ -10,7 +10,7 @@ import com.google.android.gms.maps.model.Marker;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.injection.AppContext;
@@ -20,8 +20,8 @@ import pl.temomuko.autostoprace.injection.AppContext;
  */
 public class TeamLocationInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
-    @Bind(R.id.tv_location_record_date) TextView mLocationRecordDateTextView;
-    @Bind(R.id.tv_location_record_message) TextView mLocationRecordMessageTextView;
+    @BindView(R.id.tv_location_record_date) TextView mLocationRecordDateTextView;
+    @BindView(R.id.tv_location_record_message) TextView mLocationRecordMessageTextView;
 
     private final View mContentsView;
 

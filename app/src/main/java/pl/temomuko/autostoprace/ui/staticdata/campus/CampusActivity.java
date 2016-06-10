@@ -7,7 +7,7 @@ import android.view.View;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
@@ -18,8 +18,8 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
  */
 public class CampusActivity extends BaseActivity {
 
-    @Bind(R.id.iv_full_map) SubsamplingScaleImageView mFullMapImageView;
-    @Bind(R.id.mpb_map_loading_progress) MaterialProgressBar mMapLoadingProgressBar;
+    @BindView(R.id.iv_full_map) SubsamplingScaleImageView mFullMapImageView;
+    @BindView(R.id.mpb_map_loading_progress) MaterialProgressBar mMapLoadingProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

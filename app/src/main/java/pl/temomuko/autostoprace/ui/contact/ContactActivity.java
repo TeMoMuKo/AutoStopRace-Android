@@ -15,7 +15,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.ContactField;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
@@ -37,11 +37,11 @@ public class ContactActivity extends DrawerActivity implements ContactMvpView {
     @Inject VerticalDividerItemDecoration mVerticalDividerItemDecorator;
     @Inject ContactHandler mContactContactHandler;
 
-    @Bind(R.id.collapsing_toolbar_layout) CustomContactCollapsingToolbarLayout mCustomContactCollapsingToolbarLayout;
-    @Bind(R.id.app_bar) AppBarLayout mAppBarLayout;
-    @Bind(R.id.iv_collapsing_toolbar_background) ImageView mCollapsingToolbarBackground;
-    @Bind(R.id.fab_contact_action) FloatingActionButton mFabContactAction;
-    @Bind(R.id.rv_contact_rows) RecyclerView mRecyclerView;
+    @BindView(R.id.collapsing_toolbar_layout) CustomContactCollapsingToolbarLayout mCustomContactCollapsingToolbarLayout;
+    @BindView(R.id.app_bar) AppBarLayout mAppBarLayout;
+    @BindView(R.id.iv_collapsing_toolbar_background) ImageView mCollapsingToolbarBackground;
+    @BindView(R.id.fab_contact_action) FloatingActionButton mFabContactAction;
+    @BindView(R.id.rv_contact_rows) RecyclerView mRecyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

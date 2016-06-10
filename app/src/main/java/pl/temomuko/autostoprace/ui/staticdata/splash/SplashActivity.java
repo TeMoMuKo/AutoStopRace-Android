@@ -9,7 +9,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
@@ -24,9 +24,9 @@ import rx.Subscription;
  */
 public class SplashActivity extends BaseActivity {
 
-    @Bind(R.id.iv_sponsor_logo) ImageView mSponsorLogoImageView;
-    @Bind(R.id.iv_splash_logo) ImageView mAppLogoImageView;
-    @Bind(R.id.iv_splash_bg) ImageView mBackgroundImageView;
+    @BindView(R.id.iv_sponsor_logo) ImageView mSponsorLogoImageView;
+    @BindView(R.id.iv_splash_logo) ImageView mAppLogoImageView;
+    @BindView(R.id.iv_splash_bg) ImageView mBackgroundImageView;
     private Subscription mSubscription;
     private Integer[] mPartnersDrawables;
 

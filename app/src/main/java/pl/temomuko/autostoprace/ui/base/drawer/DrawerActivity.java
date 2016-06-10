@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 
@@ -21,9 +21,9 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
 
 public abstract class DrawerActivity extends BaseActivity implements DrawerMvpView {
 
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-    @Bind(R.id.navigation_view) NavigationView mNavigationView;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.navigation_view) NavigationView mNavigationView;
 
     protected ActionBarDrawerToggle mDrawerToggle;
     private NavigationListener mNavigationListener;

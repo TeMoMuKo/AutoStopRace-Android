@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
@@ -19,7 +19,7 @@ public class PartnersActivity extends DrawerActivity implements DrawerMvpView {
 
     @Inject StaticDrawerPresenter mPresenter;
     @Inject PartnersAdapter mPartnersAdapter;
-    @Bind(R.id.rv_partners) RecyclerView mPartnersRecyclerView;
+    @BindView(R.id.rv_partners) RecyclerView mPartnersRecyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
@@ -27,12 +27,12 @@ public class ResetPassActivity extends BaseActivity implements ResetPassMvpView 
     private static final String BUNDLE_IS_PROGRESS_DIALOG_SHOWN = "bundle_is_progress_dialog_shown";
 
     @Inject ResetPassPresenter mResetPassPresenter;
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.til_email) TextInputLayout mEmailTextInputLayout;
-    @Bind(R.id.et_email) EditText mEmailEditText;
-    @Bind(R.id.btn_reset) Button mResetButton;
-    @Bind(R.id.tv_progress_info) TextView mProgressInfoTextView;
-    @Bind(R.id.mpb_progress_info) MaterialProgressBar mProgressCircle;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.til_email) TextInputLayout mEmailTextInputLayout;
+    @BindView(R.id.et_email) EditText mEmailEditText;
+    @BindView(R.id.btn_reset) Button mResetButton;
+    @BindView(R.id.tv_progress_info) TextView mProgressInfoTextView;
+    @BindView(R.id.mpb_progress_info) MaterialProgressBar mProgressCircle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

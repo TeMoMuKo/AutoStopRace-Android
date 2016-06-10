@@ -16,7 +16,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
@@ -131,9 +131,9 @@ public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_phrase) TextView mPhraseTextView;
-        @Bind(R.id.tv_translation) TextView mTranslationTextView;
-        @Bind(R.id.iv_translation) ImageView mTranslationImageView;
+        @BindView(R.id.tv_phrase) TextView mPhraseTextView;
+        @BindView(R.id.tv_translation) TextView mTranslationTextView;
+        @BindView(R.id.iv_translation) ImageView mTranslationImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);

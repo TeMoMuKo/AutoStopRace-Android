@@ -6,7 +6,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
@@ -17,9 +17,9 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
  */
 public class LicensesActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.wv_licenses) WebView mLicensesWebView;
-    @Bind(R.id.mpb_licenses_loading_progress) MaterialProgressBar mLoadingProgressCircle;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.wv_licenses) WebView mLicensesWebView;
+    @BindView(R.id.mpb_licenses_loading_progress) MaterialProgressBar mLoadingProgressCircle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
