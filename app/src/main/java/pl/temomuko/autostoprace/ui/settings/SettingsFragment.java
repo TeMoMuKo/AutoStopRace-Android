@@ -21,10 +21,12 @@ import pl.temomuko.autostoprace.util.DialogFactory;
  */
 public class SettingsFragment extends PreferenceFragment implements SettingsMvpView {
 
+    private static final String BUNDLE_IS_LOGOUT_DIALOG_SHOWN = "bundle_is_progress_logout_shown";
+
     @Inject SettingsPresenter mSettingsPresenter;
+
     private Preference mLogoutPreference;
     private MaterialDialog mLogoutInfoDialog;
-    private static final String BUNDLE_IS_LOGOUT_DIALOG_SHOWN = "bundle_is_progress_logout_shown";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

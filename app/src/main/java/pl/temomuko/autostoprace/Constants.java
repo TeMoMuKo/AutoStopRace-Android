@@ -39,11 +39,10 @@ public final class Constants {
     public static final int HTTP_READ_TIMEOUT = 15;
     public static final int HTTP_WRITE_TIMEOUT = 15;
 
-    public static final long SPLASH_DURATION = 1800;
-
     /* UI */
     public static final float DOUBLE_TAP_ZOOM_SCALE = 1.0f;
     public static final int PHRASEBOOK_FILTER_DEBOUNCE = 250;
+    public static final long SPLASH_DURATION = 1800;
 
     /* GMS */
     public static final float MAX_LOCATION_ACCURACY = 150.0f;

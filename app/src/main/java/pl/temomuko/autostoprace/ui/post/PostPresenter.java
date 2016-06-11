@@ -29,10 +29,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private final DataManager mDataManager;
     private final CompositeSubscription mLocationSubscriptions;
-
-    private boolean mIsLocationSettingsStatusForResultCalled = false;
     private Address mLatestAddress;
-
+    private boolean mIsLocationSettingsStatusForResultCalled = false;
     private boolean mIsLocationSaved;
 
     @Inject

@@ -15,7 +15,6 @@ public final class DateUtil {
             Constants.APP_DATE_FORMAT);
     private static final ThreadSafeSimpleDateFormat HOUR_SDF = new ThreadSafeSimpleDateFormat(
             Constants.APP_TIME_FORMAT);
-
     private static final ThreadSafeSimpleDateFormat FULL_DATE_FORMAT = new ThreadSafeSimpleDateFormat(
             Constants.MAP_FULL_DATE_FORMAT);
 

@@ -99,6 +99,9 @@ public class RxCacheHelper<T> {
         mRetainedFragment.clearCurrentObservable();
     }
 
+    /**
+     * @return true if observable is cached
+     */
     public boolean isCached() {
         return mRetainedFragment.getCurrentObservable() != null;
     }

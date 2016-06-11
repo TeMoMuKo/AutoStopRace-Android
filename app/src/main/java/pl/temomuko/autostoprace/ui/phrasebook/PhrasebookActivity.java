@@ -37,11 +37,14 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
 
     public static final String BUNDLE_SEARCH_QUERY = "search_query";
     private static final boolean SUBMIT_QUERY = true;
+
     @Inject PhrasebookPresenter mPhrasebookPresenter;
     @Inject VerticalDividerItemDecoration mVerticalDividerItemDecoration;
+
     @BindView(R.id.rv_phrasebook) RecyclerView mPhrasebookRecyclerView;
     @BindView(R.id.spinner_lang) AppCompatSpinner mLangSpinner;
     @BindView(R.id.tv_empty) TextView mEmptyResultsTextView;
+
     private PhrasebookAdapter mPhrasebookAdapter;
     private SearchView mSearchView;
     private ArrayAdapter<CharSequence> mLangSpinnerAdapter;

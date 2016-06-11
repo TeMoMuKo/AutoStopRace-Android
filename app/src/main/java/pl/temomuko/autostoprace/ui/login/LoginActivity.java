@@ -34,6 +34,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     @Inject LoginPresenter mLoginPresenter;
+
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.et_email) EditText mEmailEditText;
     @BindView(R.id.et_password) EditText mPasswordEditText;
@@ -41,6 +42,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @BindView(R.id.til_email) TextInputLayout mEmailTextInputLayout;
     @BindView(R.id.til_password) TextInputLayout mPasswordTextInputLayout;
     @BindView(R.id.btn_go_to_reset) Button mGoToResetPassButton;
+
     private MaterialDialog mProgressDialog;
     private DialogFragment mHelpDialogFragment;
 
@@ -69,7 +71,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         saveProgressDialogState(outState);
         super.onSaveInstanceState(outState);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -27,6 +27,7 @@ public class ResetPassActivity extends BaseActivity implements ResetPassMvpView 
     private static final String BUNDLE_IS_PROGRESS_DIALOG_SHOWN = "bundle_is_progress_dialog_shown";
 
     @Inject ResetPassPresenter mResetPassPresenter;
+
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.til_email) TextInputLayout mEmailTextInputLayout;
     @BindView(R.id.et_email) EditText mEmailEditText;

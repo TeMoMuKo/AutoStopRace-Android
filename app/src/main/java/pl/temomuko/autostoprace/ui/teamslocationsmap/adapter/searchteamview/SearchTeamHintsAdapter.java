@@ -28,6 +28,7 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
 
     private static final String BUNDLE_ALL_TEAM_LIST = "bundle_all_team_list";
     private static final String BUNDLE_ACTUAL_TEAM_LIST = "bundle_actual_team_list";
+
     private final Context mContext;
     private final Filter mFilter;
     private final OnTeamHintSelectedListener mOnTeamHintSelectedListener;

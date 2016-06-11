@@ -19,10 +19,11 @@ import pl.temomuko.autostoprace.R;
 public class CustomContactCollapsingToolbarLayout extends CollapsingToolbarLayout {
 
     private static final int SCRIM_ANIMATION_DURATION = 600;
-    private boolean mScrimsAreShown;
+
     private ValueAnimator mToolbarTitleAnimator;
-    private int mTitleAlpha;
     private final @ColorInt int mTitleColor;
+    private int mTitleAlpha;
+    private boolean mScrimsAreShown;
 
     public CustomContactCollapsingToolbarLayout(Context context) {
         this(context, null);

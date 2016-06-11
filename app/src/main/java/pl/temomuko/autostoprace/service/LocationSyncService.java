@@ -41,6 +41,7 @@ public class LocationSyncService extends Service {
 
     @Inject DataManager mDataManager;
     @Inject ErrorHandler mErrorHandler;
+
     private Subscription mPostSubscription;
     private Subscription mRefreshSubscription;
 

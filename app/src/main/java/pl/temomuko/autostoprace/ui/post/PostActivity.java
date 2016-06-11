@@ -40,6 +40,7 @@ public class PostActivity extends BaseActivity implements PostMvpView {
     private static final int REQUEST_CODE_UNHANDLED = -1;
 
     @Inject PostPresenter mPostPresenter;
+
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.et_message) EditText mMessageEditText;
     @BindView(R.id.tv_current_location_cords) TextView mCurrentLocationCordsTextView;

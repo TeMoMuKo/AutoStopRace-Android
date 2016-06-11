@@ -19,6 +19,7 @@ public class PartnersActivity extends DrawerActivity implements DrawerMvpView {
 
     @Inject StaticDrawerPresenter mPresenter;
     @Inject PartnersAdapter mPartnersAdapter;
+
     @BindView(R.id.rv_partners) RecyclerView mPartnersRecyclerView;
 
     @Override

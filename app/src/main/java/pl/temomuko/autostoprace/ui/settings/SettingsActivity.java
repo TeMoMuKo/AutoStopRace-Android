@@ -13,6 +13,7 @@ import pl.temomuko.autostoprace.ui.base.BaseActivity;
 public class SettingsActivity extends BaseActivity {
 
     private static final String TAG_SETTINGS_FRAGMENT = "settings_fragment";
+
     @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override

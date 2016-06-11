@@ -27,6 +27,7 @@ public class SplashActivity extends BaseActivity {
     @BindView(R.id.iv_sponsor_logo) ImageView mSponsorLogoImageView;
     @BindView(R.id.iv_splash_logo) ImageView mAppLogoImageView;
     @BindView(R.id.iv_splash_bg) ImageView mBackgroundImageView;
+
     private Subscription mSubscription;
     private Integer[] mPartnersDrawables;
 

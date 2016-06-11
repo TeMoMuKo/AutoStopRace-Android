@@ -26,6 +26,7 @@ import retrofit2.Response;
 public class ErrorHandler {
 
     public static final String TAG = ErrorHandler.class.getSimpleName();
+
     private final Context mContext;
     private final ApiManager mApiManager;
 
@@ -88,7 +89,7 @@ public class ErrorHandler {
             List<String> responseErrors = mApiManager.getErrorResponseConverter()
                     .convert(response.errorBody())
                     .getErrors();
-            if(responseErrors != null) {
+            if (responseErrors != null) {
                 errors.addAll(responseErrors);
             }
         } catch (IOException e) {

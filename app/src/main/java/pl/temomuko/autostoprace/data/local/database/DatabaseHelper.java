@@ -114,7 +114,7 @@ public class DatabaseHelper {
 
     public Single<List<LocationRecord>> getLocationRecordList() {
         return Single.create(singleSubscriber -> {
-            BriteDatabase.Transaction transaction=mBriteDatabase.newTransaction();
+            BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
             try {
                 List<LocationRecord> result = new ArrayList<>();
                 Cursor unsentCursor = mBriteDatabase.query(
@@ -136,7 +136,7 @@ public class DatabaseHelper {
                 unsentCursor.close();
                 sentCursor.close();
                 singleSubscriber.onSuccess(result);
-            }finally {
+            } finally {
                 transaction.end();
             }
         });
