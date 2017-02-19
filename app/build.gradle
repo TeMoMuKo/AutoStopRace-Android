@@ -3,6 +3,31 @@ apply plugin: 'io.fabric'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
+def getLocalSecret(String secretName) {
+    String keyConfigPath = "${projectDir.path}/secret.properties"
+    File keyConfigFile = file(keyConfigPath)
+    if (keyConfigFile.exists()) {
+        def Properties props = new Properties()
+        props.load(keyConfigFile.newInputStream())
+        String prop = props[secretName]
+        if (prop == null || prop.isEmpty()) {
+            throw new MissingPropertyException("Missing property $secretName")
+        } else {
+            return prop
+        }
+    } else {
+        throw new FileNotFoundException("File $keyConfigPath not found")
+    }
+}
+
+def loadEnvironmentSecret(String envVarName, String secretName) {
+    return (System.getenv(envVarName) ?: getLocalSecret(secretName))
+}
+
+def fabricApiKey = loadEnvironmentSecret("FABRIC_API_KEY", "fabricApiKey")
+def googleMapsDebugKey = loadEnvironmentSecret("GOOGLE_MAPS_DEBUG_KEY", "googleMapsDebugKey")
+def googleMapsReleaseKey = loadEnvironmentSecret("GOOGLE_MAPS_RELEASE_KEY", "googleMapsReleaseKey")
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -13,10 +38,15 @@ android {
         targetSdkVersion 23
         versionCode 10
         versionName "1.0.4"
+        manifestPlaceholders = [crashlyticsApiKey: fabricApiKey]
     }
 
     buildTypes {
+        debug {
+            resValue 'string', 'GOOGLE_MAPS_KEY', googleMapsDebugKey
+        }
         release {
+            resValue 'string', 'GOOGLE_MAPS_KEY', googleMapsReleaseKey
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -70,7 +100,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:9.0.2'
     compile 'com.google.android.gms:play-services-maps:9.0.2'
     compile 'com.google.maps.android:android-maps-utils:0.4.3'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;
     }
 }

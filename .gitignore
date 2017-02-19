@@ -3,6 +3,7 @@
 *.iml
 google_maps_api.xml
 build/
+app/secret.properties
 /secrets.properties
 /local.properties
 /app/fabric.properties
@@ -10,3 +11,6 @@ build/
 *.apk
 .DS_Store
 /captures
+app/src/debug/
+app/src/release/
+projectFilesBackup/
