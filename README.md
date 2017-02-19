@@ -1,6 +1,8 @@
 ![ASR Logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 # AutoStopRace
 
+[![Build Status](https://www.bitrise.io/app/2b4d8d2972d64e24.svg?token=f_LAekwcbfMIQMOCqCRmwA&branch=dev)](https://www.bitrise.io/app/2b4d8d2972d64e24)
+
 Android app which allows participants of hitchhiking race to share their location. <br>
 Project website: http://www.autostoprace.pl/ <br>
 Google Play: https://play.google.com/store/apps/details?id=pl.temomuko.autostoprace
