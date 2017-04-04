@@ -33,20 +33,20 @@ public interface AsrService {
     Observable<Response<List<LocationRecord>>> getLocationRecords(@Path("team_number") int teamNumber);
 
     @FormUrlEncoded
-    @POST("api/v1/auth/sign_in")
+    @POST("auth/sign_in")
     Observable<Response<SignInResponse>> signIn(
             @Field("email") String email,
             @Field("password") String password
     );
 
-    @DELETE("api/v1/auth/sign_out")
+    @DELETE("auth/sign_out")
     Observable<Response<SignOutResponse>> signOut(
             @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
             @Header(Constants.HEADER_FIELD_CLIENT) String client,
             @Header(Constants.HEADER_FIELD_UID) String uid
     );
 
-    @GET("api/v1/auth/validate_token")
+    @GET("auth/validate_token")
     Observable<Response<SignInResponse>> validateToken(
             @Header(Constants.HEADER_FIELD_TOKEN) String accessToken,
             @Header(Constants.HEADER_FIELD_CLIENT) String client,
@@ -54,7 +54,7 @@ public interface AsrService {
     );
 
     @FormUrlEncoded
-    @POST("api/v1/auth/password")
+    @POST("auth/password")
     Observable<Response<ResetPassResponse>> resetPassword(
             @Field("email") String email,
             @Field("redirect_url") String redirectUrl
