@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Team implements Comparable<Team>, Parcelable {
 
-    @SerializedName("team_number") private int mTeamNumber;
+    @SerializedName("team_slug") private String mTeamSlug;
     @SerializedName("name") private String mName;
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
@@ -22,11 +22,11 @@ public class Team implements Comparable<Team>, Parcelable {
 
     @Override
     public int compareTo(@NonNull Team another) {
-        return Integer.valueOf(mTeamNumber).compareTo(another.mTeamNumber);
+        return Integer.valueOf(getTeamNumber()).compareTo(another.getTeamNumber());
     }
 
     public int getTeamNumber() {
-        return mTeamNumber;
+        return Integer.valueOf(mTeamSlug.split("-")[1]);
     }
 
     public String getName() {
@@ -40,7 +40,7 @@ public class Team implements Comparable<Team>, Parcelable {
     /* Parcel */
 
     protected Team(Parcel in) {
-        this.mTeamNumber = in.readInt();
+        this.mTeamSlug = in.readString();
         this.mName = in.readString();
         this.mLastLocationRecordList = in.createTypedArrayList(LocationRecord.CREATOR);
     }
@@ -52,7 +52,7 @@ public class Team implements Comparable<Team>, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.mTeamNumber);
+        dest.writeString(this.mTeamSlug);
         dest.writeString(this.mName);
         dest.writeTypedList(mLastLocationRecordList);
     }
