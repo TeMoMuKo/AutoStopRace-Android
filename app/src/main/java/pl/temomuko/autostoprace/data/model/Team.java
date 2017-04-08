@@ -6,19 +6,14 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-
 /**
  * Created by Szymon Kozak on 2016-01-22.
  */
 public class Team implements Comparable<Team>, Parcelable {
 
-    @SerializedName("team_slug") private String mTeamSlug;
+    @SerializedName("slug") private String mTeamSlug;
     @SerializedName("name") private String mName;
-
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    @SerializedName("last_location")
-    private ArrayList<LocationRecord> mLastLocationRecordList;
+    @SerializedName("last_location") private LocationRecord mLastLocation;
 
     @Override
     public int compareTo(@NonNull Team another) {
@@ -34,15 +29,22 @@ public class Team implements Comparable<Team>, Parcelable {
     }
 
     public LocationRecord getLastLocationRecord() {
-        return mLastLocationRecordList.isEmpty() ? null : mLastLocationRecordList.get(0);
+        return mLastLocation;
     }
 
     /* Parcel */
 
     protected Team(Parcel in) {
-        this.mTeamSlug = in.readString();
-        this.mName = in.readString();
-        this.mLastLocationRecordList = in.createTypedArrayList(LocationRecord.CREATOR);
+        mTeamSlug = in.readString();
+        mName = in.readString();
+        mLastLocation = in.readParcelable(LocationRecord.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mTeamSlug);
+        dest.writeString(mName);
+        dest.writeParcelable(mLastLocation, flags);
     }
 
     @Override
@@ -50,17 +52,10 @@ public class Team implements Comparable<Team>, Parcelable {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mTeamSlug);
-        dest.writeString(this.mName);
-        dest.writeTypedList(mLastLocationRecordList);
-    }
-
     public static final Creator<Team> CREATOR = new Creator<Team>() {
         @Override
-        public Team createFromParcel(Parcel source) {
-            return new Team(source);
+        public Team createFromParcel(Parcel in) {
+            return new Team(in);
         }
 
         @Override
