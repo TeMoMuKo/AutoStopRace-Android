@@ -242,6 +242,6 @@ public class MainPresenterTest {
         mMainPresenter.syncLocationsIfRecentlyNotSynced();
 
         //then
-        verify(mMockMainMvpView,never()).startLocationSyncService();
+        verify(mMockMainMvpView, never()).startLocationSyncService();
     }
 }

@@ -1,6 +1,5 @@
 package pl.temomuko.autostoprace.ui.contact;
 
-import android.app.Application;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +16,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.ContactField;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
