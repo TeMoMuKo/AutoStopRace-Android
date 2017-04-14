@@ -9,7 +9,7 @@ Google Play: https://play.google.com/store/apps/details?id=pl.temomuko.autostopr
 
 ![Screenshots](/art/showcase.png)
 
-#Architecture
+# Architecture
 Application built on MVP-based architecture powered by RxJava.  ([architecture guidelines by ribot](https://github.com/ribot/android-guidelines/blob/master/architecture_guidelines/android_architecture.md))
 
 # Used libraries
