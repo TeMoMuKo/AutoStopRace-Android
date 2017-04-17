@@ -108,4 +108,5 @@
     <string name="camera">Zrób zdjęcie</string>
     <string name="gallery">Wgraj zdjęcie z galerii</string>
     <string name="action_cancel">Anuluj</string>
+    <string name="error_while_taking_photo">Wystąpił błąd, zdjęcie nie mogło zostać załączone.</string>
 </resources>

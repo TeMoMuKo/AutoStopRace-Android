@@ -40,17 +40,6 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
     }
 
     public LocationRecord(double latitude, double longitude, String message, String address,
-                          String country, String countryCode, String imageUrl) {
-        mLatitude = latitude;
-        mLongitude = longitude;
-        mMessage = message;
-        mAddress = address;
-        mCountry = country;
-        mCountryCode = countryCode;
-        mImageUri = Uri.parse(imageUrl);
-    }
-
-    public LocationRecord(double latitude, double longitude, String message, String address,
                           String country, String countryCode, Uri imageUri) {
         mLatitude = latitude;
         mLongitude = longitude;

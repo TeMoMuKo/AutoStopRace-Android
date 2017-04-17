@@ -182,6 +182,10 @@ public class LocationSyncService extends Service {
 
         private static final String TAG = NetworkChangeReceiver.class.getSimpleName();
 
+        @Inject
+        public NetworkChangeReceiver() {
+        }
+
         @Override
         public void onReceive(final Context context, final Intent intent) {
             if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)

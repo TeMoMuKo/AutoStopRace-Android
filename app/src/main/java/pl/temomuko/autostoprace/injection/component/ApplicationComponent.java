@@ -6,6 +6,7 @@ import android.content.Context;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.injection.AppContext;
@@ -29,4 +30,6 @@ public interface ApplicationComponent {
     DataManager dataManager();
 
     ErrorHandler errorHandler();
+
+    void inject(AsrApplication asrApplication);
 }

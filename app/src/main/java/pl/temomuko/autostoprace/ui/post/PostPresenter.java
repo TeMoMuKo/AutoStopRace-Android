@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
-import pl.temomuko.autostoprace.data.local.photo.FileController;
 import pl.temomuko.autostoprace.data.local.photo.ImageSourceEnum;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
@@ -219,10 +218,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
             @Override
             public void onError(Throwable e) {
                 LogUtil.e(TAG, String.format("Error while taking photo: %s", e.getLocalizedMessage()));
-                if (e instanceof FileController.FileToBigException) {
-                    //// TODO: 15.04.2017
-                    //getMvpView().showImageIsToBigError();
-                }
+                getMvpView().showErrorWhileTakingPhoto();
             }
 
             @Override

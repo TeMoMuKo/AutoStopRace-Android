@@ -39,4 +39,6 @@ public interface PostMvpView extends MvpView {
     void setPhoto(Uri uri);
 
     void clearPhoto();
+
+    void showErrorWhileTakingPhoto();
 }

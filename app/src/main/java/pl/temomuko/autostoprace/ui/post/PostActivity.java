@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +50,7 @@ public class PostActivity extends BaseActivity implements PostMvpView, PhotoSour
 
     @Inject PostPresenter mPostPresenter;
 
+    @BindView(R.id.container_layout) LinearLayout containerLayout;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.et_message) EditText mMessageEditText;
     @BindView(R.id.tv_current_location_cords) TextView mCurrentLocationCordsTextView;
@@ -248,6 +251,11 @@ public class PostActivity extends BaseActivity implements PostMvpView, PhotoSour
     public void clearPhoto() {
         currentPhotoUri = null;
         photoPanelLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showErrorWhileTakingPhoto() {
+        Snackbar.make(containerLayout, R.string.error_while_taking_photo, Snackbar.LENGTH_LONG).show();
     }
 
     private void showPhotoSourceChooserBottomSheet() {
