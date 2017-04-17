@@ -18,13 +18,15 @@ import pl.temomuko.autostoprace.injection.component.ApplicationComponent;
 import pl.temomuko.autostoprace.injection.component.DaggerApplicationComponent;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
 import pl.temomuko.autostoprace.service.LocationSyncService;
+import pl.temomuko.autostoprace.service.receiver.NetworkChangeReceiver;
 
 /**
  * Created by Szymon Kozak on 2016-01-06.
  */
 public class AsrApplication extends Application {
 
-    @Inject LocationSyncService.NetworkChangeReceiver mNetworkReceiver;
+    @Inject LocationSyncService.NetworkChangeReceiver mServiceNetworkReceiver;
+    @Inject NetworkChangeReceiver mNetworkReceiver;
 
     private ApplicationComponent mApplicationComponent;
 
@@ -36,6 +38,7 @@ public class AsrApplication extends Application {
         LeakCanary.install(this);
         Locale.setDefault(new Locale(Constants.DEFAULT_LOCALE));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mServiceNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }

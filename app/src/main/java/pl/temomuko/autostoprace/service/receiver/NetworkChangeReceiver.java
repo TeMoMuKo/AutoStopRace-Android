@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 
+import javax.inject.Inject;
+
 import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
@@ -16,6 +18,10 @@ import pl.temomuko.autostoprace.util.NetworkUtil;
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
     private static final String TAG = NetworkChangeReceiver.class.getSimpleName();
+
+    @Inject
+    public NetworkChangeReceiver() {
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
