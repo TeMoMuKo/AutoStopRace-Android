@@ -180,6 +180,10 @@ public class LocationSyncService extends Service {
 
     public static class NetworkChangeReceiver extends BroadcastReceiver {
 
+        @Inject
+        public NetworkChangeReceiver() {
+        }
+
         private static final String TAG = NetworkChangeReceiver.class.getSimpleName();
 
         @Override
