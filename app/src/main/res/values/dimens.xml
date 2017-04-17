@@ -10,6 +10,8 @@
     <dimen name="default_margin_quarter">4dp</dimen>
 
     <dimen name="normal_font_size">14sp</dimen>
+    <dimen name="bottom_sheet_text_size">16sp</dimen>
+
     <dimen name="drawer_header_height">75dp</dimen>
     <dimen name="drawer_width">300dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
@@ -24,4 +26,8 @@
     <dimen name="card_content_padding_top_bottom">24dp</dimen>
     <dimen name="card_content_padding_left_right">16dp</dimen>
     <dimen name="collapsing_toolbar_top_shadow_height">56dp</dimen>
+
+    <dimen name="bottom_sheet_icon_size">24dp</dimen>
+    <dimen name="bottom_sheet_height_item_height">48dp</dimen>
+    <dimen name="bottom_sheet_header_height">56dp</dimen>
 </resources>

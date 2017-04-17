@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/default_margin_halved"
+    >
+
+    <TextView
+        style="@style/photo_source_bottom_sheet_item_text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_sheet_header_height"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:gravity="center_vertical"
+        android:text="@string/add_photo"
+        android:textColor="@color/secondary_text"
+        />
+
+    <LinearLayout
+        android:id="@+id/take_photo_linear_layout"
+        style="@style/photo_source_bottom_sheet_item_style">
+
+        <ImageView
+            style="@style/photo_source_bottom_sheet_item_icon"
+            android:src="@drawable/ic_photo_camera_black_24dp"/>
+
+        <TextView
+            style="@style/photo_source_bottom_sheet_item_text"
+            android:text="@string/camera"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/upload_photo_linear_layout"
+        style="@style/photo_source_bottom_sheet_item_style">
+
+        <ImageView
+            style="@style/photo_source_bottom_sheet_item_icon"
+            android:src="@drawable/ic_photo_library_black_24dp"/>
+
+        <TextView
+            style="@style/photo_source_bottom_sheet_item_text"
+            android:text="@string/gallery"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cancel_linear_layout"
+        style="@style/photo_source_bottom_sheet_item_style">
+
+        <ImageView
+            style="@style/photo_source_bottom_sheet_item_icon"
+            android:src="@drawable/ic_cancel_black_24dp"/>
+
+        <TextView
+            style="@style/photo_source_bottom_sheet_item_text"
+            android:text="@string/action_cancel"/>
+    </LinearLayout>
+
+
+</LinearLayout>

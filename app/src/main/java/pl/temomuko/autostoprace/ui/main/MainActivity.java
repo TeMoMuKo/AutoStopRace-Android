@@ -57,12 +57,14 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     private static final int REQUEST_CODE_FINE_LOCATION_PERMISSION = 0;
     private static final int REQUEST_CODE_CHECK_LOCATION_SETTINGS = 1;
+    private static final int REQUEST_CODE_POST_ACTIVITY = 2;
+
     private static final int UNHANDLED_REQUEST_CODE = -1;
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String BUNDLE_RECYCLER_VIEW_LINEAR_LAYOUT_STATE = "bundle_recycler_view_linear_layout_state";
     private static final String BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS = "bundle_location_record_adapter_items";
+
     public static final String EXTRA_TEAM_NUMBER = "extra_team_number";
-    public static final int REQUEST_CODE_POST_ACTIVITY = 2;
 
     @Inject MainPresenter mMainPresenter;
     @Inject LocationRecordsAdapter mLocationRecordsAdapter;

@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace.data;
 
 import android.location.Address;
 import android.location.Location;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.location.LocationSettingsResult;
@@ -19,6 +20,8 @@ import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
 import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
+import pl.temomuko.autostoprace.data.local.photo.ImageController;
+import pl.temomuko.autostoprace.data.local.photo.ImageSourceEnum;
 import pl.temomuko.autostoprace.data.model.ContactField;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
@@ -50,12 +53,13 @@ public class DataManager {
     private final GeocodingHelper mGeocodingHelper;
     private final PhrasebookHelper mPhrasebookHelper;
     private final ContactHelper mContactHelper;
+    private final ImageController mImageController;
 
     @Inject
     public DataManager(ApiManager apiManager, PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
                        GmsLocationHelper gmsLocationHelper, PermissionHelper permissionHelper,
                        GeocodingHelper geocodingHelper, PhrasebookHelper phrasebookHelper,
-                       ContactHelper contactHelper) {
+                       ContactHelper contactHelper, ImageController imageController) {
         mApiManager = apiManager;
         mPrefsHelper = prefsHelper;
         mDatabaseHelper = databaseHelper;
@@ -64,6 +68,7 @@ public class DataManager {
         mGeocodingHelper = geocodingHelper;
         mPhrasebookHelper = phrasebookHelper;
         mContactHelper = contactHelper;
+        mImageController = imageController;
     }
 
     /* API  */
@@ -104,13 +109,17 @@ public class DataManager {
         return mApiManager.getAsrService().getAllTeams();
     }
 
-    public Observable<Response<LocationRecord>> postLocationRecordToServer(LocationRecord locationRecord) {
-        return mApiManager.getAsrService().postLocationRecord(
-                mPrefsHelper.getAuthAccessToken(),
-                mPrefsHelper.getAuthClient(),
-                mPrefsHelper.getAuthUid(),
-                new CreateLocationRecordRequest(locationRecord)
-        );
+    public Observable<Response<LocationRecord>> postLocationRecordToServer(final LocationRecord locationRecord) {
+        return mImageController.getBase64Image(locationRecord.getImageUri())
+                .flatMap(base64Image ->
+                        mApiManager.getAsrService().postLocationRecord(
+                                mPrefsHelper.getAuthAccessToken(),
+                                mPrefsHelper.getAuthClient(),
+                                mPrefsHelper.getAuthUid(),
+                                new CreateLocationRecordRequest(locationRecord.getLatitude(), locationRecord.getLongitude(),
+                                        locationRecord.getMessage(), base64Image))
+
+                );
     }
 
     /* Database / Prefs / Phrasebook / Contact */
@@ -190,6 +199,19 @@ public class DataManager {
 
     public Observable<Address> getAddressFromLocation(@NonNull Location location) {
         return mGeocodingHelper.getAddressFromLocation(location);
+    }
+
+    /* Photo */
+    public Observable<Uri> requestPhoto(ImageSourceEnum imageSourceEnum) {
+        return mImageController.requestPhoto(imageSourceEnum);
+    }
+
+    public Observable<Uri> getPhotoObservable() {
+        return mImageController.getPhotoObservable();
+    }
+
+    public void markPhotoAsReceived() {
+        mImageController.markPhotoAsReceived();
     }
 
     /* Other */

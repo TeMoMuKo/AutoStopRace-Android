@@ -164,6 +164,18 @@
                 android:value=".ui.main.MainActivity"/>
         </activity>
 
+        <!-- Util activities -->
+        <activity
+            android:name=".data.local.photo.PhotoShadowActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Translucent"/>
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.AppCompat"/>
+
         <receiver android:name=".service.receiver.GpsStatusChangeReceiver">
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED"/>
@@ -192,5 +204,16 @@
         </receiver>
 
         <service android:name=".service.LocationSyncService"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="pl.temomuko.autostoprace"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
     </application>
 </manifest>

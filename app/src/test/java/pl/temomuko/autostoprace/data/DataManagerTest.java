@@ -12,6 +12,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import pl.temomuko.autostoprace.Constants;
+import pl.temomuko.autostoprace.TestConstants;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.csv.ContactHelper;
@@ -19,6 +20,7 @@ import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
 import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
+import pl.temomuko.autostoprace.data.local.photo.ImageController;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.User;
@@ -48,14 +50,24 @@ public class DataManagerTest {
     private static final String FAKE_FIRST_NAME = "fake_first_name";
     private static final String FAKE_LAST_NAME = "fake_last_name";
 
-    @Mock PrefsHelper mMockPrefsHelper;
-    @Mock ApiManager mMockApiManager;
-    @Mock DatabaseHelper mMockDatabaseHelper;
-    @Mock GmsLocationHelper mMockGmsLocationHelper;
-    @Mock PermissionHelper mMockPermissionHelper;
-    @Mock GeocodingHelper mMockGeocodingHelper;
-    @Mock PhrasebookHelper mPhrasebookHelper;
-    @Mock ContactHelper mContactHelper;
+    @Mock
+    PrefsHelper mMockPrefsHelper;
+    @Mock
+    ApiManager mMockApiManager;
+    @Mock
+    DatabaseHelper mMockDatabaseHelper;
+    @Mock
+    GmsLocationHelper mMockGmsLocationHelper;
+    @Mock
+    PermissionHelper mMockPermissionHelper;
+    @Mock
+    GeocodingHelper mMockGeocodingHelper;
+    @Mock
+    PhrasebookHelper mPhrasebookHelper;
+    @Mock
+    ContactHelper mContactHelper;
+    @Mock
+    ImageController mImageController;
     private DataManager mDataManager;
 
     private okhttp3.Response.Builder mOkHttpResponseBuilder;
@@ -64,7 +76,7 @@ public class DataManagerTest {
     public void setUp() throws Exception {
         mDataManager = new DataManager(mMockApiManager, mMockPrefsHelper, mMockDatabaseHelper,
                 mMockGmsLocationHelper, mMockPermissionHelper, mMockGeocodingHelper, mPhrasebookHelper,
-                mContactHelper);
+                mContactHelper, mImageController);
         setupFakeResponseBuilder();
     }
 
@@ -80,7 +92,7 @@ public class DataManagerTest {
     @Test
     public void testSaveUnsentLocationsToDatabase() throws Exception {
         //given
-        LocationRecord unsentLocationRecord = new LocationRecord(18.05, 17.17, "Yo", "Somewhere, Poland", "Poland", "PL");
+        LocationRecord unsentLocationRecord = TestConstants.PROPER_LOCATION_RECORD;
         when(mMockDatabaseHelper.addUnsentLocationRecord(unsentLocationRecord)).thenReturn(Completable.complete());
 
         //when
@@ -93,7 +105,7 @@ public class DataManagerTest {
     @Test
     public void testSaveSentLocationsToDatabase() throws Exception {
         //given
-        LocationRecord sentLocationRecord = new LocationRecord(18.05, 17.17, "Yo", "Somewhere, Poland", "Poland", "PL");
+        LocationRecord sentLocationRecord = TestConstants.PROPER_LOCATION_RECORD;
         UnsentAndResponseLocationRecordPair pair = UnsentAndResponseLocationRecordPair.create(sentLocationRecord, null);
         when(mMockDatabaseHelper.moveLocationRecordToSent(pair)).thenReturn(Observable.empty());
 

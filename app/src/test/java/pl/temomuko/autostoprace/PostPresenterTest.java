@@ -61,7 +61,7 @@ public class PostPresenterTest {
         when(mMockLatestAddress.getLongitude()).thenReturn(45.67);
 
         //when
-        mPostPresenter.tryToSaveLocation(FAKE_MESSAGE);
+        mPostPresenter.tryToSaveLocation(FAKE_MESSAGE, TestConstants.TEST_IMAGE_URI);
 
         //then
         verify(mMockDataManager).saveUnsentLocationRecordToDatabase(any(LocationRecord.class));

@@ -1,12 +1,21 @@
 package pl.temomuko.autostoprace.data.model;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
 import java.util.Date;
+
+import pl.temomuko.autostoprace.Constants;
 
 /**
  * Created by Szymon Kozak on 2016-01-22.
@@ -22,17 +31,34 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
     @SerializedName("country_code") private String mCountryCode;
     @SerializedName("created_at") private Date mServerReceiptDate;
 
+
+    @SerializedName("image")
+    @JsonAdapter(LocationImageUriGsonTypeAdapter.class)
+    private Uri mImageUri;
+
     public LocationRecord() {
     }
 
     public LocationRecord(double latitude, double longitude, String message, String address,
-                          String country, String countryCode) {
+                          String country, String countryCode, String imageUrl) {
         mLatitude = latitude;
         mLongitude = longitude;
         mMessage = message;
         mAddress = address;
         mCountry = country;
         mCountryCode = countryCode;
+        mImageUri = Uri.parse(imageUrl);
+    }
+
+    public LocationRecord(double latitude, double longitude, String message, String address,
+                          String country, String countryCode, Uri imageUri) {
+        mLatitude = latitude;
+        mLongitude = longitude;
+        mMessage = message;
+        mAddress = address;
+        mCountry = country;
+        mCountryCode = countryCode;
+        mImageUri = imageUri;
     }
 
     @Override
@@ -132,6 +158,10 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         return mServerReceiptDate;
     }
 
+    public Uri getImageUri() {
+        return mImageUri;
+    }
+
     public void setId(int id) {
         mId = id;
     }
@@ -164,19 +194,11 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         mServerReceiptDate = serverReceiptDate;
     }
 
-    /* Parcel */
-
-    protected LocationRecord(Parcel in) {
-        mId = in.readInt();
-        mLatitude = in.readDouble();
-        mLongitude = in.readDouble();
-        mMessage = in.readString();
-        mAddress = in.readString();
-        mCountry = in.readString();
-        mCountryCode = in.readString();
-        long tmpMServerReceiptDate = in.readLong();
-        mServerReceiptDate = tmpMServerReceiptDate != -1 ? new Date(tmpMServerReceiptDate) : null;
+    public void setImageUri(Uri imageUri) {
+        mImageUri = imageUri;
     }
+
+    /* Parcel */
 
     @Override
     public int describeContents() {
@@ -195,11 +217,23 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         dest.writeLong(mServerReceiptDate != null ? mServerReceiptDate.getTime() : -1L);
     }
 
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<LocationRecord> CREATOR = new Parcelable.Creator<LocationRecord>() {
+    protected LocationRecord(Parcel in) {
+        this.mId = in.readInt();
+        this.mLatitude = in.readDouble();
+        this.mLongitude = in.readDouble();
+        this.mMessage = in.readString();
+        this.mAddress = in.readString();
+        this.mCountry = in.readString();
+        this.mCountryCode = in.readString();
+        long tmpMServerReceiptDate = in.readLong();
+        this.mServerReceiptDate = tmpMServerReceiptDate == -1 ? null : new Date(tmpMServerReceiptDate);
+        this.mImageUri = in.readParcelable(Uri.class.getClassLoader());
+    }
+
+    public static final Creator<LocationRecord> CREATOR = new Creator<LocationRecord>() {
         @Override
-        public LocationRecord createFromParcel(Parcel in) {
-            return new LocationRecord(in);
+        public LocationRecord createFromParcel(Parcel source) {
+            return new LocationRecord(source);
         }
 
         @Override
@@ -207,4 +241,25 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
             return new LocationRecord[size];
         }
     };
+
+    private static final class LocationImageUriGsonTypeAdapter extends TypeAdapter<Uri> {
+
+        private static final String IMAGE_URL_PREFIX = Constants.API_BASE_URL + "/uploads/location/image/";
+
+        @Override
+        public void write(JsonWriter out, Uri uri) throws IOException {
+            out.value(uri == null ? null : uri.toString());
+        }
+
+        @Override
+        public Uri read(JsonReader in) throws IOException {
+
+            if (in.peek() == JsonToken.NULL) {
+                in.nextNull();
+                return null;
+            } else {
+                return Uri.parse(IMAGE_URL_PREFIX + in.nextString());
+            }
+        }
+    }
 }

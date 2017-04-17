@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -185,9 +185,9 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
 
     private void setupServerSynchronizationState(ImageView serverSynchronizationImageView, LocationRecord locationRecord) {
         if (locationRecord.getServerReceiptDate() != null) {
-            Picasso.with(mAppContext).load(R.drawable.ic_cloud_done_black_24dp).fit().into(serverSynchronizationImageView);
+            Glide.with(mAppContext).load(R.drawable.ic_cloud_done_black_24dp).into(serverSynchronizationImageView);
         } else {
-            Picasso.with(mAppContext).load(R.drawable.ic_cloud_queue_black_24dp).fit().into(serverSynchronizationImageView);
+            Glide.with(mAppContext).load(R.drawable.ic_cloud_queue_black_24dp).into(serverSynchronizationImageView);
         }
     }
 

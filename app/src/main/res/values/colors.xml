@@ -15,6 +15,7 @@
     <color name="rate_app_background">#ececec</color>
     <color name="standard_background_color">#FAFAFA</color>
     <color name="fab_icon_color">#fff</color>
+    <color name="transparent">#00ffffff</color>
 
     <array name="circle_text_view_colors">
         <item>#D50000</item>

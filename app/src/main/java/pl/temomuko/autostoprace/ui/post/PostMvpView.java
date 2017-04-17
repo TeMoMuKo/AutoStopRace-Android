@@ -1,5 +1,7 @@
 package pl.temomuko.autostoprace.ui.post;
 
+import android.net.Uri;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
 
@@ -33,4 +35,8 @@ public interface PostMvpView extends MvpView {
     void showNoLocationEstablishedError();
 
     void updateAccuracyInfo(float accuracy);
+
+    void setPhoto(Uri uri);
+
+    void clearPhoto();
 }

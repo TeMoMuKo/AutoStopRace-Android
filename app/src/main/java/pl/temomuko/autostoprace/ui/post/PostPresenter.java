@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace.ui.post;
 
 import android.app.Activity;
 import android.location.Address;
+import android.net.Uri;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationSettingsResult;
@@ -12,12 +13,15 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
+import pl.temomuko.autostoprace.data.local.photo.FileController;
+import pl.temomuko.autostoprace.data.local.photo.ImageSourceEnum;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.AddressUtil;
 import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
+import rx.Observer;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -29,6 +33,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private final DataManager mDataManager;
     private final CompositeSubscription mLocationSubscriptions;
+    private final CompositeSubscription mPhotoSubscriptions;
     private Address mLatestAddress;
     private boolean mIsLocationSettingsStatusForResultCalled = false;
     private boolean mIsLocationSaved;
@@ -37,6 +42,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public PostPresenter(DataManager dataManager) {
         mDataManager = dataManager;
         mLocationSubscriptions = new CompositeSubscription();
+        mPhotoSubscriptions = new CompositeSubscription();
     }
 
     @Override
@@ -47,14 +53,15 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     @Override
     public void detachView() {
         mLocationSubscriptions.unsubscribe();
+        mPhotoSubscriptions.unsubscribe();
         super.detachView();
     }
 
-    public void tryToSaveLocation(String message) {
+    public void tryToSaveLocation(String message, Uri currentPhotoUri) {
         if (mLatestAddress == null) {
             getMvpView().showNoLocationEstablishedError();
         } else {
-            saveLocation(message);
+            saveLocation(message, currentPhotoUri);
         }
     }
 
@@ -101,9 +108,24 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         mLatestAddress = latestAddress;
     }
 
+
+    public void requestPhoto(ImageSourceEnum imageSourceEnum) {
+        mPhotoSubscriptions.add(
+                mDataManager.requestPhoto(imageSourceEnum)
+                        .subscribe(getPhotoObserver())
+        );
+    }
+
+    public void checkForUnreceivedPhoto() {
+        mPhotoSubscriptions.add(
+                mDataManager.getPhotoObservable()
+                        .subscribe(getPhotoObserver())
+        );
+    }
+
     /* Private helper methods */
 
-    private void saveLocation(String message) {
+    private void saveLocation(String message, Uri photoUri) {
         if (!mIsLocationSaved) {
             mIsLocationSaved = true;
             LocationRecord locationRecordToSend = new LocationRecord(mLatestAddress.getLatitude(),
@@ -111,7 +133,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
                     message,
                     AddressUtil.getAddressString(mLatestAddress),
                     mLatestAddress.getCountryName(),
-                    mLatestAddress.getCountryCode());
+                    mLatestAddress.getCountryCode(),
+                    photoUri);
             mDataManager.saveUnsentLocationRecordToDatabase(locationRecordToSend)
                     .compose(RxUtil.applyCompletableIoSchedulers())
                     .subscribe(this::handleLocationSaved);
@@ -184,5 +207,33 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         } else {
             getMvpView().updateCurrentLocation(address.getLatitude(), address.getLongitude());
         }
+    }
+
+    private Observer<Uri> getPhotoObserver() {
+        return new Observer<Uri>() {
+            @Override
+            public void onCompleted() {
+                //no-op
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtil.e(TAG, String.format("Error while taking photo: %s", e.getLocalizedMessage()));
+                if (e instanceof FileController.FileToBigException) {
+                    //// TODO: 15.04.2017
+                    //getMvpView().showImageIsToBigError();
+                }
+            }
+
+            @Override
+            public void onNext(Uri uri) {
+                mDataManager.markPhotoAsReceived();
+                getMvpView().setPhoto(uri);
+            }
+        };
+    }
+
+    public void removePhoto() {
+        getMvpView().clearPhoto();
     }
 }

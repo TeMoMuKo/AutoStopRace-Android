@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,7 +47,7 @@ public class PartnersAdapter extends RecyclerView.Adapter<PartnersAdapter.ViewHo
     }
 
     private void loadPartnerLogo(ViewHolder holder, int position) {
-        Picasso.with(mContext)
+        Glide.with(mContext)
                 .load(mPartnersDrawables.get(position))
                 .into(holder.mPartnerImageView);
     }

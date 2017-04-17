@@ -32,6 +32,10 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -56,7 +60,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
 
-    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.afollestad.material-dialogs:core:0.8.5.9'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
 
@@ -77,6 +80,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.sqlbrite:sqlbrite:0.6.3'
     compile 'net.sf.opencsv:opencsv:2.3'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 
     compile 'com.google.android.gms:play-services-location:9.0.2'
     compile 'com.google.android.gms:play-services-maps:9.0.2'
@@ -84,4 +88,9 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;
     }
+
+    compile 'com.vanniktech:onactivityresult:0.6.0'
+    apt 'com.vanniktech:onactivityresult-compiler:0.6.0'
+
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
 }

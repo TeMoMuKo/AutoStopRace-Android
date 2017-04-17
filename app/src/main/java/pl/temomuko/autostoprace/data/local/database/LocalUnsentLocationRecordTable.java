@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace.data.local.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 
@@ -19,8 +20,9 @@ public abstract class LocalUnsentLocationRecordTable {
     public static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_COUNTRY = "country";
     public static final String COLUMN_COUNTRY_CODE = "country_code";
+    public static final String COLUMN_IMAGE_URI = "image_uri";
 
-    public static final String CREATE =
+    private static final String CREATE =
             "CREATE TABLE " + NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY," +
                     COLUMN_LATITUDE + " REAL NOT NULL," +
@@ -28,7 +30,8 @@ public abstract class LocalUnsentLocationRecordTable {
                     COLUMN_MESSAGE + " TEXT," +
                     COLUMN_ADDRESS + " TEXT," +
                     COLUMN_COUNTRY + " TEXT," +
-                    COLUMN_COUNTRY_CODE + " TEXT " +
+                    COLUMN_COUNTRY_CODE + " TEXT," +
+                    COLUMN_IMAGE_URI + " TEXT" +
                     " );";
 
     public static ContentValues toContentValues(LocationRecord locationRecord) {
@@ -39,6 +42,8 @@ public abstract class LocalUnsentLocationRecordTable {
         values.put(COLUMN_ADDRESS, locationRecord.getAddress());
         values.put(COLUMN_COUNTRY, locationRecord.getCountry());
         values.put(COLUMN_COUNTRY_CODE, locationRecord.getCountryCode());
+        Uri imageUri = locationRecord.getImageUri();
+        values.put(COLUMN_IMAGE_URI, imageUri == null ? null : imageUri.toString());
         return values;
     }
 
@@ -51,6 +56,16 @@ public abstract class LocalUnsentLocationRecordTable {
         locationRecord.setAddress(DbUtil.getString(cursor, COLUMN_ADDRESS));
         locationRecord.setCountry(DbUtil.getString(cursor, COLUMN_COUNTRY));
         locationRecord.setCountryCode(DbUtil.getString(cursor, COLUMN_COUNTRY_CODE));
+        String imageUriString = DbUtil.getString(cursor, COLUMN_IMAGE_URI);
+        locationRecord.setImageUri(imageUriString == null ? null : Uri.parse(imageUriString));
         return locationRecord;
+    }
+
+    public static String getCreateSql() {
+        return CREATE;
+    }
+
+    public static String getDropSql() {
+        return "DROP TABLE IF EXISTS " + NAME;
     }
 }

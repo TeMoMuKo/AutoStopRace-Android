@@ -9,8 +9,8 @@ public class CreateLocationRecordRequest {
 
     @SerializedName("location") private LocationWrapper mLocationWrapper;
 
-    public CreateLocationRecordRequest(LocationRecord loc) {
-        mLocationWrapper = new LocationWrapper(loc.getLatitude(), loc.getLongitude(), loc.getMessage());
+    public CreateLocationRecordRequest(double latitude, double longitude, String message, String base64Image) {
+        mLocationWrapper = new LocationWrapper(latitude, longitude, message, base64Image);
     }
 
     private static class LocationWrapper {
@@ -18,11 +18,13 @@ public class CreateLocationRecordRequest {
         @SerializedName("latitude") private double mLatitude;
         @SerializedName("longitude") private double mLongitude;
         @SerializedName("message") private String mMessage;
+        @SerializedName("image") private String mBase64Image;
 
-        public LocationWrapper(double latitude, double longitude, String message) {
+        public LocationWrapper(double latitude, double longitude, String message, String base64Image) {
             mLongitude = longitude;
             mLatitude = latitude;
             mMessage = message;
+            mBase64Image = base64Image;
         }
     }
 }

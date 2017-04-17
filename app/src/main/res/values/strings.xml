@@ -104,4 +104,8 @@
     <string name="description_logo_asr">Logo Auto Stop Race</string>
     <string name="description_sponsor_logo">Logo sponsora</string>
     <string name="my_team_locations_map">Mapa zameldowań drużyny</string>
+    <string name="add_photo">Dodaj zdjęcie</string>
+    <string name="camera">Zrób zdjęcie</string>
+    <string name="gallery">Wgraj zdjęcie z galerii</string>
+    <string name="action_cancel">Anuluj</string>
 </resources>

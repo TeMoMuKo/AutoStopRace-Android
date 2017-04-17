@@ -16,7 +16,7 @@ import pl.temomuko.autostoprace.injection.AppContext;
 public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "auto_stop_race.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 4;
 
     @Inject
     public DatabaseOpenHelper(@AppContext Context context) {
@@ -27,8 +27,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.beginTransaction();
         try {
-            db.execSQL(RemoteLocationRecordTable.CREATE);
-            db.execSQL(LocalUnsentLocationRecordTable.CREATE);
+            db.execSQL(RemoteLocationRecordTable.getCreateSql());
+            db.execSQL(LocalUnsentLocationRecordTable.getCreateSql());
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -37,6 +37,9 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(RemoteLocationRecordTable.getDropSql());
+        db.execSQL(LocalUnsentLocationRecordTable.getDropSql());
 
+        onCreate(db);
     }
 }
