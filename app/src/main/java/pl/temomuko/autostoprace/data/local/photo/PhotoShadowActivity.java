@@ -229,7 +229,7 @@ public class PhotoShadowActivity extends BaseActivity {
 
     private void requestPhotoFromGallery() {
         Intent intent = new Intent();
-        intent.setType("image");
+        intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, REQUEST_CODE_GALLERY);
     }
