@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -36,8 +34,6 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         setupPartnersList();
-        loadBackground();
-        loadAppLogo();
         loadSponsorLogo();
     }
 
@@ -58,20 +54,6 @@ public class SplashActivity extends BaseActivity {
 
     private void setupPartnersList() {
         mPartnersDrawables = PartnersDrawables.getAsArray();
-    }
-
-    private void loadBackground() {
-        Picasso.with(this)
-                .load(R.drawable.bg)
-                .placeholder(R.drawable.bg)
-                .into(mBackgroundImageView);
-    }
-
-    private void loadAppLogo() {
-        Picasso.with(this)
-                .load(R.drawable.logo_asr)
-                .placeholder(R.drawable.logo_asr)
-                .into(mAppLogoImageView);
     }
 
     private void loadSponsorLogo() {

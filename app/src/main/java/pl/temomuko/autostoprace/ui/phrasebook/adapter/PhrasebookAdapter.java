@@ -10,7 +10,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class PhrasebookAdapter extends RecyclerView.Adapter<PhrasebookAdapter.Vi
     }
 
     private void setupMessageIcon(ViewHolder holder) {
-        Picasso.with(mContext)
+        Glide.with(mContext)
                 .load(R.drawable.ic_message_black_24dp)
                 .placeholder(R.drawable.ic_message_black_24dp)
                 .into(holder.mTranslationImageView);

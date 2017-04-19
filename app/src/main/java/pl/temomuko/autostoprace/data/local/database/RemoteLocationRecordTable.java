@@ -14,7 +14,7 @@ public abstract class RemoteLocationRecordTable extends LocalUnsentLocationRecor
 
     public static final String COLUMN_SERVER_RECEIPT_DATE = "server_receipt_date";
 
-    public static final String CREATE =
+    private static final String CREATE =
             "CREATE TABLE " + NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY," +
                     COLUMN_LATITUDE + " REAL NOT NULL," +
@@ -23,7 +23,8 @@ public abstract class RemoteLocationRecordTable extends LocalUnsentLocationRecor
                     COLUMN_ADDRESS + " TEXT," +
                     COLUMN_COUNTRY + " TEXT," +
                     COLUMN_COUNTRY_CODE + " TEXT," +
-                    COLUMN_SERVER_RECEIPT_DATE + " TEXT " +
+                    COLUMN_SERVER_RECEIPT_DATE + " TEXT," +
+                    COLUMN_IMAGE_URI + " TEXT" +
                     " );";
 
     public static ContentValues toContentValues(LocationRecord locationRecord) {
@@ -37,5 +38,13 @@ public abstract class RemoteLocationRecordTable extends LocalUnsentLocationRecor
         LocationRecord locationRecord = LocalUnsentLocationRecordTable.parseCursor(cursor);
         locationRecord.setServerReceiptDate(DbUtil.getDate(cursor, COLUMN_SERVER_RECEIPT_DATE));
         return locationRecord;
+    }
+
+    public static String getCreateSql() {
+        return CREATE;
+    }
+
+    public static String getDropSql() {
+        return "DROP TABLE IF EXISTS " + NAME;
     }
 }

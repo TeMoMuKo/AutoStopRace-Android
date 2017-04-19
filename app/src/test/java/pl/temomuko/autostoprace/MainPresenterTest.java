@@ -70,7 +70,7 @@ public class MainPresenterTest {
     public void testLoadLocationsReturnsLocations() throws Exception {
         //given
         List<LocationRecord> locationsFromDatabase = new ArrayList<>();
-        locationsFromDatabase.add(new LocationRecord(99.99, 99.99, "Yo", "Somewhere, Poland", "Poland", "PL"));
+        locationsFromDatabase.add(TestConstants.PROPER_LOCATION_RECORD);
         when(mMockDataManager.getTeamLocationRecordsFromDatabase())
                 .thenReturn(Single.just(locationsFromDatabase));
         //when

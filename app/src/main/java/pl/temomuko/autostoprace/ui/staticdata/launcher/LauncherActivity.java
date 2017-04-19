@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
 import butterknife.BindView;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
@@ -27,23 +25,7 @@ public class LauncherActivity extends DrawerActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-        loadAppLogo();
-        loadBackground();
         setListeners();
-    }
-
-    private void loadAppLogo() {
-        Picasso.with(this)
-                .load(R.drawable.logo_asr)
-                .placeholder(R.drawable.logo_asr)
-                .into(mAppLogoImageView);
-    }
-
-    private void loadBackground() {
-        Picasso.with(this)
-                .load(R.drawable.bg)
-                .placeholder(R.drawable.bg)
-                .into(mBackgroundImageView);
     }
 
     private void setListeners() {

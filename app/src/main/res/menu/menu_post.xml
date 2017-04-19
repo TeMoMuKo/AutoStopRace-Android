@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_add_photo"
+        android:icon="@drawable/ic_add_a_photo_white"
+        android:title="@string/add_photo"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/action_post_send"
         android:icon="@drawable/ic_send_white_24dp"
         android:title="@string/action_save_and_send"

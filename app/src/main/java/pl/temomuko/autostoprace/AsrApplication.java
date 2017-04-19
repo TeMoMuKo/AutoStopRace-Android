@@ -56,4 +56,3 @@ public class AsrApplication extends Application {
         return (AsrApplication) context.getApplicationContext();
     }
 }
-

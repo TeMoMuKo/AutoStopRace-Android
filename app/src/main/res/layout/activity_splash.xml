@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        tools:src="@drawable/bg"
+        android:src="@drawable/bg"
         tools:ignore="ContentDescription"/>
 
     <LinearLayout
@@ -31,10 +31,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/description_logo_asr"
                 android:paddingTop="32dp"
                 android:scaleType="centerInside"
-                tools:src="@drawable/logo_asr"
-                android:contentDescription="@string/description_logo_asr"/>
+                android:src="@drawable/logo_asr"/>
 
         </LinearLayout>
 
@@ -75,10 +75,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@android:color/white"
+                        android:contentDescription="@string/description_sponsor_logo"
                         android:paddingBottom="32dp"
                         android:paddingTop="0dp"
-                        tools:src="@drawable/logo_partybusy"
-                        android:contentDescription="@string/description_sponsor_logo"/>
+                        tools:src="@drawable/logo_partybusy"/>
 
                 </LinearLayout>
 

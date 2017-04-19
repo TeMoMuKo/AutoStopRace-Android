@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -29,8 +29,6 @@ import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
  * Created by Szymon Kozak on 2016-02-05.
  */
 public class ContactActivity extends DrawerActivity implements ContactMvpView {
-
-    private static final String TAG = ContactActivity.class.getSimpleName();
 
     @Inject ContactPresenter mContactPresenter;
     @Inject ContactRowsAdapter mContactRowsAdapter;
@@ -63,11 +61,10 @@ public class ContactActivity extends DrawerActivity implements ContactMvpView {
     }
 
     private void setupCollapsingToolbar() {
-        Picasso.with(this).load(R.drawable.img_team_asr)
+        Glide.with(this).load(R.drawable.img_team_asr)
                 .placeholder(R.drawable.img_team_asr_placeholder)
-                .noFade()
-                .fit()
                 .centerCrop()
+                .dontAnimate()
                 .into(mCollapsingToolbarBackground);
     }
 

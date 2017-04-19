@@ -141,7 +141,7 @@ public class LocationSyncService extends Service {
                         (unsentAndServerResponsePair, receivedResponse) ->
                                 UnsentAndResponseLocationRecordPair.create(
                                         unsentAndServerResponsePair.getUnsentLocationRecord(),
-                                        (LocationRecord) receivedResponse.body()
+                                        receivedResponse.body()
                                 )
                 );
     }
@@ -180,11 +180,11 @@ public class LocationSyncService extends Service {
 
     public static class NetworkChangeReceiver extends BroadcastReceiver {
 
+        private static final String TAG = NetworkChangeReceiver.class.getSimpleName();
+
         @Inject
         public NetworkChangeReceiver() {
         }
-
-        private static final String TAG = NetworkChangeReceiver.class.getSimpleName();
 
         @Override
         public void onReceive(final Context context, final Intent intent) {
