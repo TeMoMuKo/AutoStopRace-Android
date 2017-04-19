@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace.data.local.photo;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,12 +16,13 @@ import rx.subjects.Subject;
 @Singleton
 public class ImageController {
 
-    private static final String TAG = ImageController.class.getSimpleName();
-
     private static final int CROP_PHOTO_IMAGE_MAX_WIDTH_HEIGHT_IN_PX = 1536;
-    private static Subject<Uri, Uri> photoSubject = SubjectFactory.createEmptyCompleted();
+
     private final Context appContext;
     private final FileController fileController;
+
+    @NonNull
+    private Subject<Uri, Uri> photoSubject = SubjectFactory.createEmptyCompleted();
 
     @Inject
     public ImageController(@AppContext Context context, FileController fileController) {
@@ -28,21 +30,20 @@ public class ImageController {
         this.fileController = fileController;
     }
 
-    static void passResult(Uri photoUri) {
+    public void passResult(Uri photoUri) {
         photoSubject.onNext(photoUri);
     }
 
-    static void passError(Throwable throwable) {
+    public void passError(Throwable throwable) {
         photoSubject.onError(throwable);
     }
 
-    public Observable<Uri> requestPhoto(final ImageSourceEnum imageSourceEnum) {
-
+    public Observable<Uri> requestPhoto(final ImageSourceType imageSourceType) {
         photoSubject.onCompleted();
         photoSubject = SubjectFactory.createNew();
 
         return getPhotoObservable()
-                .doOnSubscribe(() -> PhotoShadowActivity.startActivity(appContext, imageSourceEnum, CROP_PHOTO_IMAGE_MAX_WIDTH_HEIGHT_IN_PX));
+                .doOnSubscribe(() -> PhotoShadowActivity.startActivity(appContext, imageSourceType, CROP_PHOTO_IMAGE_MAX_WIDTH_HEIGHT_IN_PX));
     }
 
     public Observable<Uri> getPhotoObservable() {
@@ -51,7 +52,7 @@ public class ImageController {
                 .flatMap(fileController::checkFileSizeLessThanMax);
     }
 
-    public Observable<String> getBase64Image(Uri uri){
+    public Observable<String> getBase64Image(Uri uri) {
         return fileController.getBase64FromUri(uri);
     }
 

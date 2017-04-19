@@ -21,7 +21,7 @@ import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
 import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.local.photo.ImageController;
-import pl.temomuko.autostoprace.data.local.photo.ImageSourceEnum;
+import pl.temomuko.autostoprace.data.local.photo.ImageSourceType;
 import pl.temomuko.autostoprace.data.model.ContactField;
 import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
@@ -202,8 +202,8 @@ public class DataManager {
     }
 
     /* Photo */
-    public Observable<Uri> requestPhoto(ImageSourceEnum imageSourceEnum) {
-        return mImageController.requestPhoto(imageSourceEnum);
+    public Observable<Uri> requestPhoto(ImageSourceType imageSourceType) {
+        return mImageController.requestPhoto(imageSourceType);
     }
 
     public Observable<Uri> getPhotoObservable() {

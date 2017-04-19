@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.Event;
-import pl.temomuko.autostoprace.data.local.photo.ImageSourceEnum;
+import pl.temomuko.autostoprace.data.local.photo.ImageSourceType;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.util.CoordsUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
@@ -279,12 +279,7 @@ public class PostActivity extends BaseActivity implements PostMvpView, PhotoSour
     }
 
     @Override
-    public void onUploadFromGallerySelect() {
-        mPostPresenter.requestPhoto(ImageSourceEnum.GALLERY);
-    }
-
-    @Override
-    public void onTakePhotoSelect() {
-        mPostPresenter.requestPhoto(ImageSourceEnum.CAMERA);
+    public void onImageSourceSelected(ImageSourceType imageSourceType) {
+        mPostPresenter.requestPhoto(imageSourceType);
     }
 }

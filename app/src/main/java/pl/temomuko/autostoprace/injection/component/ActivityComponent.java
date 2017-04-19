@@ -1,6 +1,7 @@
 package pl.temomuko.autostoprace.injection.component;
 
 import dagger.Component;
+import pl.temomuko.autostoprace.data.local.photo.PhotoShadowActivity;
 import pl.temomuko.autostoprace.injection.ActivityScope;
 import pl.temomuko.autostoprace.injection.module.ActivityModule;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
@@ -46,4 +47,6 @@ public interface ActivityComponent {
     void inject(SettingsFragment settingsFragment);
 
     void inject(AboutActivity aboutActivity);
+
+    void inject(PhotoShadowActivity photoShadowActivity);
 }

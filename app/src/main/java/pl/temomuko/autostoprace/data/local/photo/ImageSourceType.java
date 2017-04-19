@@ -1,6 +1,6 @@
 package pl.temomuko.autostoprace.data.local.photo;
 
-public enum ImageSourceEnum {
+public enum ImageSourceType {
     CAMERA,
     GALLERY
 }

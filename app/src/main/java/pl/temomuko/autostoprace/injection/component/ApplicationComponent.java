@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.local.photo.ImageController;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
@@ -30,6 +31,8 @@ public interface ApplicationComponent {
     DataManager dataManager();
 
     ErrorHandler errorHandler();
+
+    ImageController imageController();
 
     void inject(AsrApplication asrApplication);
 }

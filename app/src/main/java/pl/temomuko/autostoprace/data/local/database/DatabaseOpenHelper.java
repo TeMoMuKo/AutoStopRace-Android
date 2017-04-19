@@ -16,7 +16,7 @@ import pl.temomuko.autostoprace.injection.AppContext;
 public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "auto_stop_race.db";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 2;
 
     @Inject
     public DatabaseOpenHelper(@AppContext Context context) {

@@ -214,8 +214,8 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         this.mAddress = in.readString();
         this.mCountry = in.readString();
         this.mCountryCode = in.readString();
-        long tmpMServerReceiptDate = in.readLong();
-        this.mServerReceiptDate = tmpMServerReceiptDate == -1 ? null : new Date(tmpMServerReceiptDate);
+        long tmpServerReceiptDate = in.readLong();
+        this.mServerReceiptDate = tmpServerReceiptDate == -1 ? null : new Date(tmpServerReceiptDate);
         this.mImageUri = in.readParcelable(Uri.class.getClassLoader());
     }
 
@@ -242,7 +242,6 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
 
         @Override
         public Uri read(JsonReader in) throws IOException {
-
             if (in.peek() == JsonToken.NULL) {
                 in.nextNull();
                 return null;

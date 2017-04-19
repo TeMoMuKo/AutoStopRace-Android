@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.data.local.photo.ImageSourceType;
 
 public class PhotoSourceChooserBottomSheet extends BottomSheetDialogFragment {
 
@@ -35,10 +36,10 @@ public class PhotoSourceChooserBottomSheet extends BottomSheetDialogFragment {
             OnPhotoSourceSelectedListener listener = (OnPhotoSourceSelectedListener) callingActivity;
             switch (view.getId()) {
                 case R.id.upload_photo_linear_layout:
-                    listener.onUploadFromGallerySelect();
+                    listener.onImageSourceSelected(ImageSourceType.GALLERY);
                     break;
                 case R.id.take_photo_linear_layout:
-                    listener.onTakePhotoSelect();
+                    listener.onImageSourceSelected(ImageSourceType.CAMERA);
                     break;
             }
             dismiss();
@@ -50,8 +51,6 @@ public class PhotoSourceChooserBottomSheet extends BottomSheetDialogFragment {
 
     public interface OnPhotoSourceSelectedListener {
 
-        void onUploadFromGallerySelect();
-
-        void onTakePhotoSelect();
+        void onImageSourceSelected(ImageSourceType imageSourceType);
     }
 }

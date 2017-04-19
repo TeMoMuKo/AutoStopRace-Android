@@ -26,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import onactivityresult.ActivityResult;
 import onactivityresult.OnActivityResult;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
@@ -55,10 +57,12 @@ public class PhotoShadowActivity extends BaseActivity {
     private Uri cameraPhotoUri;
     private int maxWidthHeightInPx;
 
-    public static void startActivity(Context context, ImageSourceEnum imageSourceEnum,
+    @Inject ImageController mImageController;
+
+    public static void startActivity(Context context, ImageSourceType imageSourceType,
                                      int aspectRatioX, int aspectRatioY, int maxHeightWidthInPx) {
         Intent intent = new Intent(context, PhotoShadowActivity.class);
-        intent.putExtra(REQUEST_TYPE_EXTRA, imageSourceEnum);
+        intent.putExtra(REQUEST_TYPE_EXTRA, imageSourceType);
         intent.putExtra(ASPECT_RATIO_X_EXTRA, aspectRatioX);
         intent.putExtra(ASPECT_RATIO_Y_EXTRA, aspectRatioY);
         intent.putExtra(MAX_HEIGHT_WIDTH_IN_PX_EXTRA, maxHeightWidthInPx);
@@ -67,9 +71,9 @@ public class PhotoShadowActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
-    public static void startActivity(Context context, ImageSourceEnum imageSourceEnum, int maxHeightWidthInPx) {
+    public static void startActivity(Context context, ImageSourceType imageSourceType, int maxHeightWidthInPx) {
         Intent intent = new Intent(context, PhotoShadowActivity.class);
-        intent.putExtra(REQUEST_TYPE_EXTRA, imageSourceEnum);
+        intent.putExtra(REQUEST_TYPE_EXTRA, imageSourceType);
         intent.putExtra(MAX_HEIGHT_WIDTH_IN_PX_EXTRA, maxHeightWidthInPx);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -84,6 +88,7 @@ public class PhotoShadowActivity extends BaseActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivityComponent().inject(this);
         if (savedInstanceState == null) {
             handleIntent(getIntent());
         } else {
@@ -194,23 +199,23 @@ public class PhotoShadowActivity extends BaseActivity {
     }
 
     private void finishWithError(Throwable throwable) {
-        ImageController.passError(throwable);
+        mImageController.passError(throwable);
         finish();
     }
 
     private void finishWithSuccess(Uri uri) {
-        ImageController.passResult(uri);
+        mImageController.passResult(uri);
         finish();
     }
 
     private void handleIntent(Intent intent) {
         maxWidthHeightInPx = intent.getIntExtra(MAX_HEIGHT_WIDTH_IN_PX_EXTRA, NOT_SET);
 
-        ImageSourceEnum imageSourceEnum = (ImageSourceEnum) intent.getExtras().get(REQUEST_TYPE_EXTRA);
-        if (imageSourceEnum == null) {
+        ImageSourceType imageSourceType = (ImageSourceType) intent.getExtras().get(REQUEST_TYPE_EXTRA);
+        if (imageSourceType == null) {
             throw new IllegalArgumentException("Requested source type cannot be null");
         }
-        switch (imageSourceEnum) {
+        switch (imageSourceType) {
             case GALLERY:
                 requestPhotoFromGallery();
                 break;

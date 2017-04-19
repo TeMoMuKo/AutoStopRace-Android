@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
-import pl.temomuko.autostoprace.data.local.photo.ImageSourceEnum;
+import pl.temomuko.autostoprace.data.local.photo.ImageSourceType;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.AddressUtil;
@@ -108,9 +108,9 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     }
 
 
-    public void requestPhoto(ImageSourceEnum imageSourceEnum) {
+    public void requestPhoto(ImageSourceType imageSourceType) {
         mPhotoSubscriptions.add(
-                mDataManager.requestPhoto(imageSourceEnum)
+                mDataManager.requestPhoto(imageSourceType)
                         .subscribe(getPhotoObserver())
         );
     }
