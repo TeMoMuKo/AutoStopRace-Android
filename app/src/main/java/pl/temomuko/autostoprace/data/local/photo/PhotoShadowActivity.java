@@ -53,6 +53,8 @@ public class PhotoShadowActivity extends BaseActivity {
 
     private static final int NOT_SET = -1;
 
+    private static final String GALLERY_INTENT_TYPE = "image/*";
+
     private File cameraPhotoFile;
     private Uri cameraPhotoUri;
     private int maxWidthHeightInPx;
@@ -229,7 +231,7 @@ public class PhotoShadowActivity extends BaseActivity {
 
     private void requestPhotoFromGallery() {
         Intent intent = new Intent();
-        intent.setType("image/*");
+        intent.setType(GALLERY_INTENT_TYPE);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, REQUEST_CODE_GALLERY);
     }
