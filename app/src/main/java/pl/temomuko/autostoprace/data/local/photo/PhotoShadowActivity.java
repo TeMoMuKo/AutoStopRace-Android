@@ -317,15 +317,19 @@ public class PhotoShadowActivity extends BaseActivity {
         return 0;
     }
 
-    public static class PickPhotoFromGalleryCanceledException extends Exception {
+    public static class ImageActionCanceledException extends Exception {
 
     }
 
-    public static class TakePhotoCanceledException extends Exception {
+    public static class PickPhotoFromGalleryCanceledException extends ImageActionCanceledException {
 
     }
 
-    public static class PhotoCroppingCanceledException extends Exception {
+    public static class TakePhotoCanceledException extends ImageActionCanceledException {
+
+    }
+
+    public static class PhotoCroppingCanceledException extends ImageActionCanceledException {
 
     }
 }

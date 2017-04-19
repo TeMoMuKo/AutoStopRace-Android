@@ -14,6 +14,7 @@ import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
 import pl.temomuko.autostoprace.data.local.photo.ImageSourceType;
+import pl.temomuko.autostoprace.data.local.photo.PhotoShadowActivity;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.AddressUtil;
@@ -218,7 +219,9 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
             @Override
             public void onError(Throwable e) {
                 LogUtil.e(TAG, String.format("Error while taking photo: %s", e.getLocalizedMessage()));
-                getMvpView().showErrorWhileTakingPhoto();
+                if (!(e instanceof PhotoShadowActivity.ImageActionCanceledException)) {
+                    getMvpView().showErrorWhileTakingPhoto();
+                }
             }
 
             @Override
