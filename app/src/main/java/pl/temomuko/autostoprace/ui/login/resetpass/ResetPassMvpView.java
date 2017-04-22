@@ -9,7 +9,7 @@ public interface ResetPassMvpView extends MvpView {
 
     void setInvalidEmailValidationError(boolean state);
 
-    void showSuccessInfo(String email);
+    void showSuccessInfo();
 
     void showError(String message);
 

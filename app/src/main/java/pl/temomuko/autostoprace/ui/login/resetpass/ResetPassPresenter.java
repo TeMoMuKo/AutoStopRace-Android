@@ -79,8 +79,7 @@ public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
         mSubscription = mRxResetCacheHelper.getRestoredCachedObservable()
                 .subscribe(response -> {
                     clearCurrentRequestObservable();
-                    String email = response.body().getUser().getEmail();
-                    getMvpView().showSuccessInfo(email);
+                    getMvpView().showSuccessInfo();
                     getMvpView().finish();
                 }, this::handleError, this::stopProgress);
     }
