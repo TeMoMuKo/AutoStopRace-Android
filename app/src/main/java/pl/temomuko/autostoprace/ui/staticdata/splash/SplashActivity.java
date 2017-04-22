@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +28,7 @@ public class SplashActivity extends BaseActivity {
     @BindView(R.id.iv_splash_bg) ImageView mBackgroundImageView;
 
     private Subscription mSubscription;
-    private Integer[] mPartnersDrawables;
+    private List<Integer> mPartnersDrawables;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void setupPartnersList() {
-        mPartnersDrawables = PartnersDrawables.getAsArray();
+        mPartnersDrawables = PartnersDrawables.getAll();
     }
 
     private void loadSponsorLogo() {
@@ -62,8 +63,8 @@ public class SplashActivity extends BaseActivity {
     }
 
     private int getRandomPartnerLogoDrawableId() {
-        int randomDrawableIndex = new Random().nextInt(mPartnersDrawables.length);
-        return mPartnersDrawables[randomDrawableIndex];
+        int randomDrawableIndex = new Random().nextInt(mPartnersDrawables.size());
+        return mPartnersDrawables.get(randomDrawableIndex);
     }
 
     private void startMainActivity() {
