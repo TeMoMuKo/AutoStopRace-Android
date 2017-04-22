@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@android:color/white"
-              android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/tv_header"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:textColor="@color/primary_dark"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:text="Partnerzy złoci"/>
-
-</LinearLayout>
+<TextView android:id="@+id/tv_header"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/partners_header_height"
+          android:background="@android:color/white"
+          android:gravity="center"
+          android:textColor="@color/primary_dark"
+          android:textSize="20sp"
+          android:textStyle="bold"
+          tools:text="Partnerzy złoci"/>
