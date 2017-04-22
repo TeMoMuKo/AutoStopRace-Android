@@ -138,12 +138,10 @@ public class PhotoShadowActivity extends BaseActivity {
         if (RESULT_OK == resultCode) {
             Uri cropUri = CropImage.getActivityResult(intent).getUri();
             revokeUriReadWritePermissionForKitkat(cropUri);
-
             if (cameraPhotoUri != null && cameraPhotoFile != null) {
                 revokeUriReadWritePermissionForKitkat(cameraPhotoUri);
                 cameraPhotoFile.delete();
             }
-
             finishWithSuccess(cropUri);
         } else {
             finishWithError(new PhotoCroppingCanceledException());
@@ -154,11 +152,7 @@ public class PhotoShadowActivity extends BaseActivity {
         try {
             Uri destination = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, createCropImageFile());
             Uri galleryPhoto = intent.getData();
-
             Intent cropIntent = getCropIntent(galleryPhoto, destination);
-
-            grantUriReadWritePermissionForKitkat(cropIntent, destination);
-
             startActivityForResult(cropIntent, REQUEST_CODE_CROP_IMAGE);
         } catch (IOException e) {
             finishWithError(e);
@@ -168,12 +162,7 @@ public class PhotoShadowActivity extends BaseActivity {
     private void cropImageFromCamera() {
         try {
             Uri destination = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, createCropImageFile());
-
             Intent cropIntent = getCropIntent(cameraPhotoUri, destination);
-
-            grantUriReadWritePermissionForKitkat(cropIntent, cameraPhotoUri);
-            grantUriReadWritePermissionForKitkat(cropIntent, destination);
-
             startActivityForResult(cropIntent, REQUEST_CODE_CROP_IMAGE);
         } catch (IOException e) {
             finishWithError(e);
