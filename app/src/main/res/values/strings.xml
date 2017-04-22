@@ -75,7 +75,7 @@
     <string name="action_reset_pass">Przypomnij mi hasło</string>
     <string name="forgotten_password">Przypomnij mi hasło</string>
     <string name="title_activity_reset_pass">Resetowanie hasła</string>
-    <string name="msg_reset_pass_email_sent">Email zawierający dalsze instrukcje został wysłany na adres %1$s</string>
+    <string name="msg_reset_pass_email_sent">Email zawierający dalsze instrukcje został wysłany</string>
     <string name="hint_enter_team_number">Wpisz numer drużyny…</string>
     <string name="msg_last_location_record_message">Ostatnia wiadomość:</string>
     <string name="msg_last_location_record_received">Ostatnie zameldowanie: </string>
