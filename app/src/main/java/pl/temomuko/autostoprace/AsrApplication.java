@@ -6,12 +6,14 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 
+import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.Locale;
 
 import javax.inject.Inject;
 
+import io.fabric.sdk.android.Fabric;
 import pl.temomuko.autostoprace.injection.component.ApplicationComponent;
 import pl.temomuko.autostoprace.injection.component.DaggerApplicationComponent;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
@@ -32,7 +34,7 @@ public class AsrApplication extends Application {
     public void onCreate() {
         super.onCreate();
         getComponent().inject(this);
-     //   Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
         LeakCanary.install(this);
         Locale.setDefault(new Locale(Constants.DEFAULT_LOCALE));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
