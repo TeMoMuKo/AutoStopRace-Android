@@ -27,12 +27,12 @@ import pl.temomuko.autostoprace.ui.staticdata.PartnersDrawables;
  */
 public class PartnersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final int TYPE_HEADER = 0;
-    public static final int TYPE_LOGO = 1;
-    public static final String DRAWABLE_TYPE = "drawable";
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_LOGO = 1;
+    private static final String DRAWABLE_TYPE = "drawable";
 
-    private List<Integer> mItems;
-    private Context context;
+    private final List<Integer> mItems;
+    private final Context context;
 
     @Inject
     public PartnersAdapter(@ActivityContext Context context) {
