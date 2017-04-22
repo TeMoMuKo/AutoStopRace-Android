@@ -36,6 +36,7 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
+import pl.temomuko.autostoprace.ui.main.Shortcuts;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterItem;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterRenderer;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.TeamLocationInfoWindowAdapter;
@@ -90,6 +91,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         setupSearchTeamView();
         setupIntentInstanceState(savedInstanceState);
         setupMapFragment();
+        reportShortcutUsage(Shortcuts.LOCATIONS_MAP);
     }
 
     @Override

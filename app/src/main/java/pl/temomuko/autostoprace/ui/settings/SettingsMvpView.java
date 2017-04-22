@@ -16,4 +16,6 @@ public interface SettingsMvpView extends MvpView {
     void setupGuestLogoutPreferenceSummary();
 
     void setupLogoutPreferenceEnabled(boolean state);
+
+    void disablePostLocationShortcut();
 }

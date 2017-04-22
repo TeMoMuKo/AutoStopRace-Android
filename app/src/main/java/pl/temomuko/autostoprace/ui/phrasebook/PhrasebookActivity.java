@@ -25,6 +25,7 @@ import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.Phrasebook;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
+import pl.temomuko.autostoprace.ui.main.Shortcuts;
 import pl.temomuko.autostoprace.ui.phrasebook.adapter.PhrasebookAdapter;
 import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
 import rx.Subscription;
@@ -63,6 +64,7 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
         setupRecyclerView();
         mPhrasebookPresenter.loadPhrasebook();
         loadLastSearchQuery(savedInstanceState);
+        reportShortcutUsage(Shortcuts.PHRASEBOOK);
     }
 
     @Override

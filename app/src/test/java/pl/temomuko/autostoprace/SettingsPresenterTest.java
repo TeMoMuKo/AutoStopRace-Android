@@ -94,6 +94,7 @@ public class SettingsPresenterTest {
         //then
         verify(mMockDataManager).clearUserData();
         verify(mMockSettingsMvpView).showLogoutMessage();
+        verify(mMockSettingsMvpView).disablePostLocationShortcut();
         verify(mMockSettingsMvpView).startLauncherActivity();
     }
 }

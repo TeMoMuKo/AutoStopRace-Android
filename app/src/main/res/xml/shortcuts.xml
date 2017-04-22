@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android"
+           xmlns:tools="http://schemas.android.com/tools">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_map"
+        android:shortcutId="shortcut_locations_map"
+        android:shortcutLongLabel="@string/shortcut_locations_map_long_label"
+        android:shortcutShortLabel="@string/shortcut_locations_map_short_label"
+        tools:targetApi="n_mr1">
+        <intent
+            android:action="pl.temomuko.autostoprace.action.locationsmap"
+            android:targetClass="pl.temomuko.autostoprace.ui.main.MainActivity"
+            android:targetPackage="pl.temomuko.autostoprace"/>
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_message"
+        android:shortcutId="shortcut_phrasebook"
+        android:shortcutLongLabel="@string/shortcut_phrasebook_long_label"
+        android:shortcutShortLabel="@string/shortcut_phrasebook_short_label"
+        tools:targetApi="n_mr1">
+        <intent
+            android:action="pl.temomuko.autostoprace.action.phrasebook"
+            android:targetClass="pl.temomuko.autostoprace.ui.main.MainActivity"
+            android:targetPackage="pl.temomuko.autostoprace"/>
+    </shortcut>
+</shortcuts>

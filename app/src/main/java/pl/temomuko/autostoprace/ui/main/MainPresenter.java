@@ -129,6 +129,10 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         getMvpView().showError(mErrorHandler.getMessage(throwable));
     }
 
+    public void goToPhrasebook() {
+        getMvpView().startPhrasebookActivity();
+    }
+
     /* Private helper methods */
 
     private void validateToken() {
@@ -140,6 +144,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
                             } else if (response.code() == HttpStatus.UNAUTHORIZED) {
                                 mDataManager.clearUserData().subscribe();
                                 getMvpView().showSessionExpiredError();
+                                getMvpView().disablePostLocationShortcut();
                                 getMvpView().startLoginActivity();
                             }
                         },
@@ -147,7 +152,9 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     }
 
     private void setLocationsView(List<LocationRecord> locationRecords) {
-        if (locationRecords.isEmpty()) getMvpView().showEmptyInfo();
+        if (locationRecords.isEmpty()) {
+            getMvpView().showEmptyInfo();
+        }
         else getMvpView().updateLocationRecordsList(locationRecords);
         getMvpView().setProgress(false);
     }
@@ -186,5 +193,9 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private void handleLoadLocationsError(Throwable throwable) {
         getMvpView().setProgress(false);
         getMvpView().showError(mErrorHandler.getMessage(throwable));
+    }
+
+    public void goToLocationsMap() {
+        getMvpView().startTeamLocationsMapActivity();
     }
 }
