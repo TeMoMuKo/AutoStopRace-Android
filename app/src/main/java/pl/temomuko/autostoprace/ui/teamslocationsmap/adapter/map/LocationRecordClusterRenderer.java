@@ -20,14 +20,14 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
     private static final int MIN_CLUSTER_SIZE = 10;
 
     private final Context mContext;
-    private final String emptyTitleString;
-    private final String pressToSeeThePhotoString;
+    private final String emptyTitle;
+    private final String pressToSeeThePhoto;
 
     public LocationRecordClusterRenderer(Context context, GoogleMap map, ClusterManager<LocationRecordClusterItem> clusterManager) {
         super(context, map, clusterManager);
         mContext = context;
-        emptyTitleString = mContext.getString(R.string.msg_location_record_received);
-        pressToSeeThePhotoString = mContext.getString(R.string.msg_press_to_see_the_photo);
+        emptyTitle = mContext.getString(R.string.msg_location_record_received);
+        pressToSeeThePhoto = mContext.getString(R.string.msg_press_to_see_the_photo);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
         Uri imageUri = item.getImageUri();
 
         final String itemTitle = item.getTitle();
-        final String title = TextUtils.isEmpty(itemTitle) ? emptyTitleString : itemTitle;
+        final String title = TextUtils.isEmpty(itemTitle) ? emptyTitle : itemTitle;
 
         String snippet;
         final String itemSnippet = item.getSnippet();
@@ -85,6 +85,6 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
 
     @NonNull
     private String getMarkerWithPhotoSnippet(String lastSnippet) {
-        return lastSnippet + "\n" + pressToSeeThePhotoString;
+        return lastSnippet + "\n" + pressToSeeThePhoto;
     }
 }

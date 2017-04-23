@@ -8,7 +8,8 @@ import java.util.Iterator;
 
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterItem;
 
-public class ClasterUtil {
+public final class ClasterUtil {
+    
     private ClasterUtil() {
         throw new AssertionError();
     }

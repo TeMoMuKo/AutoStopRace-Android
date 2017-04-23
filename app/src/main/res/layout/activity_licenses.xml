@@ -26,8 +26,8 @@
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/mpb_licenses_loading_progress"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/default_circular_progressbar_size"
+            android:layout_height="@dimen/default_circular_progressbar_size"
             android:layout_gravity="center"
             app:mpb_progressStyle="circular"
             />

@@ -161,7 +161,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@+id/photo_image_view"
                         android:padding="@dimen/default_margin"
-                        android:src="@drawable/remove_photo_button"/>
+                        android:src="@drawable/close_button"/>
 
                 </RelativeLayout>
 
