@@ -142,7 +142,7 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable, P
         return mServerReceiptDate;
     }
 
-    public Uri getImageLocation() {
+    public Uri getImageUri() {
         return mImageLocation == null ? null : Uri.parse(mImageLocation);
     }
 

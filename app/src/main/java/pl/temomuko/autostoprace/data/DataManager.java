@@ -110,7 +110,7 @@ public class DataManager {
     }
 
     public Observable<Response<LocationRecord>> postLocationRecordToServer(final LocationRecord locationRecord) {
-        return mImageController.getBase64Image(locationRecord.getImageLocation())
+        return mImageController.getBase64Image(locationRecord.getImageUri())
                 .flatMap(base64Image ->
                         mApiManager.getAsrService().postLocationRecord(
                                 mPrefsHelper.getAuthAccessToken(),

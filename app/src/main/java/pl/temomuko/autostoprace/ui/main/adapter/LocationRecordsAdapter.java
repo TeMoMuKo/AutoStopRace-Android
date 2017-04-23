@@ -162,7 +162,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         setupReceiptDate(holder, locationRecord);
 
         String message = locationRecord.getMessage();
-        Uri imageUri = locationRecord.getImageLocation();
+        Uri imageUri = locationRecord.getImageUri();
         if (imageUri == null) {
             holder.mTvLocationRecordMessage.setText(message);
         } else {
