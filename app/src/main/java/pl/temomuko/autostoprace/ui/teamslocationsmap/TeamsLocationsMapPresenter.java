@@ -1,7 +1,9 @@
 package pl.temomuko.autostoprace.ui.teamslocationsmap;
 
 import android.app.Activity;
+import android.net.Uri;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,15 +15,15 @@ import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.TeamNotFoundException;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterItem;
+import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import retrofit2.Response;
 import rx.Observable;
+import rx.Single;
 import rx.Subscription;
 
-/**
- * Created by Rafał Naniewicz on 01.04.2016.
- */
 public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocationsMapMvpView> {
 
     private static final String TAG = TeamsLocationsMapPresenter.class.getSimpleName();
@@ -29,6 +31,7 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     private final ErrorHandler mErrorHandler;
     private Subscription mLoadAllTeamsSubscription;
     private Subscription mLoadTeamSubscription;
+    private Subscription mHandleClusterSubscription;
     private RxCacheHelper<Response<List<Team>>> mRxAllTeamsCacheHelper;
     private RxCacheHelper<Response<List<LocationRecord>>> mRxTeamLocationsCacheHelper;
 
@@ -53,6 +56,7 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     public void detachView() {
         if (mLoadTeamSubscription != null) mLoadTeamSubscription.unsubscribe();
         if (mLoadAllTeamsSubscription != null) mLoadAllTeamsSubscription.unsubscribe();
+        if (mHandleClusterSubscription != null) mHandleClusterSubscription.unsubscribe();
         super.detachView();
     }
 
@@ -95,6 +99,25 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
                         .compose(RxUtil.applyIoSchedulers())
         );
         continueCachedTeamLocationsRequest();
+    }
+
+    public void handleMarkerClick(Uri imageUri) {
+        if (imageUri != null) {
+            getMvpView().openFullscreenImage(imageUri);
+        }
+    }
+
+    public void handleClusterMarkerClick(final Collection<LocationRecordClusterItem> clusterItems) {
+        if (mHandleClusterSubscription != null) mHandleClusterSubscription.unsubscribe();
+
+        mHandleClusterSubscription = Single.fromCallable(() -> ClasterUtil.getNewestClusterItem(clusterItems))
+                .map(LocationRecordClusterItem::getImageUri)
+                .toObservable()
+                .filter(uri -> uri != null)
+                .compose(RxUtil.applyIoSchedulers())
+                .subscribe(getMvpView()::openFullscreenImage,
+                        throwable -> LogUtil.e(TAG, "Error occurred while looking for newest cluster:" + throwable.getMessage())
+                );
     }
 
     /* Private helper methods */

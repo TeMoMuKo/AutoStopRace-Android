@@ -112,4 +112,6 @@
     <string name="header_partners_strategic">Partnerzy Strategiczni</string>
     <string name="header_partners_gold">Partnerzy Złoci</string>
     <string name="header_partners_silver">Partnerzy Srebrni</string>
+    <string name="error_while_loading_photo">Podczas ładowania zdjęcia wystąpił błąd.</string>
+    <string name="msg_press_to_see_the_photo">Dotknij, aby zobaczyć zdjęcie</string>
 </resources>
