@@ -22,12 +22,16 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
     private final Context mContext;
     private final String emptyTitle;
     private final String pressToSeeThePhoto;
+    private final String lastLocationReceived;
+    private final String lastLocationRecordMessage;
 
     public LocationRecordClusterRenderer(Context context, GoogleMap map, ClusterManager<LocationRecordClusterItem> clusterManager) {
         super(context, map, clusterManager);
         mContext = context;
         emptyTitle = mContext.getString(R.string.msg_location_record_received);
         pressToSeeThePhoto = mContext.getString(R.string.msg_press_to_see_the_photo);
+        lastLocationReceived = mContext.getString(R.string.msg_last_location_record_received);
+        lastLocationRecordMessage = mContext.getString(R.string.msg_last_location_record_message);
     }
 
     @Override
@@ -62,19 +66,8 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
             final String lastSnippet = lastClusterItem.getSnippet();
             final Uri lastImageUri = lastClusterItem.getImageUri();
 
-            if (lastTitle == null) {
-                markerOptions.title(mContext.getString(R.string.msg_last_location_record_received));
-            } else {
-                markerOptions.title(mContext.getString(R.string.msg_last_location_record_message) + "\n"
-                        + lastTitle);
-            }
-
-            if (lastImageUri == null) {
-                markerOptions.snippet(lastSnippet);
-            } else {
-                markerOptions.snippet(getMarkerWithPhotoSnippet(lastSnippet));
-            }
-
+            markerOptions.title(lastTitle == null ? lastLocationReceived : lastLocationRecordMessage + "\n" + lastTitle);
+            markerOptions.snippet(lastImageUri == null ? lastSnippet : getMarkerWithPhotoSnippet(lastSnippet));
         }
     }
 
