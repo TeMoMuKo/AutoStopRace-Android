@@ -2,6 +2,7 @@ package pl.temomuko.autostoprace;
 
 import android.app.Activity;
 import android.location.Address;
+import android.net.Uri;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,6 +21,7 @@ import rx.Completable;
 import rx.Observable;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -59,9 +61,11 @@ public class PostPresenterTest {
                 .thenReturn(Completable.complete());
         when(mMockLatestAddress.getLatitude()).thenReturn(12.34);
         when(mMockLatestAddress.getLongitude()).thenReturn(45.67);
+        Uri mockUri = mock(Uri.class);
+        when(mockUri.toString()).thenReturn(TestConstants.TEST_IMAGE_URL);
 
         //when
-        mPostPresenter.tryToSaveLocation(FAKE_MESSAGE, TestConstants.TEST_IMAGE_URI);
+        mPostPresenter.tryToSaveLocation(FAKE_MESSAGE, mockUri);
 
         //then
         verify(mMockDataManager).saveUnsentLocationRecordToDatabase(any(LocationRecord.class));
