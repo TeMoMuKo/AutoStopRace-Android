@@ -19,19 +19,17 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
 
     private static final int MIN_CLUSTER_SIZE = 10;
 
-    private final Context mContext;
-    private final String emptyTitle;
-    private final String pressToSeeThePhoto;
-    private final String lastLocationReceived;
+    private final String emptyTitleMessage;
+    private final String pressToSeeThePhotoMessage;
+    private final String lastLocationReceivedMessage;
     private final String lastLocationRecordMessage;
 
     public LocationRecordClusterRenderer(Context context, GoogleMap map, ClusterManager<LocationRecordClusterItem> clusterManager) {
         super(context, map, clusterManager);
-        mContext = context;
-        emptyTitle = mContext.getString(R.string.msg_location_record_received);
-        pressToSeeThePhoto = mContext.getString(R.string.msg_press_to_see_the_photo);
-        lastLocationReceived = mContext.getString(R.string.msg_last_location_record_received);
-        lastLocationRecordMessage = mContext.getString(R.string.msg_last_location_record_message);
+        emptyTitleMessage = context.getString(R.string.msg_location_record_received);
+        pressToSeeThePhotoMessage = context.getString(R.string.msg_press_to_see_the_photo);
+        lastLocationReceivedMessage = context.getString(R.string.msg_last_location_record_received);
+        lastLocationRecordMessage = context.getString(R.string.msg_last_location_record_message);
     }
 
     @Override
@@ -39,7 +37,7 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
         Uri imageUri = item.getImageUri();
 
         final String itemTitle = item.getTitle();
-        final String title = TextUtils.isEmpty(itemTitle) ? emptyTitle : itemTitle;
+        final String title = TextUtils.isEmpty(itemTitle) ? emptyTitleMessage : itemTitle;
 
         String snippet;
         final String itemSnippet = item.getSnippet();
@@ -66,7 +64,7 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
             final String lastSnippet = lastClusterItem.getSnippet();
             final Uri lastImageUri = lastClusterItem.getImageUri();
 
-            markerOptions.title(lastTitle == null ? lastLocationReceived : lastLocationRecordMessage + "\n" + lastTitle);
+            markerOptions.title(lastTitle == null ? lastLocationReceivedMessage : lastLocationRecordMessage + "\n" + lastTitle);
             markerOptions.snippet(lastImageUri == null ? lastSnippet : getMarkerWithPhotoSnippet(lastSnippet));
         }
     }
@@ -78,6 +76,6 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
 
     @NonNull
     private String getMarkerWithPhotoSnippet(String lastSnippet) {
-        return lastSnippet + "\n" + pressToSeeThePhoto;
+        return lastSnippet + "\n" + pressToSeeThePhotoMessage;
     }
 }
