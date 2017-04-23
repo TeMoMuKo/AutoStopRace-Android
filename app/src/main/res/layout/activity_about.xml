@@ -39,7 +39,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/place_autocomplete_separator"
+                android:background="@color/separator"
                 android:layout_above="@+id/include_rate"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"/>
