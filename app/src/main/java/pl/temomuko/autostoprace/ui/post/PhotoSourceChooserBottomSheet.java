@@ -3,6 +3,8 @@ package pl.temomuko.autostoprace.ui.post;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,8 @@ public class PhotoSourceChooserBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.photo_source_chooser_bottom_sheet, container);
         ButterKnife.bind(this, view);
+
+        disableBottomSheetPeek();
         return view;
     }
 
@@ -47,6 +51,14 @@ public class PhotoSourceChooserBottomSheet extends BottomSheetDialogFragment {
             throw new ClassCastException(callingActivity.toString()
                     + " must implement OnMediaOptionsSelectedListener");
         }
+    }
+
+    private void disableBottomSheetPeek() {
+        getDialog().setOnShowListener(dialog -> {
+            BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialog;
+            View bottomSheetInternal = bottomSheetDialog.findViewById(android.support.design.R.id.design_bottom_sheet);
+            BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(bottomSheetInternal.getHeight());
+        });
     }
 
     public interface OnPhotoSourceSelectedListener {
