@@ -42,7 +42,9 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable, P
         mAddress = address;
         mCountry = country;
         mCountryCode = countryCode;
-        mImageLocation = imageLocation.toString();
+        if (imageLocation != null) {
+            mImageLocation = imageLocation.toString();
+        }
     }
 
     @Override
