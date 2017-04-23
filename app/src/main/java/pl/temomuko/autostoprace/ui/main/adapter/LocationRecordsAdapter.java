@@ -1,8 +1,15 @@
 package pl.temomuko.autostoprace.ui.main.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +40,7 @@ import pl.temomuko.autostoprace.util.LogUtil;
 /**
  * Created by Rafał Naniewicz on 05.03.2016.
  */
-public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecordsAdapter.ViewHolder> {
+public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecordsAdapter.LocationViewHolder> {
 
     private static final int COLLAPSED_ITEM_MESSAGE_MAX_LINES = 2;
     private static final int EXPANDED_ITEM_MESSAGE_MAX_LINES = Integer.MAX_VALUE;
@@ -43,10 +50,16 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     private final Context mAppContext;
     private List<LocationRecordItem> mSortedLocationRecordItems;
 
+    private final ImageSpan imageAttachedSpan;
+
     @Inject
     public LocationRecordsAdapter(@AppContext Context context) {
         mSortedLocationRecordItems = new ArrayList<>();
         mAppContext = context;
+
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_image_text_span_20sp);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        imageAttachedSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
     }
 
     public Parcelable[] onSaveInstanceState() {
@@ -133,32 +146,48 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     }
 
     @Override
-    public LocationRecordsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LocationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mAppContext)
                 .inflate(R.layout.item_location_record, parent, false);
-        return new ViewHolder(itemView);
+        return new LocationViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(LocationRecordsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(LocationViewHolder holder, int position) {
         LocationRecordItem item = mSortedLocationRecordItems.get(position);
         LocationRecord locationRecord = item.getLocationRecord();
         setupCountryCodeCircleView(holder, locationRecord);
         setupServerSynchronizationState(holder.mImageServerSynchronizationState, locationRecord);
         setupLocation(holder.mTvLocation, locationRecord);
         setupReceiptDate(holder, locationRecord);
-        holder.mTvLocationRecordMessage.setText(locationRecord.getMessage());
+
+        String message = locationRecord.getMessage();
+        Uri imageUri = locationRecord.getImageLocation();
+        if (imageUri == null) {
+            holder.mTvLocationRecordMessage.setText(message);
+        } else {
+            holder.mTvLocationRecordMessage.setText(getSpanWithImageIcon(message), TextView.BufferType.SPANNABLE);
+        }
+
         setupMessage(holder, item);
         holder.itemView.setOnClickListener(view -> switchMessageState(holder, item));
     }
 
-    private void setupMessage(ViewHolder holder, LocationRecordItem item) {
+    @NonNull
+    private SpannableStringBuilder getSpanWithImageIcon(String message) {
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder("  ");
+        spannableStringBuilder.append(message);
+        spannableStringBuilder.setSpan(imageAttachedSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableStringBuilder;
+    }
+
+    private void setupMessage(LocationViewHolder holder, LocationRecordItem item) {
         holder.mTvLocationRecordMessage.setMaxLines(
                 item.isExpanded() ? EXPANDED_ITEM_MESSAGE_MAX_LINES : COLLAPSED_ITEM_MESSAGE_MAX_LINES
         );
     }
 
-    private void switchMessageState(ViewHolder holder, LocationRecordItem item) {
+    private void switchMessageState(LocationViewHolder holder, LocationRecordItem item) {
         if (item.isExpanded()) {
             item.setIsExpanded(false);
             AnimationUtil.animateTextViewMaxLinesChange(holder.mTvLocationRecordMessage,
@@ -172,7 +201,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         }
     }
 
-    private void setupCountryCodeCircleView(ViewHolder holder, LocationRecord locationRecord) {
+    private void setupCountryCodeCircleView(LocationViewHolder holder, LocationRecord locationRecord) {
         if (locationRecord.getCountryCode() != null) {
             holder.setCountryCodeAvailable(true);
             holder.mCountryCodeCircleView.setText(locationRecord.getCountryCode());
@@ -202,7 +231,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         }
     }
 
-    private void setupReceiptDate(ViewHolder holder, LocationRecord locationRecord) {
+    private void setupReceiptDate(LocationViewHolder holder, LocationRecord locationRecord) {
         if (locationRecord.getServerReceiptDate() != null) {
             Date receiptDate = locationRecord.getServerReceiptDate();
             holder.setDatesVisibility(View.VISIBLE);
@@ -222,7 +251,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         return mSortedLocationRecordItems.isEmpty();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class LocationViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.country_code_circle_view) TextCircleView mCountryCodeCircleView;
         @BindView(R.id.tv_location) TextView mTvLocation;
@@ -232,7 +261,7 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         @BindView(R.id.image_server_synchronization_state) ImageView mImageServerSynchronizationState;
         @BindView(R.id.image_unknown_country_code) ImageView mImageUnknownCountryCode;
 
-        public ViewHolder(View itemView) {
+        public LocationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
