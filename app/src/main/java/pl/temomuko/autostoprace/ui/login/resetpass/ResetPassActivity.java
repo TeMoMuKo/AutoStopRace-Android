@@ -72,9 +72,8 @@ public class ResetPassActivity extends BaseActivity implements ResetPassMvpView 
     /* MVP View Methods */
 
     @Override
-    public void showSuccessInfo(String email) {
-        Toast.makeText(this, getString(R.string.msg_reset_pass_email_sent, email),
-                Toast.LENGTH_LONG).show();
+    public void showSuccessInfo() {
+        Toast.makeText(this, getString(R.string.msg_reset_pass_email_sent), Toast.LENGTH_LONG).show();
     }
 
     @Override
