@@ -41,9 +41,10 @@ public class ApiManager {
     private Retrofit getRetrofit() {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new GmtDateDeserializer())
+                .registerTypeAdapterFactory(new PostProcessingEnabler())
                 .create();
         return new Retrofit.Builder()
-                .baseUrl(Constants.API_BASE_URL)
+                .baseUrl(Constants.API_V2_BASE_URL)
                 .client(getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

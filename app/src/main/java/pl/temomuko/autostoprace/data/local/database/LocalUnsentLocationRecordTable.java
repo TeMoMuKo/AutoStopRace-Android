@@ -2,7 +2,6 @@ package pl.temomuko.autostoprace.data.local.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
 
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 
@@ -42,8 +41,8 @@ public abstract class LocalUnsentLocationRecordTable {
         values.put(COLUMN_ADDRESS, locationRecord.getAddress());
         values.put(COLUMN_COUNTRY, locationRecord.getCountry());
         values.put(COLUMN_COUNTRY_CODE, locationRecord.getCountryCode());
-        Uri imageUri = locationRecord.getImageUri();
-        values.put(COLUMN_IMAGE_URI, imageUri == null ? null : imageUri.toString());
+        String imageUriString = locationRecord.getImageLocationString();
+        values.put(COLUMN_IMAGE_URI, imageUriString);
         return values;
     }
 
@@ -56,8 +55,7 @@ public abstract class LocalUnsentLocationRecordTable {
         locationRecord.setAddress(DbUtil.getString(cursor, COLUMN_ADDRESS));
         locationRecord.setCountry(DbUtil.getString(cursor, COLUMN_COUNTRY));
         locationRecord.setCountryCode(DbUtil.getString(cursor, COLUMN_COUNTRY_CODE));
-        String imageUriString = DbUtil.getString(cursor, COLUMN_IMAGE_URI);
-        locationRecord.setImageUri(imageUriString == null ? null : Uri.parse(imageUriString));
+        locationRecord.setImageLocationString(DbUtil.getString(cursor, COLUMN_IMAGE_URI));
         return locationRecord;
     }
 

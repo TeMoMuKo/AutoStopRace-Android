@@ -83,7 +83,7 @@ public class ResetPassPresenterTest {
         mResetPassPresenter.resetPassword(FAKE_EMAIL);
 
         //then
-        verify(mMockResetPassMvpView).showSuccessInfo(FAKE_EMAIL);
+        verify(mMockResetPassMvpView).showSuccessInfo();
         verify(mMockResetPassMvpView).setProgress(false);
         verify(mMockResetPassMvpView).finish();
         verify(mMockResetPassMvpView, never()).showError(any(String.class));
@@ -108,7 +108,7 @@ public class ResetPassPresenterTest {
         //then
         verify(mMockResetPassMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockResetPassMvpView).setProgress(false);
-        verify(mMockResetPassMvpView, never()).showSuccessInfo(any(String.class));
+        verify(mMockResetPassMvpView, never()).showSuccessInfo();
         verify(mMockResetPassMvpView, never()).finish();
     }
 
@@ -122,7 +122,7 @@ public class ResetPassPresenterTest {
 
         //then
         verify(mMockResetPassMvpView).setInvalidEmailValidationError(true);
-        verify(mMockResetPassMvpView, never()).showSuccessInfo(any(String.class));
+        verify(mMockResetPassMvpView, never()).showSuccessInfo();
         verify(mMockResetPassMvpView, never()).showError(any(String.class));
         verify(mMockResetPassMvpView, never()).setProgress(anyBoolean());
         verify(mMockResetPassMvpView, never()).finish();
