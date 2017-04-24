@@ -31,7 +31,6 @@ public final class Shortcuts {
     public static final String PHRASEBOOK = "shortcut_phrasebook";
 
     private Context mAppContext;
-    private ShortcutInfo mShortcut;
 
     @Inject
     public Shortcuts(@AppContext Context appContext) {
@@ -58,14 +57,14 @@ public final class Shortcuts {
             intent.setPackage(mAppContext.getPackageName());
             intent.setClass(mAppContext, MainActivity.class);
             ShortcutManager shortcutManager = mAppContext.getSystemService(ShortcutManager.class);
-            mShortcut = new ShortcutInfo.Builder(mAppContext, Shortcuts.POST_LOCATION)
+            ShortcutInfo shortcut = new ShortcutInfo.Builder(mAppContext, Shortcuts.POST_LOCATION)
                     .setShortLabel(mAppContext.getString(R.string.shortcut_post_short_label))
                     .setDisabledMessage(mAppContext.getString(R.string.shortcut_post_disabled_label))
                     .setLongLabel(mAppContext.getString(R.string.shortcut_post_long_label))
                     .setIcon(Icon.createWithResource(mAppContext, R.drawable.ic_shortcut_add_location))
                     .setIntent(intent)
                     .build();
-            shortcutManager.setDynamicShortcuts(Collections.singletonList(mShortcut));
+            shortcutManager.setDynamicShortcuts(Collections.singletonList(shortcut));
         }
     }
 }
