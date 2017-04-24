@@ -101,7 +101,7 @@ public class PostActivity extends BaseActivity implements PostMvpView, PhotoSour
 
     @Override
     protected void onResume() {
-        super.onResume();gi
+        super.onResume();
         mPostPresenter.startLocationService();
         mPostPresenter.onResume();
     }
