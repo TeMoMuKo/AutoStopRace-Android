@@ -22,6 +22,7 @@ import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observer;
+import rx.Subscription;
 import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 import rx.subscriptions.CompositeSubscription;
@@ -35,7 +36,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     private final DataManager mDataManager;
     private final CompositeSubscription mLocationSubscriptions;
-    private final CompositeSubscription mPhotoSubscriptions;
+    private Subscription mPhotoSubscription;
     private Address mLatestAddress;
     private boolean mIsLocationSettingsStatusForResultCalled = false;
     private boolean mIsLocationSaved;
@@ -46,7 +47,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public PostPresenter(DataManager dataManager) {
         mDataManager = dataManager;
         mLocationSubscriptions = new CompositeSubscription();
-        mPhotoSubscriptions = new CompositeSubscription();
+        mPhotoSubscription = new CompositeSubscription();
     }
 
     @Override
@@ -57,7 +58,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     @Override
     public void detachView() {
         mLocationSubscriptions.unsubscribe();
-        mPhotoSubscriptions.unsubscribe();
+        mPhotoSubscription.unsubscribe();
+        if (mPhotoSubscription != null) mPhotoSubscription.unsubscribe();
         super.detachView();
     }
 
@@ -119,19 +121,18 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
     public void requestPhoto(ImageSourceType imageSourceType) {
         // FIXME: 24.04.2017 really hacky solution for rotation bug
-        mPhotoSubscriptions.add(
-                mDataManager.requestPhoto(imageSourceType)
-                        .flatMap(uri -> mVoidResumePublishSubject.asObservable(), ((uri, voidValue) -> uri))
-                        .subscribe(getPhotoObserver())
-        );
+        if (mPhotoSubscription != null) mPhotoSubscription.unsubscribe();
+        mPhotoSubscription = mDataManager.requestPhoto(imageSourceType)
+                .flatMap(uri -> mVoidResumePublishSubject.asObservable(), ((uri, voidValue) -> uri))
+                .subscribe(getPhotoObserver());
+
     }
 
     public void checkForUnreceivedPhoto() {
-        mPhotoSubscriptions.add(
-                mDataManager.getPhotoObservable()
-                        .flatMap(uri -> mVoidResumePublishSubject.asObservable(), ((uri, voidValue) -> uri))
-                        .subscribe(getPhotoObserver())
-        );
+        if (mPhotoSubscription != null) mPhotoSubscription.unsubscribe();
+        mPhotoSubscription = mDataManager.getPhotoObservable()
+                .flatMap(uri -> mVoidResumePublishSubject.asObservable(), ((uri, voidValue) -> uri))
+                .subscribe(getPhotoObserver());
     }
 
     /* Private helper methods */
