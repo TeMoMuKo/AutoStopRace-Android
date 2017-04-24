@@ -118,7 +118,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
 
     public void requestPhoto(ImageSourceType imageSourceType) {
-        //// FIXME: 24.04.2017 really hacky solution for rotation bug
+        // FIXME: 24.04.2017 really hacky solution for rotation bug
         mPhotoSubscriptions.add(
                 mDataManager.requestPhoto(imageSourceType)
                         .flatMap(uri -> mVoidResumePublishSubject.asObservable(), ((uri, voidValue) -> uri))

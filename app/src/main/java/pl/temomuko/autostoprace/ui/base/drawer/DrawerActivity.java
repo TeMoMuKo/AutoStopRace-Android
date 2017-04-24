@@ -1,8 +1,6 @@
 package pl.temomuko.autostoprace.ui.base.drawer;
 
 import android.annotation.SuppressLint;
-import android.content.pm.ShortcutManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -68,6 +66,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         setSupportActionBar(mToolbar);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
                 R.string.drawer_open, R.string.drawer_close);
+        mDrawerToggle.setDrawerSlideAnimationEnabled(false);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
     }
 
