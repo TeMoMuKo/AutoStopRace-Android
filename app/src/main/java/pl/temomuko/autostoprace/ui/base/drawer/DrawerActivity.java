@@ -65,7 +65,6 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
         setSupportActionBar(mToolbar);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
                 R.string.drawer_open, R.string.drawer_close);
-        mDrawerToggle.setDrawerSlideAnimationEnabled(false);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
     }
 
