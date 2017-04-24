@@ -1,10 +1,16 @@
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pl.temomuko.autostoprace">
+    package="pl.temomuko.autostoprace"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="21"/>
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="21"/>
 
     <application
         android:name=".AsrApplication"
@@ -14,6 +20,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="pl.temomuko.autostoprace.data.local.GlideConfigModule"
+            android:value="GlideModule"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

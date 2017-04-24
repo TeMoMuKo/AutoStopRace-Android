@@ -4,23 +4,19 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
 import java.util.Date;
 
 import pl.temomuko.autostoprace.Constants;
+import pl.temomuko.autostoprace.data.remote.PostProcessingEnabler;
 
 /**
  * Created by Szymon Kozak on 2016-01-22.
  */
-public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
+public class LocationRecord implements Comparable<LocationRecord>, Parcelable, PostProcessingEnabler.PostProcessable {
 
     @SerializedName("id") private int mId;
     @SerializedName("latitude") private double mLatitude;
@@ -31,23 +27,22 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
     @SerializedName("country_code") private String mCountryCode;
     @SerializedName("created_at") private Date mServerReceiptDate;
 
-
+    @Nullable
     @SerializedName("image")
-    @JsonAdapter(LocationImageUriGsonTypeAdapter.class)
-    private Uri mImageUri;
+    private String mImageLocation;
 
     public LocationRecord() {
     }
 
     public LocationRecord(double latitude, double longitude, String message, String address,
-                          String country, String countryCode, Uri imageUri) {
+                          String country, String countryCode, Uri imageLocation) {
         mLatitude = latitude;
         mLongitude = longitude;
         mMessage = message;
         mAddress = address;
         mCountry = country;
         mCountryCode = countryCode;
-        mImageUri = imageUri;
+        mImageLocation = imageLocation.toString();
     }
 
     @Override
@@ -148,7 +143,11 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
     }
 
     public Uri getImageUri() {
-        return mImageUri;
+        return mImageLocation == null ? null : Uri.parse(mImageLocation);
+    }
+
+    public String getImageLocationString() {
+        return mImageLocation;
     }
 
     public void setId(int id) {
@@ -183,8 +182,8 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         mServerReceiptDate = serverReceiptDate;
     }
 
-    public void setImageUri(Uri imageUri) {
-        mImageUri = imageUri;
+    public void setImageLocationString(@Nullable String imageLocationString) {
+        mImageLocation = imageLocationString;
     }
 
     /* Parcel */
@@ -204,6 +203,7 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         dest.writeString(mCountry);
         dest.writeString(mCountryCode);
         dest.writeLong(mServerReceiptDate != null ? mServerReceiptDate.getTime() : -1L);
+        dest.writeString(mImageLocation);
     }
 
     protected LocationRecord(Parcel in) {
@@ -216,7 +216,7 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         this.mCountryCode = in.readString();
         long tmpServerReceiptDate = in.readLong();
         this.mServerReceiptDate = tmpServerReceiptDate == -1 ? null : new Date(tmpServerReceiptDate);
-        this.mImageUri = in.readParcelable(Uri.class.getClassLoader());
+        this.mImageLocation = in.readString();
     }
 
     public static final Creator<LocationRecord> CREATOR = new Creator<LocationRecord>() {
@@ -231,23 +231,10 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         }
     };
 
-    private static final class LocationImageUriGsonTypeAdapter extends TypeAdapter<Uri> {
-
-        private static final String IMAGE_URL_PREFIX = Constants.API_BASE_URL + "/uploads/location/image/";
-
-        @Override
-        public void write(JsonWriter out, Uri uri) throws IOException {
-            out.value(uri == null ? null : uri.toString());
-        }
-
-        @Override
-        public Uri read(JsonReader in) throws IOException {
-            if (in.peek() == JsonToken.NULL) {
-                in.nextNull();
-                return null;
-            } else {
-                return Uri.parse(IMAGE_URL_PREFIX + in.nextString());
-            }
+    @Override
+    public void postProcessGson() {
+        if (mImageLocation != null) {
+            mImageLocation = Constants.API_BASE_URL + "uploads/location/image/" + mId + "/" + mImageLocation;
         }
     }
 }

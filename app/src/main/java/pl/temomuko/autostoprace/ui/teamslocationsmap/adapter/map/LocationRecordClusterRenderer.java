@@ -1,6 +1,9 @@
 package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -9,51 +12,69 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.util.LogUtil;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.ClasterUtil;
 
-/**
- * Created by Rafał Naniewicz on 02.04.2016.
- */
 public class LocationRecordClusterRenderer extends DefaultClusterRenderer<LocationRecordClusterItem> {
 
     private static final int MIN_CLUSTER_SIZE = 10;
-    private static final String TAG = LocationRecordClusterRenderer.class.getSimpleName();
 
     private final Context mContext;
+    private final String emptyTitleString;
+    private final String pressToSeeThePhotoString;
 
     public LocationRecordClusterRenderer(Context context, GoogleMap map, ClusterManager<LocationRecordClusterItem> clusterManager) {
         super(context, map, clusterManager);
         mContext = context;
+        emptyTitleString = mContext.getString(R.string.msg_location_record_received);
+        pressToSeeThePhotoString = mContext.getString(R.string.msg_press_to_see_the_photo);
     }
 
     @Override
     protected void onBeforeClusterItemRendered(LocationRecordClusterItem item, MarkerOptions markerOptions) {
-        String message = item.getMessage();
-        String dateString = item.getReceiptDateString();
+        Uri imageUri = item.getImageUri();
+
+        final String itemTitle = item.getTitle();
+        final String title = TextUtils.isEmpty(itemTitle) ? emptyTitleString : itemTitle;
+
+        String snippet;
+        final String itemSnippet = item.getSnippet();
+
+        if (imageUri == null) {
+            snippet = itemSnippet;
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.asr_marker_48dp));
+        } else {
+            snippet = getMarkerWithPhotoSnippet(itemSnippet);
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.asr_marker_photo_48dp));
+        }
+
         markerOptions
-                .title(message == null || message.isEmpty() ?
-                        mContext.getString(R.string.msg_location_record_received) : message)
-                .snippet(dateString)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.asr_marker_48dp));
+                .title(title)
+                .snippet(snippet);
     }
 
     @Override
     protected void onBeforeClusterRendered(Cluster<LocationRecordClusterItem> cluster, MarkerOptions markerOptions) {
         super.onBeforeClusterRendered(cluster, markerOptions);
-        LocationRecordClusterItem lastClusterItem = getNewestClusterItem(cluster.getItems());
-        String lastMessage = lastClusterItem.getMessage();
-        String dateString = lastClusterItem.getReceiptDateString();
-        if (lastMessage == null) {
-            markerOptions.title(mContext.getString(R.string.msg_last_location_record_received))
-                    .snippet(dateString);
-        } else {
-            markerOptions.title(mContext.getString(R.string.msg_last_location_record_message) + "\n"
-                    + lastClusterItem.getMessage())
-                    .snippet(dateString);
+        if (!cluster.getItems().isEmpty()) {
+            LocationRecordClusterItem lastClusterItem = ClasterUtil.getNewestClusterItem(cluster.getItems());
+            final String lastTitle = lastClusterItem.getTitle();
+            final String lastSnippet = lastClusterItem.getSnippet();
+            final Uri lastImageUri = lastClusterItem.getImageUri();
+
+            if (lastTitle == null) {
+                markerOptions.title(mContext.getString(R.string.msg_last_location_record_received));
+            } else {
+                markerOptions.title(mContext.getString(R.string.msg_last_location_record_message) + "\n"
+                        + lastTitle);
+            }
+
+            if (lastImageUri == null) {
+                markerOptions.snippet(lastSnippet);
+            } else {
+                markerOptions.snippet(getMarkerWithPhotoSnippet(lastSnippet));
+            }
+
         }
     }
 
@@ -62,22 +83,8 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
         return cluster.getSize() > MIN_CLUSTER_SIZE;
     }
 
-    private LocationRecordClusterItem getNewestClusterItem(Collection<LocationRecordClusterItem> locationRecordClusterItems) {
-        if (!locationRecordClusterItems.isEmpty()) {
-            Iterator<LocationRecordClusterItem> itemsIterator = locationRecordClusterItems.iterator();
-            LocationRecordClusterItem currentLocationRecordCluster,
-                    newestLocationRecordClusterItem = itemsIterator.next();
-            while (itemsIterator.hasNext()) {
-                currentLocationRecordCluster = itemsIterator.next();
-                if (newestLocationRecordClusterItem.getReceiptDate().before(
-                        currentLocationRecordCluster.getReceiptDate())) {
-                    newestLocationRecordClusterItem = currentLocationRecordCluster;
-                }
-            }
-            return newestLocationRecordClusterItem;
-        } else {
-            LogUtil.wtf(TAG, "Cluster collection is empty, this should never happen");
-            return new LocationRecordClusterItem(0, 0, "something went wrong", null);
-        }
+    @NonNull
+    private String getMarkerWithPhotoSnippet(String lastSnippet) {
+        return lastSnippet + "\n" + pressToSeeThePhotoString;
     }
 }

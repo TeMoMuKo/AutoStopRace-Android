@@ -70,12 +70,12 @@
     <string name="description_unknown_cuntry_code">Kod kraju nieznany</string>
     <string name="accuracy_label">(+/- %1$sm)</string>
     <string name="action_refresh">Odśwież</string>
-    <string name="label_sponsor">Sponsorem edycji 2016 jest m.in.:</string>
+    <string name="label_sponsor">Partnerem edycji 2017 jest m.in.:</string>
     <string name="warning_inadequeate_settings">Błąd, prawdopodobnie włączony tryb samolotowy.</string>
     <string name="action_reset_pass">Przypomnij mi hasło</string>
     <string name="forgotten_password">Przypomnij mi hasło</string>
     <string name="title_activity_reset_pass">Resetowanie hasła</string>
-    <string name="msg_reset_pass_email_sent">Email zawierający dalsze instrukcje został wysłany na adres %1$s</string>
+    <string name="msg_reset_pass_email_sent">Email zawierający dalsze instrukcje został wysłany</string>
     <string name="hint_enter_team_number">Wpisz numer drużyny…</string>
     <string name="msg_last_location_record_message">Ostatnia wiadomość:</string>
     <string name="msg_last_location_record_received">Ostatnie zameldowanie: </string>
@@ -117,5 +117,9 @@
     <string name="shortcut_phrasebook_short_label">Rozmówki</string>
     <string name="msg_show_locations_map">Mapa lokalizacji</string>
     <string name="shortcut_post_disabled_label">Musisz być zalogowany aby dodać lokalizację</string>
-
+    <string name="header_partners_strategic">Partnerzy Strategiczni</string>
+    <string name="header_partners_gold">Partnerzy Złoci</string>
+    <string name="header_partners_silver">Partnerzy Srebrni</string>
+    <string name="error_while_loading_photo">Podczas ładowania zdjęcia wystąpił błąd.</string>
+    <string name="msg_press_to_see_the_photo">Dotknij, aby zobaczyć zdjęcie</string>
 </resources>

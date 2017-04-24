@@ -42,6 +42,7 @@ import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordC
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterRenderer;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.TeamLocationInfoWindowAdapter;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview.SearchTeamView;
+import pl.temomuko.autostoprace.ui.widget.FullScreenImageDialog;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
@@ -49,9 +50,6 @@ import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 import rx.Subscription;
 
-/**
- * Created by Szymon Kozak on 2016-02-05.
- */
 public class TeamsLocationsMapActivity extends DrawerActivity
         implements TeamsLocationsMapMvpView {
 
@@ -251,6 +249,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(googleMap -> {
+            googleMap.clear();
             mMap = googleMap;
             mSearchTeamView.setEnabled(true);
             setupClusterManager();
@@ -263,9 +262,18 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     private void setupClusterManager() {
         mClusterManager = new ClusterManager<>(getApplicationContext(), mMap);
-        mMap.setOnCameraChangeListener(mClusterManager);
+
+        mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setOnInfoWindowClickListener(mClusterManager);
+
         mClusterManager.setRenderer(new LocationRecordClusterRenderer(getApplicationContext(), mMap, mClusterManager));
+        mClusterManager.setOnClusterItemInfoWindowClickListener(locationRecordClusterItem ->
+                mTeamsLocationsMapPresenter.handleMarkerClick(locationRecordClusterItem.getImageUri()));
+
+        mClusterManager.setOnClusterInfoWindowClickListener(cluster ->
+                mTeamsLocationsMapPresenter.handleClusterMarkerClick(cluster.getItems()));
         setCustomClusterWindowAdapter();
     }
 
@@ -346,6 +354,11 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @Override
     public void showNoLocationRecordsInfo() {
         Toast.makeText(this, R.string.msg_no_location_records_to_display, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void openFullscreenImage(Uri imageUri) {
+        FullScreenImageDialog.newInstance(imageUri).show(getSupportFragmentManager(), FullScreenImageDialog.TAG);
     }
 
     /* Private helper methods */

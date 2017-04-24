@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -13,28 +14,23 @@ import java.util.Date;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.util.DateUtil;
 
-/**
- * Created by Rafał Naniewicz on 02.04.2016.
- */
 public class LocationRecordClusterItem implements ClusterItem, Parcelable, Comparable<LocationRecordClusterItem> {
 
     private final LatLng mLatLng;
-    private String mMessage;
+    @Nullable
+    private final String mTitle;
     private final Date mReceiptDate;
+    private final String mReceiptDateString;
 
-    public LocationRecordClusterItem(double latitude, double longitude, String message, @Nullable Date receiptDate) {
-        mLatLng = new LatLng(latitude, longitude);
-        mMessage = message;
-        mReceiptDate = receiptDate;
-    }
+    @Nullable
+    private final String mImageUriString;
 
     public LocationRecordClusterItem(LocationRecord locationRecord) {
         mLatLng = new LatLng(locationRecord.getLatitude(), locationRecord.getLongitude());
-        mMessage = locationRecord.getMessage();
-        if (mMessage.isEmpty()) {
-            mMessage = null;
-        }
+        mTitle = locationRecord.getMessage();
         mReceiptDate = locationRecord.getServerReceiptDate();
+        mReceiptDateString = mReceiptDate == null ? null : DateUtil.getFullDateMapString(mReceiptDate);
+        mImageUriString = locationRecord.getImageLocationString();
     }
 
     @Override
@@ -42,17 +38,25 @@ public class LocationRecordClusterItem implements ClusterItem, Parcelable, Compa
         return mLatLng;
     }
 
+    @Nullable
+    @Override
+    public String getTitle() {
+        return mTitle;
+    }
+
+    @Override
+    public String getSnippet() {
+        return mReceiptDateString;
+    }
+
+    @Nullable
+    public Uri getImageUri() {
+        return mImageUriString == null ? null : Uri.parse(mImageUriString);
+    }
+
     @Override
     public int compareTo(@NonNull LocationRecordClusterItem another) {
         return getDateCompareResult(another);
-    }
-
-    public String getMessage() {
-        return mMessage;
-    }
-
-    public String getReceiptDateString() {
-        return mReceiptDate == null ? null : DateUtil.getFullDateMapString(mReceiptDate);
     }
 
     public Date getReceiptDate() {
@@ -77,9 +81,11 @@ public class LocationRecordClusterItem implements ClusterItem, Parcelable, Compa
 
     protected LocationRecordClusterItem(Parcel in) {
         mLatLng = (LatLng) in.readValue(LatLng.class.getClassLoader());
-        mMessage = in.readString();
+        mTitle = in.readString();
         long tmpMReceiptDate = in.readLong();
         mReceiptDate = tmpMReceiptDate != -1 ? new Date(tmpMReceiptDate) : null;
+        mReceiptDateString = in.readString();
+        mImageUriString = in.readString();
     }
 
     @Override
@@ -90,8 +96,10 @@ public class LocationRecordClusterItem implements ClusterItem, Parcelable, Compa
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(mLatLng);
-        dest.writeString(mMessage);
+        dest.writeString(mTitle);
         dest.writeLong(mReceiptDate != null ? mReceiptDate.getTime() : -1L);
+        dest.writeString(mReceiptDateString);
+        dest.writeString(mImageUriString);
     }
 
     @SuppressWarnings("unused")
