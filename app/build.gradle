@@ -16,8 +16,8 @@ android {
         applicationId "pl.temomuko.autostoprace"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 12
-        versionName "1.1.1"
+        versionCode 13
+        versionName "1.1.2"
         manifestPlaceholders = [crashlyticsApiKey: fabricApiKey]
     }
 

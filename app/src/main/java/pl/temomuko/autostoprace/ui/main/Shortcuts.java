@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.ui.main;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
@@ -8,6 +9,7 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 
 import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,6 +33,7 @@ public final class Shortcuts {
     public static final String PHRASEBOOK = "shortcut_phrasebook";
 
     private Context mAppContext;
+    private List<ShortcutInfo> shortcuts;
 
     @Inject
     public Shortcuts(@AppContext Context appContext) {
@@ -42,7 +45,7 @@ public final class Shortcuts {
             ShortcutManager shortcutManager = mAppContext.getSystemService(ShortcutManager.class);
             if (enabled) {
                 if (shortcutManager.getDynamicShortcuts().size() == 0) {
-                    createPostLocationsShortcut();
+                    initializeShortcuts(shortcutManager);
                 }
                 shortcutManager.enableShortcuts(Collections.singletonList(Shortcuts.POST_LOCATION));
             } else {
@@ -51,12 +54,19 @@ public final class Shortcuts {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.N_MR1)
+    private void initializeShortcuts(ShortcutManager shortcutManager) {
+        if (shortcuts == null) {
+            createPostLocationsShortcut();
+        }
+        shortcutManager.setDynamicShortcuts(shortcuts);
+    }
+
     private void createPostLocationsShortcut() {
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
             Intent intent = new Intent(ACTION_POST_LOCATION);
             intent.setPackage(mAppContext.getPackageName());
             intent.setClass(mAppContext, MainActivity.class);
-            ShortcutManager shortcutManager = mAppContext.getSystemService(ShortcutManager.class);
             ShortcutInfo shortcut = new ShortcutInfo.Builder(mAppContext, Shortcuts.POST_LOCATION)
                     .setShortLabel(mAppContext.getString(R.string.shortcut_post_short_label))
                     .setDisabledMessage(mAppContext.getString(R.string.shortcut_post_disabled_label))
@@ -64,7 +74,7 @@ public final class Shortcuts {
                     .setIcon(Icon.createWithResource(mAppContext, R.drawable.ic_shortcut_add_location))
                     .setIntent(intent)
                     .build();
-            shortcutManager.setDynamicShortcuts(Collections.singletonList(shortcut));
+            shortcuts = Collections.singletonList(shortcut);
         }
     }
 }

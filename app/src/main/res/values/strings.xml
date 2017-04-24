@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_version">Wersja 1.1.1</string>
+    <string name="app_version">Wersja 1.1.2</string>
     <string name="app_name">Auto Stop Race</string>
     <string name="error_unknown">Ojojoj, coś poszło nie tak, spróbuj ponownie za chwilę…</string>
     <string name="error_404">Coś się popsuło. Spróbuj ponownie później…</string>
