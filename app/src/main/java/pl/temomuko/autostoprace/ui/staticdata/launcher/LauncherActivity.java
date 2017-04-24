@@ -1,6 +1,5 @@
 package pl.temomuko.autostoprace.ui.staticdata.launcher;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,6 +9,7 @@ import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapActivity;
 
 /**
  * Created by Szymon Kozak on 2016-01-22.
@@ -18,6 +18,7 @@ public class LauncherActivity extends DrawerActivity {
 
     @BindView(R.id.btn_go_to_login) Button mGoToLoginButton;
     @BindView(R.id.btn_go_to_contact) Button mGoToContactButton;
+    @BindView(R.id.btn_go_to_locations_map) Button mGoToLocationsMapButton;
     @BindView(R.id.iv_launcher_logo) ImageView mAppLogoImageView;
     @BindView(R.id.iv_launcher_bg) ImageView mBackgroundImageView;
 
@@ -31,15 +32,18 @@ public class LauncherActivity extends DrawerActivity {
     private void setListeners() {
         mGoToLoginButton.setOnClickListener(v -> startLoginActivity());
         mGoToContactButton.setOnClickListener(v -> startContactActivity());
+        mGoToLocationsMapButton.setOnClickListener(v -> startTeamsLocationsMapActivity());
     }
 
     private void startLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        LoginActivity.start(this);
     }
 
     private void startContactActivity() {
-        Intent intent = new Intent(this, ContactActivity.class);
-        startActivity(intent);
+        ContactActivity.start(this);
+    }
+
+    private void startTeamsLocationsMapActivity() {
+        TeamsLocationsMapActivity.start(this);
     }
 }

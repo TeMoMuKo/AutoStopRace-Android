@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.ui.main.Shortcuts;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.util.DialogFactory;
 
@@ -23,6 +24,7 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
 
     private static final String BUNDLE_IS_LOGOUT_DIALOG_SHOWN = "bundle_is_progress_logout_shown";
 
+    @Inject Shortcuts shortcuts;
     @Inject SettingsPresenter mSettingsPresenter;
 
     private Preference mLogoutPreference;
@@ -99,6 +101,11 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
     @Override
     public void setupLogoutPreferenceEnabled(boolean state) {
         mLogoutPreference.setEnabled(state);
+    }
+
+    @Override
+    public void disablePostLocationShortcut() {
+        shortcuts.setPostLocationShortcutEnabled(false);
     }
 
     @Override

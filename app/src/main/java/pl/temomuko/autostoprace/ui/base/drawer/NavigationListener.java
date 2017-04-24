@@ -120,8 +120,11 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
     }
 
     private void openActivity(Class<?> targetActivity) {
-        if (isBackgroundActivity()) goToActivity(targetActivity);
-        else goToActivityWithFinishCurrent(targetActivity);
+        if (isBackgroundActivity()) {
+            goToActivity(targetActivity);
+        } else {
+            goToActivityWithFinishCurrent(targetActivity);
+        }
     }
 
     private boolean isBackgroundActivity() {

@@ -1,6 +1,7 @@
 package pl.temomuko.autostoprace.ui.login;
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -45,6 +46,11 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     private MaterialDialog mProgressDialog;
     private DialogFragment mHelpDialogFragment;
+    
+    public static void start(Context context) {
+        Intent starter = new Intent(context, LoginActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

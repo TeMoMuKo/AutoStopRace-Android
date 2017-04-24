@@ -35,8 +35,10 @@ import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.service.LocationSyncService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
+import pl.temomuko.autostoprace.ui.login.LoginActivity;
 import pl.temomuko.autostoprace.ui.main.adapter.LocationRecordItem;
 import pl.temomuko.autostoprace.ui.main.adapter.LocationRecordsAdapter;
+import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapActivity;
@@ -50,6 +52,10 @@ import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 
+import static pl.temomuko.autostoprace.ui.main.Shortcuts.ACTION_LOCATIONS_MAP;
+import static pl.temomuko.autostoprace.ui.main.Shortcuts.ACTION_PHRASEBOOK;
+import static pl.temomuko.autostoprace.ui.main.Shortcuts.ACTION_POST_LOCATION;
+
 /**
  * Created by Szymon Kozak on 2016-01-06.
  */
@@ -58,15 +64,19 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     private static final int REQUEST_CODE_FINE_LOCATION_PERMISSION = 0;
     private static final int REQUEST_CODE_CHECK_LOCATION_SETTINGS = 1;
     private static final int REQUEST_CODE_POST_ACTIVITY = 2;
-
     private static final int UNHANDLED_REQUEST_CODE = -1;
+
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String BUNDLE_RECYCLER_VIEW_LINEAR_LAYOUT_STATE = "bundle_recycler_view_linear_layout_state";
     private static final String BUNDLE_LOCATION_RECORD_ADAPTER_ITEMS = "bundle_location_record_adapter_items";
-
     public static final String EXTRA_TEAM_NUMBER = "extra_team_number";
 
+    private static final String BUNDLE_IS_CONSUMED_POST_LOCATION_SHORTCUT_INTENT = "bundle_is_consumed_post_location_shortcut_intent";
+    private static final String BUNDLE_IS_CONSUMED_PHRASEBOOK_SHORTCUT_INTENT = "bundle_is_consumed_phrasebook_shortcut_intent";
+    private static final String BUNDLE_IS_CONSUMED_LOCATIONS_MAP_SHORTCUT_INTENT = "bundle_is_consumed_locations_map_shortcut_intent";
+
     @Inject MainPresenter mMainPresenter;
+    @Inject Shortcuts shortcuts;
     @Inject LocationRecordsAdapter mLocationRecordsAdapter;
     @Inject VerticalDividerItemDecoration mVerticalDividerItemDecoration;
 
@@ -82,6 +92,9 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     private CompositeSubscription mLocationRecordsUpdatesSubscriptions;
     private boolean mPostServiceSetProgress;
     private boolean mPresenterSetProgress;
+    private boolean isConsumedPostLocationShortcutIntent;
+    private boolean isConsumedLocationsMapShortcutIntent;
+    private boolean isConsumedPhrasebookShortcutIntent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +114,21 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
                 restoreLocations(savedInstanceState);
             }
         }
+        setupIntentInstanceState(savedInstanceState);
+    }
+
+    private void setupIntentInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            isConsumedPostLocationShortcutIntent = savedInstanceState.getBoolean(BUNDLE_IS_CONSUMED_POST_LOCATION_SHORTCUT_INTENT);
+            isConsumedLocationsMapShortcutIntent = savedInstanceState.getBoolean(BUNDLE_IS_CONSUMED_LOCATIONS_MAP_SHORTCUT_INTENT);
+            isConsumedPhrasebookShortcutIntent = savedInstanceState.getBoolean(BUNDLE_IS_CONSUMED_PHRASEBOOK_SHORTCUT_INTENT);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleShortcutIntent(intent);
     }
 
     @Override
@@ -113,9 +141,11 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     protected void onResume() {
         super.onResume();
         mMainPresenter.checkAuth();
+        shortcuts.setPostLocationShortcutEnabled(mMainPresenter.isAuthorized());
         if (mMainPresenter.isAuthorized()) {
             mMainPresenter.syncLocationsIfRecentlyNotSynced();
         }
+        handleShortcutIntent(getIntent());
     }
 
     @Override
@@ -138,6 +168,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
                     mLocationRecordsAdapter.onSaveInstanceState());
             outState.putParcelable(BUNDLE_RECYCLER_VIEW_LINEAR_LAYOUT_STATE,
                     mRecyclerViewLinearLayoutManager.onSaveInstanceState());
+            outState.putBoolean(BUNDLE_IS_CONSUMED_POST_LOCATION_SHORTCUT_INTENT,
+                    isConsumedPostLocationShortcutIntent);
+            outState.putBoolean(BUNDLE_IS_CONSUMED_LOCATIONS_MAP_SHORTCUT_INTENT,
+                    isConsumedLocationsMapShortcutIntent);
+            outState.putBoolean(BUNDLE_IS_CONSUMED_PHRASEBOOK_SHORTCUT_INTENT,
+                    isConsumedPhrasebookShortcutIntent);
         }
         super.onSaveInstanceState(outState);
     }
@@ -264,8 +300,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void startLoginActivity() {
-        Intent intent = new Intent(this, LauncherActivity.class);
-        startActivity(intent);
+        LoginActivity.start(this);
         finish();
     }
 
@@ -354,6 +389,21 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         LocationSyncService.startServiceOrEnqueue(this);
     }
 
+    @Override
+    public void startPhrasebookActivity() {
+        PhrasebookActivity.start(this);
+    }
+
+    @Override
+    public void startTeamLocationsMapActivity() {
+        TeamsLocationsMapActivity.start(this);
+    }
+
+    @Override
+    public void disablePostLocationShortcut() {
+        shortcuts.setPostLocationShortcutEnabled(false);
+    }
+
     /* Private helper methods */
 
     private void updateLocationRecordItemsMaintainingScrollPosition(List<LocationRecordItem> locationRecordItems) {
@@ -386,6 +436,46 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     private void showList() {
         mEmptyStateLinearLayout.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void handleShortcutIntent(Intent intent) {
+        String action = intent.getAction();
+        if (action != null) {
+            switch (action) {
+                case ACTION_POST_LOCATION:
+                    handleActionPostLocation();
+                    break;
+                case ACTION_PHRASEBOOK:
+                    handleActionPhrasebook();
+                    break;
+                case ACTION_LOCATIONS_MAP:
+                    handleActionLocationsMap();
+                    break;
+            }
+        }
+    }
+
+    private void handleActionPostLocation() {
+        if (!isConsumedPostLocationShortcutIntent) {
+            if (mMainPresenter.isAuthorized()) {
+                mMainPresenter.goToPostLocation();
+            }
+            isConsumedPostLocationShortcutIntent = true;
+        }
+    }
+
+    private void handleActionLocationsMap() {
+        if (!isConsumedLocationsMapShortcutIntent) {
+            mMainPresenter.goToLocationsMap();
+            isConsumedLocationsMapShortcutIntent = true;
+        }
+    }
+
+    private void handleActionPhrasebook() {
+        if (!isConsumedPhrasebookShortcutIntent) {
+            mMainPresenter.goToPhrasebook();
+            isConsumedPhrasebookShortcutIntent = true;
+        }
     }
 
     /* Events */

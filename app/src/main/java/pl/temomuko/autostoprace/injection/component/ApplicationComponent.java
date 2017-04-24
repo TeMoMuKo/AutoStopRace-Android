@@ -13,6 +13,7 @@ import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
 import pl.temomuko.autostoprace.service.LocationSyncService;
+import pl.temomuko.autostoprace.ui.main.Shortcuts;
 
 /**
  * Created by Szymon Kozak on 2016-01-06.
@@ -33,6 +34,8 @@ public interface ApplicationComponent {
     ErrorHandler errorHandler();
 
     ImageController imageController();
+
+    Shortcuts shortcuts();
 
     void inject(AsrApplication asrApplication);
 }

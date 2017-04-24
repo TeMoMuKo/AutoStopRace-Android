@@ -1,5 +1,7 @@
 package pl.temomuko.autostoprace.ui.phrasebook;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.AppCompatSpinner;
@@ -25,6 +27,7 @@ import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.Phrasebook;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
+import pl.temomuko.autostoprace.ui.main.Shortcuts;
 import pl.temomuko.autostoprace.ui.phrasebook.adapter.PhrasebookAdapter;
 import pl.temomuko.autostoprace.ui.widget.VerticalDividerItemDecoration;
 import rx.Subscription;
@@ -52,6 +55,11 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
     private String mLastSearchQuery;
     private MenuItem mSearchItem;
 
+    public static void start(Context context) {
+        Intent starter = new Intent(context, PhrasebookActivity.class);
+        context.startActivity(starter);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +71,7 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
         setupRecyclerView();
         mPhrasebookPresenter.loadPhrasebook();
         loadLastSearchQuery(savedInstanceState);
+        reportShortcutUsage(Shortcuts.PHRASEBOOK);
     }
 
     @Override

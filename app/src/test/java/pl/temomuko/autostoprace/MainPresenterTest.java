@@ -131,6 +131,7 @@ public class MainPresenterTest {
         //then
         verify(mMockDataManager).clearUserData();
         verify(mMockMainMvpView).showSessionExpiredError();
+        verify(mMockMainMvpView).disablePostLocationShortcut();
         verify(mMockMainMvpView).startLoginActivity();
         verify(mMockDataManager, never()).saveAuthorizationResponse(response);
     }
@@ -152,6 +153,7 @@ public class MainPresenterTest {
         verify(mMockMainMvpView, never()).startLoginActivity();
         verify(mMockMainMvpView, never()).startLauncherActivity();
         verify(mMockMainMvpView, never()).showSessionExpiredError();
+        verify(mMockMainMvpView, never()).disablePostLocationShortcut();
     }
 
     @Test
@@ -243,5 +245,14 @@ public class MainPresenterTest {
 
         //then
         verify(mMockMainMvpView, never()).startLocationSyncService();
+    }
+
+    @Test
+    public void testGoToPhrasebook() {
+        //when
+        mMainPresenter.goToPhrasebook();
+
+        //then
+        verify(mMockMainMvpView).startPhrasebookActivity();
     }
 }

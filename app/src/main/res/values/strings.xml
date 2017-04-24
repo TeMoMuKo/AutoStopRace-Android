@@ -109,6 +109,14 @@
     <string name="gallery">Wgraj zdjęcie z galerii</string>
     <string name="action_cancel">Anuluj</string>
     <string name="error_while_taking_photo">Wystąpił błąd, zdjęcie nie mogło zostać załączone.</string>
+    <string name="shortcut_post_long_label">Dodaj lokalizację</string>
+    <string name="shortcut_post_short_label">Dodaj </string>
+    <string name="shortcut_locations_map_long_label">Mapa lokalizacji</string>
+    <string name="shortcut_locations_map_short_label">Mapa</string>
+    <string name="shortcut_phrasebook_long_label">Rozmówki</string>
+    <string name="shortcut_phrasebook_short_label">Rozmówki</string>
+    <string name="msg_show_locations_map">Mapa lokalizacji</string>
+    <string name="shortcut_post_disabled_label">Musisz być zalogowany aby dodać lokalizację</string>
     <string name="header_partners_strategic">Partnerzy Strategiczni</string>
     <string name="header_partners_gold">Partnerzy Złoci</string>
     <string name="header_partners_silver">Partnerzy Srebrni</string>

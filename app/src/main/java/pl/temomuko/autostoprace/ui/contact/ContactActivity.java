@@ -1,5 +1,7 @@
 package pl.temomuko.autostoprace.ui.contact;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -40,6 +42,11 @@ public class ContactActivity extends DrawerActivity implements ContactMvpView {
     @BindView(R.id.iv_collapsing_toolbar_background) ImageView mCollapsingToolbarBackground;
     @BindView(R.id.fab_contact_action) FloatingActionButton mFabContactAction;
     @BindView(R.id.rv_contact_rows) RecyclerView mRecyclerView;
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, ContactActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -48,4 +48,10 @@ public interface MainMvpView extends DrawerMvpView {
     void setGoToPostLocationHandled();
 
     void startLocationSyncService();
+
+    void startPhrasebookActivity();
+
+    void startTeamLocationsMapActivity();
+
+    void disablePostLocationShortcut();
 }

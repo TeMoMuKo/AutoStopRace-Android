@@ -32,6 +32,7 @@ import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.data.local.photo.ImageSourceType;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.ui.main.Shortcuts;
 import pl.temomuko.autostoprace.util.CoordsUtil;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.LocationSettingsUtil;
@@ -69,7 +70,7 @@ public class PostActivity extends BaseActivity implements PostMvpView, PhotoSour
         getActivityComponent().inject(this);
         mPostPresenter.attachView(this);
         setupToolbarWithBack();
-
+        reportShortcutUsage(Shortcuts.POST_LOCATION);
         removePhotoButton.setOnClickListener(v -> mPostPresenter.removePhoto());
     }
 

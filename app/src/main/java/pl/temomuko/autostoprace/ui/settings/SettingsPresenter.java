@@ -55,6 +55,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 });
         mDataManager.clearUserData().subscribe();
         getMvpView().showLogoutMessage();
+        getMvpView().disablePostLocationShortcut();
         getMvpView().startLauncherActivity();
     }
 }
