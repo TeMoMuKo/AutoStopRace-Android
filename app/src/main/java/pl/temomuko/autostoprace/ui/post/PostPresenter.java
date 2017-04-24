@@ -129,6 +129,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public void checkForUnreceivedPhoto() {
         mPhotoSubscriptions.add(
                 mDataManager.getPhotoObservable()
+                        .flatMap(uri -> mVoidResumePublishSubject.asObservable(), ((uri, voidValue) -> uri))
                         .subscribe(getPhotoObserver())
         );
     }
