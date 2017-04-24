@@ -38,7 +38,7 @@ public final class Constants {
     public static final String HEADER_VALUE_APPLICATION_JSON = "application/json";
     public static final int HTTP_CONNECT_TIMEOUT = 10;
     public static final int HTTP_READ_TIMEOUT = 15;
-    public static final int HTTP_WRITE_TIMEOUT = 15;
+    public static final int HTTP_WRITE_TIMEOUT = 20;
 
     /* UI */
     public static final float DOUBLE_TAP_ZOOM_SCALE = 1.0f;
