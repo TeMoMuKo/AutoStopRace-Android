@@ -47,7 +47,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public PostPresenter(DataManager dataManager) {
         mDataManager = dataManager;
         mLocationSubscriptions = new CompositeSubscription();
-        mPhotoSubscription = new CompositeSubscription();
     }
 
     @Override
@@ -58,7 +57,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     @Override
     public void detachView() {
         mLocationSubscriptions.unsubscribe();
-        mPhotoSubscription.unsubscribe();
         if (mPhotoSubscription != null) mPhotoSubscription.unsubscribe();
         super.detachView();
     }
