@@ -41,7 +41,6 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         mNavigationListener = new NavigationListener(this, mDrawerLayout, mNavigationView);
-        mNavigationView.setNavigationItemSelectedListener(mNavigationListener);
         setupHeaderFields();
         setupToolbarWithToggle();
     }
