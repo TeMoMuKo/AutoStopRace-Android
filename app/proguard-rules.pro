@@ -133,3 +133,6 @@
 
 #opencsv
 -dontwarn java.beans.**
+
+#glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
