@@ -6,25 +6,25 @@
              android:orientation="vertical">
 
     <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-        android:id="@+id/subsampling_image_view"
+        android:id="@+id/iv_subsampling"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/mpb_loading_progress"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/default_circular_progressbar_size"
+        android:layout_height="@dimen/default_circular_progressbar_size"
         android:layout_gravity="center"
         app:mpb_progressStyle="circular"
         />
 
     <ImageView
-        android:id="@+id/close_button"
+        android:id="@+id/btn_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
         android:padding="@dimen/default_margin"
-        android:src="@drawable/remove_photo_button"/>
+        android:src="@drawable/close_button"/>
 
 </FrameLayout>

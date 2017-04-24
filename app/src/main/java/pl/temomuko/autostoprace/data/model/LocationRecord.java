@@ -18,6 +18,8 @@ import pl.temomuko.autostoprace.data.remote.PostProcessingEnabler;
  */
 public class LocationRecord implements Comparable<LocationRecord>, Parcelable, PostProcessingEnabler.PostProcessable {
 
+    private static final String IMAGE_URL_PREFIX = "uploads/location/image/";
+
     @SerializedName("id") private int mId;
     @SerializedName("latitude") private double mLatitude;
     @SerializedName("longitude") private double mLongitude;
@@ -234,7 +236,7 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable, P
     @Override
     public void postProcessGson() {
         if (mImageLocation != null) {
-            mImageLocation = Constants.API_BASE_URL + "uploads/location/image/" + mId + "/" + mImageLocation;
+            mImageLocation = Constants.API_BASE_URL + IMAGE_URL_PREFIX + mId + "/" + mImageLocation;
         }
     }
 }

@@ -79,6 +79,8 @@
         <item name="cardCornerRadius">0dp</item>
     </style>
 
+    <!--fixme 24.04.2017 standardize styles naming-->
+
     <style name="photo_source_bottom_sheet_item_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/bottom_sheet_height_item_height</item>

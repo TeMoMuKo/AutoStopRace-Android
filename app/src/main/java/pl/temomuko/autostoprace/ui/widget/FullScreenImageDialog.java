@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.ui.widget;
 
 
-import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,11 +29,11 @@ public class FullScreenImageDialog extends DialogFragment {
 
     public static final String TAG = FullScreenImageDialog.class.getSimpleName();
 
-    @BindView(R.id.close_button) ImageView mCloseButton;
-    @BindView(R.id.subsampling_image_view) SubsamplingScaleImageView mSubsamplingScaleImageView;
-    @BindView(R.id.mpb_loading_progress) MaterialProgressBar mMaterialProgressBar;
+    private static final String EXTRA_IMAGE_URI = "extra_image_uri";
 
-    public static final String EXTRA_IMAGE_URI = "extra_image_uri";
+    @BindView(R.id.btn_close) ImageView mCloseButton;
+    @BindView(R.id.iv_subsampling) SubsamplingScaleImageView mSubsamplingScaleImageView;
+    @BindView(R.id.mpb_loading_progress) MaterialProgressBar mMaterialProgressBar;
 
     public static FullScreenImageDialog newInstance(@NonNull Uri imageUri) {
 
@@ -56,14 +55,11 @@ public class FullScreenImageDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setStyle(DialogFragment.STYLE_NORMAL, R.style.full_screen_dialog);
-
         View view = inflater.inflate(R.layout.full_screen_image_dialog, container, false);
         ButterKnife.bind(this, view);
         Uri imageUri = getArguments().getParcelable(EXTRA_IMAGE_URI);
         showImage(imageUri);
-
         setupListeners();
-
         return view;
     }
 
@@ -98,6 +94,4 @@ public class FullScreenImageDialog extends DialogFragment {
     private void setupListeners() {
         mCloseButton.setOnClickListener(view -> dismiss());
     }
-
-
 }
