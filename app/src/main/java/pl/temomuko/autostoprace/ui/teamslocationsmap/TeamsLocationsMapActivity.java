@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.ui.teamslocationsmap;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -81,6 +82,11 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     private Subscription mSetLocationsSubscription;
     private ClusterManager<LocationRecordClusterItem> mClusterManager;
     private List<LocationRecord> mCurrentTeamLocations;
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, TeamsLocationsMapActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

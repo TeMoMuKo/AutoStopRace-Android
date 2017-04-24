@@ -131,46 +131,6 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
         handleShortcutIntent(intent);
     }
 
-    private void handleShortcutIntent(Intent intent) {
-        String action = intent.getAction();
-        if (action != null) {
-            switch (action) {
-                case ACTION_POST_LOCATION:
-                    handleActionPostLocation();
-                    break;
-                case ACTION_PHRASEBOOK:
-                    handleActionPhrasebook();
-                    break;
-                case ACTION_LOCATIONS_MAP:
-                    handleActionLocationsMap();
-                    break;
-            }
-        }
-    }
-
-    private void handleActionPostLocation() {
-        if (!isConsumedPostLocationShortcutIntent) {
-            if (mMainPresenter.isAuthorized()) {
-                mMainPresenter.goToPostLocation();
-            }
-            isConsumedPostLocationShortcutIntent = true;
-        }
-    }
-
-    private void handleActionLocationsMap() {
-        if (!isConsumedLocationsMapShortcutIntent) {
-            mMainPresenter.goToLocationsMap();
-            isConsumedLocationsMapShortcutIntent = true;
-        }
-    }
-
-    private void handleActionPhrasebook() {
-        if (!isConsumedPhrasebookShortcutIntent) {
-            mMainPresenter.goToPhrasebook();
-            isConsumedPhrasebookShortcutIntent = true;
-        }
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -340,8 +300,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void startLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        LoginActivity.start(this);
         finish();
     }
 
@@ -432,14 +391,12 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void startPhrasebookActivity() {
-        Intent intent = new Intent(this, PhrasebookActivity.class);
-        startActivity(intent);
+        PhrasebookActivity.start(this);
     }
 
     @Override
     public void startTeamLocationsMapActivity() {
-        Intent intent = new Intent(this, TeamsLocationsMapActivity.class);
-        startActivity(intent);
+        TeamsLocationsMapActivity.start(this);
     }
 
     @Override
@@ -479,6 +436,46 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
     private void showList() {
         mEmptyStateLinearLayout.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void handleShortcutIntent(Intent intent) {
+        String action = intent.getAction();
+        if (action != null) {
+            switch (action) {
+                case ACTION_POST_LOCATION:
+                    handleActionPostLocation();
+                    break;
+                case ACTION_PHRASEBOOK:
+                    handleActionPhrasebook();
+                    break;
+                case ACTION_LOCATIONS_MAP:
+                    handleActionLocationsMap();
+                    break;
+            }
+        }
+    }
+
+    private void handleActionPostLocation() {
+        if (!isConsumedPostLocationShortcutIntent) {
+            if (mMainPresenter.isAuthorized()) {
+                mMainPresenter.goToPostLocation();
+            }
+            isConsumedPostLocationShortcutIntent = true;
+        }
+    }
+
+    private void handleActionLocationsMap() {
+        if (!isConsumedLocationsMapShortcutIntent) {
+            mMainPresenter.goToLocationsMap();
+            isConsumedLocationsMapShortcutIntent = true;
+        }
+    }
+
+    private void handleActionPhrasebook() {
+        if (!isConsumedPhrasebookShortcutIntent) {
+            mMainPresenter.goToPhrasebook();
+            isConsumedPhrasebookShortcutIntent = true;
+        }
     }
 
     /* Events */

@@ -27,7 +27,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivityComponent().inject(this);
-        shortcuts.createPostLocationsShortcut();
     }
 
     @Override

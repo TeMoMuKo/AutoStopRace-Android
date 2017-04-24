@@ -19,7 +19,6 @@ import pl.temomuko.autostoprace.injection.component.DaggerApplicationComponent;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
 import pl.temomuko.autostoprace.service.LocationSyncService;
 import pl.temomuko.autostoprace.service.receiver.NetworkChangeReceiver;
-import pl.temomuko.autostoprace.ui.main.Shortcuts;
 
 /**
  * Created by Szymon Kozak on 2016-01-06.
@@ -28,7 +27,6 @@ public class AsrApplication extends Application {
 
     @Inject LocationSyncService.NetworkChangeReceiver mServiceNetworkReceiver;
     @Inject NetworkChangeReceiver mNetworkReceiver;
-    @Inject Shortcuts shortcuts;
 
     private ApplicationComponent mApplicationComponent;
 

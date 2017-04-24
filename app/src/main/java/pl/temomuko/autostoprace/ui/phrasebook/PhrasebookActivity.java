@@ -1,5 +1,7 @@
 package pl.temomuko.autostoprace.ui.phrasebook;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.AppCompatSpinner;
@@ -52,6 +54,11 @@ public class PhrasebookActivity extends DrawerActivity implements PhrasebookMvpV
     private Subscription mSearchViewBindingSubscription;
     private String mLastSearchQuery;
     private MenuItem mSearchItem;
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, PhrasebookActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -1,6 +1,5 @@
 package pl.temomuko.autostoprace.ui.staticdata.launcher;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,17 +36,14 @@ public class LauncherActivity extends DrawerActivity {
     }
 
     private void startLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        LoginActivity.start(this);
     }
 
     private void startContactActivity() {
-        Intent intent = new Intent(this, ContactActivity.class);
-        startActivity(intent);
+        ContactActivity.start(this);
     }
 
     private void startTeamsLocationsMapActivity() {
-        Intent intent = new Intent(this, TeamsLocationsMapActivity.class);
-        startActivity(intent);
+        TeamsLocationsMapActivity.start(this);
     }
 }
