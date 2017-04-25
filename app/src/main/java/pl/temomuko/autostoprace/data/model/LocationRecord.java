@@ -37,14 +37,14 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable, P
     }
 
     public LocationRecord(double latitude, double longitude, String message, String address,
-                          String country, String countryCode, Uri imageLocation) {
+                          String country, String countryCode, @Nullable Uri imageLocation) {
         mLatitude = latitude;
         mLongitude = longitude;
         mMessage = message;
         mAddress = address;
         mCountry = country;
         mCountryCode = countryCode;
-        mImageLocation = imageLocation.toString();
+        mImageLocation = imageLocation == null ? null : imageLocation.toString();
     }
 
     @Override
