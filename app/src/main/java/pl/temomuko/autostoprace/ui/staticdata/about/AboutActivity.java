@@ -7,9 +7,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import pl.temomuko.autostoprace.Constants;
@@ -24,11 +26,15 @@ public class AboutActivity extends BaseActivity {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.btn_go_to_store) Button mGoToStoreButton;
+    @BindView(R.id.tv_about_app) TextView mAboutAppTextView;
+    @BindView(R.id.tv_authors) TextView mAuthorsTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        mAboutAppTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        mAuthorsTextView.setMovementMethod(LinkMovementMethod.getInstance());
         setupToolbarWithBack();
         setupButtonsTextStyleOnPreLollipop();
         setListeners();

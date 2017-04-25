@@ -7,6 +7,7 @@
     android:padding="@dimen/default_padding">
 
     <TextView
+        android:id="@+id/tv_about_app"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="3dp"
@@ -14,6 +15,7 @@
         android:textSize="15sp"/>
 
     <TextView
+        android:id="@+id/tv_authors"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
