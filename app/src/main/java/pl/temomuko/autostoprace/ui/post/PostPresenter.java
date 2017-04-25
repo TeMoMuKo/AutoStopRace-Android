@@ -22,6 +22,8 @@ import pl.temomuko.autostoprace.util.LocationSettingsUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observer;
+import rx.subjects.PublishSubject;
+import rx.subjects.Subject;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -37,6 +39,8 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     private Address mLatestAddress;
     private boolean mIsLocationSettingsStatusForResultCalled = false;
     private boolean mIsLocationSaved;
+
+    private final Subject<Void, Void> mVoidResumePublishSubject = PublishSubject.create();
 
     @Inject
     public PostPresenter(DataManager dataManager) {
@@ -55,6 +59,10 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         mLocationSubscriptions.unsubscribe();
         mPhotoSubscriptions.unsubscribe();
         super.detachView();
+    }
+
+    public void onResume() {
+        mVoidResumePublishSubject.onNext(null);
     }
 
     public void tryToSaveLocation(String message, Uri currentPhotoUri) {
@@ -110,8 +118,10 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
 
 
     public void requestPhoto(ImageSourceType imageSourceType) {
+        // FIXME: 24.04.2017 really hacky solution for rotation bug
         mPhotoSubscriptions.add(
                 mDataManager.requestPhoto(imageSourceType)
+                        .flatMap(uri -> mVoidResumePublishSubject.asObservable(), ((uri, voidValue) -> uri))
                         .subscribe(getPhotoObserver())
         );
     }
@@ -119,6 +129,7 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
     public void checkForUnreceivedPhoto() {
         mPhotoSubscriptions.add(
                 mDataManager.getPhotoObservable()
+                        .flatMap(uri -> mVoidResumePublishSubject.asObservable(), ((uri, voidValue) -> uri))
                         .subscribe(getPhotoObserver())
         );
     }
