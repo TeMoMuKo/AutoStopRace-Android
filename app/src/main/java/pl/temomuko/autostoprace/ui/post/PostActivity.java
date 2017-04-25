@@ -261,9 +261,9 @@ public class PostActivity extends BaseActivity implements PostMvpView, PhotoSour
     }
 
     private void showPhotoSourceChooserBottomSheet() {
-        PhotoSourceChooserBottomSheet photoSourceChooserBottomSheet =
-                PhotoSourceChooserBottomSheet.newInstance();
-        photoSourceChooserBottomSheet.show(getSupportFragmentManager(), PhotoSourceChooserBottomSheet.TAG);
+        getSupportFragmentManager().beginTransaction()
+                .add(PhotoSourceChooserBottomSheet.newInstance(), PhotoSourceChooserBottomSheet.TAG)
+                .commitAllowingStateLoss();
     }
 
     /* Events */
