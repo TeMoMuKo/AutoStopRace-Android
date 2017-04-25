@@ -1,6 +1,6 @@
 <manifest
-    package="pl.temomuko.autostoprace"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pl.temomuko.autostoprace">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -14,8 +14,8 @@
 
     <application
         android:name=".AsrApplication"
-        android:allowBackup="true"
-        android:fullBackupContent="true"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -41,8 +41,9 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data android:name="android.app.shortcuts"
-                       android:resource="@xml/shortcuts" />
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts"/>
         </activity>
 
         <activity
