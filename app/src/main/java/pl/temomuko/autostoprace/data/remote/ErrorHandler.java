@@ -92,8 +92,8 @@ public class ErrorHandler {
             if (responseErrors != null) {
                 errors.addAll(responseErrors);
             }
-        } catch (IOException e) {
-            LogUtil.i(TAG, "It isn't ErrorResponse object.");
+        } catch (Exception e) {
+            LogUtil.i(TAG, "It isn't ErrorResponse object: " + e);
         }
         return errors;
     }
