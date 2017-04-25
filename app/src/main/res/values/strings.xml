@@ -53,8 +53,8 @@
     <string name="msg_your_location">Twoja przybliżona lokalizacja:</string>
     <string name="msg_establishing_approximate_location">Trwa ustalanie przybliżonej lokalizacji…</string>
     <string name="saved_location">Zapisano lokalizację</string>
-    <string name="about_app">Aplikację przygotowali członkowie koła naukowego TeMoMuKo działającego przy Politechnice Wrocławskiej.</string>
-    <string name="authors"><b>Autorzy:</b>\n- Szymon Kozak\n- Rafał Naniewicz\n- Michał Zając</string>
+    <string name="about_app">Aplikację przygotowali członkowie koła naukowego TeMoMuKo działającego przy Politechnice Wrocławskiej. (<a href="http://temomuko.pwr.edu.pl">http://temomuko.pwr.edu.pl</a>)</string>
+    <string name="authors"><b>Autorzy:</b>\n- Szymon Kozak \n- Rafał Naniewicz (jakby co szuka dziewczyny, <a href="mailto:randki.naniewicz@gmail.com">randki.naniewicz@gmail.com</a>)\n - Michał Zając</string>
     <string name="warning_no_fine_location_permission">Brak uprawnień dostępu do lokalizacji.</string>
     <string name="settings">Ustawienia</string>
     <string name="change_settings">Zmień</string>

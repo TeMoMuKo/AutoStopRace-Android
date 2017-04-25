@@ -145,6 +145,8 @@ public class PostActivity extends BaseActivity implements PostMvpView, PhotoSour
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_post, menu);
+        menu.findItem(R.id.action_add_photo)
+                .setVisible(currentPhotoUri == null);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -247,12 +249,14 @@ public class PostActivity extends BaseActivity implements PostMvpView, PhotoSour
         Glide.with(this)
                 .load(uri)
                 .into(photoImageView);
+        invalidateOptionsMenu();
     }
 
     @Override
     public void clearPhoto() {
         currentPhotoUri = null;
         photoPanelLayout.setVisibility(View.GONE);
+        invalidateOptionsMenu();
     }
 
     @Override
