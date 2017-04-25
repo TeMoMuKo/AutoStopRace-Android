@@ -137,9 +137,7 @@ public class PhotoShadowActivity extends BaseActivity {
     void onActivityResultCropImageRequestCode(int resultCode, Intent intent) {
         if (RESULT_OK == resultCode) {
             Uri cropUri = CropImage.getActivityResult(intent).getUri();
-            revokeUriReadWritePermissionForKitkat(cropUri);
             if (cameraPhotoUri != null && cameraPhotoFile != null) {
-                revokeUriReadWritePermissionForKitkat(cameraPhotoUri);
                 cameraPhotoFile.delete();
             }
             finishWithSuccess(cropUri);
