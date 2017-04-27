@@ -19,6 +19,11 @@
             android:icon="@drawable/ic_tent_black_24dp"
             android:title="@string/title_activity_campus"/>
         <item
+            android:id="@+id/activity_schedule"
+            android:checked="false"
+            android:icon=""
+            android:title="@string/title_activity_campus"/>
+        <item
             android:id="@+id/activity_phrasebook"
             android:checked="false"
             android:icon="@drawable/ic_message_black_24dp"

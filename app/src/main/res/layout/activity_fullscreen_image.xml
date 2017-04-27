@@ -20,5 +20,13 @@
         app:mpb_progressStyle="circular"
         />
 
+    <ImageView
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:padding="@dimen/default_margin"
+        android:src="@drawable/close_button"/>
+
 </FrameLayout>
 

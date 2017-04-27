@@ -17,7 +17,8 @@ import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.settings.SettingsActivity;
 import pl.temomuko.autostoprace.ui.staticdata.about.AboutActivity;
-import pl.temomuko.autostoprace.ui.staticdata.campus.CampusActivity;
+import pl.temomuko.autostoprace.ui.staticdata.image.CampusActivity;
+import pl.temomuko.autostoprace.ui.staticdata.image.ScheduleActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.staticdata.partners.PartnersActivity;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapActivity;
@@ -37,6 +38,7 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
             new DrawerItemTarget(MainActivity.class, R.id.activity_main),
             new DrawerItemTarget(TeamsLocationsMapActivity.class, R.id.activity_teams),
             new DrawerItemTarget(CampusActivity.class, R.id.activity_campus),
+            new DrawerItemTarget(ScheduleActivity.class,R.id.activity_schedule),
             new DrawerItemTarget(PhrasebookActivity.class, R.id.activity_phrasebook),
             new DrawerItemTarget(ContactActivity.class, R.id.activity_contact),
             new DrawerItemTarget(PartnersActivity.class, R.id.activity_partners),

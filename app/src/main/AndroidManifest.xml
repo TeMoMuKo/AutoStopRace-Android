@@ -119,7 +119,7 @@
         </activity>
 
         <activity
-            android:name=".ui.staticdata.campus.CampusActivity"
+            android:name=".ui.staticdata.image.CampusActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_campus"
             android:launchMode="singleTask"
