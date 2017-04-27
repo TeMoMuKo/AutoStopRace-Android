@@ -17,7 +17,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 15
-        versionName "1.1.4"
+        versionName "1.1.5"
         manifestPlaceholders = [crashlyticsApiKey: fabricApiKey]
     }
 
