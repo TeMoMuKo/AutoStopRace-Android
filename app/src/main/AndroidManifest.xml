@@ -119,9 +119,20 @@
         </activity>
 
         <activity
-            android:name=".ui.staticdata.campus.CampusActivity"
+            android:name=".ui.staticdata.image.CampusActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_campus"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.Translucent.Status">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity"/>
+        </activity>
+
+        <activity
+            android:name=".ui.staticdata.image.ScheduleActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_schedule"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Translucent.Status">
             <meta-data
