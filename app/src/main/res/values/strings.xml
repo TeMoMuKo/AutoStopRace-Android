@@ -34,6 +34,7 @@
     <string name="title_my_team_locations">Lokalizacje mojego teamu</string>
     <string name="title_activity_teams">Mapa lokalizacji</string>
     <string name="title_activity_campus">Mapa campingu</string>
+    <string name="title_activity_schedule">Harmonogram wydarzeń</string>
     <string name="title_activity_phrasebook">Krótkie rozmówki</string>
     <string name="msg_login_to_show_locations">Zaloguj się, żeby zobaczyć lokalizacje swojego teamu</string>
     <string name="title_activity_contact">Kontakt do organizatorów</string>

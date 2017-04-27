@@ -21,8 +21,8 @@
         <item
             android:id="@+id/activity_schedule"
             android:checked="false"
-            android:icon=""
-            android:title="@string/title_activity_campus"/>
+            android:icon="@drawable/ic_schedule_24dp"
+            android:title="@string/title_activity_schedule"/>
         <item
             android:id="@+id/activity_phrasebook"
             android:checked="false"
