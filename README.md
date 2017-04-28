@@ -24,7 +24,7 @@ Application built on MVP-based architecture powered by RxJava.  ([architecture g
 * [MaterialProgressBar](https://github.com/DreaminginCodeZH/MaterialProgressBar)
 * [OkHttp](http://square.github.io/okhttp/)
 * [Opencsv](http://opencsv.sourceforge.net/)
-* [Picasso](http://square.github.io/picasso/)
+* [Glide](https://github.com/bumptech/glide)
 * [Retrofit](http://square.github.io/retrofit/)
 * [Retrolambda](https://github.com/evant/gradle-retrolambda)
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
