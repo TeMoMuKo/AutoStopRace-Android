@@ -127,8 +127,7 @@ public class LocationSyncService extends Service {
                 .flatMap(HttpStatus::requireOk)
                 .map(Response::body)
                 .map(mDataManager::saveToDatabase))
-                .subscribe(this::handleError,
-                        this::handleDatabaseRefreshCompleted);
+                .subscribe(this::handleDatabaseRefreshCompleted, this::handleError);
     }
 
     private Observable<UnsentAndResponseLocationRecordPair> getLocationRecordFromResponseInPair

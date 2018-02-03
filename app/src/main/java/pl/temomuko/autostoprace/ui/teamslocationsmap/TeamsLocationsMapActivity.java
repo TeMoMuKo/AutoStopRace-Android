@@ -31,7 +31,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.Constants;
-import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
@@ -49,6 +48,7 @@ import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 import rx.Subscription;
+import pl.temomuko.autostoprace.R;
 
 public class TeamsLocationsMapActivity extends DrawerActivity
         implements TeamsLocationsMapMvpView {
