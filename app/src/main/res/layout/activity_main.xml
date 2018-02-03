@@ -83,7 +83,7 @@
                     android:secondaryProgress="60"
                     android:visibility="gone"
                     app:mpb_progressStyle="horizontal"
-                    app:mpb_showTrack="false"
+                    app:mpb_showProgressBackground="false"
                     app:mpb_useIntrinsicPadding="false"/>
 
             </FrameLayout>

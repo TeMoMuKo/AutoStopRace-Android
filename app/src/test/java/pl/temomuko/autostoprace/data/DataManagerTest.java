@@ -132,6 +132,7 @@ public class DataManagerTest {
                 .addHeader(Constants.HEADER_FIELD_TOKEN, FAKE_ACCESS_TOKEN)
                 .addHeader(Constants.HEADER_FIELD_CLIENT, FAKE_CLIENT)
                 .addHeader(Constants.HEADER_FIELD_UID, FAKE_UID)
+                .message("")
                 .build();
 
         SignInResponse signInResponse = new SignInResponse();
