@@ -20,3 +20,7 @@ allprojects {
         maven { url 'https://maven.fabric.io/public' }
     }
 }
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
