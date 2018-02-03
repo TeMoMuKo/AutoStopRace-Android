@@ -47,7 +47,10 @@ ext {
             okhttp: "3.9.1",
             retrofit: "2.3.0",
             leakcanary: "1.5.1",
-            butterknife: "8.0.1"
+            butterknife: "8.0.1",
+            onactivityresult: "0.6.0",
+            playservices: "11.8.0",
+            rxbinding: "0.4.0"
     ]
 }
 
@@ -75,8 +78,8 @@ dependencies {
 
     implementation "io.reactivex:rxjava:1.2.9"
     implementation "io.reactivex:rxandroid:1.2.0"
-    implementation "com.jakewharton.rxbinding:rxbinding:0.4.0"
-    implementation "com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0"
+    implementation "com.jakewharton.rxbinding:rxbinding:$versions.rxbinding"
+    implementation "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$versions.rxbinding"
 
     implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
@@ -92,13 +95,13 @@ dependencies {
     implementation "net.sf.opencsv:opencsv:2.3"
     implementation "com.github.bumptech.glide:glide:3.8.0"
 
-    implementation "com.google.android.gms:play-services-location:11.8.0"
-    implementation "com.google.android.gms:play-services-maps:11.8.0"
+    implementation "com.google.android.gms:play-services-location:$versions.playservices"
+    implementation "com.google.android.gms:play-services-maps:$versions.playservices"
     implementation "com.google.maps.android:android-maps-utils:0.5"
     implementation "com.crashlytics.sdk.android:crashlytics:2.8.0"
 
-    implementation "com.vanniktech:onactivityresult:0.6.0"
-    annotationProcessor "com.vanniktech:onactivityresult-compiler:0.6.0"
+    implementation "com.vanniktech:onactivityresult:$versions.onactivityresult"
+    annotationProcessor "com.vanniktech:onactivityresult-compiler:$versions.onactivityresult"
 
     implementation "com.theartofdev.edmodo:android-image-cropper:2.3.1"
 }
