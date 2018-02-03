@@ -90,11 +90,11 @@
                     android:layout_gravity="top"
                     android:indeterminate="true"
                     android:progress="30"
+                    android:secondaryProgress="60"
+                    android:visibility="gone"
                     app:mpb_progressStyle="horizontal"
                     app:mpb_showProgressBackground="false"
-                    app:mpb_useIntrinsicPadding="false"
-                    android:secondaryProgress="60"
-                    android:visibility="gone"/>
+                    app:mpb_useIntrinsicPadding="false"/>
 
             </FrameLayout>
 
