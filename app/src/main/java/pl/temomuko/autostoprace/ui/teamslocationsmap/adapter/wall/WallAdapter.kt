@@ -15,7 +15,7 @@ class WallAdapter @Inject constructor() : RecyclerView.Adapter<WallAdapter.ViewH
 
     var wallItems = emptyList<WallItem>()
         set(items) {
-            field = items
+            field = items.reversed()
             notifyDataSetChanged()
         }
 
@@ -41,7 +41,6 @@ class WallAdapter @Inject constructor() : RecyclerView.Adapter<WallAdapter.ViewH
                     .load(imageUrl)
                     .into(photoImageView)
         } else {
-            Glide.clear(photoImageView)
             photoImageView.setImageDrawable(null)
             photoImageView.visibility = View.GONE
         }

@@ -1,11 +1,16 @@
 package pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall
 
+import android.content.Context
+import android.text.format.DateUtils
+import android.text.format.DateUtils.FORMAT_ABBREV_RELATIVE
 import pl.temomuko.autostoprace.data.model.LocationRecord
+import pl.temomuko.autostoprace.injection.ActivityContext
 import pl.temomuko.autostoprace.util.LocationInfoProvider
 import java.util.*
 import javax.inject.Inject
 
 class WallItemsCreator @Inject constructor(
+        @ActivityContext private val context: Context,
         private val locationInfoProvider: LocationInfoProvider
 ) {
 
@@ -23,7 +28,11 @@ class WallItemsCreator @Inject constructor(
     }
 
     private fun getTimeInfo(date: Date): String {
-        //todo
-        return date.toString()
+        return DateUtils.getRelativeTimeSpanString(
+                date.time,
+                Calendar.getInstance().timeInMillis,
+                0,
+                FORMAT_ABBREV_RELATIVE
+        ).toString()
     }
 }

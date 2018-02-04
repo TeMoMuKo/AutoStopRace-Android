@@ -5,59 +5,83 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              android:paddingBottom="6dp"
-              android:paddingEnd="8dp"
-              android:paddingStart="8dp">
+              android:paddingEnd="4dp"
+              android:paddingStart="4dp">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="1dp"
-        card_view:cardUseCompatPadding="true"
-        card_view:contentPadding="8dp">
+        card_view:cardElevation="2dp"
+        card_view:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/messageTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:lineSpacingExtra="1dp"
-                android:textColor="@color/wall_message"
-                android:textSize="17sp"
-                tools:text="Startujemy!"/>
-
-            <TextView
-                android:id="@+id/timeInfoTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/wall_message"
-                tools:text="5 godzin temu"/>
-
-            <TextView
-                android:id="@+id/locationInfoTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                tools:text="Wrocław, Legnicka 5"/>
-
             <ImageView
-                android:adjustViewBounds="true"
                 android:id="@+id/photoImageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
                 android:maxHeight="600dp"
+                android:minHeight="200dp"
                 android:scaleType="fitCenter"
                 tools:src="@drawable/bg"/>
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
+                <TextView
+                    android:id="@+id/messageTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:lineSpacingExtra="1dp"
+                    android:textColor="@color/wall_message"
+                    android:textSize="15sp"
+                    tools:text="Startujemy!"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/ic_location_on_black_24dp"
+                        android:tint="@color/wall_location"/>
+
+                    <TextView
+                        android:id="@+id/locationInfoTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="9"
+                        android:textSize="12sp"
+                        tools:text="Wrocław, Legnicka 5"/>
+
+                    <TextView
+                        android:id="@+id/timeInfoTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="right"
+                        android:textSize="12sp"
+                        tools:text="5g temu"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
