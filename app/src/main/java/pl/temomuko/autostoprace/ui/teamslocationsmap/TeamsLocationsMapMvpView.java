@@ -7,6 +7,7 @@ import java.util.List;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItem;
 
 public interface TeamsLocationsMapMvpView extends DrawerMvpView {
 
@@ -18,13 +19,17 @@ public interface TeamsLocationsMapMvpView extends DrawerMvpView {
 
     void clearCurrentTeamLocations();
 
-    void setLocations(List<LocationRecord> locationRecords);
+    void setLocationsForMap(List<LocationRecord> locationRecords);
+
+    void setWallItems(List<WallItem> wallItems);
 
     void showError(String message);
 
     void showInvalidFormatError();
 
-    void showNoLocationRecordsInfo();
+    void showNoLocationRecordsInfoForMap();
+
+    void showNoLocationRecordsInfoForWall();
 
     void openFullscreenImage(Uri imageUri);
 }

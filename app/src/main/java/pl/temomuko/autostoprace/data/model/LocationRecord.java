@@ -128,6 +128,7 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable, P
         return mMessage;
     }
 
+    @Nullable
     public String getAddress() {
         return mAddress;
     }
@@ -148,6 +149,7 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable, P
         return mImageLocation == null ? null : Uri.parse(mImageLocation);
     }
 
+    @Nullable
     public String getImageLocationString() {
         return mImageLocation;
     }

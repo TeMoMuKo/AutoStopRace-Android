@@ -35,4 +35,5 @@
     <dimen name="default_circular_progressbar_size">60dp</dimen>
 
     <dimen name="status_bar_overlay_height">0dp</dimen>
+    <dimen name="margin_wall_item">8dp</dimen>
 </resources>

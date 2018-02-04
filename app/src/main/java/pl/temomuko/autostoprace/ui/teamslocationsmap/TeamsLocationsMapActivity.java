@@ -41,6 +41,9 @@ import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordC
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterRenderer;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.TeamLocationInfoWindowAdapter;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview.SearchTeamView;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.FirstItemTopMarginDecoration;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallAdapter;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItem;
 import pl.temomuko.autostoprace.ui.widget.FullScreenImageDialog;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
@@ -64,11 +67,13 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     @Inject TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
     @Inject TeamLocationInfoWindowAdapter mTeamsLocationInfoWindowAdapter;
+    @Inject WallAdapter mWallAdapter;
 
     @BindView(R.id.horizontal_progress_bar) MaterialProgressBar mMaterialProgressBar;
     @BindView(R.id.search_team_view) SearchTeamView mSearchTeamView;
     @BindView(R.id.rv_team_hints) RecyclerView mTeamHintsRecyclerView;
     @BindView(R.id.card_team_hints) CardView mTeamHintsLinearLayout;
+    @BindView(R.id.rv_wall) RecyclerView mWallRecyclerView;
 
     private boolean mAllTeamsProgressState = false;
     private boolean mTeamProgressState = false;
@@ -94,6 +99,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         setupPresenter();
         setupSearchTeamView();
         setupIntentInstanceState(savedInstanceState);
+        setupWall();
         setupMapFragment();
         reportShortcutUsage(Shortcuts.LOCATIONS_MAP);
     }
@@ -245,6 +251,14 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         mTeamsLocationsMapPresenter.loadTeam(teamNumber);
     }
 
+    private void setupWall() {
+        mWallRecyclerView.setHasFixedSize(true);
+        float firstItemMargin = getResources().getDimension(R.dimen.margin_wall_item);
+        FirstItemTopMarginDecoration decoration = new FirstItemTopMarginDecoration(firstItemMargin);
+        mWallRecyclerView.addItemDecoration(decoration);
+        mWallRecyclerView.setAdapter(mWallAdapter);
+    }
+
     private void setupMapFragment() {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
@@ -255,7 +269,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
             setupClusterManager();
             if (mCurrentTeamLocations != null) {
                 mAnimateTeamLocationsUpdate = false;
-                setLocations(mCurrentTeamLocations);
+                setLocationsForMap(mCurrentTeamLocations);
             }
         });
     }
@@ -331,7 +345,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     @Override
-    public void setLocations(@NonNull List<LocationRecord> locationRecords) {
+    public void setLocationsForMap(@NonNull List<LocationRecord> locationRecords) {
         mCurrentTeamLocations = locationRecords;
         if (mSetLocationsSubscription != null) mSetLocationsSubscription.unsubscribe();
         mSetLocationsSubscription = Observable.from(locationRecords)
@@ -339,6 +353,11 @@ public class TeamsLocationsMapActivity extends DrawerActivity
                 .toSortedList()
                 .compose(RxUtil.applyComputationSchedulers())
                 .subscribe(this::handleTeamLocationsToSet);
+    }
+
+    @Override
+    public void setWallItems(List<WallItem> wallItems) {
+        mWallAdapter.setWallItems(wallItems);
     }
 
     @Override
@@ -352,8 +371,13 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     @Override
-    public void showNoLocationRecordsInfo() {
+    public void showNoLocationRecordsInfoForMap() {
         Toast.makeText(this, R.string.msg_no_location_records_to_display, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showNoLocationRecordsInfoForWall() {
+        //todo
     }
 
     @Override

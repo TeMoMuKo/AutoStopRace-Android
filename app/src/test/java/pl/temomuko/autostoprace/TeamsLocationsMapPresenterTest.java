@@ -123,8 +123,8 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
-        verify(mMockTeamsLocationsMapMvpView).setLocations(locationRecords);
-        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView).setLocationsForMap(locationRecords);
+        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfoForMap();
         verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
@@ -144,8 +144,8 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
-        verify(mMockTeamsLocationsMapMvpView).setLocations(locationRecords);
-        verify(mMockTeamsLocationsMapMvpView).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView).setLocationsForMap(locationRecords);
+        verify(mMockTeamsLocationsMapMvpView).showNoLocationRecordsInfoForMap();
         verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
@@ -167,8 +167,8 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
-        verify(mMockTeamsLocationsMapMvpView, never()).setLocations(any());
-        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView, never()).setLocationsForMap(any());
+        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfoForMap();
         verify(mMockTeamsLocationsMapMvpView).showError(any());
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
@@ -193,8 +193,8 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
-        verify(mMockTeamsLocationsMapMvpView, never()).setLocations(any());
-        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView, never()).setLocationsForMap(any());
+        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfoForMap();
         verify(mMockTeamsLocationsMapMvpView).showError(teamNotFound);
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }

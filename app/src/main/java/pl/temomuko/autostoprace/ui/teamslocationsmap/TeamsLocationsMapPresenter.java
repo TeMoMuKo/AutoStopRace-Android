@@ -16,6 +16,8 @@ import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.TeamNotFoundException;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterItem;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItem;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItemsCreator;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
@@ -29,6 +31,7 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     private static final String TAG = TeamsLocationsMapPresenter.class.getSimpleName();
 
     private final ErrorHandler mErrorHandler;
+    private final WallItemsCreator mWallItemsCreator;
     private Subscription mLoadAllTeamsSubscription;
     private Subscription mLoadTeamSubscription;
     private Subscription mHandleClusterSubscription;
@@ -36,9 +39,14 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     private RxCacheHelper<Response<List<LocationRecord>>> mRxTeamLocationsCacheHelper;
 
     @Inject
-    public TeamsLocationsMapPresenter(DataManager dataManager, ErrorHandler errorHandler) {
+    public TeamsLocationsMapPresenter(
+            DataManager dataManager,
+            ErrorHandler errorHandler,
+            WallItemsCreator wallItemsCreator
+    ) {
         super(dataManager);
         mErrorHandler = errorHandler;
+        mWallItemsCreator = wallItemsCreator;
     }
 
     @Override
@@ -160,10 +168,23 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     }
 
     private void handleTeamLocation(List<LocationRecord> locations) {
+        showLocationsForMap(locations);
+        showLocationsForWall(locations);
+    }
+
+    private void showLocationsForMap(List<LocationRecord> locations) {
         getMvpView().setTeamProgress(false);
-        getMvpView().setLocations(locations);
+        getMvpView().setLocationsForMap(locations);
         if (locations.isEmpty()) {
-            getMvpView().showNoLocationRecordsInfo();
+            getMvpView().showNoLocationRecordsInfoForMap();
+        }
+    }
+
+    private void showLocationsForWall(List<LocationRecord> locations) {
+        List<WallItem> wallItems = mWallItemsCreator.createFromLocationRecords(locations);
+        getMvpView().setWallItems(wallItems);
+        if (locations.isEmpty()) {
+            getMvpView().showNoLocationRecordsInfoForWall();
         }
     }
 
