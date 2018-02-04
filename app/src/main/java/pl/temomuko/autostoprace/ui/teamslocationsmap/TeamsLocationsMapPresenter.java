@@ -9,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.local.LocationsViewMode;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
@@ -112,6 +113,11 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
 
     public void toggleLocationsViewMode() {
         mDataManager.toggleLocationsViewMode();
+        getMvpView().setLocationsViewMode(mDataManager.getLocationsViewMode());
+    }
+
+    public void setLocationsViewMode(LocationsViewMode mode) {
+        mDataManager.setLocationsViewMode(mode);
         getMvpView().setLocationsViewMode(mDataManager.getLocationsViewMode());
     }
 

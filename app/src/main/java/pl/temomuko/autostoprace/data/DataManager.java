@@ -225,6 +225,10 @@ public class DataManager {
         return mPrefsHelper.getLocationsViewMode();
     }
 
+    public void setLocationsViewMode(LocationsViewMode mode) {
+        mPrefsHelper.setLocationsViewMode(mode);
+    }
+
     public void toggleLocationsViewMode() {
         switch (getLocationsViewMode()) {
             case MAP:

@@ -51,7 +51,8 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <fragment
                     android:id="@+id/map_fragment"
@@ -104,6 +105,13 @@
                     app:mpb_useIntrinsicPadding="false"/>
 
             </FrameLayout>
+
+            <android.support.design.widget.BottomNavigationView
+                android:background="@color/white"
+                android:id="@+id/bottom_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:menu="@menu/menu_bottom_bar_view_mode"/>
 
         </LinearLayout>
 

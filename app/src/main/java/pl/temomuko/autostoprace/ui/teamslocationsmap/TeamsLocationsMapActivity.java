@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationMenu;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -75,6 +77,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @BindView(R.id.rv_team_hints) RecyclerView mTeamHintsRecyclerView;
     @BindView(R.id.card_team_hints) CardView mTeamHintsLinearLayout;
     @BindView(R.id.rv_wall) RecyclerView mWallRecyclerView;
+    @BindView(R.id.bottom_bar) BottomNavigationView mBottomNavigationView;
 
     private boolean mAllTeamsProgressState = false;
     private boolean mTeamProgressState = false;
@@ -104,6 +107,18 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         setupWall();
         setupMapFragment();
         reportShortcutUsage(Shortcuts.LOCATIONS_MAP);
+
+        mBottomNavigationView.setOnNavigationItemSelectedListener((menuItem) -> {
+            switch (menuItem.getItemId()) {
+                case R.id.map:
+                    mTeamsLocationsMapPresenter.setLocationsViewMode(LocationsViewMode.MAP);
+                    return true;
+                case R.id.wall:
+                    mTeamsLocationsMapPresenter.setLocationsViewMode(LocationsViewMode.WALL);
+                    return true;
+            }
+            return false;
+        });
     }
 
     @Override
@@ -161,17 +176,6 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_teams_locations_map, menu);
-        MenuItem toggleMode = menu.findItem(R.id.action_toggle_view_mode);
-        if (mCurrentLocationsViewMode != null) {
-            switch (mCurrentLocationsViewMode) {
-                case MAP:
-                    toggleMode.setTitle(LocationsViewMode.WALL.getTitle());
-                    break;
-                case WALL:
-                    toggleMode.setTitle(LocationsViewMode.MAP.getTitle());
-                    break;
-            }
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -183,9 +187,6 @@ public class TeamsLocationsMapActivity extends DrawerActivity
                 return true;
             case R.id.action_share_map:
                 shareMap();
-                return true;
-            case R.id.action_toggle_view_mode:
-                toggleLocationsViewMode();
                 return true;
         }
         return super.onOptionsItemSelected(item);
