@@ -32,6 +32,7 @@ import butterknife.BindView;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.Event;
+import pl.temomuko.autostoprace.data.local.LocationsViewMode;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
@@ -85,6 +86,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     private Subscription mSetLocationsSubscription;
     private ClusterManager<LocationRecordClusterItem> mClusterManager;
     private List<LocationRecord> mCurrentTeamLocations;
+    private LocationsViewMode mCurrentLocationsViewMode;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, TeamsLocationsMapActivity.class);
@@ -159,6 +161,17 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_teams_locations_map, menu);
+        MenuItem toggleMode = menu.findItem(R.id.action_toggle_view_mode);
+        if (mCurrentLocationsViewMode != null) {
+            switch (mCurrentLocationsViewMode) {
+                case MAP:
+                    toggleMode.setTitle(LocationsViewMode.WALL.getTitle());
+                    break;
+                case WALL:
+                    toggleMode.setTitle(LocationsViewMode.MAP.getTitle());
+                    break;
+            }
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -171,8 +184,15 @@ public class TeamsLocationsMapActivity extends DrawerActivity
             case R.id.action_share_map:
                 shareMap();
                 return true;
+            case R.id.action_toggle_view_mode:
+                toggleLocationsViewMode();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void toggleLocationsViewMode() {
+        mTeamsLocationsMapPresenter.toggleLocationsViewMode();
     }
 
     @Override
@@ -383,6 +403,20 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @Override
     public void openFullscreenImage(Uri imageUri) {
         FullScreenImageDialog.newInstance(imageUri).show(getSupportFragmentManager(), FullScreenImageDialog.TAG);
+    }
+
+    @Override
+    public void setLocationsViewMode(LocationsViewMode mode) {
+        mCurrentLocationsViewMode = mode;
+        invalidateOptionsMenu();
+        switch (mode) {
+            case MAP:
+                mWallRecyclerView.setVisibility(View.GONE);
+                break;
+            case WALL:
+                mWallRecyclerView.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     /* Private helper methods */

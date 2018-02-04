@@ -52,6 +52,7 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     @Override
     public void attachView(TeamsLocationsMapMvpView mvpView) {
         super.attachView(mvpView);
+        getMvpView().setLocationsViewMode(mDataManager.getLocationsViewMode());
         if (mRxAllTeamsCacheHelper.isCached()) {
             continueCachedAllTeamsRequest();
         }
@@ -107,6 +108,11 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
                         .compose(RxUtil.applyIoSchedulers())
         );
         continueCachedTeamLocationsRequest();
+    }
+
+    public void toggleLocationsViewMode() {
+        mDataManager.toggleLocationsViewMode();
+        getMvpView().setLocationsViewMode(mDataManager.getLocationsViewMode());
     }
 
     public void handleMarkerClick(Uri imageUri) {

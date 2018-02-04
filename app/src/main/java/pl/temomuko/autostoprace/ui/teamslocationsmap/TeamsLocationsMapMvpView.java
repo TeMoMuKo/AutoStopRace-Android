@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import java.util.List;
 
+import pl.temomuko.autostoprace.data.local.LocationsViewMode;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
@@ -32,4 +33,6 @@ public interface TeamsLocationsMapMvpView extends DrawerMvpView {
     void showNoLocationRecordsInfoForWall();
 
     void openFullscreenImage(Uri imageUri);
+
+    void setLocationsViewMode(LocationsViewMode locationsViewMode);
 }
