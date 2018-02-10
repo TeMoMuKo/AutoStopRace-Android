@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -76,6 +77,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @BindView(R.id.rv_team_hints) RecyclerView mTeamHintsRecyclerView;
     @BindView(R.id.card_team_hints) CardView mTeamHintsLinearLayout;
     @BindView(R.id.rv_wall) RecyclerView mWallRecyclerView;
+    @BindView(R.id.wall_frame) ViewGroup mWallLayout;
     @BindView(R.id.bottom_bar) BottomNavigationView mBottomNavigationView;
 
     private boolean mAllTeamsProgressState = false;
@@ -157,6 +159,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
             for (Parcelable parcelable : parcelableCurrentTeamLocations) {
                 mCurrentTeamLocations.add((LocationRecord) parcelable);
             }
+            mTeamsLocationsMapPresenter.recreateWall(mCurrentTeamLocations);
         }
     }
 
@@ -375,6 +378,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     @Override
     public void setWallItems(List<WallItem> wallItems) {
+        mWallRecyclerView.setVisibility(View.VISIBLE);
         mWallAdapter.setWallItems(wallItems);
     }
 
@@ -394,8 +398,8 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     @Override
-    public void showNoLocationRecordsInfoForWall() {
-        //todo
+    public void hideWallItems() {
+        mWallRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -417,7 +421,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     @Override
     public void setWallVisible(boolean visible) {
-        mWallRecyclerView.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mWallLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     /* Private helper methods */

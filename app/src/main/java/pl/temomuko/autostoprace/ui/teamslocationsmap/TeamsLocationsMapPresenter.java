@@ -135,6 +135,10 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
                 );
     }
 
+    public void recreateWall(List<LocationRecord> locations) {
+        showLocationsForWall(locations);
+    }
+
     /* Private helper methods */
 
     private void continueCachedAllTeamsRequest() {
@@ -191,7 +195,7 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         List<WallItem> wallItems = mWallItemsCreator.createFromLocationRecords(locations);
         getMvpView().setWallItems(wallItems);
         if (locations.isEmpty()) {
-            getMvpView().showNoLocationRecordsInfoForWall();
+            getMvpView().hideWallItems();
         }
     }
 

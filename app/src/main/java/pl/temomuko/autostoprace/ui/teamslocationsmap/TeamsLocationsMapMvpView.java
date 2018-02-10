@@ -30,7 +30,7 @@ public interface TeamsLocationsMapMvpView extends DrawerMvpView {
 
     void showNoLocationRecordsInfoForMap();
 
-    void showNoLocationRecordsInfoForWall();
+    void hideWallItems();
 
     void openFullscreenImage(Uri imageUri);
 
