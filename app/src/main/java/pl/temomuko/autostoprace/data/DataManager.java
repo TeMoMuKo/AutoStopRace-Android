@@ -228,15 +228,4 @@ public class DataManager {
     public void setLocationsViewMode(LocationsViewMode mode) {
         mPrefsHelper.setLocationsViewMode(mode);
     }
-
-    public void toggleLocationsViewMode() {
-        switch (getLocationsViewMode()) {
-            case MAP:
-                mPrefsHelper.setLocationsViewMode(LocationsViewMode.WALL);
-                break;
-            case WALL:
-                mPrefsHelper.setLocationsViewMode(LocationsViewMode.MAP);
-                break;
-        }
-    }
 }

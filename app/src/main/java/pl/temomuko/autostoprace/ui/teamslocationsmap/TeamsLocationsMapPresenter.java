@@ -111,14 +111,9 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         continueCachedTeamLocationsRequest();
     }
 
-    public void toggleLocationsViewMode() {
-        mDataManager.toggleLocationsViewMode();
-        getMvpView().setLocationsViewMode(mDataManager.getLocationsViewMode());
-    }
-
-    public void setLocationsViewMode(LocationsViewMode mode) {
+    public void updateLocationsViewModeContent(LocationsViewMode mode) {
         mDataManager.setLocationsViewMode(mode);
-        getMvpView().setLocationsViewMode(mDataManager.getLocationsViewMode());
+        getMvpView().setWallVisible(mode == LocationsViewMode.WALL);
     }
 
     public void handleMarkerClick(Uri imageUri) {

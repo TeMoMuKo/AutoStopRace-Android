@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -89,7 +88,6 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     private Subscription mSetLocationsSubscription;
     private ClusterManager<LocationRecordClusterItem> mClusterManager;
     private List<LocationRecord> mCurrentTeamLocations;
-    private LocationsViewMode mCurrentLocationsViewMode;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, TeamsLocationsMapActivity.class);
@@ -101,24 +99,13 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams_locations_map);
         getActivityComponent().inject(this);
+        setupBottomNavigationView();
         setupPresenter();
         setupSearchTeamView();
         setupIntentInstanceState(savedInstanceState);
         setupWall();
         setupMapFragment();
         reportShortcutUsage(Shortcuts.LOCATIONS_MAP);
-
-        mBottomNavigationView.setOnNavigationItemSelectedListener((menuItem) -> {
-            switch (menuItem.getItemId()) {
-                case R.id.map:
-                    mTeamsLocationsMapPresenter.setLocationsViewMode(LocationsViewMode.MAP);
-                    return true;
-                case R.id.wall:
-                    mTeamsLocationsMapPresenter.setLocationsViewMode(LocationsViewMode.WALL);
-                    return true;
-            }
-            return false;
-        });
     }
 
     @Override
@@ -190,10 +177,6 @@ public class TeamsLocationsMapActivity extends DrawerActivity
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void toggleLocationsViewMode() {
-        mTeamsLocationsMapPresenter.toggleLocationsViewMode();
     }
 
     @Override
@@ -292,6 +275,20 @@ public class TeamsLocationsMapActivity extends DrawerActivity
                 mAnimateTeamLocationsUpdate = false;
                 setLocationsForMap(mCurrentTeamLocations);
             }
+        });
+    }
+
+    private void setupBottomNavigationView() {
+        mBottomNavigationView.setOnNavigationItemSelectedListener((menuItem) -> {
+            switch (menuItem.getItemId()) {
+                case R.id.map:
+                    mTeamsLocationsMapPresenter.updateLocationsViewModeContent(LocationsViewMode.MAP);
+                    return true;
+                case R.id.wall:
+                    mTeamsLocationsMapPresenter.updateLocationsViewModeContent(LocationsViewMode.WALL);
+                    return true;
+            }
+            return false;
         });
     }
 
@@ -408,16 +405,19 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     @Override
     public void setLocationsViewMode(LocationsViewMode mode) {
-        mCurrentLocationsViewMode = mode;
-        invalidateOptionsMenu();
         switch (mode) {
             case MAP:
-                mWallRecyclerView.setVisibility(View.GONE);
+                mBottomNavigationView.setSelectedItemId(R.id.map);
                 break;
             case WALL:
-                mWallRecyclerView.setVisibility(View.VISIBLE);
+                mBottomNavigationView.setSelectedItemId(R.id.wall);
                 break;
         }
+    }
+
+    @Override
+    public void setWallVisible(boolean visible) {
+        mWallRecyclerView.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     /* Private helper methods */

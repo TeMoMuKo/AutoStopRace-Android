@@ -35,4 +35,6 @@ public interface TeamsLocationsMapMvpView extends DrawerMvpView {
     void openFullscreenImage(Uri imageUri);
 
     void setLocationsViewMode(LocationsViewMode locationsViewMode);
+
+    void setWallVisible(boolean visible);
 }
