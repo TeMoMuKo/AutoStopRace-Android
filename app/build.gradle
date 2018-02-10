@@ -73,6 +73,7 @@ dependencies {
 
     implementation "com.android.support:design:$versions.support"
     implementation "com.android.support:cardview-v7:$versions.support"
+    implementation "com.android.support.constraint:constraint-layout:1.0.2"
 
     implementation "me.zhanghai.android.materialprogressbar:library:1.4.2"
     implementation "org.greenrobot:eventbus:3.0.0"
