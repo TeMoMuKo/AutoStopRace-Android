@@ -22,6 +22,13 @@
         android:theme="@style/AppTheme">
 
         <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher"/>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/accent"/>
+
+        <meta-data
             android:name="pl.temomuko.autostoprace.data.local.GlideConfigModule"
             android:value="GlideModule"/>
 
@@ -224,6 +231,12 @@
         </receiver>
 
         <service android:name=".service.LocationSyncService"/>
+
+        <service android:name=".service.AsrFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

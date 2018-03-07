@@ -13,13 +13,15 @@ android {
     defaultConfig {
         applicationId "pl.temomuko.autostoprace"
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 25
         versionCode 16
         versionName "1.1.5"
     }
 
     buildTypes {
         debug {
+            versionNameSuffix "-DEBUG"
+            applicationIdSuffix ".debug"
             resValue 'string', 'GOOGLE_MAPS_KEY', googleMapsDebugKey
         }
         release {
@@ -41,15 +43,15 @@ android {
 
 ext {
     versions = [
-            support         : "27.0.2",
+            support         : "27.1.0",
             okhttp          : "3.9.1",
             retrofit        : "2.3.0",
             leakcanary      : "1.5.1",
             butterknife     : "8.0.1",
             onactivityresult: "0.6.0",
-            playservices    : "11.8.0",
+            playservices    : "11.6.2",
             rxbinding       : "0.4.0",
-            firebase        : "11.8.0"
+            firebase        : "11.6.2"
     ]
 }
 
@@ -102,6 +104,7 @@ dependencies {
     implementation "com.vanniktech:onactivityresult:$versions.onactivityresult"
     annotationProcessor "com.vanniktech:onactivityresult-compiler:$versions.onactivityresult"
     implementation "com.google.firebase:firebase-core:$versions.firebase"
+    implementation "com.google.firebase:firebase-messaging:$versions.firebase"
 
     implementation "com.theartofdev.edmodo:android-image-cropper:2.3.1"
 }
