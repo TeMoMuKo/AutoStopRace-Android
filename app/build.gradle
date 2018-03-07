@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 apply from: '../secrets.gradle'
 
-def fabricApiKey = loadSecret("FABRIC_API_KEY", "fabricApiKey")
 def googleMapsDebugKey = loadSecret("GOOGLE_MAPS_DEBUG_KEY", "googleMapsDebugKey")
 def googleMapsReleaseKey = loadSecret("GOOGLE_MAPS_RELEASE_KEY", "googleMapsReleaseKey")
 
@@ -17,7 +16,6 @@ android {
         targetSdkVersion 27
         versionCode 16
         versionName "1.1.5"
-        manifestPlaceholders = [crashlyticsApiKey: fabricApiKey]
     }
 
     buildTypes {
@@ -43,14 +41,15 @@ android {
 
 ext {
     versions = [
-            support: "27.0.2",
-            okhttp: "3.9.1",
-            retrofit: "2.3.0",
-            leakcanary: "1.5.1",
-            butterknife: "8.0.1",
+            support         : "27.0.2",
+            okhttp          : "3.9.1",
+            retrofit        : "2.3.0",
+            leakcanary      : "1.5.1",
+            butterknife     : "8.0.1",
             onactivityresult: "0.6.0",
-            playservices: "11.8.0",
-            rxbinding: "0.4.0"
+            playservices    : "11.8.0",
+            rxbinding       : "0.4.0",
+            firebase        : "11.8.0"
     ]
 }
 
@@ -98,10 +97,14 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:$versions.playservices"
     implementation "com.google.android.gms:play-services-maps:$versions.playservices"
     implementation "com.google.maps.android:android-maps-utils:0.5"
-    implementation "com.crashlytics.sdk.android:crashlytics:2.8.0"
+    implementation "com.crashlytics.sdk.android:crashlytics:2.9.1"
 
     implementation "com.vanniktech:onactivityresult:$versions.onactivityresult"
     annotationProcessor "com.vanniktech:onactivityresult-compiler:$versions.onactivityresult"
+    implementation "com.google.firebase:firebase-core:$versions.firebase"
 
     implementation "com.theartofdev.edmodo:android-image-cropper:2.3.1"
 }
+
+//To avoid dependency collisions GMS plugin should be placed at the bottom
+apply plugin: 'com.google.gms.google-services'
