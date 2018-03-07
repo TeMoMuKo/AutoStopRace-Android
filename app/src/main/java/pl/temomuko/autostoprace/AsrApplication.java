@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.Locale;
@@ -33,9 +34,14 @@ public class AsrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
         getComponent().inject(this);
         Fabric.with(this, new Crashlytics());
-        LeakCanary.install(this);
         Locale.setDefault(new Locale(Constants.DEFAULT_LOCALE));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             registerReceiver(mServiceNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
