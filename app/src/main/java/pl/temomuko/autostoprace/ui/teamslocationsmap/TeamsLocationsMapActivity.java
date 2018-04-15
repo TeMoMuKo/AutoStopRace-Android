@@ -31,6 +31,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import kotlin.Unit;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.Event;
@@ -264,6 +265,10 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         FirstItemTopMarginDecoration decoration = new FirstItemTopMarginDecoration(firstItemMargin);
         mWallRecyclerView.addItemDecoration(decoration);
         mWallRecyclerView.setAdapter(mWallAdapter);
+        mWallAdapter.setOnImageClick(uri -> {
+            mTeamsLocationsMapPresenter.handleFullScreenPhotoRequest(uri);
+            return Unit.INSTANCE;
+        });
     }
 
     private void setupMapFragment() {
@@ -305,7 +310,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
         mClusterManager.setRenderer(new LocationRecordClusterRenderer(getApplicationContext(), mMap, mClusterManager));
         mClusterManager.setOnClusterItemInfoWindowClickListener(locationRecordClusterItem ->
-                mTeamsLocationsMapPresenter.handleMarkerClick(locationRecordClusterItem.getImageUri()));
+                mTeamsLocationsMapPresenter.handleFullScreenPhotoRequest(locationRecordClusterItem.getImageUri()));
 
         mClusterManager.setOnClusterInfoWindowClickListener(cluster ->
                 mTeamsLocationsMapPresenter.handleClusterMarkerClick(cluster.getItems()));
