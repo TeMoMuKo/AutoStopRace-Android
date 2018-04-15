@@ -219,7 +219,9 @@ public class PhotoShadowActivity extends BaseActivity {
     private void requestPhotoFromGallery() {
         Intent intent = new Intent();
         intent.setType(GALLERY_INTENT_TYPE);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT
+        );
         startActivityForResult(intent, REQUEST_CODE_GALLERY);
     }
 
