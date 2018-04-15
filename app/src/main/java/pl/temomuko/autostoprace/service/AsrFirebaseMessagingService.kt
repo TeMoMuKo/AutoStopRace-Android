@@ -1,33 +1,52 @@
 package pl.temomuko.autostoprace.service
 
-import android.app.NotificationManager
-import android.content.Context
+import android.app.PendingIntent
+import android.content.Intent
 import android.support.v4.app.NotificationCompat
+import android.support.v4.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import pl.temomuko.autostoprace.AsrApplication
 import pl.temomuko.autostoprace.R
+import pl.temomuko.autostoprace.ui.main.MainActivity
+import pl.temomuko.autostoprace.util.getColorCompat
 
 
 class AsrFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        if (remoteMessage.notification != null) {
-            showNotification(remoteMessage.notification?.title, remoteMessage.notification?.body)
+        remoteMessage.notification?.let {
+            showNotification(it.title, it.body)
         }
     }
 
-    //todo needs improvement, add notification channels, format on 6.0
     private fun showNotification(title: String?, messageBody: String?) {
-        val notificationBuilder = NotificationCompat.Builder(this)
+        val contentTitle = title ?: getString(R.string.app_name)
+
+        val notification = NotificationCompat.Builder(this, AsrApplication.Channels.GENERAL)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(title)
+                .setContentTitle(contentTitle)
                 .setContentText(messageBody)
-                .setColor(getColor(R.color.accent))
+                .setColor(getColorCompat(R.color.accent))
                 .setAutoCancel(true)
+                .setContentIntent(
+                        PendingIntent.getActivity(
+                                this, -1,
+                                createDefaultLauncherIntent(), PendingIntent.FLAG_UPDATE_CURRENT
+                        )
+                )
+                .build()
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, notification)
+    }
 
-        notificationManager.notify(0, notificationBuilder.build())
+    private fun createDefaultLauncherIntent() = Intent(this, MainActivity::class.java).apply {
+        action = Intent.ACTION_MAIN
+        addCategory(Intent.CATEGORY_LAUNCHER)
+    }
+
+    companion object {
+        private const val NOTIFICATION_ID = -1
     }
 }

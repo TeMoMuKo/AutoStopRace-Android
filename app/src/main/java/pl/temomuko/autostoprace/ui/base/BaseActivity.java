@@ -39,7 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mActivityComponent == null) {
             mActivityComponent = DaggerActivityComponent.builder()
                     .activityModule(new ActivityModule(this))
-                    .applicationComponent(AsrApplication.get(this).getComponent())
+                    .applicationComponent(AsrApplication.Companion.getApplicationComponent(this))
                     .build();
         }
         return mActivityComponent;
