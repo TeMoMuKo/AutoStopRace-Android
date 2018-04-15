@@ -49,7 +49,7 @@ androidExtensions {
 
 ext {
     versions = [
-            support         : "27.1.0",
+            support         : "27.1.1",
             okhttp          : "3.9.1",
             retrofit        : "2.3.0",
             leakcanary      : "1.5.1",
