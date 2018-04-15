@@ -48,6 +48,7 @@ class AsrApplication : Application() {
     }
 
     companion object {
+        @JvmStatic
         fun getApplicationComponent(context: Context): ApplicationComponent {
             return (context.applicationContext as AsrApplication).applicationComponent
         }

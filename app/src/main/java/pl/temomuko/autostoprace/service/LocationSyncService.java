@@ -48,7 +48,7 @@ public class LocationSyncService extends Service {
     @Override
     public void onCreate() {
         LogUtil.i(TAG, "Service created.");
-        AsrApplication.Companion.getApplicationComponent(this).inject(this);
+        AsrApplication.getApplicationComponent(this).inject(this);
     }
 
     @Override
