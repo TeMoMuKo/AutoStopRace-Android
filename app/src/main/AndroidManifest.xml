@@ -59,21 +59,16 @@
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleTask"
+            android:parentActivityName=".ui.staticdata.launcher.LauncherActivity"
             android:theme="@style/AppTheme.NormalStatusBar">
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.staticdata.launcher.LauncherActivity"/>
         </activity>
 
         <activity
             android:name=".ui.login.resetpass.ResetPassActivity"
             android:label="@string/title_activity_reset_pass"
             android:launchMode="singleTask"
+            android:parentActivityName=".ui.login.LoginActivity"
             android:theme="@style/AppTheme.NormalStatusBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.login.LoginActivity"/>
         </activity>
 
         <activity
@@ -84,16 +79,15 @@
         <activity
             android:name=".ui.post.PostActivity"
             android:label="@string/title_post_location"
+            android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NormalStatusBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
         </activity>
 
         <activity
             android:name=".ui.teamslocationsmap.TeamsLocationsMapActivity"
             android:label="@string/title_activity_teams"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:parentActivityName=".ui.main.MainActivity">
             <intent-filter android:label="@string/app_name">
 
                 <action android:name="android.intent.action.VIEW"/>
@@ -107,18 +101,13 @@
                 <data android:pathPattern="/.*"/>
 
             </intent-filter>
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
         </activity>
 
         <activity
             android:name=".ui.phrasebook.PhrasebookActivity"
             android:label="@string/title_activity_phrasebook"
-            android:launchMode="singleTask">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
+            android:launchMode="singleTask"
+            android:parentActivityName=".ui.main.MainActivity">
         </activity>
 
         <activity
@@ -126,10 +115,8 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_campus"
             android:launchMode="singleTask"
+            android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/Theme.Translucent.Status">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
         </activity>
 
         <activity
@@ -137,58 +124,46 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_schedule"
             android:launchMode="singleTask"
+            android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/Theme.Translucent.Status">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
         </activity>
 
         <activity
             android:name=".ui.contact.ContactActivity"
             android:label="@string/title_activity_contact"
-            android:launchMode="singleTask">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
+            android:launchMode="singleTask"
+            android:parentActivityName=".ui.main.MainActivity">
         </activity>
 
         <activity
             android:name=".ui.staticdata.partners.PartnersActivity"
             android:label="@string/title_activity_partners"
-            android:launchMode="singleTask">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
+            android:launchMode="singleTask"
+            android:parentActivityName=".ui.main.MainActivity">
         </activity>
 
         <activity
             android:name=".ui.staticdata.about.AboutActivity"
             android:label="@string/title_activity_about"
             android:launchMode="singleTask"
+            android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NormalStatusBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
         </activity>
 
         <activity
             android:name=".ui.staticdata.about.LicensesActivity"
             android:label="@string/title_activity_licenses"
             android:launchMode="singleTask"
+            android:parentActivityName=".ui.staticdata.about.AboutActivity"
             android:theme="@style/AppTheme.NormalStatusBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.staticdata.about.AboutActivity"/>
         </activity>
 
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:launchMode="singleTask"
+            android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NormalStatusBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
         </activity>
 
         <!-- Util activities -->
