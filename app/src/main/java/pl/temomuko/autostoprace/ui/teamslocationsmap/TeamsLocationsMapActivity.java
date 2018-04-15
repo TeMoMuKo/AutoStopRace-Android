@@ -384,6 +384,9 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @Override
     public void setWallItems(List<WallItem> wallItems) {
         mWallRecyclerView.setVisibility(View.VISIBLE);
+        if(mWallAdapter.getItemCount() > 0) {
+            mWallRecyclerView.scrollToPosition(0);
+        }
         mWallAdapter.setWallItems(wallItems);
     }
 
