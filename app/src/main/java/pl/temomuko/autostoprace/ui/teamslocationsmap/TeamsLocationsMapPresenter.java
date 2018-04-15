@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import kotlin.Unit;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.LocationsViewMode;
 import pl.temomuko.autostoprace.data.model.LocationRecord;

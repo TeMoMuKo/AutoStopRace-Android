@@ -11,7 +11,6 @@ import pl.temomuko.autostoprace.R
 import pl.temomuko.autostoprace.ui.main.MainActivity
 import pl.temomuko.autostoprace.util.getColorCompat
 
-
 class AsrFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -25,18 +24,18 @@ class AsrFirebaseMessagingService : FirebaseMessagingService() {
         val contentTitle = title ?: getString(R.string.app_name)
 
         val notification = NotificationCompat.Builder(this, AsrApplication.Channels.GENERAL)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(contentTitle)
-                .setContentText(messageBody)
-                .setColor(getColorCompat(R.color.accent))
-                .setAutoCancel(true)
-                .setContentIntent(
-                        PendingIntent.getActivity(
-                                this, -1,
-                                createDefaultLauncherIntent(), PendingIntent.FLAG_UPDATE_CURRENT
-                        )
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(contentTitle)
+            .setContentText(messageBody)
+            .setColor(getColorCompat(R.color.accent))
+            .setAutoCancel(true)
+            .setContentIntent(
+                PendingIntent.getActivity(
+                    this, -1,
+                    createDefaultLauncherIntent(), PendingIntent.FLAG_UPDATE_CURRENT
                 )
-                .build()
+            )
+            .build()
 
         NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, notification)
     }

@@ -38,7 +38,7 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
             new DrawerItemTarget(MainActivity.class, R.id.activity_main),
             new DrawerItemTarget(TeamsLocationsMapActivity.class, R.id.activity_teams),
             new DrawerItemTarget(CampusActivity.class, R.id.activity_campus),
-            new DrawerItemTarget(ScheduleActivity.class,R.id.activity_schedule),
+            new DrawerItemTarget(ScheduleActivity.class, R.id.activity_schedule),
             new DrawerItemTarget(PhrasebookActivity.class, R.id.activity_phrasebook),
             new DrawerItemTarget(ContactActivity.class, R.id.activity_contact),
             new DrawerItemTarget(PartnersActivity.class, R.id.activity_partners),

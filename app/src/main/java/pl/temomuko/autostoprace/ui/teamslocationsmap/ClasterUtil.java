@@ -1,6 +1,5 @@
 package pl.temomuko.autostoprace.ui.teamslocationsmap;
 
-
 import android.support.annotation.NonNull;
 
 import java.util.Collection;
@@ -9,7 +8,7 @@ import java.util.Iterator;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterItem;
 
 public final class ClasterUtil {
-    
+
     private ClasterUtil() {
         throw new AssertionError();
     }

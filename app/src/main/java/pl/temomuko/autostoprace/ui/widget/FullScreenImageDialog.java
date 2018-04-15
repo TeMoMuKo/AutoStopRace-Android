@@ -1,6 +1,5 @@
 package pl.temomuko.autostoprace.ui.widget;
 
-
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -69,7 +68,6 @@ public class FullScreenImageDialog extends DialogFragment {
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 mSubsamplingScaleImageView.setImage(ImageSource.bitmap(resource));
             }
-
         });
 
         mSubsamplingScaleImageView.setOnImageEventListener(new SubsamplingScaleImageView.DefaultOnImageEventListener() {

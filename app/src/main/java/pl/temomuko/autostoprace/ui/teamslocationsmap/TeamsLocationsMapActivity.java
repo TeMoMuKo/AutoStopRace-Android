@@ -34,6 +34,7 @@ import butterknife.BindView;
 import kotlin.Unit;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.Constants;
+import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.data.local.LocationsViewMode;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
@@ -55,7 +56,6 @@ import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 import rx.Subscription;
-import pl.temomuko.autostoprace.R;
 
 public class TeamsLocationsMapActivity extends DrawerActivity
         implements TeamsLocationsMapMvpView {
@@ -384,7 +384,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @Override
     public void setWallItems(List<WallItem> wallItems) {
         mWallRecyclerView.setVisibility(View.VISIBLE);
-        if(mWallAdapter.getItemCount() > 0) {
+        if (mWallAdapter.getItemCount() > 0) {
             mWallRecyclerView.scrollToPosition(0);
         }
         mWallAdapter.setWallItems(wallItems);

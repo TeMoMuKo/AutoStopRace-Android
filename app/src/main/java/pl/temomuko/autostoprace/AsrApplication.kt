@@ -18,17 +18,14 @@ import javax.inject.Inject
 
 class AsrApplication : Application() {
 
-    @Inject
-    lateinit var mServiceNetworkReceiver: LocationSyncService.NetworkChangeReceiver
-    @Inject
-    lateinit var mNetworkReceiver: NetworkChangeReceiver
+    @Inject lateinit var mServiceNetworkReceiver: LocationSyncService.NetworkChangeReceiver
+    @Inject lateinit var mNetworkReceiver: NetworkChangeReceiver
 
     val applicationComponent: ApplicationComponent by lazy {
         DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(this))
-                .build()
+            .applicationModule(ApplicationModule(this))
+            .build()
     }
-
 
     override fun onCreate() {
         super.onCreate()
@@ -42,8 +39,14 @@ class AsrApplication : Application() {
         Fabric.with(this, Crashlytics())
         Locale.setDefault(Locale(Constants.DEFAULT_LOCALE))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(mServiceNetworkReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-            registerReceiver(mNetworkReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+            registerReceiver(
+                mServiceNetworkReceiver,
+                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+            )
+            registerReceiver(
+                mNetworkReceiver,
+                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+            )
         }
     }
 

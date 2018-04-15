@@ -8,7 +8,8 @@ import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_wall.*
 
-class ViewHolder(onImageClick: ((Uri) -> Unit)?, override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+class ViewHolder(onImageClick: ((Uri) -> Unit)?, override val containerView: View) :
+    RecyclerView.ViewHolder(containerView), LayoutContainer {
 
     private var currentItem: WallItem? = null
 
@@ -36,8 +37,8 @@ class ViewHolder(onImageClick: ((Uri) -> Unit)?, override val containerView: Vie
         if (imageUrl != null) {
             photoImageView.visibility = View.VISIBLE
             Glide.with(photoImageView.context)
-                    .load(imageUrl)
-                    .into(photoImageView)
+                .load(imageUrl)
+                .into(photoImageView)
         } else {
             photoImageView.setImageDrawable(null)
             photoImageView.visibility = View.GONE
