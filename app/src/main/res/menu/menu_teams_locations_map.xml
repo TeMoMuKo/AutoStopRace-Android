@@ -6,11 +6,6 @@
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/find_team"
         app:showAsAction="always"/>
-    <!--<item-->
-        <!--android:id="@+id/action_toggle_view_mode"-->
-        <!--android:icon="@drawable/ic_view_list_black_24dp"-->
-        <!--android:title="@string/toggle_mode"-->
-        <!--app:showAsAction="always"/>-->
     <item
         android:id="@+id/action_share_map"
         android:icon="@drawable/ic_share_white_24dp"

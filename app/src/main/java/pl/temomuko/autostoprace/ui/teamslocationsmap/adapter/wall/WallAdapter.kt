@@ -49,11 +49,13 @@ class WallAdapter @Inject constructor() : RecyclerView.Adapter<WallAdapter.ViewH
 
         fun bind(item: WallItem) {
             currentItem = item
-            messageTextView.visibility = if (item.message.isBlank()) View.GONE else View.VISIBLE
-            messageTextView.text = item.message
-            timeInfoTextView.text = item.timeInfo
-            locationInfoTextView.text = item.locationInfo
-            setupImage(photoImageView, item.imageUrl)
+            with(item) {
+                messageTextView.visibility = if (message.isBlank()) View.GONE else View.VISIBLE
+                messageTextView.text = message
+                timeInfoTextView.text = timeInfo
+                locationInfoTextView.text = locationInfo
+                setupImage(photoImageView, imageUrl)
+            }
         }
 
         private fun setupImage(photoImageView: ImageView, imageUrl: String?) {

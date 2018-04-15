@@ -77,7 +77,7 @@
     <string name="forgotten_password">Przypomnij mi hasło</string>
     <string name="title_activity_reset_pass">Resetowanie hasła</string>
     <string name="msg_reset_pass_email_sent">Email zawierający dalsze instrukcje został wysłany</string>
-    <string name="hint_enter_team_number">Numer drużyny…</string>
+    <string name="hint_enter_team_number">Wpisz numer drużyny…</string>
     <string name="msg_last_location_record_message">Ostatnia wiadomość:</string>
     <string name="msg_last_location_record_received">Ostatnie zameldowanie: </string>
     <string name="msg_last_location_record_received_adapter">Ostatnie zameldowanie: %1$s</string>
@@ -124,7 +124,6 @@
     <string name="error_while_loading_photo">Podczas ładowania zdjęcia wystąpił błąd.</string>
     <string name="msg_press_to_see_the_photo">Dotknij, aby zobaczyć zdjęcie</string>
     <string name="crop_image_menu_crop">Przytnij</string>
-    <string name="toggle_mode">Zmień tryb widoku</string>
     <string name="bottom_menu_map">Mapa</string>
     <string name="bottom_menu_wall">Tablica</string>
 </resources>
