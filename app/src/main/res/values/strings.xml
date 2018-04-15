@@ -124,7 +124,7 @@
     <string name="error_while_loading_photo">Podczas ładowania zdjęcia wystąpił błąd.</string>
     <string name="msg_press_to_see_the_photo">Dotknij, aby zobaczyć zdjęcie</string>
     <string name="crop_image_menu_crop">Przytnij</string>
-    <string name="mode_wall">Tablica</string>
-    <string name="mode_map">Mapa</string>
     <string name="toggle_mode">Zmień tryb widoku</string>
+    <string name="bottom_menu_map">Mapa</string>
+    <string name="bottom_menu_wall">Tablica</string>
 </resources>
