@@ -71,8 +71,6 @@ public class LoginPresenterTest {
         //given
         SignInResponse signInResponse = new SignInResponse();
         Response<SignInResponse> response = Response.success(signInResponse);
-        when(mMockErrorHandler.isEmailValid(FAKE_EMAIL)).thenReturn(true);
-        when(mMockDataManager.signIn(FAKE_EMAIL, FAKE_PASS)).thenReturn(Observable.just(response));
         when(mMockRxCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
         when(mMockRxCacheHelper.isCached()).thenReturn(true);
 
@@ -159,9 +157,6 @@ public class LoginPresenterTest {
 
     @Test
     public void testSignInInvalidForm() throws Exception {
-        //given
-        when(mMockErrorHandler.isEmailValid(FAKE_EMAIL)).thenReturn(false);
-
         //when
         mLoginPresenter.signIn(INVALID_FAKE_EMAIL, INVALID_FAKE_PASS);
 

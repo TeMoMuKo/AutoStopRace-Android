@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/description_logo_asr"
-                android:paddingTop="32dp"
+                android:paddingTop="@dimen/margin_xxlarge"
                 android:scaleType="centerInside"
                 android:src="@drawable/logo_asr"/>
 

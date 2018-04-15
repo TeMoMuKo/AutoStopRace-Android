@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
+import pl.temomuko.autostoprace.util.LocationInfoProvider;
 
 /**
  * Created by Rafał Naniewicz on 23.04.2016.
@@ -35,6 +36,7 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
     private final TeamFilterResultsListener mTeamFilterResultsListener;
     private List<Team> mAllTeams;
     private List<Team> mActualTeams;
+    private LocationInfoProvider locationInfoProvider = new LocationInfoProvider();
 
     public SearchTeamHintsAdapter(Context context, OnTeamHintSelectedListener onTeamHintSelectedListener,
                                   TeamFilterResultsListener teamFilterResultsListener) {
@@ -61,8 +63,10 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
             holder.mLastLocationTextView.setVisibility(View.GONE);
         } else {
             holder.mLastLocationTextView.setVisibility(View.VISIBLE);
-            holder.mLastLocationTextView.setText(mContext.getString(R.string.msg_last_location_record_received_adapter,
-                    currentTeam.getLastLocationRecord().getAddress()));
+            String locationInfo = locationInfoProvider.getLocationInfo(lastLocationRecord);
+            holder.mLastLocationTextView.setText(
+                    mContext.getString(R.string.msg_last_location_record_received_adapter, locationInfo)
+            );
         }
         holder.itemView.setOnClickListener(view ->
                 mOnTeamHintSelectedListener.onTeamHintClick(currentTeam.getTeamNumber()));

@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 apply from: '../secrets.gradle'
 
@@ -41,6 +43,10 @@ android {
     }
 }
 
+androidExtensions {
+    experimental = true
+}
+
 ext {
     versions = [
             support         : "27.1.0",
@@ -51,7 +57,8 @@ ext {
             onactivityresult: "0.6.0",
             playservices    : "11.6.2",
             rxbinding       : "0.4.0",
-            firebase        : "11.6.2"
+            firebase        : "11.6.2",
+            dagger          : "2.14.1"
     ]
 }
 
@@ -60,19 +67,20 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     testImplementation "junit:junit:4.12"
-    testImplementation "org.mockito:mockito-core:1.10.9"
+    testImplementation "org.mockito:mockito-core:2.18.0"
 
-    implementation "com.google.dagger:dagger:2.14.1"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.14.1"
+    implementation "com.google.dagger:dagger:$versions.dagger"
+    kapt "com.google.dagger:dagger-compiler:$versions.dagger"
 
     implementation "com.android.support:design:$versions.support"
     implementation "com.android.support:cardview-v7:$versions.support"
+    implementation "com.android.support.constraint:constraint-layout:1.0.2"
 
     implementation "me.zhanghai.android.materialprogressbar:library:1.4.2"
     implementation "org.greenrobot:eventbus:3.0.0"
 
     implementation "com.jakewharton:butterknife:$versions.butterknife"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$versions.butterknife"
+    kapt "com.jakewharton:butterknife-compiler:$versions.butterknife"
 
     implementation "com.afollestad.material-dialogs:core:0.9.6.0"
     implementation "com.davemorrissey.labs:subsampling-scale-image-view:3.6.0"

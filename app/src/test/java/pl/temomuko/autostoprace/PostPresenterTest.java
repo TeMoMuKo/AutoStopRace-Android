@@ -118,10 +118,6 @@ public class PostPresenterTest {
 
     @Test
     public void testHandlePermissionResultDenied() throws Exception {
-        //given
-        when(mMockDataManager.checkLocationSettings())
-                .thenReturn(Observable.empty());
-
         //when
         mPostPresenter.handleLocationPermissionResult(false);
 
@@ -146,10 +142,6 @@ public class PostPresenterTest {
 
     @Test
     public void testHandleLocationSettingsDialogResultCanceled() {
-        //given
-        when(mMockDataManager.getDeviceLocation())
-                .thenReturn(Observable.empty());
-
         //when
         mPostPresenter.handleLocationSettingsDialogResult(Activity.RESULT_CANCELED);
 

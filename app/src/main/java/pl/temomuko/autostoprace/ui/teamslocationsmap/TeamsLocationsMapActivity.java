@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,9 +31,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import kotlin.Unit;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.Event;
+import pl.temomuko.autostoprace.data.local.LocationsViewMode;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
@@ -41,6 +45,9 @@ import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordC
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterRenderer;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.TeamLocationInfoWindowAdapter;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.searchteamview.SearchTeamView;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.FirstItemTopMarginDecoration;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallAdapter;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItem;
 import pl.temomuko.autostoprace.ui.widget.FullScreenImageDialog;
 import pl.temomuko.autostoprace.util.IntentUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
@@ -64,11 +71,15 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     @Inject TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
     @Inject TeamLocationInfoWindowAdapter mTeamsLocationInfoWindowAdapter;
+    @Inject WallAdapter mWallAdapter;
 
     @BindView(R.id.horizontal_progress_bar) MaterialProgressBar mMaterialProgressBar;
     @BindView(R.id.search_team_view) SearchTeamView mSearchTeamView;
     @BindView(R.id.rv_team_hints) RecyclerView mTeamHintsRecyclerView;
     @BindView(R.id.card_team_hints) CardView mTeamHintsLinearLayout;
+    @BindView(R.id.rv_wall) RecyclerView mWallRecyclerView;
+    @BindView(R.id.wall_frame) ViewGroup mWallLayout;
+    @BindView(R.id.bottom_bar) BottomNavigationView mBottomNavigationView;
 
     private boolean mAllTeamsProgressState = false;
     private boolean mTeamProgressState = false;
@@ -91,9 +102,11 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams_locations_map);
         getActivityComponent().inject(this);
+        setupBottomNavigationView();
         setupPresenter();
         setupSearchTeamView();
         setupIntentInstanceState(savedInstanceState);
+        setupWall();
         setupMapFragment();
         reportShortcutUsage(Shortcuts.LOCATIONS_MAP);
     }
@@ -147,6 +160,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
             for (Parcelable parcelable : parcelableCurrentTeamLocations) {
                 mCurrentTeamLocations.add((LocationRecord) parcelable);
             }
+            mTeamsLocationsMapPresenter.recreateWall(mCurrentTeamLocations);
         }
     }
 
@@ -245,6 +259,18 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         mTeamsLocationsMapPresenter.loadTeam(teamNumber);
     }
 
+    private void setupWall() {
+        mWallRecyclerView.setHasFixedSize(true);
+        float firstItemMargin = getResources().getDimension(R.dimen.margin_wall_item);
+        FirstItemTopMarginDecoration decoration = new FirstItemTopMarginDecoration(firstItemMargin);
+        mWallRecyclerView.addItemDecoration(decoration);
+        mWallRecyclerView.setAdapter(mWallAdapter);
+        mWallAdapter.setOnImageClick(uri -> {
+            mTeamsLocationsMapPresenter.handleFullScreenPhotoRequest(uri);
+            return Unit.INSTANCE;
+        });
+    }
+
     private void setupMapFragment() {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
@@ -255,8 +281,22 @@ public class TeamsLocationsMapActivity extends DrawerActivity
             setupClusterManager();
             if (mCurrentTeamLocations != null) {
                 mAnimateTeamLocationsUpdate = false;
-                setLocations(mCurrentTeamLocations);
+                setLocationsForMap(mCurrentTeamLocations);
             }
+        });
+    }
+
+    private void setupBottomNavigationView() {
+        mBottomNavigationView.setOnNavigationItemSelectedListener((menuItem) -> {
+            switch (menuItem.getItemId()) {
+                case R.id.map:
+                    mTeamsLocationsMapPresenter.updateLocationsViewModeContent(LocationsViewMode.MAP);
+                    return true;
+                case R.id.wall:
+                    mTeamsLocationsMapPresenter.updateLocationsViewModeContent(LocationsViewMode.WALL);
+                    return true;
+            }
+            return false;
         });
     }
 
@@ -270,7 +310,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
         mClusterManager.setRenderer(new LocationRecordClusterRenderer(getApplicationContext(), mMap, mClusterManager));
         mClusterManager.setOnClusterItemInfoWindowClickListener(locationRecordClusterItem ->
-                mTeamsLocationsMapPresenter.handleMarkerClick(locationRecordClusterItem.getImageUri()));
+                mTeamsLocationsMapPresenter.handleFullScreenPhotoRequest(locationRecordClusterItem.getImageUri()));
 
         mClusterManager.setOnClusterInfoWindowClickListener(cluster ->
                 mTeamsLocationsMapPresenter.handleClusterMarkerClick(cluster.getItems()));
@@ -331,7 +371,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     @Override
-    public void setLocations(@NonNull List<LocationRecord> locationRecords) {
+    public void setLocationsForMap(@NonNull List<LocationRecord> locationRecords) {
         mCurrentTeamLocations = locationRecords;
         if (mSetLocationsSubscription != null) mSetLocationsSubscription.unsubscribe();
         mSetLocationsSubscription = Observable.from(locationRecords)
@@ -339,6 +379,15 @@ public class TeamsLocationsMapActivity extends DrawerActivity
                 .toSortedList()
                 .compose(RxUtil.applyComputationSchedulers())
                 .subscribe(this::handleTeamLocationsToSet);
+    }
+
+    @Override
+    public void setWallItems(List<WallItem> wallItems) {
+        mWallRecyclerView.setVisibility(View.VISIBLE);
+        if(mWallAdapter.getItemCount() > 0) {
+            mWallRecyclerView.scrollToPosition(0);
+        }
+        mWallAdapter.setWallItems(wallItems);
     }
 
     @Override
@@ -352,13 +401,35 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     }
 
     @Override
-    public void showNoLocationRecordsInfo() {
+    public void showNoLocationRecordsInfoForMap() {
         Toast.makeText(this, R.string.msg_no_location_records_to_display, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void hideWallItems() {
+        mWallRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
     public void openFullscreenImage(Uri imageUri) {
         FullScreenImageDialog.newInstance(imageUri).show(getSupportFragmentManager(), FullScreenImageDialog.TAG);
+    }
+
+    @Override
+    public void setLocationsViewMode(LocationsViewMode mode) {
+        switch (mode) {
+            case MAP:
+                mBottomNavigationView.setSelectedItemId(R.id.map);
+                break;
+            case WALL:
+                mBottomNavigationView.setSelectedItemId(R.id.wall);
+                break;
+        }
+    }
+
+    @Override
+    public void setWallVisible(boolean visible) {
+        mWallLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     /* Private helper methods */

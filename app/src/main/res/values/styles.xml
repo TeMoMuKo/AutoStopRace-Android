@@ -92,15 +92,15 @@
     <style name="photo_source_bottom_sheet_item_icon">
         <item name="android:layout_width">@dimen/bottom_sheet_icon_size</item>
         <item name="android:layout_height">@dimen/bottom_sheet_icon_size</item>
-        <item name="android:layout_margin">@dimen/default_margin</item>
+        <item name="android:layout_margin">@dimen/margin_medium</item>
         <item name="android:tint">@color/secondary_text</item>
     </style>
 
     <style name="photo_source_bottom_sheet_item_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/default_margin</item>
-        <item name="android:layout_marginRight">@dimen/default_margin</item>
+        <item name="android:layout_marginLeft">@dimen/margin_medium</item>
+        <item name="android:layout_marginRight">@dimen/margin_medium</item>
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">@dimen/bottom_sheet_text_size</item>
     </style>

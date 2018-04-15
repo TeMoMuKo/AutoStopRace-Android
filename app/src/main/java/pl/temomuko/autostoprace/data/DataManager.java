@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.Constants;
+import pl.temomuko.autostoprace.data.local.LocationsViewMode;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.csv.ContactHelper;
@@ -218,5 +219,13 @@ public class DataManager {
 
     public boolean hasFineLocationPermission() {
         return mPermissionHelper.hasFineLocationPermission();
+    }
+
+    public LocationsViewMode getLocationsViewMode() {
+        return mPrefsHelper.getLocationsViewMode();
+    }
+
+    public void setLocationsViewMode(LocationsViewMode mode) {
+        mPrefsHelper.setLocationsViewMode(mode);
     }
 }

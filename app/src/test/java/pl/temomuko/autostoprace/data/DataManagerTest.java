@@ -106,8 +106,6 @@ public class DataManagerTest {
     public void testSaveSentLocationsToDatabase() throws Exception {
         //given
         LocationRecord sentLocationRecord = TestConstants.PROPER_LOCATION_RECORD;
-        UnsentAndResponseLocationRecordPair pair = UnsentAndResponseLocationRecordPair.create(sentLocationRecord, null);
-        when(mMockDatabaseHelper.moveLocationRecordToSent(pair)).thenReturn(Observable.empty());
 
         //when
         mDataManager.saveUnsentLocationRecordToDatabase(sentLocationRecord);

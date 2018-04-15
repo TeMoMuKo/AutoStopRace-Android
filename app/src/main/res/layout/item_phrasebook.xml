@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/default_margin"
+        android:padding="@dimen/margin_medium"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
@@ -25,8 +25,8 @@
             tools:text="Cześć, witaj!"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
             android:textColor="@color/primary_text"
             android:textStyle="bold"/>
 
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#f5f5f5"
-        android:padding="@dimen/default_margin">
+        android:padding="@dimen/margin_medium">
 
         <TextView
             tools:text="Hi, hello!"

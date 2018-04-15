@@ -4,10 +4,14 @@
     <dimen name="default_padding_halved">8dp</dimen>
     <dimen name="height_launcher_button">62dp</dimen>
 
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="default_margin">16dp</dimen>
-    <dimen name="default_margin_halved">8dp</dimen>
-    <dimen name="default_margin_quarter">4dp</dimen>
+
+    <dimen name="margin_xxlarge">32dp</dimen>
+    <dimen name="margin_xlarge">24dp</dimen>
+    <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_xsmall">4dp</dimen>
+    <dimen name="margin_xxsmall">2dp</dimen>
 
     <dimen name="normal_font_size">14sp</dimen>
     <dimen name="bottom_sheet_text_size">16sp</dimen>
@@ -35,4 +39,5 @@
     <dimen name="default_circular_progressbar_size">60dp</dimen>
 
     <dimen name="status_bar_overlay_height">0dp</dimen>
+    <dimen name="margin_wall_item">8dp</dimen>
 </resources>
