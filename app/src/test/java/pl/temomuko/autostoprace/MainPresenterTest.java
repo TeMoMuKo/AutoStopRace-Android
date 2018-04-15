@@ -187,9 +187,6 @@ public class MainPresenterTest {
 
     @Test
     public void testGoToPostLocationWithoutPermission() throws Exception {
-        //given
-        when(mMockPermissionHelper.hasFineLocationPermission()).thenReturn(false);
-
         //when
         mMainPresenter.goToPostLocation();
 

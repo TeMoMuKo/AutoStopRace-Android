@@ -70,8 +70,6 @@ public class SettingsPresenterTest {
     public void testSetupLogoutPreferenceForGuest() throws Exception {
         //given
         when(mMockDataManager.isLoggedWithToken()).thenReturn(false);
-        User fakeUser = new User(1, 1, "", "", "");
-        when(mMockDataManager.getCurrentUser()).thenReturn(fakeUser);
 
         //when
         mSettingsPresenter.setupLogoutPreference();
