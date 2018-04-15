@@ -18,7 +18,10 @@ class WallAdapter @Inject constructor() : RecyclerView.Adapter<ViewHolder>() {
     var onImageClick: ((Uri) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(onImageClick, LayoutInflater.from(parent.context).inflate(R.layout.item_wall, parent, false))
+        return ViewHolder(
+            onImageClick,
+            LayoutInflater.from(parent.context).inflate(R.layout.item_wall, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

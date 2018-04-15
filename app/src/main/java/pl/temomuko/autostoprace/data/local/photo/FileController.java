@@ -1,6 +1,5 @@
 package pl.temomuko.autostoprace.data.local.photo;
 
-
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
@@ -77,11 +76,11 @@ public class FileController {
             }
 
             return uri;
-
         });
     }
 
     public static class FileToBigException extends Exception {
+
         private FileToBigException(String s) {
             super(s);
         }

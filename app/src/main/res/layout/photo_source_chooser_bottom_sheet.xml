@@ -58,5 +58,4 @@
             android:text="@string/action_cancel"/>
     </LinearLayout>
 
-
 </LinearLayout>

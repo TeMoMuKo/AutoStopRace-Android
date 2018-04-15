@@ -4,7 +4,6 @@
     <dimen name="default_padding_halved">8dp</dimen>
     <dimen name="height_launcher_button">62dp</dimen>
 
-
     <dimen name="margin_xxlarge">32dp</dimen>
     <dimen name="margin_xlarge">24dp</dimen>
     <dimen name="margin_large">20dp</dimen>

@@ -17,7 +17,7 @@ public class PartnersDrawables {
             R.drawable.strategic_logo_wroclaw
     ));
 
-    public static final List<Integer> GOLD =  Collections.unmodifiableList(Arrays.asList(
+    public static final List<Integer> GOLD = Collections.unmodifiableList(Arrays.asList(
             R.drawable.gold_logo_tarczynski,
             R.drawable.gold_logo_grzeski,
             R.drawable.gold_logo_profi_lingua,
@@ -27,7 +27,7 @@ public class PartnersDrawables {
             R.drawable.gold_logo_cafe_borowka
     ));
 
-    public static final List<Integer> SILVER =  Collections.unmodifiableList(Arrays.asList(
+    public static final List<Integer> SILVER = Collections.unmodifiableList(Arrays.asList(
             R.drawable.silver_logo_profi,
             R.drawable.silver_logo_71zona,
             R.drawable.silver_logo_meray,

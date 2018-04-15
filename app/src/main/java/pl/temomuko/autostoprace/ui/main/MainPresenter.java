@@ -154,8 +154,9 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private void setLocationsView(List<LocationRecord> locationRecords) {
         if (locationRecords.isEmpty()) {
             getMvpView().showEmptyInfo();
+        } else {
+            getMvpView().updateLocationRecordsList(locationRecords);
         }
-        else getMvpView().updateLocationRecordsList(locationRecords);
         getMvpView().setProgress(false);
     }
 

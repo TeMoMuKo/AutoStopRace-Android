@@ -46,7 +46,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     private MaterialDialog mProgressDialog;
     private DialogFragment mHelpDialogFragment;
-    
+
     public static void start(Context context) {
         Intent starter = new Intent(context, LoginActivity.class);
         context.startActivity(starter);

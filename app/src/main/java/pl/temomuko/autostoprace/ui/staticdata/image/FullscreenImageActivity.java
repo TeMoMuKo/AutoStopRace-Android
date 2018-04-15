@@ -1,6 +1,5 @@
 package pl.temomuko.autostoprace.ui.staticdata.image;
 
-
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -49,5 +48,4 @@ public abstract class FullscreenImageActivity extends BaseActivity {
     private void setupListeners() {
         mCloseButton.setOnClickListener(view -> finish());
     }
-
 }
