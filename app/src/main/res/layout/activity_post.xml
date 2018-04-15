@@ -69,10 +69,10 @@
                             android:layout_width="30dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/default_margin_halved"
-                            android:layout_marginEnd="@dimen/default_margin_halved"
-                            android:layout_marginRight="@dimen/default_margin_halved"
-                            android:layout_marginTop="@dimen/default_margin_halved"
+                            android:layout_marginBottom="@dimen/margin_small"
+                            android:layout_marginEnd="@dimen/margin_small"
+                            android:layout_marginRight="@dimen/margin_small"
+                            android:layout_marginTop="@dimen/margin_small"
                             android:alpha="0.75"
                             android:scaleType="fitStart"
                             android:src="@drawable/ic_my_location_black_24dp"
@@ -160,7 +160,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@+id/photo_image_view"
-                        android:padding="@dimen/default_margin"
+                        android:padding="@dimen/margin_medium"
                         android:src="@drawable/close_button"/>
 
                 </RelativeLayout>

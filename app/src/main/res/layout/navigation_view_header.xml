@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingRight="@dimen/default_margin"
+        android:paddingRight="@dimen/margin_medium"
         android:layout_alignBottom="@+id/image_full_screen">
 
         <LinearLayout
@@ -25,8 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginBottom="14dp"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility="visible"
@@ -67,8 +67,8 @@
                 android:id="@+id/tv_drawer_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginStart="@dimen/margin_medium"
                 android:paddingBottom="2dp"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -81,8 +81,8 @@
                 android:id="@+id/tv_drawer_email"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginStart="@dimen/margin_medium"
                 android:text="@string/subtitle_drawer_default"
                 android:textColor="@android:color/white"
                 android:ellipsize="end"
