@@ -40,7 +40,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="32dp">
+                    android:padding="@dimen/margin_xxlarge">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -59,7 +59,6 @@
                         android:text="@string/msg_empty_location_records_list"
                         android:textColor="?android:attr/textColorSecondary"/>
                 </LinearLayout>
-
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
@@ -83,7 +82,7 @@
                     android:secondaryProgress="60"
                     android:visibility="gone"
                     app:mpb_progressStyle="horizontal"
-                    app:mpb_showTrack="false"
+                    app:mpb_showProgressBackground="false"
                     app:mpb_useIntrinsicPadding="false"/>
 
             </FrameLayout>

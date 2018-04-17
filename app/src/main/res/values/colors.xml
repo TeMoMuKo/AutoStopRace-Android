@@ -17,6 +17,10 @@
     <color name="fab_icon_color">#fff</color>
     <color name="transparent">#00ffffff</color>
     <color name="separator">#1F000000</color>
+    <color name="wall_background">#ebebeb</color>
+    <color name="wall_message">#3b3b3b</color>
+    <color name="wall_location">#80ffffff</color>
+    <color name="white">#ffffff</color>
 
     <array name="circle_text_view_colors">
         <item>#D50000</item>

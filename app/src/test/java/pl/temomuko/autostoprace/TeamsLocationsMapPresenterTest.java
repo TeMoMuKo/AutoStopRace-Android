@@ -22,6 +22,7 @@ import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.data.remote.TeamNotFoundException;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapMvpView;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapPresenter;
+import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItemsCreator;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import retrofit2.Response;
@@ -43,6 +44,7 @@ public class TeamsLocationsMapPresenterTest {
     @Mock TeamsLocationsMapMvpView mMockTeamsLocationsMapMvpView;
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
+    @Mock WallItemsCreator mMockWallItemsCreator;
     @Mock RxCacheHelper<Response<List<Team>>> mMockRxAllTeamsCacheHelper;
     @Mock RxCacheHelper<Response<List<LocationRecord>>> mMockRxTeamLocationsCacheHelper;
     private TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
@@ -52,7 +54,7 @@ public class TeamsLocationsMapPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mTeamsLocationsMapPresenter = new TeamsLocationsMapPresenter(mMockDataManager, mMockErrorHandler);
+        mTeamsLocationsMapPresenter = new TeamsLocationsMapPresenter(mMockDataManager, mMockErrorHandler, mMockWallItemsCreator);
         mTeamsLocationsMapPresenter.setupRxCacheHelper(null, mMockRxAllTeamsCacheHelper, mMockRxTeamLocationsCacheHelper);
         when(mMockRxAllTeamsCacheHelper.isCached()).thenReturn(false);
         when(mMockRxTeamLocationsCacheHelper.isCached()).thenReturn(false);
@@ -77,7 +79,6 @@ public class TeamsLocationsMapPresenterTest {
         mTeamsLocationsMapPresenter.loadAllTeams();
 
         //then
-        verify(mMockDataManager, only()).getAllTeams();
         verify(mMockTeamsLocationsMapMvpView).setHints(teams);
         verify(mMockTeamsLocationsMapMvpView).setAllTeamsProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setAllTeamsProgress(false);
@@ -99,7 +100,6 @@ public class TeamsLocationsMapPresenterTest {
         mTeamsLocationsMapPresenter.loadAllTeams();
 
         //then
-        verify(mMockDataManager, only()).getAllTeams();
         verify(mMockTeamsLocationsMapMvpView, never()).setHints(any());
         verify(mMockTeamsLocationsMapMvpView).setAllTeamsProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setAllTeamsProgress(false);
@@ -123,8 +123,8 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
-        verify(mMockTeamsLocationsMapMvpView).setLocations(locationRecords);
-        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView).setLocationsForMap(locationRecords);
+        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfoForMap();
         verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
@@ -144,8 +144,8 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
-        verify(mMockTeamsLocationsMapMvpView).setLocations(locationRecords);
-        verify(mMockTeamsLocationsMapMvpView).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView).setLocationsForMap(locationRecords);
+        verify(mMockTeamsLocationsMapMvpView).showNoLocationRecordsInfoForMap();
         verify(mMockTeamsLocationsMapMvpView, never()).showError(any());
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
@@ -167,8 +167,8 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
-        verify(mMockTeamsLocationsMapMvpView, never()).setLocations(any());
-        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView, never()).setLocationsForMap(any());
+        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfoForMap();
         verify(mMockTeamsLocationsMapMvpView).showError(any());
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
@@ -193,8 +193,8 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
         verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
-        verify(mMockTeamsLocationsMapMvpView, never()).setLocations(any());
-        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfo();
+        verify(mMockTeamsLocationsMapMvpView, never()).setLocationsForMap(any());
+        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfoForMap();
         verify(mMockTeamsLocationsMapMvpView).showError(teamNotFound);
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }

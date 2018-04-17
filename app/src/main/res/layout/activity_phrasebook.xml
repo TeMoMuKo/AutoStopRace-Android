@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="?attr/actionBarSize"
                     android:orientation="horizontal"
-                    android:padding="@dimen/default_margin"
+                    android:padding="@dimen/margin_medium"
                     app:layout_scrollFlags="scroll|enterAlways|snap">
 
                     <TextView

@@ -22,9 +22,9 @@
             android:id="@+id/country_code_circle_view"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin_halved"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_small"
             app:textColor="@android:color/white"
             app:textSize="16dp"
             tools:ignore="SpUsage"/>
@@ -33,9 +33,9 @@
             android:id="@+id/image_unknown_country_code"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin_halved"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_small"
             android:contentDescription="@string/description_unknown_cuntry_code"
             android:src="@drawable/ic_location_unknown_40dp"/>
 
@@ -82,8 +82,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/default_margin_halved"
-            android:layout_marginStart="@dimen/default_margin_halved"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
             android:gravity="center"
             android:orientation="vertical">
 

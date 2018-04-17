@@ -106,8 +106,6 @@ public class DataManagerTest {
     public void testSaveSentLocationsToDatabase() throws Exception {
         //given
         LocationRecord sentLocationRecord = TestConstants.PROPER_LOCATION_RECORD;
-        UnsentAndResponseLocationRecordPair pair = UnsentAndResponseLocationRecordPair.create(sentLocationRecord, null);
-        when(mMockDatabaseHelper.moveLocationRecordToSent(pair)).thenReturn(Observable.empty());
 
         //when
         mDataManager.saveUnsentLocationRecordToDatabase(sentLocationRecord);
@@ -132,6 +130,7 @@ public class DataManagerTest {
                 .addHeader(Constants.HEADER_FIELD_TOKEN, FAKE_ACCESS_TOKEN)
                 .addHeader(Constants.HEADER_FIELD_CLIENT, FAKE_CLIENT)
                 .addHeader(Constants.HEADER_FIELD_UID, FAKE_UID)
+                .message("")
                 .build();
 
         SignInResponse signInResponse = new SignInResponse();

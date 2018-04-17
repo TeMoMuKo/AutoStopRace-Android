@@ -13,19 +13,19 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/default_margin_halved"
-        android:paddingEnd="@dimen/default_margin_halved"
-        android:paddingLeft="@dimen/default_margin"
-        android:paddingRight="@dimen/default_margin_halved"
-        android:paddingStart="@dimen/default_margin"
-        android:paddingTop="@dimen/default_margin"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingEnd="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin_medium"
+        android:paddingRight="@dimen/margin_small"
+        android:paddingStart="@dimen/margin_medium"
+        android:paddingTop="@dimen/margin_medium"
         >
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin_halved"
+            android:layout_marginBottom="@dimen/margin_small"
             android:lineSpacingExtra="10dp"
             android:text="@string/msg_rate_app_question"
             android:textSize="18dp"

@@ -13,7 +13,7 @@ import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
-import pl.temomuko.autostoprace.ui.staticdata.PartnersDrawables;
+import pl.temomuko.autostoprace.ui.staticdata.PartnerDrawables;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Observable;
 import rx.Subscription;
@@ -24,8 +24,6 @@ import rx.Subscription;
 public class SplashActivity extends BaseActivity {
 
     @BindView(R.id.iv_sponsor_logo) ImageView mSponsorLogoImageView;
-    @BindView(R.id.iv_splash_logo) ImageView mAppLogoImageView;
-    @BindView(R.id.iv_splash_bg) ImageView mBackgroundImageView;
 
     private Subscription mSubscription;
     private List<Integer> mPartnersDrawables;
@@ -54,7 +52,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void setupPartnersList() {
-        mPartnersDrawables = PartnersDrawables.getAll();
+        mPartnersDrawables = PartnerDrawables.getSplashPartners();
     }
 
     private void loadSponsorLogo() {

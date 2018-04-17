@@ -48,7 +48,7 @@ public class LocationSyncService extends Service {
     @Override
     public void onCreate() {
         LogUtil.i(TAG, "Service created.");
-        AsrApplication.get(this).getComponent().inject(this);
+        AsrApplication.getApplicationComponent(this).inject(this);
     }
 
     @Override
@@ -127,8 +127,7 @@ public class LocationSyncService extends Service {
                 .flatMap(HttpStatus::requireOk)
                 .map(Response::body)
                 .map(mDataManager::saveToDatabase))
-                .subscribe(this::handleError,
-                        this::handleDatabaseRefreshCompleted);
+                .subscribe(this::handleDatabaseRefreshCompleted, this::handleError);
     }
 
     private Observable<UnsentAndResponseLocationRecordPair> getLocationRecordFromResponseInPair

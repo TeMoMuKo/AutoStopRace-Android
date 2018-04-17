@@ -116,7 +116,6 @@ public class PostPresenter extends BasePresenter<PostMvpView> {
         mLatestAddress = latestAddress;
     }
 
-
     public void requestPhoto(ImageSourceType imageSourceType) {
         // FIXME: 24.04.2017 really hacky solution for rotation bug
         mPhotoSubscriptions.add(

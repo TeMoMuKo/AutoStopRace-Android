@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/default_margin_halved"
+    android:paddingBottom="@dimen/margin_small"
     >
 
     <TextView
         style="@style/photo_source_bottom_sheet_item_text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_sheet_header_height"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"
         android:gravity="center_vertical"
         android:text="@string/add_photo"
         android:textColor="@color/secondary_text"
@@ -57,6 +57,5 @@
             style="@style/photo_source_bottom_sheet_item_text"
             android:text="@string/action_cancel"/>
     </LinearLayout>
-
 
 </LinearLayout>

@@ -1,28 +1,29 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
-apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.neenbedankt.android-apt'
 apply from: '../secrets.gradle'
 
-def fabricApiKey = loadSecret("FABRIC_API_KEY", "fabricApiKey")
 def googleMapsDebugKey = loadSecret("GOOGLE_MAPS_DEBUG_KEY", "googleMapsDebugKey")
 def googleMapsReleaseKey = loadSecret("GOOGLE_MAPS_RELEASE_KEY", "googleMapsReleaseKey")
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "pl.temomuko.autostoprace"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 16
-        versionName "1.1.5"
-        manifestPlaceholders = [crashlyticsApiKey: fabricApiKey]
+        versionCode 17
+        versionName "1.2.0-beta"
     }
 
     buildTypes {
         debug {
+            versionNameSuffix "-DEBUG"
+            applicationIdSuffix ".debug"
             resValue 'string', 'GOOGLE_MAPS_KEY', googleMapsDebugKey
         }
         release {
@@ -42,54 +43,79 @@ android {
     }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-
-    compile 'com.google.dagger:dagger:2.4'
-    apt 'com.google.dagger:dagger-compiler:2.4'
-
-    compile 'com.android.support:design:25.1.1'
-    compile 'com.android.support:cardview-v7:25.1.1'
-
-    compile 'me.zhanghai.android.materialprogressbar:library:1.1.6'
-    compile 'org.greenrobot:eventbus:3.0.0'
-
-    compile 'com.jakewharton:butterknife:8.0.1'
-    apt 'com.jakewharton:butterknife-compiler:8.0.1'
-
-    compile 'com.afollestad.material-dialogs:core:0.8.5.9'
-    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
-
-    compile 'io.reactivex:rxjava:1.1.5'
-    compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
-
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.squareup.sqlbrite:sqlbrite:0.6.3'
-    compile 'net.sf.opencsv:opencsv:2.3'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-
-    compile 'com.google.android.gms:play-services-location:10.2.1'
-    compile 'com.google.android.gms:play-services-maps:10.2.1'
-    compile 'com.google.maps.android:android-maps-utils:0.5'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
-        transitive = true;
-    }
-
-    compile 'com.vanniktech:onactivityresult:0.6.0'
-    apt 'com.vanniktech:onactivityresult-compiler:0.6.0'
-
-    compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
+androidExtensions {
+    experimental = true
 }
+
+ext {
+    versions = [
+            support         : "27.1.1",
+            okhttp          : "3.9.1",
+            retrofit        : "2.3.0",
+            leakcanary      : "1.5.1",
+            butterknife     : "8.0.1",
+            onactivityresult: "0.6.0",
+            playservices    : "11.6.2",
+            rxbinding       : "0.4.0",
+            firebase        : "11.6.2",
+            dagger          : "2.14.1"
+    ]
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    testImplementation "junit:junit:4.12"
+    testImplementation "org.mockito:mockito-core:2.18.0"
+
+    implementation "com.google.dagger:dagger:$versions.dagger"
+    kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+
+    implementation "com.android.support:design:$versions.support"
+    implementation "com.android.support:cardview-v7:$versions.support"
+    implementation "com.android.support.constraint:constraint-layout:1.0.2"
+
+    implementation "me.zhanghai.android.materialprogressbar:library:1.4.2"
+    implementation "org.greenrobot:eventbus:3.0.0"
+
+    implementation "com.jakewharton:butterknife:$versions.butterknife"
+    kapt "com.jakewharton:butterknife-compiler:$versions.butterknife"
+
+    implementation "com.afollestad.material-dialogs:core:0.9.6.0"
+    implementation "com.davemorrissey.labs:subsampling-scale-image-view:3.6.0"
+
+    implementation "io.reactivex:rxjava:1.2.9"
+    implementation "io.reactivex:rxandroid:1.2.0"
+    implementation "com.jakewharton.rxbinding:rxbinding:$versions.rxbinding"
+    implementation "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$versions.rxbinding"
+
+    implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
+
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakcanary"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakcanary"
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakcanary"
+    implementation "com.google.code.gson:gson:2.8.2"
+    implementation "com.squareup.sqlbrite:sqlbrite:0.6.3"
+    implementation "net.sf.opencsv:opencsv:2.3"
+    implementation "com.github.bumptech.glide:glide:3.8.0"
+
+    implementation "com.google.android.gms:play-services-location:$versions.playservices"
+    implementation "com.google.android.gms:play-services-maps:$versions.playservices"
+    implementation "com.google.maps.android:android-maps-utils:0.5"
+    implementation "com.crashlytics.sdk.android:crashlytics:2.9.1"
+
+    implementation "com.vanniktech:onactivityresult:$versions.onactivityresult"
+    kapt "com.vanniktech:onactivityresult-compiler:$versions.onactivityresult"
+    implementation "com.google.firebase:firebase-core:$versions.firebase"
+    implementation "com.google.firebase:firebase-messaging:$versions.firebase"
+
+    implementation "com.theartofdev.edmodo:android-image-cropper:2.3.1"
+}
+
+//To avoid dependency collisions GMS plugin should be placed at the bottom
+apply plugin: 'com.google.gms.google-services'

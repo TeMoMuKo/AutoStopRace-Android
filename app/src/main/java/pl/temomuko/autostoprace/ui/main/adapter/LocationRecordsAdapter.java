@@ -33,8 +33,8 @@ import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.ui.widget.TextCircleView;
 import pl.temomuko.autostoprace.util.AnimationUtil;
 import pl.temomuko.autostoprace.util.ColorGenerator;
-import pl.temomuko.autostoprace.util.CoordsUtil;
 import pl.temomuko.autostoprace.util.DateUtil;
+import pl.temomuko.autostoprace.util.LocationInfoProvider;
 import pl.temomuko.autostoprace.util.LogUtil;
 
 /**
@@ -48,14 +48,16 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     private static final String TAG = LocationRecordsAdapter.class.getSimpleName();
 
     private final Context mAppContext;
+    private final LocationInfoProvider mLocationInfoProvider;
     private List<LocationRecordItem> mSortedLocationRecordItems;
 
     private final ImageSpan imageAttachedSpan;
 
     @Inject
-    public LocationRecordsAdapter(@AppContext Context context) {
+    public LocationRecordsAdapter(@AppContext Context context, LocationInfoProvider locationInfoProvider) {
         mSortedLocationRecordItems = new ArrayList<>();
         mAppContext = context;
+        mLocationInfoProvider = locationInfoProvider;
 
         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_image_text_span_20sp);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
@@ -221,14 +223,8 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
     }
 
     private void setupLocation(TextView locationTextView, LocationRecord locationRecord) {
-        if (locationRecord.getAddress() != null && !locationRecord.getAddress().isEmpty()) {
-            locationTextView.setText(locationRecord.getAddress());
-        } else {
-            String coordinates = CoordsUtil.getDmsTextFromDecimalDegrees(
-                    locationRecord.getLatitude(),
-                    locationRecord.getLongitude());
-            locationTextView.setText(coordinates);
-        }
+        String locationInfo = mLocationInfoProvider.getLocationInfo(locationRecord);
+        locationTextView.setText(locationInfo);
     }
 
     private void setupReceiptDate(LocationViewHolder holder, LocationRecord locationRecord) {
