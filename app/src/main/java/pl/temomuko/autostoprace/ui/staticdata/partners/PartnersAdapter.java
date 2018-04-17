@@ -20,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.injection.ActivityContext;
-import pl.temomuko.autostoprace.ui.staticdata.PartnersDrawables;
+import pl.temomuko.autostoprace.ui.staticdata.PartnerDrawables;
 
 /**
  * Created by Szymon Kozak on 2016-04-18.
@@ -39,11 +39,13 @@ public class PartnersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.context = context;
         mItems = new ArrayList<>();
         mItems.add(R.string.header_partners_strategic);
-        mItems.addAll(PartnersDrawables.STRATEGIC);
+        mItems.addAll(PartnerDrawables.STRATEGIC);
         mItems.add(R.string.header_partners_gold);
-        mItems.addAll(PartnersDrawables.GOLD);
+        mItems.addAll(PartnerDrawables.GOLD);
         mItems.add(R.string.header_partners_silver);
-        mItems.addAll(PartnersDrawables.SILVER);
+        mItems.addAll(PartnerDrawables.SILVER);
+        mItems.add(R.string.header_partners_media);
+        mItems.addAll(PartnerDrawables.MEDIA);
     }
 
     @Override
