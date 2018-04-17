@@ -4,12 +4,12 @@ import pl.temomuko.autostoprace.R
 
 object PartnerDrawables {
 
-    @JvmStatic val strategic = listOf(
+    @JvmField val STRATEGIC = listOf(
         R.drawable.strategiczny_kaufland,
         R.drawable.strategiczny_auto24
     )
 
-    @JvmStatic val gold = listOf(
+    @JvmField val GOLD = listOf(
         R.drawable.zloty_akvo,
         R.drawable.zloty_decathlon,
         R.drawable.zloty_hatchi,
@@ -19,7 +19,7 @@ object PartnerDrawables {
         R.drawable.zloty_wachitgall
     )
 
-    @JvmStatic val silver = listOf(
+    @JvmField val SILVER = listOf(
         R.drawable.srebrny_beskidzkie,
         R.drawable.srebrny_burgerking,
         R.drawable.srebrny_findyourbuddy,
@@ -31,12 +31,12 @@ object PartnerDrawables {
         R.drawable.srebrny_tacoslocos
     )
 
-    @JvmStatic val media = listOf(
+    @JvmField val MEDIA = listOf(
         R.drawable.mowia_o_nas_luz,
         R.drawable.mowia_o_nas_meloradio,
         R.drawable.mowia_o_nas_nationalgeographic,
         R.drawable.mowia_o_nas_radiogra
     )
 
-    @JvmStatic val splashPartners = listOf(strategic, gold, silver).flatten()
+    @JvmStatic val splashPartners = STRATEGIC + GOLD + SILVER
 }

@@ -39,13 +39,13 @@ public class PartnersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.context = context;
         mItems = new ArrayList<>();
         mItems.add(R.string.header_partners_strategic);
-        mItems.addAll(PartnerDrawables.getStrategic());
+        mItems.addAll(PartnerDrawables.STRATEGIC);
         mItems.add(R.string.header_partners_gold);
-        mItems.addAll(PartnerDrawables.getGold());
+        mItems.addAll(PartnerDrawables.GOLD);
         mItems.add(R.string.header_partners_silver);
-        mItems.addAll(PartnerDrawables.getSilver());
+        mItems.addAll(PartnerDrawables.SILVER);
         mItems.add(R.string.header_partners_media);
-        mItems.addAll(PartnerDrawables.getMedia());
+        mItems.addAll(PartnerDrawables.MEDIA);
     }
 
     @Override
