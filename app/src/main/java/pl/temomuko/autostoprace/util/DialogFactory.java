@@ -35,7 +35,7 @@ public final class DialogFactory {
                 .title(R.string.msg_logout_question)
                 .content(R.string.msg_logout_info)
                 .positiveText(R.string.msg_logout)
-                .negativeText(R.string.msg_cancel)
+                .negativeText(R.string.action_cancel)
                 .onPositive((dialog, which) -> settingsPresenter.logout())
                 .build();
     }

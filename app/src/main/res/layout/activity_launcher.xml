@@ -79,7 +79,7 @@
                         android:id="@+id/btn_go_to_contact"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_launcher_button"
-                        android:text="@string/msg_show_contact"
+                        android:text="@string/title_activity_contact"
                         android:textColor="?attr/colorPrimaryDark"/>
 
                 </LinearLayout>

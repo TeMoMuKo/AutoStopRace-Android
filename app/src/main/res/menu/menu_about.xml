@@ -8,6 +8,6 @@
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_licenses"
-        android:title="@string/action_licenses"
+        android:title="@string/title_activity_licenses"
         app:showAsAction="never"/>
 </menu>

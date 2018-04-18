@@ -2,6 +2,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_login_help"
-        android:title="@string/menu_help"
+        android:title="@string/help"
         app:showAsAction="always"/>
 </menu>

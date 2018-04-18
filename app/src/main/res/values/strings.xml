@@ -1,6 +1,6 @@
 <resources>
     <string name="app_version">Wersja 1.2.0-beta</string>
-    <string name="app_name">Auto Stop Race</string>
+    <string name="app_name" translatable="false">Auto Stop Race</string>
     <string name="error_unknown">Ojojoj, coś poszło nie tak, spróbuj ponownie za chwilę…</string>
     <string name="error_404">Coś się popsuło. Spróbuj ponownie później…</string>
     <string name="error_500">Błąd połączenia z serwerem</string>
@@ -20,7 +20,7 @@
     <string name="title_activity_login">Logowanie</string>
     <string name="title_post_location">Wysyłanie lokalizacji</string>
     <string name="error_session_expired">Sesja wygasła, zaloguj się ponownie</string>
-    <string name="msg_show_contact">Kontakt do organizatorów</string>
+    <string name="title_activity_contact">Kontakt do organizatorów</string>
     <string name="msg_login_info">Zaloguj się za pomocą danych ustalonych przy aktywacji swojego konta. Instrukcje znajdują się w mailu od organizatorów.</string>
     <string name="title_logging">Logowanie…</string>
     <string name="please_wait">Proszę czekać.</string>
@@ -28,7 +28,6 @@
     <string name="error_empty_pass">Wpisz hasło.</string>
     <string name="error_timeout">Serwer zbyt długo nie odpowiada, spróbuj ponownie za chwilę.</string>
     <string name="title_drawer_default">Niezalogowany</string>
-    <string name="subtitle_drawer_default">Auto Stop Race</string>
     <string name="drawer_open">Otwórz menu</string>
     <string name="drawer_close">Zamknij menu</string>
     <string name="title_my_team_locations">Lokalizacje mojego teamu</string>
@@ -37,7 +36,6 @@
     <string name="title_activity_schedule">Harmonogram wydarzeń</string>
     <string name="title_activity_phrasebook">Krótkie rozmówki</string>
     <string name="msg_login_to_show_locations">Zaloguj się, żeby zobaczyć lokalizacje swojego teamu</string>
-    <string name="title_activity_contact">Kontakt do organizatorów</string>
     <string name="title_activity_settings">Ustawienia</string>
     <string name="title_activity_about">O aplikacji</string>
     <string name="pref_main_settings">Główne</string>
@@ -46,8 +44,7 @@
     <string name="pref_logout_summary_not_logged">Niezalogowany</string>
     <string name="msg_logout_question">Czy na pewno chcesz się wylogować?</string>
     <string name="msg_logout_info">Wszystkie lokalizacje niewysłane na serwer zostaną usunięte.</string>
-    <string name="msg_cancel">Anuluj</string>
-    <string name="menu_help">Pomoc</string>
+    <string name="action_cancel">Anuluj</string>
     <string name="help">Pomoc</string>
     <string name="ok">OK</string>
     <string name="action_save_and_send">Zapisz i wyślij</string>
@@ -61,20 +58,18 @@
     <string name="change_settings">Zmień</string>
     <string name="warning_inadequate_location_settings">Nieodpowiednie ustawienia lokalizacji.</string>
     <string name="action_share">Udostępnij</string>
-    <string name="action_licenses">Licencje Open Source</string>
     <string name="msg_rate_app_question">Spodobała Ci się ta aplikacja?</string>
     <string name="msg_rate_app">Oceń ją w sklepie Google Play!</string>
     <string name="action_rate">Oceń aplikację</string>
     <string name="msg_wait_for_established_location">Poczekaj aż ustalimy Twoją lokalizację…</string>
-    <string name="msg_searching_for_aproximate_address">Trwa ustalanie przybliżonej lokalizacji…</string>
+    <string name="msg_searching_for_approximate_address">Trwa ustalanie przybliżonej lokalizacji…</string>
     <string name="description_location_record_state">Stan synchronizacji rekordu z serwerem</string>
     <string name="description_unknown_cuntry_code">Kod kraju nieznany</string>
-    <string name="accuracy_label">(+/- %1$sm)</string>
+    <string name="accuracy_label" translatable="false">(+/- %1$sm)</string>
     <string name="action_refresh">Odśwież</string>
     <string name="label_sponsor">Partnerem edycji 2018 jest m.in.:</string>
     <string name="warning_inadequeate_settings">Błąd, prawdopodobnie włączony tryb samolotowy.</string>
     <string name="action_reset_pass">Przypomnij mi hasło</string>
-    <string name="forgotten_password">Przypomnij mi hasło</string>
     <string name="title_activity_reset_pass">Resetowanie hasła</string>
     <string name="msg_reset_pass_email_sent">Email zawierający dalsze instrukcje został wysłany</string>
     <string name="hint_enter_team_number">Wpisz numer drużyny…</string>
@@ -108,7 +103,6 @@
     <string name="add_photo">Dodaj zdjęcie</string>
     <string name="camera">Zrób zdjęcie</string>
     <string name="gallery">Wgraj zdjęcie z galerii</string>
-    <string name="action_cancel">Anuluj</string>
     <string name="error_while_taking_photo">Wystąpił błąd, zdjęcie nie mogło zostać załączone.</string>
     <string name="shortcut_post_long_label">Dodaj lokalizację</string>
     <string name="shortcut_post_short_label">Dodaj </string>
