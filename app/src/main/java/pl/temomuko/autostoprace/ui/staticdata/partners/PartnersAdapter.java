@@ -44,6 +44,14 @@ public class PartnersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mItems.addAll(PartnerDrawables.GOLD);
         mItems.add(R.string.header_partners_silver);
         mItems.addAll(PartnerDrawables.SILVER);
+        mItems.add(R.string.header_partners_brown);
+        mItems.addAll(PartnerDrawables.BROWN);
+        mItems.add(R.string.header_partners_supporting);
+        mItems.addAll(PartnerDrawables.SUPPORTING);
+        mItems.add(R.string.header_partners_honorary);
+        mItems.addAll(PartnerDrawables.HONORARY);
+        mItems.add(R.string.header_partners_technological);
+        mItems.addAll(PartnerDrawables.TECHNOLOGICAL);
         mItems.add(R.string.header_partners_media);
         mItems.addAll(PartnerDrawables.MEDIA);
     }

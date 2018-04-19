@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_version">Wersja 1.2.0-beta</string>
+    <string name="app_version">Wersja 1.2.0-beta2</string>
     <string name="app_name">Auto Stop Race</string>
     <string name="error_unknown">Ojojoj, coś poszło nie tak, spróbuj ponownie za chwilę…</string>
     <string name="error_404">Coś się popsuło. Spróbuj ponownie później…</string>
@@ -121,10 +121,14 @@
     <string name="header_partners_strategic">Partnerzy Strategiczni</string>
     <string name="header_partners_gold">Partnerzy Złoci</string>
     <string name="header_partners_silver">Partnerzy Srebrni</string>
+    <string name="header_partners_brown">Partnerzy Brazowi</string>
+    <string name="header_partners_supporting">Partnerzy Wspierający</string>
+    <string name="header_partners_honorary">Partnerzy Honorowi</string>
+    <string name="header_partners_technological">Partnerzy Techniczni</string>
+    <string name="header_partners_media">Mówią o nas</string>
     <string name="error_while_loading_photo">Podczas ładowania zdjęcia wystąpił błąd.</string>
     <string name="msg_press_to_see_the_photo">Dotknij, aby zobaczyć zdjęcie</string>
     <string name="crop_image_menu_crop">Przytnij</string>
     <string name="bottom_menu_map">Mapa</string>
     <string name="bottom_menu_wall">Tablica</string>
-    <string name="header_partners_media">Mówią o nas</string>
 </resources>
