@@ -3,7 +3,8 @@
     style="@style/CardView.FullScreenCardViewLight"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,10 +36,11 @@
                 android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/tv_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_xsmall"
-                android:text="@string/app_version"
+                tools:text="@string/app_version_format"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp"/>
 

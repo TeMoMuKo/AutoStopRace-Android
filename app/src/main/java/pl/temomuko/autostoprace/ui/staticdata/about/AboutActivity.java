@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import pl.temomuko.autostoprace.BuildConfig;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
@@ -28,11 +29,13 @@ public class AboutActivity extends BaseActivity {
     @BindView(R.id.btn_go_to_store) Button mGoToStoreButton;
     @BindView(R.id.tv_about_app) TextView mAboutAppTextView;
     @BindView(R.id.tv_authors) TextView mAuthorsTextView;
+    @BindView(R.id.tv_version) TextView mVersionTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        mVersionTextView.setText(getString(R.string.app_version_format, BuildConfig.VERSION_NAME));
         mAboutAppTextView.setMovementMethod(LinkMovementMethod.getInstance());
         mAuthorsTextView.setMovementMethod(LinkMovementMethod.getInstance());
         setupToolbarWithBack();
