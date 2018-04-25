@@ -1,10 +1,13 @@
 package pl.temomuko.autostoprace
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
+import android.support.annotation.RequiresApi
 import com.crashlytics.android.Crashlytics
 import com.squareup.leakcanary.LeakCanary
 import io.fabric.sdk.android.Fabric
@@ -35,6 +38,7 @@ class AsrApplication : Application() {
             return
         }
         LeakCanary.install(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) registerNotificationChannels()
         applicationComponent.inject(this)
         Fabric.with(this, Crashlytics())
         Locale.setDefault(Locale(Constants.DEFAULT_LOCALE))
@@ -48,6 +52,19 @@ class AsrApplication : Application() {
                 IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
             )
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun registerNotificationChannels() {
+        val generalChannel = NotificationChannel(
+            Channels.GENERAL,
+            getString(R.string.general_notification_channel_name),
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        val notificationManager = getSystemService(
+            Context.NOTIFICATION_SERVICE
+        ) as NotificationManager
+        notificationManager.createNotificationChannel(generalChannel)
     }
 
     companion object {
