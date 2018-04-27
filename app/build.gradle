@@ -16,7 +16,7 @@ android {
         applicationId "pl.temomuko.autostoprace"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 19
+        versionCode 20
         versionName "1.2.0"
     }
 
