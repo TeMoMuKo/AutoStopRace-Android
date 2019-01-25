@@ -15,6 +15,7 @@ import pl.temomuko.autostoprace.data.model.Team;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.TeamNotFoundException;
+import pl.temomuko.autostoprace.data.remote.api.repository.LocationsRepository;
 import pl.temomuko.autostoprace.data.remote.api.repository.TeamsRepository;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterItem;
@@ -23,7 +24,6 @@ import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItemsCreat
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
-import retrofit2.Response;
 import rx.Observable;
 import rx.Single;
 import rx.Subscription;
@@ -38,20 +38,22 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     private Subscription loadTeamSubscription;
     private Subscription handleClusterSubscription;
     private RxCacheHelper<List<Team>> rxAllTeamsCacheHelper;
-    private RxCacheHelper<Response<List<LocationRecord>>> rxTeamLocationsCacheHelper;
+    private RxCacheHelper<List<LocationRecord>> rxTeamLocationsCacheHelper;
     private TeamsRepository teamsRepository;
+    private LocationsRepository locationsRepository;
 
     @Inject
     public TeamsLocationsMapPresenter(
             DataManager dataManager,
             TeamsRepository teamsRepository,
             ErrorHandler errorHandler,
-            WallItemsCreator wallItemsCreator
-    ) {
+            WallItemsCreator wallItemsCreator,
+            LocationsRepository locationsRepository) {
         super(dataManager);
         this.errorHandler = errorHandler;
         this.wallItemsCreator = wallItemsCreator;
         this.teamsRepository = teamsRepository;
+        this.locationsRepository = locationsRepository;
     }
 
     @Override
@@ -76,7 +78,7 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
 
     public void setupRxCacheHelper(Activity activity,
                                    RxCacheHelper<List<Team>> rxAllTeamsCacheHelper,
-                                   RxCacheHelper<Response<List<LocationRecord>>> rxTeamLocationsCacheHelper) {
+                                   RxCacheHelper<List<LocationRecord>> rxTeamLocationsCacheHelper) {
         this.rxAllTeamsCacheHelper = rxAllTeamsCacheHelper;
         this.rxAllTeamsCacheHelper.setup(activity);
 
@@ -105,11 +107,8 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
     public void loadTeam(int teamNumber) {
         getMvpView().clearCurrentTeamLocations();
         rxTeamLocationsCacheHelper.cache(
-                mDataManager.getTeamLocationRecordsFromServer(teamNumber)
-                        .flatMap(listResponse -> listResponse.code() == HttpStatus.NOT_FOUND ?
-                                Observable.error(new TeamNotFoundException(listResponse)) :
-                                Observable.just(listResponse))
-                        .flatMap(HttpStatus::requireOk)
+                locationsRepository.getTeamLocations(teamNumber)
+                        .toObservable()
                         .compose(RxUtil.applyIoSchedulers())
         );
         continueCachedTeamLocationsRequest();
@@ -174,8 +173,8 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         if (loadTeamSubscription != null) loadTeamSubscription.unsubscribe();
         loadTeamSubscription = rxTeamLocationsCacheHelper.getRestoredCachedObservable()
                 .subscribe(
-                        listResponse -> {
-                            handleTeamLocation(listResponse.body());
+                        locations -> {
+                            handleTeamLocation(locations);
                             rxTeamLocationsCacheHelper.clearCache();
                         },
                         this::handleLoadTeamError

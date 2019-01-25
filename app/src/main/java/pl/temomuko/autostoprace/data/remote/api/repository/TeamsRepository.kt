@@ -27,7 +27,7 @@ private fun List<TeamEntity>.toLegacyTeam(): List<Team> {
     }
 }
 
-private fun LocationEntity.toLocationRecord(): LocationRecord {
+fun LocationEntity.toLocationRecord(): LocationRecord {
    val uri = imageUrl?.let { Uri.parse(it) }
     return LocationRecord(
         latitude,

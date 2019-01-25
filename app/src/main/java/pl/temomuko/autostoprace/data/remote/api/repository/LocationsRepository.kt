@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.data.remote.api.repository
 
+import pl.temomuko.autostoprace.data.model.LocationRecord
 import pl.temomuko.autostoprace.data.remote.api.Asr2019Service
 import pl.temomuko.autostoprace.data.remote.api.CreateLocationRequest
 import pl.temomuko.autostoprace.data.remote.api.LocationEntity
@@ -24,7 +25,8 @@ class LocationsRepository @Inject constructor(
         return asr2019Service.addLocationImage(locationId)
     }
 
-    fun getTeamLocations(teamNumber: Int): Single<List<LocationEntity>> {
+    fun getTeamLocations(teamNumber: Int): Single<List<LocationRecord>> {
         return asr2019Service.getTeamLocations(teamNumber)
+            .map { locations -> locations.map { it.toLocationRecord() } }
     }
 }
