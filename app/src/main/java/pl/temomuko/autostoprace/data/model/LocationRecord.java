@@ -16,7 +16,7 @@ import pl.temomuko.autostoprace.data.remote.PostProcessingEnabler;
 /**
  * Created by Szymon Kozak on 2016-01-22.
  */
-public class LocationRecord implements Comparable<LocationRecord>, Parcelable, PostProcessingEnabler.PostProcessable {
+public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
 
     private static final String IMAGE_URL_PREFIX = "uploads/location/image/";
 
@@ -234,11 +234,4 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable, P
             return new LocationRecord[size];
         }
     };
-
-    @Override
-    public void postProcessGson() {
-        if (mImageLocation != null) {
-            mImageLocation = Constants.API_BASE_URL + IMAGE_URL_PREFIX + mId + "/" + mImageLocation;
-        }
-    }
 }

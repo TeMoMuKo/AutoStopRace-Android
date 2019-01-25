@@ -1,5 +1,7 @@
 package pl.temomuko.autostoprace.data.remote.api
 
+import java.util.*
+
 data class LocationEntity(
     val latitude: Double,
     val longitude: Double,
@@ -7,6 +9,6 @@ data class LocationEntity(
     val countryCode: String?,
     val imageUrl: String?,
     val message: String?,
-    val createdAt: String,
+    val createdAt: Date,
     val id: Int
 )

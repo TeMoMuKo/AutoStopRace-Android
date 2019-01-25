@@ -29,7 +29,7 @@ private fun List<TeamEntity>.toLegacyTeam(): List<Team> {
 
 fun LocationEntity.toLocationRecord(): LocationRecord {
    val uri = imageUrl?.let { Uri.parse(it) }
-    return LocationRecord(
+    val locationRecord = LocationRecord(
         latitude,
         longitude,
         message,
@@ -38,4 +38,6 @@ fun LocationEntity.toLocationRecord(): LocationRecord {
         countryCode,
         uri
     )
+    locationRecord.serverReceiptDate = this.createdAt
+    return locationRecord
 }
