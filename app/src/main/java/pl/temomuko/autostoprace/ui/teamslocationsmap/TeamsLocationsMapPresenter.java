@@ -34,13 +34,14 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
 
     private final ErrorHandler errorHandler;
     private final WallItemsCreator wallItemsCreator;
+    private final TeamsRepository teamsRepository;
+    private final LocationsRepository locationsRepository;
     private Subscription loadAllTeamsSubscription;
     private Subscription loadTeamSubscription;
     private Subscription handleClusterSubscription;
     private RxCacheHelper<List<Team>> rxAllTeamsCacheHelper;
     private RxCacheHelper<List<LocationRecord>> rxTeamLocationsCacheHelper;
-    private TeamsRepository teamsRepository;
-    private LocationsRepository locationsRepository;
+
 
     @Inject
     public TeamsLocationsMapPresenter(

@@ -78,22 +78,6 @@ public class DataManager {
         return mApiManager.getAsrService().signIn(login, password);
     }
 
-    public Observable<Response<SignOutResponse>> signOut() {
-        return mApiManager.getAsrService().signOut(
-                mPrefsHelper.getAuthAccessToken(),
-                mPrefsHelper.getAuthClient(),
-                mPrefsHelper.getAuthUid()
-        );
-    }
-
-    public Observable<Response<SignInResponse>> validateToken() {
-        return mApiManager.getAsrService().validateToken(
-                mPrefsHelper.getAuthAccessToken(),
-                mPrefsHelper.getAuthClient(),
-                mPrefsHelper.getAuthUid()
-        );
-    }
-
     public Observable<Response<ResetPassResponse>> resetPassword(String email) {
         return mApiManager.getAsrService().resetPassword(email, Constants.API_RESET_PASS_REDIRECT_URL);
     }
@@ -102,21 +86,13 @@ public class DataManager {
         return mApiManager.getAsrService().getLocationRecords(mPrefsHelper.getCurrentUser().getTeamNumber());
     }
 
-    public Observable<Response<List<LocationRecord>>> getTeamLocationRecordsFromServer(int teamNumber) {
-        return mApiManager.getAsrService().getLocationRecords(teamNumber);
-    }
-
-    public Observable<Response<List<Team>>> getAllTeams() {
-        return mApiManager.getAsrService().getAllTeams();
-    }
-
     public Observable<Response<LocationRecord>> postLocationRecordToServer(final LocationRecord locationRecord) {
         return mImageController.getBase64Image(locationRecord.getImageUri())
                 .flatMap(base64Image ->
                         mApiManager.getAsrService().postLocationRecord(
                                 mPrefsHelper.getAuthAccessToken(),
-                                mPrefsHelper.getAuthClient(),
-                                mPrefsHelper.getAuthUid(),
+                                "",
+                                "", //todo
                                 new CreateLocationRecordRequest(locationRecord.getLatitude(), locationRecord.getLongitude(),
                                         locationRecord.getMessage(), base64Image))
 
@@ -151,9 +127,8 @@ public class DataManager {
                 .doOnCompleted(mPrefsHelper::clearAuth);
     }
 
-    public void saveAuthorizationResponse(Response<SignInResponse> response) {
-        mPrefsHelper.setAuthorizationHeaders(response.headers());
-        mPrefsHelper.setCurrentUser(response.body().getUser());
+    public void saveUser(User user) {
+        mPrefsHelper.setCurrentUser(user);
     }
 
     public boolean isLoggedWithToken() {

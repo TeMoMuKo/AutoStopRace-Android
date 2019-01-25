@@ -133,7 +133,7 @@ public class MainPresenterTest {
         verify(mMockMainMvpView).showSessionExpiredError();
         verify(mMockMainMvpView).disablePostLocationShortcut();
         verify(mMockMainMvpView).startLoginActivity();
-        verify(mMockDataManager, never()).saveAuthorizationResponse(response);
+        verify(mMockDataManager, never()).saveUser(response);
     }
 
     @Test
@@ -148,7 +148,7 @@ public class MainPresenterTest {
         mMainPresenter.checkAuth();
 
         //then
-        verify(mMockDataManager).saveAuthorizationResponse(response);
+        verify(mMockDataManager).saveUser(response);
         verify(mMockDataManager, never()).clearUserData();
         verify(mMockMainMvpView, never()).startLoginActivity();
         verify(mMockMainMvpView, never()).startLauncherActivity();

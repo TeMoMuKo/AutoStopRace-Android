@@ -25,10 +25,8 @@ import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.ApiManager;
-import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import retrofit2.Response;
 import rx.Completable;
-import rx.Observable;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -138,7 +136,7 @@ public class DataManagerTest {
         Response<SignInResponse> response = Response.success(signInResponse, okHttpResponse);
 
         //when
-        mDataManager.saveAuthorizationResponse(response);
+        mDataManager.saveUser(response);
 
         //then
         verify(mMockPrefsHelper).setAuthorizationHeaders(response.headers());

@@ -136,19 +136,19 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     /* Private helper methods */
 
     private void validateToken() {
-        mSubscriptions.add(mDataManager.validateToken()
-                .compose(RxUtil.applyIoSchedulers())
-                .subscribe(response -> {
-                            if (response.code() == HttpStatus.OK) {
-                                mDataManager.saveAuthorizationResponse(response);
-                            } else if (response.code() == HttpStatus.UNAUTHORIZED) {
-                                mDataManager.clearUserData().subscribe();
-                                getMvpView().showSessionExpiredError();
-                                getMvpView().disablePostLocationShortcut();
-                                getMvpView().startLoginActivity();
-                            }
-                        },
-                        throwable -> LogUtil.i(TAG, mErrorHandler.getMessage(throwable))));
+//        mSubscriptions.add(mDataManager.validateToken()
+//                .compose(RxUtil.applyIoSchedulers())
+//                .subscribe(response -> {
+//                            if (response.code() == HttpStatus.OK) {
+//                                mDataManager.saveUser(response);
+//                            } else if (response.code() == HttpStatus.UNAUTHORIZED) {
+//                                mDataManager.clearUserData().subscribe();
+//                                getMvpView().showSessionExpiredError();
+//                                getMvpView().disablePostLocationShortcut();
+//                                getMvpView().startLoginActivity();
+//                            }
+//                        },
+//                        throwable -> LogUtil.i(TAG, mErrorHandler.getMessage(throwable))));
     }
 
     private void setLocationsView(List<LocationRecord> locationRecords) {

@@ -55,7 +55,7 @@ public class LoginPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mLoginPresenter = new LoginPresenter(mMockDataManager, mMockErrorHandler);
+        mLoginPresenter = new LoginPresenter(mMockDataManager, mMockErrorHandler, userRepository);
         mLoginPresenter.setupRxCacheHelper(null, mMockRxCacheHelper);
         when(mMockRxCacheHelper.isCached()).thenReturn(false);
         mLoginPresenter.attachView(mMockLoginMvpView);
@@ -102,7 +102,7 @@ public class LoginPresenterTest {
 
         //then
         verify(mMockLoginMvpView).setProgress(true);
-        verify(mMockDataManager).saveAuthorizationResponse(response);
+        verify(mMockDataManager).saveUser(response);
         verify(mMockLoginMvpView).startMainActivity();
         verify(mMockLoginMvpView).setProgress(false);
         verify(mMockLoginMvpView, never()).showError(any(String.class));
@@ -128,7 +128,7 @@ public class LoginPresenterTest {
         verify(mMockLoginMvpView).setProgress(true);
         verify(mMockLoginMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockLoginMvpView).setProgress(false);
-        verify(mMockDataManager, never()).saveAuthorizationResponse(response);
+        verify(mMockDataManager, never()).saveUser(response);
         verify(mMockLoginMvpView, never()).startMainActivity();
     }
 
@@ -151,7 +151,7 @@ public class LoginPresenterTest {
         verify(mMockLoginMvpView).setProgress(true);
         verify(mMockLoginMvpView).showError(FAKE_ERROR_MESSAGE);
         verify(mMockLoginMvpView).setProgress(false);
-        verify(mMockDataManager, never()).saveAuthorizationResponse(Matchers.<Response<SignInResponse>>any());
+        verify(mMockDataManager, never()).saveUser(Matchers.<Response<SignInResponse>>any());
         verify(mMockLoginMvpView, never()).startMainActivity();
     }
 
@@ -162,7 +162,7 @@ public class LoginPresenterTest {
 
         //then
         verify(mMockLoginMvpView).setInvalidEmailValidationError(true);
-        verify(mMockDataManager, never()).saveAuthorizationResponse(Matchers.<Response<SignInResponse>>any());
+        verify(mMockDataManager, never()).saveUser(Matchers.<Response<SignInResponse>>any());
         verify(mMockLoginMvpView, never()).startMainActivity();
     }
 }

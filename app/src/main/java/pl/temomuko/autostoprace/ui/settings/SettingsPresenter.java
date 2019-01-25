@@ -46,16 +46,17 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     public void logout() {
-        mSubscription = mDataManager.signOut()
-                .compose(RxUtil.applyIoSchedulers())
-                .subscribe(response -> {
-                    LogUtil.i(TAG, response.body().toString());
-                }, throwable -> {
-                    LogUtil.e(TAG, throwable.getMessage());
-                });
-        mDataManager.clearUserData().subscribe();
-        getMvpView().showLogoutMessage();
-        getMvpView().disablePostLocationShortcut();
-        getMvpView().startLauncherActivity();
+        //todo
+//        mSubscription = mDataManager.signOut()
+//                .compose(RxUtil.applyIoSchedulers())
+//                .subscribe(response -> {
+//                    LogUtil.i(TAG, response.body().toString());
+//                }, throwable -> {
+//                    LogUtil.e(TAG, throwable.getMessage());
+//                });
+//        mDataManager.clearUserData().subscribe();
+//        getMvpView().showLogoutMessage();
+//        getMvpView().disablePostLocationShortcut();
+//        getMvpView().startLauncherActivity();
     }
 }
