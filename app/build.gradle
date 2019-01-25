@@ -51,7 +51,7 @@ ext {
     versions = [
             support         : "27.1.1",
             okhttp          : "3.9.1",
-            retrofit        : "2.3.0",
+            retrofit        : "2.5.0",
             leakcanary      : "1.5.1",
             butterknife     : "8.8.1",
             onactivityresult: "0.6.0",

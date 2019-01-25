@@ -10,8 +10,10 @@ import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.photo.ImageController;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
+import pl.temomuko.autostoprace.data.remote.api.Asr2019Service;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
+import pl.temomuko.autostoprace.injection.module.NetworkModule;
 import pl.temomuko.autostoprace.service.LocationSyncService;
 import pl.temomuko.autostoprace.ui.main.Shortcuts;
 
@@ -19,7 +21,7 @@ import pl.temomuko.autostoprace.ui.main.Shortcuts;
  * Created by Szymon Kozak on 2016-01-06.
  */
 @Singleton
-@Component(modules = ApplicationModule.class)
+@Component(modules = {ApplicationModule.class, NetworkModule.class})
 public interface ApplicationComponent {
 
     void inject(LocationSyncService locationSyncService);
@@ -28,6 +30,8 @@ public interface ApplicationComponent {
     Context context();
 
     Application application();
+
+    Asr2019Service asr2019Service();
 
     DataManager dataManager();
 

@@ -32,6 +32,14 @@ public class Team implements Comparable<Team>, Parcelable {
         return mLastLocation;
     }
 
+    //todo remove legacy constructor
+
+    public Team(String teamSlug, String name, LocationRecord lastLocation) {
+        this.mTeamSlug = teamSlug;
+        this.mName = name;
+        this.mLastLocation = lastLocation;
+    }
+
     /* Parcel */
 
     protected Team(Parcel in) {
