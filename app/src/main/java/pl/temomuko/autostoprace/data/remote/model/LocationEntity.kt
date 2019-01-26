@@ -7,6 +7,7 @@ data class LocationEntity(
     val longitude: Double,
     val address: String?,
     val countryCode: String?,
+    val countryName: String,
     val imageUrl: String?,
     val message: String?,
     val createdAt: Date,

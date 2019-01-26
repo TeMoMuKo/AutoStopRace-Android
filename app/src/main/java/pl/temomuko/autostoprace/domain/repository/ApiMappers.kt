@@ -15,7 +15,7 @@ fun LocationEntity.toLocationRecord(): LocationRecord {
         longitude,
         message,
         address,
-        countryCode,
+        countryName,
         countryCode,
         uri
     )
