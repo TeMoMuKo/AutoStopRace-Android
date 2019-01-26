@@ -13,6 +13,9 @@ interface Asr2019Service {
     @GET("teams/{teamNumber}/locations")
     fun getTeamLocations(@Path("teamNumber") teamNumber: Int): Single<List<LocationEntity>>
 
+    @GET("/locations")
+    fun getUserTeamLocations(): Single<List<LocationEntity>>
+
     @GET("/user/me")
     fun authorize(@Header("Authorization") base64HeaderValue: String): Single<Response<UserEntity>>
 

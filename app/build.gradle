@@ -22,6 +22,8 @@ android {
 
     buildTypes {
         debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-debug-rules.pro', 'proguard-rules.pro'
             versionNameSuffix "-DEBUG"
             applicationIdSuffix ".debug"
             resValue 'string', 'GOOGLE_MAPS_KEY', googleMapsDebugKey
@@ -58,7 +60,8 @@ ext {
             playservices    : "11.6.2",
             rxbinding       : "0.4.0",
             firebase        : "11.6.2",
-            dagger          : "2.14.1"
+            dagger          : "2.14.1",
+            stetho          : "1.5.0"
     ]
 }
 
@@ -115,6 +118,11 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:$versions.firebase"
 
     implementation "com.theartofdev.edmodo:android-image-cropper:2.3.1"
+
+    //todo use in debug only
+    implementation "com.facebook.stetho:stetho:$versions.stetho"
+    implementation "com.facebook.stetho:stetho-okhttp3:$versions.stetho"
+
 }
 
 //To avoid dependency collisions GMS plugin should be placed at the bottom

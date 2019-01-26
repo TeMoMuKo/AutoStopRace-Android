@@ -82,10 +82,6 @@ public class DataManager {
         return mApiManager.getAsrService().resetPassword(email, Constants.API_RESET_PASS_REDIRECT_URL);
     }
 
-    public Observable<Response<List<LocationRecord>>> getUserTeamLocationRecordsFromServer() {
-        return mApiManager.getAsrService().getLocationRecords(mPrefsHelper.getCurrentUser().getTeamNumber());
-    }
-
     public Observable<Response<LocationRecord>> postLocationRecordToServer(final LocationRecord locationRecord) {
         return mImageController.getBase64Image(locationRecord.getImageUri())
                 .flatMap(base64Image ->

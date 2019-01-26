@@ -17,7 +17,7 @@ public final class Constants {
     public static final String API_BASE_URL = "https://api.autostoprace.pl/";
     public static final String API_V3_BASE_URL = API_BASE_URL + "api/v3/";
 
-    public static final String JSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    public static final String JSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String APP_DATE_FORMAT = "d.LL";
     public static final String APP_TIME_FORMAT = "HH:mm";
     public static final String DATABASE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";

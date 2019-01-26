@@ -18,6 +18,7 @@ import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
+import pl.temomuko.autostoprace.data.remote.api.repository.LocationsRepository;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import pl.temomuko.autostoprace.service.helper.UnsentLocationRecordAndServerResponsePair;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
@@ -41,6 +42,7 @@ public class LocationSyncService extends Service {
 
     @Inject DataManager mDataManager;
     @Inject ErrorHandler mErrorHandler;
+    @Inject LocationsRepository locationsRepository;
 
     private Subscription mPostSubscription;
     private Subscription mRefreshSubscription;
@@ -123,10 +125,11 @@ public class LocationSyncService extends Service {
         if (mRefreshSubscription != null && !mRefreshSubscription.isUnsubscribed()) {
             mRefreshSubscription.unsubscribe();
         }
-        mRefreshSubscription = Completable.merge(mDataManager.getUserTeamLocationRecordsFromServer()
-                .flatMap(HttpStatus::requireOk)
-                .map(Response::body)
-                .map(mDataManager::saveToDatabase))
+        mRefreshSubscription = Completable.merge(
+                locationsRepository.getUserTeamLocations()
+                        .toObservable()
+                        .map(mDataManager::saveToDatabase)
+        )
                 .subscribe(this::handleDatabaseRefreshCompleted, this::handleError);
     }
 

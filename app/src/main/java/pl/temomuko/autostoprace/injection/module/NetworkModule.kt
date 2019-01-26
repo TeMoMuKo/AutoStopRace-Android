@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.injection.module
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -30,7 +31,7 @@ class NetworkModule {
             .registerTypeAdapterFactory(PostProcessingEnabler())
             .create()
         return Retrofit.Builder()
-            .baseUrl("http://10.24.4.242:8080")
+            .baseUrl("http://192.168.1.101:8080")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -48,6 +49,7 @@ class NetworkModule {
             .writeTimeout(Constants.HTTP_WRITE_TIMEOUT.toLong(), TimeUnit.SECONDS)
             .addInterceptor(loggingInterceptor)
             .addNetworkInterceptor(tokenAuthenticationInterceptor)
+            .addNetworkInterceptor(StethoInterceptor())
             .addNetworkInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Accept", Constants.HEADER_VALUE_APPLICATION_JSON)

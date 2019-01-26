@@ -21,6 +21,7 @@ fun LocationEntity.toLocationRecord(): LocationRecord {
         uri
     )
     locationRecord.serverReceiptDate = this.createdAt
+    locationRecord.id = this.id
     return locationRecord
 }
 
@@ -33,5 +34,5 @@ fun List<TeamEntity>.toLegacyTeam(): List<Team> {
 }
 
 fun UserEntity.toLegacyUser(): User {
-    return User(id, 0, firstName, lastName, email)
+    return User(id.toInt(), teamNumber.toInt(), firstName, lastName, email)
 }

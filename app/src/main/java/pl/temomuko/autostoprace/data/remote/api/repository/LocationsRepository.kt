@@ -29,4 +29,9 @@ class LocationsRepository @Inject constructor(
         return asr2019Service.getTeamLocations(teamNumber)
             .map { locations -> locations.map { it.toLocationRecord() } }
     }
+
+    fun getUserTeamLocations(): Single<List<LocationRecord>> {
+        return asr2019Service.getUserTeamLocations()
+            .map { locations -> locations.map { it.toLocationRecord() }}
+    }
 }
