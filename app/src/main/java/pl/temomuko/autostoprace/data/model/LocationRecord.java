@@ -18,16 +18,14 @@ import pl.temomuko.autostoprace.data.remote.PostProcessingEnabler;
  */
 public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
 
-    private static final String IMAGE_URL_PREFIX = "uploads/location/image/";
-
-    @SerializedName("id") private int mId;
-    @SerializedName("latitude") private double mLatitude;
-    @SerializedName("longitude") private double mLongitude;
-    @SerializedName("message") private String mMessage;
-    @SerializedName("address") private String mAddress;
-    @SerializedName("country") private String mCountry;
-    @SerializedName("country_code") private String mCountryCode;
-    @SerializedName("created_at") private Date mServerReceiptDate;
+    private int mId;
+    private double mLatitude;
+    private double mLongitude;
+    private String mMessage;
+    private String mAddress;
+    private String mCountry;
+    private String mCountryCode;
+    private Date mServerReceiptDate;
 
     @Nullable
     @SerializedName("image")

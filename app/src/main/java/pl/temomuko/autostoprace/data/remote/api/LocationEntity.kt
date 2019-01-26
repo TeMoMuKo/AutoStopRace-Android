@@ -10,5 +10,5 @@ data class LocationEntity(
     val imageUrl: String?,
     val message: String?,
     val createdAt: Date,
-    val id: Int
+    val id: Long
 )

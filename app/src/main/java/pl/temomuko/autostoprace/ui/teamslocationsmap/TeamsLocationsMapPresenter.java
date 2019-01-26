@@ -105,7 +105,7 @@ public class TeamsLocationsMapPresenter extends DrawerBasePresenter<TeamsLocatio
         }
     }
 
-    public void loadTeam(int teamNumber) {
+    public void loadTeam(long teamNumber) {
         getMvpView().clearCurrentTeamLocations();
         rxTeamLocationsCacheHelper.cache(
                 locationsRepository.getTeamLocations(teamNumber)

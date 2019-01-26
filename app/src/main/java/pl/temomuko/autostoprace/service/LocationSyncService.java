@@ -106,7 +106,7 @@ public class LocationSyncService extends Service {
         sShouldStartAgain = false;
         mPostSubscription = mDataManager.getUnsentLocationRecords()
                 .flatMap(
-                        (LocationRecord locationRecord) -> locationsRepository.postLocationRecordToServer(locationRecord).toObservable()
+                        (LocationRecord locationRecord) -> locationsRepository.postLocation(locationRecord).toObservable()
                                 .map(entity -> NewApiExtensionsKt.toLocationRecord(entity)),
                         UnsentAndResponseLocationRecordPair::create,
                         MAX_CONCURRENT

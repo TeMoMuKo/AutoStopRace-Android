@@ -211,7 +211,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         mSearchTeamView.setOptionalHintsView(mTeamHintsLinearLayout);
         mSearchTeamView.setOnTeamRequestedListener(new SearchTeamView.OnTeamRequestedListener() {
             @Override
-            public void onTeamRequest(int teamId) {
+            public void onTeamRequest(long teamId) {
                 mTeamsLocationsMapPresenter.loadTeam(teamId);
             }
 
@@ -247,14 +247,14 @@ public class TeamsLocationsMapActivity extends DrawerActivity
 
     private void changeTeamFromIntent(@NonNull String teamNumberParameterValue) {
         try {
-            int teamNumber = Integer.parseInt(teamNumberParameterValue.replaceAll("[\\D]", ""));
+            long teamNumber = Long.parseLong(teamNumberParameterValue.replaceAll("[\\D]", ""));
             changeTeam(teamNumber);
         } catch (NumberFormatException e) {
             Log.e(TAG, "Invalid url query param.");
         }
     }
 
-    private void changeTeam(int teamNumber) {
+    private void changeTeam(long teamNumber) {
         mSearchTeamView.setText(String.valueOf(teamNumber));
         mTeamsLocationsMapPresenter.loadTeam(teamNumber);
     }

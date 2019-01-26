@@ -11,7 +11,7 @@ interface Asr2019Service {
     fun getAllTeams(): Single<List<TeamEntity>>
 
     @GET("teams/{teamNumber}/locations")
-    fun getTeamLocations(@Path("teamNumber") teamNumber: Int): Single<List<LocationEntity>>
+    fun getTeamLocations(@Path("teamNumber") teamNumber: Long): Single<List<LocationEntity>>
 
     @GET("/locations")
     fun getUserTeamLocations(): Single<List<LocationEntity>>

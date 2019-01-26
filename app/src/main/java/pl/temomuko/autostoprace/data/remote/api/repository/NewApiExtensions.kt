@@ -20,7 +20,7 @@ fun LocationEntity.toLocationRecord(): LocationRecord {
         uri
     )
     locationRecord.serverReceiptDate = this.createdAt
-    locationRecord.id = this.id
+    locationRecord.id = this.id.toInt()
     return locationRecord
 }
 
@@ -28,7 +28,7 @@ fun LocationEntity.toLocationRecord(): LocationRecord {
 fun List<TeamEntity>.toLegacyTeam(): List<Team> {
     return map {
         val lastLocation = it.lastLocation?.toLocationRecord()
-        Team("team-${it.number}", "Team ${it.number}", lastLocation)
+        Team(it.number, lastLocation)
     }
 }
 
