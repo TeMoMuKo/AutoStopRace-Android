@@ -8,7 +8,6 @@ import okhttp3.RequestBody
 import pl.temomuko.autostoprace.data.remote.AsrService
 import pl.temomuko.autostoprace.data.remote.model.CreateLocationRequest
 import pl.temomuko.autostoprace.data.remote.model.LocationEntity
-import pl.temomuko.autostoprace.domain.MultipartCreator
 import pl.temomuko.autostoprace.domain.model.LocationRecord
 import rx.Completable
 import rx.Single
@@ -49,7 +48,7 @@ class LocationsRepository @Inject constructor(
     }
 }
 
-private class MultipartCreator @Inject constructor(
+class MultipartCreator @Inject constructor(
     private val context: Context
 ) {
 
