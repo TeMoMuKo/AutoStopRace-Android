@@ -33,7 +33,7 @@ class AsrApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Stetho.initializeWithDefaults(this)
+        Stetho.initializeWithDefaults(this) //todo use stetho dependency only in debug builds
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
