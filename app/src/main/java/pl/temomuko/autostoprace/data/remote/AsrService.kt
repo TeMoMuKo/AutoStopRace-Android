@@ -18,13 +18,13 @@ interface AsrService {
     @GET("teams/{teamNumber}/locations")
     fun getTeamLocations(@Path("teamNumber") teamNumber: Long): Single<List<LocationEntity>>
 
-    @GET("/locations")
+    @GET("locations")
     fun getUserTeamLocations(): Single<List<LocationEntity>>
 
-    @GET("/user")
+    @GET("user")
     fun authorize(@Header("Authorization") base64HeaderValue: String): Single<Response<UserEntity>>
 
-    @GET("/user")
+    @GET("user")
     fun validateToken(): Single<UserEntity>
 
     @POST("locations")
