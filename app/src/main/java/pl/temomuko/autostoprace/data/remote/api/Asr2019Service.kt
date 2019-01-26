@@ -33,6 +33,6 @@ interface Asr2019Service {
     @POST("user/password")
     fun resetPassword(email: String): Completable
 
-    @POST("logout")
+    @GET("logout")
     fun logout(): Completable
 }
