@@ -170,7 +170,7 @@
         <activity
             android:name=".data.local.photo.PhotoShadowActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:screenOrientation="behind"
             android:theme="@style/AppTheme.Translucent"/>
 
         <activity

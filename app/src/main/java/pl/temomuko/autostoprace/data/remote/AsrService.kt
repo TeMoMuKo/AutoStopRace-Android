@@ -1,5 +1,6 @@
 package pl.temomuko.autostoprace.data.remote
 
+import okhttp3.MultipartBody
 import pl.temomuko.autostoprace.data.remote.model.CreateLocationRequest
 import pl.temomuko.autostoprace.data.remote.model.LocationEntity
 import pl.temomuko.autostoprace.data.remote.model.TeamEntity
@@ -29,9 +30,9 @@ interface AsrService {
     @POST("locations")
     fun addLocation(@Body createLocationRequest: CreateLocationRequest): Single<LocationEntity>
 
-    //todo multipart
+    @Multipart
     @PUT("locations/{locationId}/image")
-    fun addLocationImage(@Path("locationId") locationId: Int): Completable
+    fun addLocationImage(@Path("locationId") locationId: Long, @Part imageFilePart: MultipartBody.Part): Completable
 
     //todo implement on backend side
     @POST("user/password")
