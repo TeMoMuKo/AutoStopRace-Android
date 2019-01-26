@@ -1,15 +1,15 @@
-package pl.temomuko.autostoprace.data.remote.api
+package pl.temomuko.autostoprace.data.remote
 
-import pl.temomuko.autostoprace.data.remote.api.model.CreateLocationRequest
-import pl.temomuko.autostoprace.data.remote.api.model.LocationEntity
-import pl.temomuko.autostoprace.data.remote.api.model.TeamEntity
-import pl.temomuko.autostoprace.data.remote.api.model.UserEntity
+import pl.temomuko.autostoprace.data.remote.model.CreateLocationRequest
+import pl.temomuko.autostoprace.data.remote.model.LocationEntity
+import pl.temomuko.autostoprace.data.remote.model.TeamEntity
+import pl.temomuko.autostoprace.data.remote.model.UserEntity
 import retrofit2.Response
 import retrofit2.http.*
 import rx.Completable
 import rx.Single
 
-interface Asr2019Service {
+interface AsrService {
 
     @GET("teams")
     fun getAllTeams(): Single<List<TeamEntity>>

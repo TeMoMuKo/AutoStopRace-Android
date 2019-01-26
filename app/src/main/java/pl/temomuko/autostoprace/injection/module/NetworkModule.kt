@@ -10,8 +10,8 @@ import pl.temomuko.autostoprace.BuildConfig
 import pl.temomuko.autostoprace.Constants
 import pl.temomuko.autostoprace.data.remote.GmtDateDeserializer
 import pl.temomuko.autostoprace.data.remote.PostProcessingEnabler
-import pl.temomuko.autostoprace.data.remote.api.Asr2019Service
-import pl.temomuko.autostoprace.data.remote.api.TokenAuthenticationInterceptor
+import pl.temomuko.autostoprace.data.remote.AsrService
+import pl.temomuko.autostoprace.data.remote.TokenAuthenticationInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,7 +23,7 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Provides
-    fun provideAsr2019Service(retrofit: Retrofit) = retrofit.create<Asr2019Service>()
+    fun provideAsr2019Service(retrofit: Retrofit) = retrofit.create<AsrService>()
 
     @Provides
     @Singleton

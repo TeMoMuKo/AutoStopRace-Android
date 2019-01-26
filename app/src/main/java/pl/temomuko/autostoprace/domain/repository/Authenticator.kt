@@ -3,15 +3,15 @@ package pl.temomuko.autostoprace.domain.repository
 import android.util.Base64
 import pl.temomuko.autostoprace.data.local.PrefsHelper
 import pl.temomuko.autostoprace.domain.model.User
-import pl.temomuko.autostoprace.data.remote.api.Asr2019Service
-import pl.temomuko.autostoprace.data.remote.api.model.UserEntity
+import pl.temomuko.autostoprace.data.remote.AsrService
+import pl.temomuko.autostoprace.data.remote.model.UserEntity
 import retrofit2.Response
 import rx.Completable
 import rx.Single
 import javax.inject.Inject
 
 class Authenticator @Inject constructor(
-    private val asr2019Service: Asr2019Service,
+    private val asrService: AsrService,
     private val prefsHelper: PrefsHelper
 ) {
     val token: String
@@ -20,7 +20,7 @@ class Authenticator @Inject constructor(
     fun authorize(email: String, password: String): Single<User> {
         val encodedCredentials = Base64.encodeToString("$email:$password".toByteArray(), Base64.NO_WRAP)
         val basicAuthHeaderValue = "Basic $encodedCredentials"
-        return asr2019Service.authorize(basicAuthHeaderValue)
+        return asrService.authorize(basicAuthHeaderValue)
             .doOnSuccess { saveAuthToken(it) }
             .map { it.body()!!.toUser() }
     }
@@ -31,15 +31,15 @@ class Authenticator @Inject constructor(
     }
 
     fun resetPassword(email: String): Completable {
-        return asr2019Service.resetPassword(email)
+        return asrService.resetPassword(email)
     }
 
     fun validateToken(): Single<User> {
-        return asr2019Service.validateToken()
+        return asrService.validateToken()
             .map { it.toUser() }
     }
 
     fun logout(): Completable {
-        return asr2019Service.logout()
+        return asrService.logout()
     }
 }

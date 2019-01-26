@@ -11,7 +11,7 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
 import pl.temomuko.autostoprace.data.local.photo.ImageController;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
-import pl.temomuko.autostoprace.data.remote.api.Asr2019Service;
+import pl.temomuko.autostoprace.data.remote.AsrService;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.injection.module.ApplicationModule;
 import pl.temomuko.autostoprace.injection.module.NetworkModule;
@@ -32,7 +32,7 @@ public interface ApplicationComponent {
 
     Application application();
 
-    Asr2019Service asr2019Service();
+    AsrService asr2019Service();
 
     DataManager dataManager();
 

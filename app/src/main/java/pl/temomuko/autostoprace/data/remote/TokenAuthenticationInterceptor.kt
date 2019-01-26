@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.data.remote.api
+package pl.temomuko.autostoprace.data.remote
 
 import dagger.Lazy
 import okhttp3.Interceptor

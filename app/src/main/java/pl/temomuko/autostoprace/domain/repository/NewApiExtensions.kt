@@ -4,9 +4,9 @@ import android.net.Uri
 import pl.temomuko.autostoprace.domain.model.LocationRecord
 import pl.temomuko.autostoprace.domain.model.Team
 import pl.temomuko.autostoprace.domain.model.User
-import pl.temomuko.autostoprace.data.remote.api.model.LocationEntity
-import pl.temomuko.autostoprace.data.remote.api.model.TeamEntity
-import pl.temomuko.autostoprace.data.remote.api.model.UserEntity
+import pl.temomuko.autostoprace.data.remote.model.LocationEntity
+import pl.temomuko.autostoprace.data.remote.model.TeamEntity
+import pl.temomuko.autostoprace.data.remote.model.UserEntity
 
 fun LocationEntity.toLocationRecord(): LocationRecord {
     val uri = imageUrl?.let { Uri.parse(it) }

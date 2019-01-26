@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.data.remote.api.model
+package pl.temomuko.autostoprace.data.remote.model
 
 import java.util.*
 
