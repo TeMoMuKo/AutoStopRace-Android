@@ -1,23 +1,18 @@
 package pl.temomuko.autostoprace.domain.repository
 
-import android.content.Context
 import android.net.Uri
-import okhttp3.MediaType
-import pl.temomuko.autostoprace.domain.model.LocationRecord
 import pl.temomuko.autostoprace.data.remote.AsrService
 import pl.temomuko.autostoprace.data.remote.model.CreateLocationRequest
 import pl.temomuko.autostoprace.data.remote.model.LocationEntity
+import pl.temomuko.autostoprace.domain.MultipartCreator
+import pl.temomuko.autostoprace.domain.model.LocationRecord
 import rx.Completable
 import rx.Single
 import javax.inject.Inject
-import okhttp3.RequestBody
-import okhttp3.MultipartBody
-import pl.temomuko.autostoprace.injection.AppContext
-import java.io.File
 
 class LocationsRepository @Inject constructor(
     private val asrService: AsrService,
-    @AppContext private val context: Context
+    private val multipartCreator: MultipartCreator
 ) {
 
     fun postLocation(locationRecord: LocationRecord): Single<LocationEntity> {
@@ -29,19 +24,14 @@ class LocationsRepository @Inject constructor(
             )
         return asrService.addLocation(createLocationRequest)
             .flatMap {
-                addImageToLocation(locationId = it.id, imageFileUri = locationRecord.imageUri)
+                addImageToLocation(locationId = it.id, imageUri = locationRecord.imageUri)
                     .andThen(Single.just(it))
             }
     }
 
-    private fun addImageToLocation(locationId: Long, imageFileUri: Uri): Completable {
-        val openInputStream = context.contentResolver.openInputStream(imageFileUri)
-        val imageFilePart = MultipartBody.Part.createFormData(
-            "image",
-            "image_for_$locationId",
-            RequestBody.create(MediaType.parse("image/jpeg"), openInputStream?.readBytes() ?: byteArrayOf())
-        )
-        return asrService.addLocationImage(locationId, imageFilePart)
+    private fun addImageToLocation(locationId: Long, imageUri: Uri): Completable {
+        val imageMultipart = multipartCreator.createImageMultipartFromUri(imageUri)
+        return asrService.addLocationImage(locationId, imageMultipart)
     }
 
     fun getTeamLocations(teamNumber: Long): Single<List<LocationRecord>> {
@@ -51,6 +41,6 @@ class LocationsRepository @Inject constructor(
 
     fun getUserTeamLocations(): Single<List<LocationRecord>> {
         return asrService.getUserTeamLocations()
-            .map { locations -> locations.map { it.toLocationRecord() }}
+            .map { locations -> locations.map { it.toLocationRecord() } }
     }
 }
