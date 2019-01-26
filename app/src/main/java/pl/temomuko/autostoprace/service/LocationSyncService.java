@@ -18,7 +18,7 @@ import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.domain.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.domain.repository.LocationsRepository;
-import pl.temomuko.autostoprace.domain.repository.NewApiExtensionsKt;
+import pl.temomuko.autostoprace.domain.repository.ApiMappersKt;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.EventUtil;
@@ -107,7 +107,7 @@ public class LocationSyncService extends Service {
         mPostSubscription = mDataManager.getUnsentLocationRecords()
                 .flatMap(
                         (LocationRecord locationRecord) -> locationsRepository.postLocation(locationRecord).toObservable()
-                                .map(entity -> NewApiExtensionsKt.toLocationRecord(entity)),
+                                .map(entity -> ApiMappersKt.toLocationRecord(entity)),
                         UnsentAndResponseLocationRecordPair::create,
                         MAX_CONCURRENT
                 )

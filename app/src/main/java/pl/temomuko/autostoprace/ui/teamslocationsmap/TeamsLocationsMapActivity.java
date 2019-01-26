@@ -240,7 +240,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
                 mIsConsumedUriIntent = true;
             }
         } else if (extras != null && !mIsConsumedToolbarIntent) {
-            changeTeam(extras.getInt(MainActivity.EXTRA_TEAM_NUMBER));
+            changeTeam(extras.getLong(MainActivity.EXTRA_TEAM_NUMBER));
             mIsConsumedToolbarIntent = true;
         }
     }

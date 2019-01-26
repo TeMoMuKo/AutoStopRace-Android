@@ -123,7 +123,7 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
         mIsLocationSettingsStatusForResultCalled = isLocationSettingsStatusForResultCalled;
     }
 
-    public int getCurrentUserTeamNumber() {
+    public long getCurrentUserTeamNumber() {
         return mDataManager.getCurrentUser().getTeamNumber();
     }
 

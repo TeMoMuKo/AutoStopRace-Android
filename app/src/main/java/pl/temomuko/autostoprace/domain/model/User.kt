@@ -1,8 +1,8 @@
 package pl.temomuko.autostoprace.domain.model
 
 data class User(
-    val id: Int,
-    val teamNumber: Int,
+    val id: Long,
+    val teamNumber: Long,
     val firstName: String,
     val lastName: String,
     val email: String
