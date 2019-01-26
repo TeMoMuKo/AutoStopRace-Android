@@ -25,7 +25,6 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
     private Date mServerReceiptDate;
 
     @Nullable
-    @SerializedName("image")
     private String mImageLocation;
 
     public LocationRecord() {
