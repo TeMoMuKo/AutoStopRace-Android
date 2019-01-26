@@ -1,13 +1,10 @@
 package pl.temomuko.autostoprace.domain.repository
 
-import android.content.Context
 import android.net.Uri
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import pl.temomuko.autostoprace.data.remote.AsrService
 import pl.temomuko.autostoprace.data.remote.model.CreateLocationRequest
 import pl.temomuko.autostoprace.data.remote.model.LocationEntity
+import pl.temomuko.autostoprace.domain.MultipartCreator
 import pl.temomuko.autostoprace.domain.model.LocationRecord
 import rx.Completable
 import rx.Single
@@ -23,7 +20,7 @@ class LocationsRepository @Inject constructor(
             CreateLocationRequest(
                 latitude = locationRecord.latitude,
                 longitude = locationRecord.longitude,
-                message = locationRecord.message
+                message = locationRecord.message.nullIfBlank()
             )
         return asrService.addLocation(createLocationRequest)
             .flatMap {
@@ -48,18 +45,6 @@ class LocationsRepository @Inject constructor(
     }
 }
 
-class MultipartCreator @Inject constructor(
-    private val context: Context
-) {
-
-    fun createImageMultipartFromUri(uri: Uri): MultipartBody.Part {
-        val openInputStream = context.contentResolver.openInputStream(uri)
-        return MultipartBody.Part.createFormData(
-            "image",
-            null,
-            RequestBody.create(
-                MediaType.parse("image/jpeg"), openInputStream?.readBytes() ?: byteArrayOf()
-            )
-        )
-    }
+private fun String.nullIfBlank(): String? {
+    return if (this.isBlank()) null else this
 }
