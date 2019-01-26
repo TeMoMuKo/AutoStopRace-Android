@@ -20,7 +20,7 @@ interface Asr2019Service {
     fun authorize(@Header("Authorization") base64HeaderValue: String): Single<Response<UserEntity>>
 
     @POST("locations")
-    fun addLocation(@Body createLocationRequest: CreateLocationRequest): Completable
+    fun addLocation(@Body createLocationRequest: CreateLocationRequest): Single<LocationEntity>
 
     //todo multipart
     @PUT("locations/{locationId}/image")

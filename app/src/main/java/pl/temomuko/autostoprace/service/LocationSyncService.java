@@ -17,17 +17,14 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
-import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.api.repository.LocationsRepository;
+import pl.temomuko.autostoprace.data.remote.api.repository.NewApiExtensionsKt;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
-import pl.temomuko.autostoprace.service.helper.UnsentLocationRecordAndServerResponsePair;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.EventUtil;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.NetworkUtil;
-import retrofit2.Response;
 import rx.Completable;
-import rx.Observable;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 
@@ -108,9 +105,12 @@ public class LocationSyncService extends Service {
         }
         sShouldStartAgain = false;
         mPostSubscription = mDataManager.getUnsentLocationRecords()
-                .flatMap(mDataManager::postLocationRecordToServer, UnsentLocationRecordAndServerResponsePair::create,
-                        MAX_CONCURRENT)
-                .flatMap(this::getLocationRecordFromResponseInPair)
+                .flatMap(
+                        (LocationRecord locationRecord) -> locationsRepository.postLocationRecordToServer(locationRecord).toObservable()
+                                .map(entity -> NewApiExtensionsKt.toLocationRecord(entity)),
+                        UnsentAndResponseLocationRecordPair::create,
+                        MAX_CONCURRENT
+                )
                 .flatMap(mDataManager::moveLocationRecordToSent)
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -131,21 +131,6 @@ public class LocationSyncService extends Service {
                         .map(mDataManager::saveToDatabase)
         )
                 .subscribe(this::handleDatabaseRefreshCompleted, this::handleError);
-    }
-
-    private Observable<UnsentAndResponseLocationRecordPair> getLocationRecordFromResponseInPair
-            (UnsentLocationRecordAndServerResponsePair unsentAndResponse) {
-        return Observable.just(unsentAndResponse)
-                .flatMap(unsentAndServerResponsePair ->
-                                HttpStatus.requireCreated(
-                                        unsentAndServerResponsePair.getLocationRecordResponse()
-                                ),
-                        (unsentAndServerResponsePair, receivedResponse) ->
-                                UnsentAndResponseLocationRecordPair.create(
-                                        unsentAndServerResponsePair.getUnsentLocationRecord(),
-                                        receivedResponse.body()
-                                )
-                );
     }
 
     private void handleUnsentLocationRecordAndResponse(UnsentAndResponseLocationRecordPair unsentAndRecordFromResponse) {

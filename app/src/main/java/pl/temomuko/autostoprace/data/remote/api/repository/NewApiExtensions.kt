@@ -2,7 +2,6 @@ package pl.temomuko.autostoprace.data.remote.api.repository
 
 import android.net.Uri
 import pl.temomuko.autostoprace.data.model.LocationRecord
-import pl.temomuko.autostoprace.data.model.SignInResponse
 import pl.temomuko.autostoprace.data.model.Team
 import pl.temomuko.autostoprace.data.model.User
 import pl.temomuko.autostoprace.data.remote.api.LocationEntity
