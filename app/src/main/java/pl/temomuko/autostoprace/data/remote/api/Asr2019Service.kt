@@ -1,5 +1,9 @@
 package pl.temomuko.autostoprace.data.remote.api
 
+import pl.temomuko.autostoprace.data.remote.api.model.CreateLocationRequest
+import pl.temomuko.autostoprace.data.remote.api.model.LocationEntity
+import pl.temomuko.autostoprace.data.remote.api.model.TeamEntity
+import pl.temomuko.autostoprace.data.remote.api.model.UserEntity
 import retrofit2.Response
 import retrofit2.http.*
 import rx.Completable

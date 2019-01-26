@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.util.Patterns;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +12,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import dagger.Provides;
-import okhttp3.ResponseBody;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.ErrorResponse;
 import pl.temomuko.autostoprace.injection.AppContext;
-import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.NetworkUtil;
-import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -90,22 +84,7 @@ public class ErrorHandler {
     }
 
     private List<String> getErrorsFromResponseBody(Response response) {
-        List<String> errors = new ArrayList<>();
-        try {
-            List<String> responseErrors = getErrorResponseConverter()
-                    .convert(response.errorBody())
-                    .getErrors();
-            if (responseErrors != null) {
-                errors.addAll(responseErrors);
-            }
-        } catch (Exception e) {
-            LogUtil.i(TAG, "It isn't ErrorResponse object: " + e);
-        }
-        return errors;
-    }
-
-    public Converter<ResponseBody, ErrorResponse> getErrorResponseConverter() {
-        return retrofit.responseBodyConverter(ErrorResponse.class, new Annotation[0]);
+        return new ArrayList<>(); //todo specify error response body if necessary
     }
 
     private String getMessageFromRetrofitThrowable(Throwable throwable) {

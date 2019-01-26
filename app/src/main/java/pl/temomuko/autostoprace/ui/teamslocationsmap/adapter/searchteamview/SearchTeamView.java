@@ -18,7 +18,7 @@ import android.widget.EditText;
 import java.util.List;
 
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.Team;
+import pl.temomuko.autostoprace.domain.model.Team;
 
 /**
  * Created by Rafał Naniewicz on 23.04.2016.

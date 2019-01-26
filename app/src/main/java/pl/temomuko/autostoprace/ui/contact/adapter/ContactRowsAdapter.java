@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.ContactField;
+import pl.temomuko.autostoprace.domain.model.ContactField;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.ui.contact.helper.ContactHandler;
 

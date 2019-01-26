@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.model.Phrasebook;
+import pl.temomuko.autostoprace.domain.model.Phrasebook;
 import pl.temomuko.autostoprace.data.model.phrasebook.CsvRowsTestFactory;
 import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookMvpView;
 import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookPresenter;

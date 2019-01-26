@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.data.local.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
 
 /**
  * Created by Rafał Naniewicz on 04.02.2016.

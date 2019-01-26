@@ -6,15 +6,11 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import okhttp3.Headers;
 import pl.temomuko.autostoprace.Constants;
-import pl.temomuko.autostoprace.data.model.User;
+import pl.temomuko.autostoprace.domain.model.User;
 import pl.temomuko.autostoprace.injection.AppContext;
 
 /**

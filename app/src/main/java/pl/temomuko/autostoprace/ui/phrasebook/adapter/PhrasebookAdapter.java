@@ -20,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.Phrasebook;
+import pl.temomuko.autostoprace.domain.model.Phrasebook;
 
 /**
  * Created by Szymon Kozak on 2016-04-09.

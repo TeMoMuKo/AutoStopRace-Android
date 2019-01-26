@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.data.model;
+package pl.temomuko.autostoprace.domain.model;
 
 import android.net.Uri;
 import android.os.Parcel;
@@ -9,9 +9,6 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
-
-import pl.temomuko.autostoprace.Constants;
-import pl.temomuko.autostoprace.data.remote.PostProcessingEnabler;
 
 /**
  * Created by Szymon Kozak on 2016-01-22.

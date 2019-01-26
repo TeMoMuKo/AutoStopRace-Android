@@ -5,16 +5,13 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.temomuko.autostoprace.BuildConfig
 import pl.temomuko.autostoprace.Constants
-import pl.temomuko.autostoprace.data.model.ErrorResponse
 import pl.temomuko.autostoprace.data.remote.GmtDateDeserializer
 import pl.temomuko.autostoprace.data.remote.PostProcessingEnabler
 import pl.temomuko.autostoprace.data.remote.api.Asr2019Service
 import pl.temomuko.autostoprace.data.remote.api.TokenAuthenticationInterceptor
-import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -66,13 +63,8 @@ class NetworkModule {
 
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor()
-            .setLevel(
-                if (BuildConfig.DEBUG)
-                    HttpLoggingInterceptor.Level.BODY
-                else
-                    HttpLoggingInterceptor.Level.NONE
-            )
+        val level =  if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+        return HttpLoggingInterceptor().setLevel(level)
     }
 
     private inline fun <reified T> Retrofit.create(): T {

@@ -1,13 +1,12 @@
-package pl.temomuko.autostoprace.data.remote.api.repository
+package pl.temomuko.autostoprace.domain.repository
 
 import android.util.Base64
 import pl.temomuko.autostoprace.data.local.PrefsHelper
-import pl.temomuko.autostoprace.data.model.User
+import pl.temomuko.autostoprace.domain.model.User
 import pl.temomuko.autostoprace.data.remote.api.Asr2019Service
-import pl.temomuko.autostoprace.data.remote.api.UserEntity
+import pl.temomuko.autostoprace.data.remote.api.model.UserEntity
 import retrofit2.Response
 import rx.Completable
-import rx.Observable
 import rx.Single
 import javax.inject.Inject
 
@@ -23,7 +22,7 @@ class Authenticator @Inject constructor(
         val basicAuthHeaderValue = "Basic $encodedCredentials"
         return asr2019Service.authorize(basicAuthHeaderValue)
             .doOnSuccess { saveAuthToken(it) }
-            .map { it.body()!!.toLegacyUser() }
+            .map { it.body()!!.toUser() }
     }
 
     private fun saveAuthToken(response: Response<UserEntity>) {
@@ -37,7 +36,7 @@ class Authenticator @Inject constructor(
 
     fun validateToken(): Single<User> {
         return asr2019Service.validateToken()
-            .map { it.toLegacyUser() }
+            .map { it.toUser() }
     }
 
     fun logout(): Completable {

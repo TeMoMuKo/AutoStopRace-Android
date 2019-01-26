@@ -1,6 +1,6 @@
-package pl.temomuko.autostoprace.data.remote.api.repository
+package pl.temomuko.autostoprace.domain.repository
 
-import pl.temomuko.autostoprace.data.model.Team
+import pl.temomuko.autostoprace.domain.model.Team
 import pl.temomuko.autostoprace.data.remote.api.Asr2019Service
 import rx.Single
 import javax.inject.Inject
@@ -11,6 +11,6 @@ class TeamsRepository @Inject constructor(
 
     fun getAllTeams(): Single<List<Team>> {
         return asr2019Service.getAllTeams()
-            .map { it.toLegacyTeam() }
+            .map { it.toTeam() }
     }
 }

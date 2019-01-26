@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.ui.settings;
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.remote.api.repository.Authenticator;
+import pl.temomuko.autostoprace.domain.repository.Authenticator;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;

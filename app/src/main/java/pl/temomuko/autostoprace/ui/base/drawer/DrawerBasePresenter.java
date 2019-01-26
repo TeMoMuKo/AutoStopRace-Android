@@ -1,7 +1,7 @@
 package pl.temomuko.autostoprace.ui.base.drawer;
 
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.model.User;
+import pl.temomuko.autostoprace.domain.model.User;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 
 /**

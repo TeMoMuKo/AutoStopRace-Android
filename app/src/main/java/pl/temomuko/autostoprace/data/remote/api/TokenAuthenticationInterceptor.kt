@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.data.remote.api
 import dagger.Lazy
 import okhttp3.Interceptor
 import okhttp3.Response
-import pl.temomuko.autostoprace.data.remote.api.repository.Authenticator
+import pl.temomuko.autostoprace.domain.repository.Authenticator
 import javax.inject.Inject
 
 class TokenAuthenticationInterceptor @Inject constructor(

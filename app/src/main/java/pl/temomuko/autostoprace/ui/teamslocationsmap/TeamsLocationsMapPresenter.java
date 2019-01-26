@@ -10,13 +10,11 @@ import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.LocationsViewMode;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
-import pl.temomuko.autostoprace.data.model.Team;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.Team;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
-import pl.temomuko.autostoprace.data.remote.HttpStatus;
-import pl.temomuko.autostoprace.data.remote.TeamNotFoundException;
-import pl.temomuko.autostoprace.data.remote.api.repository.LocationsRepository;
-import pl.temomuko.autostoprace.data.remote.api.repository.TeamsRepository;
+import pl.temomuko.autostoprace.domain.repository.LocationsRepository;
+import pl.temomuko.autostoprace.domain.repository.TeamsRepository;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.map.LocationRecordClusterItem;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItem;
@@ -24,7 +22,6 @@ import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItemsCreat
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
-import rx.Observable;
 import rx.Single;
 import rx.Subscription;
 

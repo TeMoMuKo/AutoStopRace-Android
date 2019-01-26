@@ -12,7 +12,7 @@ import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.ResetPassResponse;
-import pl.temomuko.autostoprace.data.model.User;
+import pl.temomuko.autostoprace.domain.model.User;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;

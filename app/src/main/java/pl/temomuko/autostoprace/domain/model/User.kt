@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.data.model
+package pl.temomuko.autostoprace.domain.model
 
 data class User(
     val id: Int,

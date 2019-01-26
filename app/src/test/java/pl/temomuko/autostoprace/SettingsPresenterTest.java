@@ -10,7 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.SignOutResponse;
-import pl.temomuko.autostoprace.data.model.User;
+import pl.temomuko.autostoprace.domain.model.User;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.ui.settings.SettingsMvpView;
 import pl.temomuko.autostoprace.ui.settings.SettingsPresenter;

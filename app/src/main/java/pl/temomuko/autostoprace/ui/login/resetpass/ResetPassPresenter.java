@@ -5,7 +5,7 @@ import android.app.Activity;
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
-import pl.temomuko.autostoprace.data.remote.api.repository.Authenticator;
+import pl.temomuko.autostoprace.domain.repository.Authenticator;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
