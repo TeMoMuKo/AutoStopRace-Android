@@ -16,8 +16,11 @@ interface Asr2019Service {
     @GET("/locations")
     fun getUserTeamLocations(): Single<List<LocationEntity>>
 
-    @GET("/user/me")
+    @GET("/user")
     fun authorize(@Header("Authorization") base64HeaderValue: String): Single<Response<UserEntity>>
+
+    @GET("/user")
+    fun validateToken(): Single<UserEntity>
 
     @POST("locations")
     fun addLocation(@Body createLocationRequest: CreateLocationRequest): Single<LocationEntity>
@@ -25,4 +28,11 @@ interface Asr2019Service {
     //todo multipart
     @PUT("locations/{locationId}/image")
     fun addLocationImage(@Path("locationId") locationId: Int): Completable
+
+    //todo implement on backend side
+    @POST("user/password")
+    fun resetPassword(email: String): Completable
+
+    @POST("logout")
+    fun logout(): Completable
 }

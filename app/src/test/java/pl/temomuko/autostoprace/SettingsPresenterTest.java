@@ -42,7 +42,7 @@ public class SettingsPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mSettingsPresenter = new SettingsPresenter(mMockDataManager);
+        mSettingsPresenter = new SettingsPresenter(mMockDataManager, authenticator);
         mSettingsPresenter.attachView(mMockSettingsMvpView);
     }
 

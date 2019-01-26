@@ -7,6 +7,7 @@ import pl.temomuko.autostoprace.data.remote.api.Asr2019Service
 import pl.temomuko.autostoprace.data.remote.api.UserEntity
 import retrofit2.Response
 import rx.Completable
+import rx.Observable
 import rx.Single
 import javax.inject.Inject
 
@@ -28,5 +29,18 @@ class Authenticator @Inject constructor(
     private fun saveAuthToken(response: Response<UserEntity>) {
         val authTokenHeader = response.headers()["X-Auth-Token"]
         authTokenHeader?.let { prefsHelper.authAccessToken = it }
+    }
+
+    fun resetPassword(email: String): Completable {
+        return asr2019Service.resetPassword(email)
+    }
+
+    fun validateToken(): Single<User> {
+        return asr2019Service.validateToken()
+            .map { it.toLegacyUser() }
+    }
+
+    fun logout(): Completable {
+        return asr2019Service.logout()
     }
 }

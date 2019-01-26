@@ -15,10 +15,10 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
 import pl.temomuko.autostoprace.data.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
-import pl.temomuko.autostoprace.data.remote.HttpStatus;
+import pl.temomuko.autostoprace.data.remote.api.repository.Authenticator;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
-import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
+import retrofit2.HttpException;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -33,12 +33,14 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     private final ErrorHandler mErrorHandler;
     private final CompositeSubscription mSubscriptions;
     private Subscription mLoadLocationsSubscription;
+    private final Authenticator authenticator;
     private boolean mIsLocationSettingsStatusForResultCalled = false;
 
     @Inject
-    public MainPresenter(DataManager dataManager, ErrorHandler errorHandler) {
+    public MainPresenter(DataManager dataManager, ErrorHandler errorHandler, Authenticator authenticator) {
         super(dataManager);
         mErrorHandler = errorHandler;
+        this.authenticator = authenticator;
         mSubscriptions = new CompositeSubscription();
     }
 
@@ -136,19 +138,18 @@ public class MainPresenter extends DrawerBasePresenter<MainMvpView> {
     /* Private helper methods */
 
     private void validateToken() {
-//        mSubscriptions.add(mDataManager.validateToken()
-//                .compose(RxUtil.applyIoSchedulers())
-//                .subscribe(response -> {
-//                            if (response.code() == HttpStatus.OK) {
-//                                mDataManager.saveUser(response);
-//                            } else if (response.code() == HttpStatus.UNAUTHORIZED) {
-//                                mDataManager.clearUserData().subscribe();
-//                                getMvpView().showSessionExpiredError();
-//                                getMvpView().disablePostLocationShortcut();
-//                                getMvpView().startLoginActivity();
-//                            }
-//                        },
-//                        throwable -> LogUtil.i(TAG, mErrorHandler.getMessage(throwable))));
+        mSubscriptions.add(authenticator.validateToken()
+                .toObservable()
+                .compose(RxUtil.applyIoSchedulers())
+                .subscribe(user -> mDataManager.saveUser(user),
+                        throwable -> {
+                            if (throwable instanceof HttpException && ((HttpException) throwable).response().code() == 401) {
+                                mDataManager.clearUserData().subscribe();
+                                getMvpView().showSessionExpiredError();
+                                getMvpView().disablePostLocationShortcut();
+                                getMvpView().startLoginActivity();
+                            }
+                        }));
     }
 
     private void setLocationsView(List<LocationRecord> locationRecords) {

@@ -57,7 +57,7 @@ public class MainPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mMainPresenter = new MainPresenter(mMockDataManager, mMockErrorHandler);
+        mMainPresenter = new MainPresenter(mMockDataManager, mMockErrorHandler, authenticator);
         mMainPresenter.attachView(mMockMainMvpView);
     }
 

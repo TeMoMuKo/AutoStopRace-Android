@@ -4,10 +4,9 @@ import android.app.Activity;
 
 import javax.inject.Inject;
 
-import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.model.ResetPassResponse;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
-import pl.temomuko.autostoprace.data.remote.HttpStatus;
+import pl.temomuko.autostoprace.data.remote.api.repository.Authenticator;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
@@ -19,15 +18,15 @@ import rx.Subscription;
  */
 public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
 
-    private final DataManager mDataManager;
-    private final ErrorHandler mErrorHandler;
+    private final Authenticator authenticator;
+    private final ErrorHandler errorHandler;
     private Subscription mSubscription;
-    private RxCacheHelper<Response<ResetPassResponse>> mRxResetCacheHelper;
+    private RxCacheHelper<Object> mRxResetCacheHelper;
 
     @Inject
-    public ResetPassPresenter(DataManager dataManager, ErrorHandler errorHandler) {
-        mDataManager = dataManager;
-        mErrorHandler = errorHandler;
+    public ResetPassPresenter(Authenticator authenticator, ErrorHandler errorHandler) {
+        this.authenticator = authenticator;
+        this.errorHandler = errorHandler;
     }
 
     @Override
@@ -44,7 +43,7 @@ public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
         super.detachView();
     }
 
-    public void setupRxCacheHelper(Activity activity, RxCacheHelper<Response<ResetPassResponse>> helper) {
+    public void setupRxCacheHelper(Activity activity, RxCacheHelper<Object> helper) {
         mRxResetCacheHelper = helper;
         mRxResetCacheHelper.setup(activity);
     }
@@ -62,13 +61,13 @@ public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
     }
 
     private boolean isEmailValid(String email) {
-        return mErrorHandler.isEmailValid(email);
+        return errorHandler.isEmailValid(email);
     }
 
     private void requestResetPassword(String email) {
         mRxResetCacheHelper.cache(
-                mDataManager.resetPassword(email)
-                        .flatMap(HttpStatus::requireOk)
+                authenticator.resetPassword(email)
+                        .toObservable()
                         .compose(RxUtil.applyIoSchedulers())
         );
         continueCachedRequest();
@@ -91,7 +90,7 @@ public class ResetPassPresenter extends BasePresenter<ResetPassMvpView> {
     private void handleError(Throwable throwable) {
         clearCurrentRequestObservable();
         getMvpView().setProgress(false);
-        getMvpView().showError(mErrorHandler.getMessage(throwable));
+        getMvpView().showError(errorHandler.getMessage(throwable));
     }
 
     private void stopProgress() {

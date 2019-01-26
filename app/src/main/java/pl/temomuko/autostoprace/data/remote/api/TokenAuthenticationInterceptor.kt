@@ -12,15 +12,14 @@ class TokenAuthenticationInterceptor @Inject constructor(
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
-
-        if (originalRequest.url().toString().contains("/me")) {
-            return chain.proceed(originalRequest)
+        val authToken = lazyAuthenticator.get().token
+        return if (authToken.isNotBlank()) {
+            val newRequest = originalRequest.newBuilder()
+                .header("X-Auth-Token", lazyAuthenticator.get().token)
+                .build()
+            chain.proceed(newRequest)
+        } else {
+            chain.proceed(originalRequest)
         }
-
-        val newRequest = originalRequest.newBuilder()
-            .header("X-Auth-Token", lazyAuthenticator.get().token)
-            .build()
-
-        return chain.proceed(newRequest)
     }
 }

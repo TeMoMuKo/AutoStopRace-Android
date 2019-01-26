@@ -3,6 +3,7 @@ package pl.temomuko.autostoprace.ui.settings;
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.remote.api.repository.Authenticator;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.LogUtil;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
@@ -15,12 +16,14 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
     private static final String TAG = SettingsPresenter.class.getSimpleName();
 
-    private final DataManager mDataManager;
+    private final DataManager dataManager;
+    private final Authenticator authenticator;
     private Subscription mSubscription;
 
     @Inject
-    public SettingsPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public SettingsPresenter(DataManager dataManager, Authenticator authenticator) {
+        this.dataManager = dataManager;
+        this.authenticator = authenticator;
     }
 
     @Override
@@ -35,10 +38,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     public void setupLogoutPreference() {
-        boolean isAuth = mDataManager.isLoggedWithToken();
+        boolean isAuth = dataManager.isLoggedWithToken();
         getMvpView().setupLogoutPreferenceEnabled(isAuth);
         if (isAuth) {
-            String username = mDataManager.getCurrentUser().getUsername();
+            String username = dataManager.getCurrentUser().getUsername();
             getMvpView().setupUserLogoutPreferenceSummary(username);
         } else {
             getMvpView().setupGuestLogoutPreferenceSummary();
@@ -46,17 +49,16 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     public void logout() {
-        //todo
-//        mSubscription = mDataManager.signOut()
-//                .compose(RxUtil.applyIoSchedulers())
-//                .subscribe(response -> {
-//                    LogUtil.i(TAG, response.body().toString());
-//                }, throwable -> {
-//                    LogUtil.e(TAG, throwable.getMessage());
-//                });
-//        mDataManager.clearUserData().subscribe();
-//        getMvpView().showLogoutMessage();
-//        getMvpView().disablePostLocationShortcut();
-//        getMvpView().startLauncherActivity();
+        mSubscription = authenticator.logout()
+                .compose(RxUtil.applyCompletableIoSchedulers())
+                .subscribe(() -> {
+                    LogUtil.i(TAG, "Logged out");
+                }, throwable -> {
+                    LogUtil.e(TAG, throwable.getMessage());
+                });
+        dataManager.clearUserData().subscribe();
+        getMvpView().showLogoutMessage();
+        getMvpView().disablePostLocationShortcut();
+        getMvpView().startLauncherActivity();
     }
 }
