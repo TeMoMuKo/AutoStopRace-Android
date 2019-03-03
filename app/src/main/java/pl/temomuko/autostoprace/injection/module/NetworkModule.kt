@@ -19,6 +19,8 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+private const val BASE_URL = "https://dev.api.autostoprace.pl/"
+
 @Module
 class NetworkModule {
 
@@ -33,7 +35,7 @@ class NetworkModule {
             .registerTypeAdapterFactory(PostProcessingEnabler())
             .create()
         return Retrofit.Builder()
-            .baseUrl("http://192.168.0.10:8080/")
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
