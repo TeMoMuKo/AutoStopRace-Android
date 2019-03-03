@@ -12,7 +12,7 @@ import rx.Single
 
 interface AsrService {
 
-    @GET("teams2")
+    @GET("teams")
     fun getAllTeams(): Single<List<TeamEntity>>
 
     @GET("teams/{teamNumber}/locations")

@@ -19,6 +19,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+//todo extract base urls to build types/flavors
 private const val BASE_URL = "https://dev.api.autostoprace.pl/"
 
 @Module

@@ -40,6 +40,7 @@ public class ErrorHandler {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    //todo create custom rxjava call adapter to handle errors
     public String getMessage(Throwable throwable) {
         if (throwable instanceof HttpException) {
             return getMessageFromHttpCode(((HttpException) throwable).code());

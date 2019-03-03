@@ -16,16 +16,16 @@ class LocationsRepository @Inject constructor(
 ) {
 
     fun postLocation(locationRecord: LocationRecord): Single<LocationEntity> {
-        val createLocationRequest =
-            CreateLocationRequest(
-                latitude = locationRecord.latitude,
-                longitude = locationRecord.longitude,
-                message = locationRecord.message?.nullIfBlank()
-            )
+        val createLocationRequest = CreateLocationRequest(
+            latitude = locationRecord.latitude,
+            longitude = locationRecord.longitude,
+            message = locationRecord.message?.nullIfBlank()
+        )
         return asrService.addLocation(createLocationRequest)
             .flatMap {
-                val imageUri =locationRecord.imageUri
-                if(imageUri != null) {
+                val imageUri = locationRecord.imageUri
+                if (imageUri != null) {
+                    //todo handle transaction
                     addImageToLocation(locationId = it.id, imageUri = imageUri)
                         .andThen(Single.just(it))
                 } else {
