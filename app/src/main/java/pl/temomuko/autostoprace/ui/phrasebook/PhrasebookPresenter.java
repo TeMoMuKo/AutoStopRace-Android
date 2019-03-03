@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.ui.phrasebook;
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.model.Phrasebook;
+import pl.temomuko.autostoprace.domain.model.Phrasebook;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerBasePresenter;
 import pl.temomuko.autostoprace.util.rx.RxUtil;
 import rx.Subscription;

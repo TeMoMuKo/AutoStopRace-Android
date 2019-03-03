@@ -28,7 +28,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.ui.widget.TextCircleView;
 import pl.temomuko.autostoprace.util.AnimationUtil;
@@ -163,7 +163,8 @@ public class LocationRecordsAdapter extends RecyclerView.Adapter<LocationRecords
         setupLocation(holder.mTvLocation, locationRecord);
         setupReceiptDate(holder, locationRecord);
 
-        String message = locationRecord.getMessage();
+        String message = locationRecord.getMessage() != null ? locationRecord.getMessage() : "";
+
         Uri imageUri = locationRecord.getImageUri();
         if (imageUri == null) {
             holder.mTvLocationRecordMessage.setText(message);

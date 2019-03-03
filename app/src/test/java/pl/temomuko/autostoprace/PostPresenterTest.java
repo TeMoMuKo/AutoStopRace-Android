@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.post.PostMvpView;
 import pl.temomuko.autostoprace.ui.post.PostPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;

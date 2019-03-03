@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "pl.temomuko.autostoprace"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 20
         versionName "1.2.0"
@@ -22,6 +22,8 @@ android {
 
     buildTypes {
         debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-debug-rules.pro', 'proguard-rules.pro'
             versionNameSuffix "-DEBUG"
             applicationIdSuffix ".debug"
             resValue 'string', 'GOOGLE_MAPS_KEY', googleMapsDebugKey
@@ -51,14 +53,15 @@ ext {
     versions = [
             support         : "27.1.1",
             okhttp          : "3.9.1",
-            retrofit        : "2.3.0",
+            retrofit        : "2.5.0",
             leakcanary      : "1.5.1",
             butterknife     : "8.8.1",
             onactivityresult: "0.6.0",
             playservices    : "11.6.2",
             rxbinding       : "0.4.0",
             firebase        : "11.6.2",
-            dagger          : "2.14.1"
+            dagger          : "2.14.1",
+            stetho          : "1.5.0"
     ]
 }
 
@@ -115,6 +118,11 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:$versions.firebase"
 
     implementation "com.theartofdev.edmodo:android-image-cropper:2.3.1"
+
+    //todo use in debug only
+    implementation "com.facebook.stetho:stetho:$versions.stetho"
+    implementation "com.facebook.stetho:stetho-okhttp3:$versions.stetho"
+
 }
 
 //To avoid dependency collisions GMS plugin should be placed at the bottom

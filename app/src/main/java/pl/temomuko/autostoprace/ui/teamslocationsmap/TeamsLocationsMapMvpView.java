@@ -5,8 +5,8 @@ import android.net.Uri;
 import java.util.List;
 
 import pl.temomuko.autostoprace.data.local.LocationsViewMode;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
-import pl.temomuko.autostoprace.data.model.Team;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItem;
 

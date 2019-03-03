@@ -9,15 +9,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.model.SignOutResponse;
-import pl.temomuko.autostoprace.data.model.User;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
+import pl.temomuko.autostoprace.domain.model.User;
+import pl.temomuko.autostoprace.domain.repository.Authenticator;
 import pl.temomuko.autostoprace.ui.settings.SettingsMvpView;
 import pl.temomuko.autostoprace.ui.settings.SettingsPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
-import retrofit2.Response;
 import rx.Completable;
-import rx.Observable;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,6 +33,7 @@ public class SettingsPresenterTest {
     @Mock SettingsMvpView mMockSettingsMvpView;
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
+    @Mock Authenticator authenticator;
     private SettingsPresenter mSettingsPresenter;
 
     @Rule
@@ -42,7 +41,7 @@ public class SettingsPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mSettingsPresenter = new SettingsPresenter(mMockDataManager);
+        mSettingsPresenter = new SettingsPresenter(mMockDataManager, authenticator);
         mSettingsPresenter.attachView(mMockSettingsMvpView);
     }
 
@@ -82,8 +81,8 @@ public class SettingsPresenterTest {
     @Test
     public void testLogout() throws Exception {
         //given
-        when(mMockDataManager.signOut())
-                .thenReturn(Observable.<Response<SignOutResponse>>empty());
+        when(authenticator.logout())
+                .thenReturn(Completable.complete());
         when(mMockDataManager.clearUserData()).thenReturn(Completable.complete());
 
         //when

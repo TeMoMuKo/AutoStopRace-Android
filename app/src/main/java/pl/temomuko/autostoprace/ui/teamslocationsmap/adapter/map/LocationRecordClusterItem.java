@@ -11,7 +11,7 @@ import com.google.maps.android.clustering.ClusterItem;
 
 import java.util.Date;
 
-import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
 import pl.temomuko.autostoprace.util.DateUtil;
 
 public class LocationRecordClusterItem implements ClusterItem, Parcelable, Comparable<LocationRecordClusterItem> {

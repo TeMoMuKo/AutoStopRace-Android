@@ -25,7 +25,7 @@ class ViewHolder(onImageClick: ((Uri) -> Unit)?, override val containerView: Vie
     fun bind(item: WallItem) {
         currentItem = item
         with(item) {
-            messageTextView.visibility = if (message.isBlank()) View.GONE else View.VISIBLE
+            messageTextView.visibility = if (message.isNullOrBlank()) View.GONE else View.VISIBLE
             messageTextView.text = message
             timeInfoTextView.text = timeInfo
             locationInfoTextView.text = locationInfo

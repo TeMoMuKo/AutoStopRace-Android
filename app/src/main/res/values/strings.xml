@@ -4,7 +4,7 @@
     <string name="error_unknown">Ojojoj, coś poszło nie tak, spróbuj ponownie za chwilę…</string>
     <string name="error_404">Coś się popsuło. Spróbuj ponownie później…</string>
     <string name="error_500">Błąd połączenia z serwerem</string>
-    <string name="error_403">Brak uprawnień</string>
+    <string name="error_403">Konto nie zostało aktywowane, aktywuj je za pomocą linka wysłanego w mailu.</string>
     <string name="msg_empty_location_records_list">Brak lokalizacji do wyświetlenia.</string>
     <string name="hint_email">Adres e-mail</string>
     <string name="hint_password">Hasło</string>

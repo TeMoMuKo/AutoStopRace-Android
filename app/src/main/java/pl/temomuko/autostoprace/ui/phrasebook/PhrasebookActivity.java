@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.Phrasebook;
+import pl.temomuko.autostoprace.domain.model.Phrasebook;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.main.Shortcuts;
 import pl.temomuko.autostoprace.ui.phrasebook.adapter.PhrasebookAdapter;

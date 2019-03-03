@@ -1,4 +1,4 @@
-package pl.temomuko.autostoprace.data.model;
+package pl.temomuko.autostoprace.domain.model;
 
 /**
  * Created by Rafał Naniewicz on 17.04.2016.

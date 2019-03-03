@@ -5,7 +5,7 @@ import com.google.android.gms.common.api.Status;
 
 import java.util.List;
 
-import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 
 /**
