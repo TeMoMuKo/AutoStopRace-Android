@@ -11,7 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import okhttp3.HttpUrl;
 import okhttp3.Protocol;
 import okhttp3.Request;
-import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.TestConstants;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
@@ -22,14 +21,12 @@ import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.local.photo.ImageController;
 import pl.temomuko.autostoprace.domain.model.LocationRecord;
-import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.domain.model.User;
-import pl.temomuko.autostoprace.data.remote.ApiManager;
-import retrofit2.Response;
 import rx.Completable;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -51,8 +48,6 @@ public class DataManagerTest {
     @Mock
     PrefsHelper mMockPrefsHelper;
     @Mock
-    ApiManager mMockApiManager;
-    @Mock
     DatabaseHelper mMockDatabaseHelper;
     @Mock
     GmsLocationHelper mMockGmsLocationHelper;
@@ -72,7 +67,7 @@ public class DataManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        mDataManager = new DataManager(mMockApiManager, mMockPrefsHelper, mMockDatabaseHelper,
+        mDataManager = new DataManager(mMockPrefsHelper, mMockDatabaseHelper,
                 mMockGmsLocationHelper, mMockPermissionHelper, mMockGeocodingHelper, mPhrasebookHelper,
                 mContactHelper, mImageController);
         setupFakeResponseBuilder();
@@ -122,25 +117,15 @@ public class DataManagerTest {
     }
 
     @Test
-    public void testSaveAuthorizationResponse() throws Exception {
+    public void testSaveUser() throws Exception {
         //given
-        okhttp3.Response okHttpResponse = mOkHttpResponseBuilder
-                .addHeader(Constants.HEADER_FIELD_TOKEN, FAKE_ACCESS_TOKEN)
-                .addHeader(Constants.HEADER_FIELD_CLIENT, FAKE_CLIENT)
-                .addHeader(Constants.HEADER_FIELD_UID, FAKE_UID)
-                .message("")
-                .build();
-
-        SignInResponse signInResponse = new SignInResponse();
-        signInResponse.setUser(new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL));
-        Response<SignInResponse> response = Response.success(signInResponse, okHttpResponse);
+        User user = mock(User.class);
 
         //when
-        mDataManager.saveUser(response);
+        mDataManager.saveUser(user);
 
         //then
-        verify(mMockPrefsHelper).setAuthorizationHeaders(response.headers());
-        verify(mMockPrefsHelper).setCurrentUser(response.body().getUser());
+        verify(mMockPrefsHelper).setCurrentUser(user);
     }
 
     @Test

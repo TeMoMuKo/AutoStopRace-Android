@@ -1,7 +1,6 @@
 package pl.temomuko.autostoprace.data.remote;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Patterns;
 
 import java.io.IOException;
@@ -15,6 +14,7 @@ import javax.inject.Singleton;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.util.NetworkUtil;
+import retrofit2.HttpException;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -41,7 +41,9 @@ public class ErrorHandler {
     }
 
     public String getMessage(Throwable throwable) {
-        if (throwable instanceof ApiException) {
+        if (throwable instanceof HttpException) {
+            return getMessageFromHttpCode(((HttpException) throwable).code());
+        } else if (throwable instanceof ApiException) {
             return getMessageFromHttpCode(((ApiException) throwable).getHttpCode());
         } else if (throwable instanceof TeamNotFoundException) {
             return getTeamNotFoundMessage();

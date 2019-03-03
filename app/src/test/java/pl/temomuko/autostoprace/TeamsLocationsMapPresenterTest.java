@@ -14,19 +14,24 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import pl.temomuko.autostoprace.data.DataManager;
+import pl.temomuko.autostoprace.data.remote.ApiException;
 import pl.temomuko.autostoprace.domain.model.LocationRecord;
 import pl.temomuko.autostoprace.domain.model.Team;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
 import pl.temomuko.autostoprace.data.remote.StandardResponseException;
 import pl.temomuko.autostoprace.data.remote.TeamNotFoundException;
+import pl.temomuko.autostoprace.domain.repository.LocationsRepository;
+import pl.temomuko.autostoprace.domain.repository.TeamsRepository;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapMvpView;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapPresenter;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.adapter.wall.WallItemsCreator;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
+import retrofit2.HttpException;
 import retrofit2.Response;
 import rx.Observable;
+import rx.Single;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
@@ -44,8 +49,10 @@ public class TeamsLocationsMapPresenterTest {
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
     @Mock WallItemsCreator mMockWallItemsCreator;
-    @Mock RxCacheHelper<Response<List<Team>>> mMockRxAllTeamsCacheHelper;
-    @Mock RxCacheHelper<Response<List<LocationRecord>>> mMockRxTeamLocationsCacheHelper;
+    @Mock RxCacheHelper<List<Team>> mMockRxAllTeamsCacheHelper;
+    @Mock RxCacheHelper<List<LocationRecord>> mMockRxTeamLocationsCacheHelper;
+    @Mock TeamsRepository teamsRepository;
+    @Mock LocationsRepository locationsRepository;
     private TeamsLocationsMapPresenter mTeamsLocationsMapPresenter;
 
     @Rule
@@ -53,7 +60,13 @@ public class TeamsLocationsMapPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mTeamsLocationsMapPresenter = new TeamsLocationsMapPresenter(mMockDataManager, mMockErrorHandler, mMockWallItemsCreator);
+        mTeamsLocationsMapPresenter = new TeamsLocationsMapPresenter(
+                mMockDataManager,
+                teamsRepository,
+                mMockErrorHandler,
+                mMockWallItemsCreator,
+                locationsRepository
+        );
         mTeamsLocationsMapPresenter.setupRxCacheHelper(null, mMockRxAllTeamsCacheHelper, mMockRxTeamLocationsCacheHelper);
         when(mMockRxAllTeamsCacheHelper.isCached()).thenReturn(false);
         when(mMockRxTeamLocationsCacheHelper.isCached()).thenReturn(false);
@@ -70,9 +83,8 @@ public class TeamsLocationsMapPresenterTest {
         //given
         List<Team> teams = new ArrayList<>();
         teams.add(null);
-        Response<List<Team>> response = Response.success(teams);
-        when(mMockDataManager.getAllTeams()).thenReturn(Observable.just(response));
-        when(mMockRxAllTeamsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
+        when(teamsRepository.getAllTeams()).thenReturn(Single.just(teams));
+        when(mMockRxAllTeamsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(teams));
 
         //when
         mTeamsLocationsMapPresenter.loadAllTeams();
@@ -91,7 +103,8 @@ public class TeamsLocationsMapPresenterTest {
         Response<List<Team>> response = Response.error(HttpStatus.BAD_REQUEST, ResponseBody.create(
                 MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), "")
         );
-        when(mMockDataManager.getAllTeams()).thenReturn(Observable.just(response));
+        HttpException exception = new HttpException(response);
+        when(teamsRepository.getAllTeams()).thenReturn(Single.error(exception));
         when(mMockRxAllTeamsCacheHelper.getRestoredCachedObservable())
                 .thenReturn(Observable.error(new StandardResponseException(response)));
 
@@ -111,9 +124,8 @@ public class TeamsLocationsMapPresenterTest {
         //given
         List<LocationRecord> locationRecords = new ArrayList<>();
         locationRecords.add(null);
-        Response<List<LocationRecord>> response = Response.success(locationRecords);
-        when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
-        when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
+        when(locationsRepository.getTeamLocations(TEST_TEAM_NUMBER)).thenReturn(Single.just(locationRecords));
+        when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(locationRecords));
 
         //when
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
@@ -132,9 +144,8 @@ public class TeamsLocationsMapPresenterTest {
     public void testLoadTeamLocationsSuccessEmpty() {
         //given
         List<LocationRecord> locationRecords = new ArrayList<>();
-        Response<List<LocationRecord>> response = Response.success(locationRecords);
-        when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
-        when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(response));
+        when(locationsRepository.getTeamLocations(TEST_TEAM_NUMBER)).thenReturn(Single.just(locationRecords));
+        when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(Observable.just(locationRecords));
 
         //when
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
@@ -155,9 +166,10 @@ public class TeamsLocationsMapPresenterTest {
         Response<List<LocationRecord>> response = Response.error(HttpStatus.BAD_REQUEST, ResponseBody.create(
                 MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), "")
         );
-        when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
+        HttpException exception = new HttpException(response);
+        when(locationsRepository.getTeamLocations(TEST_TEAM_NUMBER)).thenReturn(Single.error(exception));
         when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(
-                Observable.error(new StandardResponseException(response)));
+                Observable.error(exception));
 
         //when
         mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
@@ -179,7 +191,8 @@ public class TeamsLocationsMapPresenterTest {
         Response<List<LocationRecord>> response = Response.error(HttpStatus.NOT_FOUND, ResponseBody.create(
                 MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), "")
         );
-        when(mMockDataManager.getTeamLocationRecordsFromServer(TEST_TEAM_NUMBER)).thenReturn(Observable.just(response));
+        HttpException exception = new HttpException(response);
+        when(locationsRepository.getTeamLocations(TEST_TEAM_NUMBER)).thenReturn(Single.error(exception));
         when(mMockErrorHandler.getMessage(any())).thenReturn(teamNotFound);
         when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(
                 Observable.error(new TeamNotFoundException(response))
