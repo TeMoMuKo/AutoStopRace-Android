@@ -51,12 +51,12 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     public void logout() {
         mSubscription = authenticator.logout()
                 .compose(RxUtil.applyCompletableIoSchedulers())
+                .doOnTerminate(() -> dataManager.clearUserData().subscribe())
                 .subscribe(() -> {
                     LogUtil.i(TAG, "Logged out");
                 }, throwable -> {
                     LogUtil.e(TAG, throwable.getMessage());
                 });
-        dataManager.clearUserData().subscribe();
         getMvpView().showLogoutMessage();
         getMvpView().disablePostLocationShortcut();
         getMvpView().startLauncherActivity();

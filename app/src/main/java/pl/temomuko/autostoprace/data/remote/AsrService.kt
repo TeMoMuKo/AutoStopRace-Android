@@ -38,6 +38,6 @@ interface AsrService {
     @POST("user/password")
     fun resetPassword(email: String): Completable
 
-    @GET("logout")
+    @POST("logout")
     fun logout(): Completable
 }
