@@ -31,7 +31,7 @@ class Authenticator @Inject constructor(
                     it.body()!!.toUser()
                 } else {
                     throw ApiException(it.code())
-                    //todo handle errors in rx java adapter
+                    //todo handle errors in rx java call adapter
                 }
             }
     }
