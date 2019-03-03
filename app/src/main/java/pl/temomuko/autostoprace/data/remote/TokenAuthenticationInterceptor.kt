@@ -15,11 +15,15 @@ class TokenAuthenticationInterceptor @Inject constructor(
         val authToken = lazyAuthenticator.get().token
         return if (authToken.isNotBlank()) {
             val newRequest = originalRequest.newBuilder()
-                .header("X-Auth-Token", lazyAuthenticator.get().token)
+                .header(TOKEN_HEADER, lazyAuthenticator.get().token)
                 .build()
             chain.proceed(newRequest)
         } else {
             chain.proceed(originalRequest)
         }
+    }
+
+    companion object {
+        const val TOKEN_HEADER = "X-Auth-Token"
     }
 }

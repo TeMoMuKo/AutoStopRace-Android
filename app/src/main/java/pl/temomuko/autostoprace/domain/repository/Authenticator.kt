@@ -4,6 +4,8 @@ import android.util.Base64
 import pl.temomuko.autostoprace.data.local.PrefsHelper
 import pl.temomuko.autostoprace.domain.model.User
 import pl.temomuko.autostoprace.data.remote.AsrService
+import pl.temomuko.autostoprace.data.remote.StandardResponseException
+import pl.temomuko.autostoprace.data.remote.TokenAuthenticationInterceptor
 import pl.temomuko.autostoprace.data.remote.model.UserEntity
 import retrofit2.Response
 import rx.Completable
@@ -26,7 +28,7 @@ class Authenticator @Inject constructor(
     }
 
     private fun saveAuthToken(response: Response<UserEntity>) {
-        val authTokenHeader = response.headers()["X-Auth-Token"]
+        val authTokenHeader = response.headers()[TokenAuthenticationInterceptor.TOKEN_HEADER]
         authTokenHeader?.let { prefsHelper.authAccessToken = it }
     }
 
