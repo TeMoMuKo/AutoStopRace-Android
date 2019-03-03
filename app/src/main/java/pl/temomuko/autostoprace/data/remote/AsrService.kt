@@ -32,7 +32,7 @@ interface AsrService {
 
     @Multipart
     @PUT("locations/{locationId}/image")
-    fun addLocationImage(@Path("locationId") locationId: Long, @Part imageFilePart: MultipartBody.Part): Completable
+    fun addLocationImage(@Path("locationId") locationId: Long, @Part file: MultipartBody.Part): Completable
 
     //todo implement on backend side
     @POST("user/password")

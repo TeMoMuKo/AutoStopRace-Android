@@ -52,47 +52,6 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         }
     }
 
-//    @SuppressWarnings("RedundantIfStatement")
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//
-//        LocationRecord that = (LocationRecord) o;
-//
-//        if (mId != that.mId) return false;
-//        if (Double.compare(that.mLatitude, mLatitude) != 0) return false;
-//        if (Double.compare(that.mLongitude, mLongitude) != 0) return false;
-//        if (!mMessage.equals(that.mMessage)) return false;
-//        if (mAddress != null ? !mAddress.equals(that.mAddress) : that.mAddress != null)
-//            return false;
-//        if (mCountry != null ? !mCountry.equals(that.mCountry) : that.mCountry != null)
-//            return false;
-//        if (mCountryCode != null ? !mCountryCode.equals(that.mCountryCode) : that.mCountryCode != null)
-//            return false;
-//        if (mServerReceiptDate != null ? !mServerReceiptDate.equals(that.mServerReceiptDate) : that.mServerReceiptDate != null)
-//            return false;
-//
-//        return true;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        int result;
-//        long temp;
-//        result = mId;
-//        temp = Double.doubleToLongBits(mLatitude);
-//        result = 31 * result + (int) (temp ^ (temp >>> 32));
-//        temp = Double.doubleToLongBits(mLongitude);
-//        result = 31 * result + (int) (temp ^ (temp >>> 32));
-//        result = 31 * result + mMessage.hashCode();
-//        result = 31 * result + (mAddress != null ? mAddress.hashCode() : 0);
-//        result = 31 * result + (mCountry != null ? mCountry.hashCode() : 0);
-//        result = 31 * result + (mCountryCode != null ? mCountryCode.hashCode() : 0);
-//        result = 31 * result + (mServerReceiptDate != null ? mServerReceiptDate.hashCode() : 0);
-//        return result;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -140,6 +99,7 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         return mLongitude;
     }
 
+    @Nullable
     public String getMessage() {
         return mMessage;
     }
@@ -161,6 +121,7 @@ public class LocationRecord implements Comparable<LocationRecord>, Parcelable {
         return mServerReceiptDate;
     }
 
+    @Nullable
     public Uri getImageUri() {
         return mImageLocation == null ? null : Uri.parse(mImageLocation);
     }

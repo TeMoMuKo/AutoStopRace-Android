@@ -20,12 +20,17 @@ class LocationsRepository @Inject constructor(
             CreateLocationRequest(
                 latitude = locationRecord.latitude,
                 longitude = locationRecord.longitude,
-                message = locationRecord.message.nullIfBlank()
+                message = locationRecord.message?.nullIfBlank()
             )
         return asrService.addLocation(createLocationRequest)
             .flatMap {
-                addImageToLocation(locationId = it.id, imageUri = locationRecord.imageUri)
-                    .andThen(Single.just(it))
+                val imageUri =locationRecord.imageUri
+                if(imageUri != null) {
+                    addImageToLocation(locationId = it.id, imageUri = imageUri)
+                        .andThen(Single.just(it))
+                } else {
+                    Single.just(it)
+                }
             }
     }
 
