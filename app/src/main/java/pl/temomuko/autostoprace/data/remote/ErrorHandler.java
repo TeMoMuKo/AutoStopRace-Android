@@ -41,7 +41,9 @@ public class ErrorHandler {
     }
 
     public String getMessage(Throwable throwable) {
-        if (throwable instanceof TeamNotFoundException) {
+        if (throwable instanceof ApiException) {
+            return getMessageFromHttpCode(((ApiException) throwable).getHttpCode());
+        } else if (throwable instanceof TeamNotFoundException) {
             return getTeamNotFoundMessage();
         } else if (throwable instanceof StandardResponseException) {
             return getMessageFromHttpResponse(((StandardResponseException) throwable).getResponse());
@@ -57,15 +59,14 @@ public class ErrorHandler {
     private String getMessageFromHttpResponse(Response<?> response) {
         List<String> errorsFromResponseBody = getErrorsFromResponseBody(response);
         if (errorsFromResponseBody.isEmpty()) {
-            return getStandardMessageForApiError(response);
+            return getMessageFromHttpCode(response.code());
         } else {
             return errorsFromResponseBody.get(0);
         }
     }
 
-    @NonNull
-    private String getStandardMessageForApiError(Response response) {
-        switch (response.code()) {
+    private String getMessageFromHttpCode(int httpCode) {
+        switch (httpCode) {
             case HttpStatus.NOT_FOUND:
                 return context.getString(R.string.error_404);
             case HttpStatus.FORBIDDEN:
