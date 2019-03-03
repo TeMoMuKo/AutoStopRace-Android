@@ -33,7 +33,7 @@ class NetworkModule {
             .registerTypeAdapterFactory(PostProcessingEnabler())
             .create()
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.101:8080")
+            .baseUrl("https://dev.api.autostoprace.pl/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

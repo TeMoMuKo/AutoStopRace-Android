@@ -5,10 +5,11 @@ import android.net.Uri
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import pl.temomuko.autostoprace.injection.AppContext
 import javax.inject.Inject
 
 class MultipartCreator @Inject constructor(
-    private val context: Context
+    @AppContext private val context: Context
 ) {
 
     fun createImageMultipartFromUri(uri: Uri): MultipartBody.Part {
