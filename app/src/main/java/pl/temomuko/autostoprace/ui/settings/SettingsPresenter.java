@@ -50,8 +50,9 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
     public void logout() {
         mSubscription = authenticator.logout()
+                .onErrorComplete()
+                .andThen(dataManager.clearUserData())
                 .compose(RxUtil.applyCompletableIoSchedulers())
-                .doOnTerminate(() -> dataManager.clearUserData().subscribe())
                 .subscribe(() -> {
                     LogUtil.i(TAG, "Logged out");
                 }, throwable -> {

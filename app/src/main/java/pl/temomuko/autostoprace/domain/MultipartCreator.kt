@@ -6,6 +6,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import pl.temomuko.autostoprace.injection.AppContext
+import java.io.File
 import javax.inject.Inject
 
 class MultipartCreator @Inject constructor(

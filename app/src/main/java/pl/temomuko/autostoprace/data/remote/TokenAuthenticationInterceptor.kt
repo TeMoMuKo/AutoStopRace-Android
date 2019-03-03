@@ -15,7 +15,7 @@ class TokenAuthenticationInterceptor @Inject constructor(
         val authToken = lazyAuthenticator.get().token
         return if (authToken.isNotBlank()) {
             val newRequest = originalRequest.newBuilder()
-                .header(TOKEN_HEADER, lazyAuthenticator.get().token)
+                .header(TOKEN_HEADER, authToken)
                 .build()
             chain.proceed(newRequest)
         } else {

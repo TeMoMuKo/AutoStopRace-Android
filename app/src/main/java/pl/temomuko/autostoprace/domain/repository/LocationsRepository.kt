@@ -19,7 +19,7 @@ class LocationsRepository @Inject constructor(
         val createLocationRequest = CreateLocationRequest(
             latitude = locationRecord.latitude,
             longitude = locationRecord.longitude,
-            message = locationRecord.message?.nullIfBlank()
+            message = locationRecord.message?.ifBlank { null }
         )
         return asrService.addLocation(createLocationRequest)
             .flatMap {
@@ -48,8 +48,4 @@ class LocationsRepository @Inject constructor(
         return asrService.getUserTeamLocations()
             .map { locations -> locations.map { it.toLocationRecord() } }
     }
-}
-
-private fun String.nullIfBlank(): String? {
-    return if (this.isBlank()) null else this
 }

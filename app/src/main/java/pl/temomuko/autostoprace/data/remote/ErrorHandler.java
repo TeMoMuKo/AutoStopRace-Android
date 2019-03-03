@@ -28,12 +28,10 @@ public class ErrorHandler {
     public static final String TAG = ErrorHandler.class.getSimpleName();
 
     private final Context context;
-    private final Retrofit retrofit;
 
     @Inject
-    public ErrorHandler(@AppContext Context context, Retrofit retrofit) {
+    public ErrorHandler(@AppContext Context context) {
         this.context = context;
-        this.retrofit = retrofit;
     }
 
     public boolean isEmailValid(String email) {
