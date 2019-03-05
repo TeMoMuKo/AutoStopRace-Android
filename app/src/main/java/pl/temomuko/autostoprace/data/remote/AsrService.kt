@@ -30,7 +30,7 @@ interface AsrService {
     @Multipart
     @POST("locations")
     fun addLocation(
-        @Part("location") locationRequest: CreateLocationRequest,
+        @Part("locationData") locationRequest: CreateLocationRequest,
         @Part image: MultipartBody.Part?
     ): Single<LocationEntity>
 

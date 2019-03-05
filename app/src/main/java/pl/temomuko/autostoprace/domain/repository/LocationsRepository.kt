@@ -14,15 +14,16 @@ class LocationsRepository @Inject constructor(
 ) {
 
     fun postLocation(locationRecord: LocationRecord): Single<LocationEntity> {
+        val createLocationRequest = CreateLocationRequest(
+            latitude = locationRecord.latitude,
+            longitude = locationRecord.longitude,
+            message = locationRecord.message?.ifBlank { null }
+        )
         val imageMultipart = locationRecord.imageUri?.let {
             multipartCreator.createImageMultipartFromUri(it)
         }
         return asrService.addLocation(
-            CreateLocationRequest(
-                latitude = locationRecord.latitude,
-                longitude = locationRecord.longitude,
-                message = locationRecord.message?.ifBlank { null }
-            ),
+            locationRequest = createLocationRequest,
             image = imageMultipart
         )
     }
