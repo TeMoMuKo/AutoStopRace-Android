@@ -15,8 +15,9 @@ class MultipartCreator @Inject constructor(
 
     fun createImageMultipartFromUri(uri: Uri): MultipartBody.Part {
         val openInputStream = context.contentResolver.openInputStream(uri)
+
         return MultipartBody.Part.createFormData(
-            "file",
+            "image",
             "location_image",
             RequestBody.create(
                 MediaType.parse("image/jpeg"),

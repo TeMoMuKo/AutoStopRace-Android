@@ -27,12 +27,12 @@ interface AsrService {
     @GET("user")
     fun validateToken(): Single<UserEntity>
 
-    @POST("locations")
-    fun addLocation(@Body createLocationRequest: CreateLocationRequest): Single<LocationEntity>
-
     @Multipart
-    @PUT("locations/{locationId}/image")
-    fun addLocationImage(@Path("locationId") locationId: Long, @Part file: MultipartBody.Part): Completable
+    @POST("locations")
+    fun addLocation(
+        @Part("location") locationRequest: CreateLocationRequest,
+        @Part image: MultipartBody.Part?
+    ): Single<LocationEntity>
 
     //todo implement on backend side
     @POST("user/password")
