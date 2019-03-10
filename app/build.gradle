@@ -11,7 +11,7 @@ def googleMapsReleaseKey = loadSecret("GOOGLE_MAPS_RELEASE_KEY", "googleMapsRele
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
-
+    flavorDimensions 'default'
     defaultConfig {
         applicationId "pl.temomuko.autostoprace"
         minSdkVersion 19
@@ -32,6 +32,21 @@ android {
             resValue 'string', 'GOOGLE_MAPS_KEY', googleMapsReleaseKey
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        prod {
+            buildConfigField "String", "API_BASE_URL", '"https://api.autostoprace.pl/"'
+        }
+        dev {
+            buildConfigField "String", "API_BASE_URL", '"https://dev.api.autostoprace.pl/"'
+        }
+    }
+
+    variantFilter { variant ->
+        if (variant.name == "devRelease") {
+            variant.setIgnore(true)
         }
     }
 
@@ -119,9 +134,8 @@ dependencies {
 
     implementation "com.theartofdev.edmodo:android-image-cropper:2.3.1"
 
-    //todo use in debug only
-    implementation "com.facebook.stetho:stetho:$versions.stetho"
-    implementation "com.facebook.stetho:stetho-okhttp3:$versions.stetho"
+    debugImplementation "com.facebook.stetho:stetho:$versions.stetho"
+    debugImplementation "com.facebook.stetho:stetho-okhttp3:$versions.stetho"
 
 }
 
