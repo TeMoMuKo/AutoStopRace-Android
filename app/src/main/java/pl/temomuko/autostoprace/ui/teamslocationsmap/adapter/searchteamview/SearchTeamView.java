@@ -18,7 +18,7 @@ import android.widget.EditText;
 import java.util.List;
 
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.Team;
+import pl.temomuko.autostoprace.domain.model.Team;
 
 /**
  * Created by Rafał Naniewicz on 23.04.2016.
@@ -68,7 +68,7 @@ public class SearchTeamView extends EditText {
         setTextChangeListener();
     }
 
-    private void handleTeamHintClick(int teamNumber) {
+    private void handleTeamHintClick(long teamNumber) {
         String teamNumberText = String.valueOf(teamNumber);
         setText(teamNumberText);
         setSelection(teamNumberText.length());
@@ -194,7 +194,7 @@ public class SearchTeamView extends EditText {
 
     public interface OnTeamRequestedListener {
 
-        void onTeamRequest(int teamId);
+        void onTeamRequest(long teamId);
 
         void onTeamRequest(String teamString);
     }

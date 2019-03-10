@@ -6,7 +6,7 @@ import org.junit.runners.JUnit4;
 
 import java.util.List;
 
-import pl.temomuko.autostoprace.data.model.Phrasebook;
+import pl.temomuko.autostoprace.domain.model.Phrasebook;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;

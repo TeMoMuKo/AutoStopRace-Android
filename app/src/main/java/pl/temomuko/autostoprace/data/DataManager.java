@@ -12,7 +12,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.data.local.LocationsViewMode;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
 import pl.temomuko.autostoprace.data.local.PrefsHelper;
@@ -23,18 +22,11 @@ import pl.temomuko.autostoprace.data.local.geocoding.GeocodingHelper;
 import pl.temomuko.autostoprace.data.local.gms.GmsLocationHelper;
 import pl.temomuko.autostoprace.data.local.photo.ImageController;
 import pl.temomuko.autostoprace.data.local.photo.ImageSourceType;
-import pl.temomuko.autostoprace.data.model.ContactField;
-import pl.temomuko.autostoprace.data.model.CreateLocationRecordRequest;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
-import pl.temomuko.autostoprace.data.model.Phrasebook;
-import pl.temomuko.autostoprace.data.model.ResetPassResponse;
-import pl.temomuko.autostoprace.data.model.SignInResponse;
-import pl.temomuko.autostoprace.data.model.SignOutResponse;
-import pl.temomuko.autostoprace.data.model.Team;
-import pl.temomuko.autostoprace.data.model.User;
-import pl.temomuko.autostoprace.data.remote.ApiManager;
+import pl.temomuko.autostoprace.domain.model.ContactField;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.Phrasebook;
+import pl.temomuko.autostoprace.domain.model.User;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
-import retrofit2.Response;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
@@ -46,7 +38,6 @@ import rx.Single;
 @Singleton
 public class DataManager {
 
-    private final ApiManager mApiManager;
     private final PrefsHelper mPrefsHelper;
     private final DatabaseHelper mDatabaseHelper;
     private final GmsLocationHelper mGmsLocationHelper;
@@ -57,11 +48,10 @@ public class DataManager {
     private final ImageController mImageController;
 
     @Inject
-    public DataManager(ApiManager apiManager, PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
+    public DataManager(PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
                        GmsLocationHelper gmsLocationHelper, PermissionHelper permissionHelper,
                        GeocodingHelper geocodingHelper, PhrasebookHelper phrasebookHelper,
                        ContactHelper contactHelper, ImageController imageController) {
-        mApiManager = apiManager;
         mPrefsHelper = prefsHelper;
         mDatabaseHelper = databaseHelper;
         mGmsLocationHelper = gmsLocationHelper;
@@ -71,59 +61,6 @@ public class DataManager {
         mContactHelper = contactHelper;
         mImageController = imageController;
     }
-
-    /* API  */
-
-    public Observable<Response<SignInResponse>> signIn(String login, String password) {
-        return mApiManager.getAsrService().signIn(login, password);
-    }
-
-    public Observable<Response<SignOutResponse>> signOut() {
-        return mApiManager.getAsrService().signOut(
-                mPrefsHelper.getAuthAccessToken(),
-                mPrefsHelper.getAuthClient(),
-                mPrefsHelper.getAuthUid()
-        );
-    }
-
-    public Observable<Response<SignInResponse>> validateToken() {
-        return mApiManager.getAsrService().validateToken(
-                mPrefsHelper.getAuthAccessToken(),
-                mPrefsHelper.getAuthClient(),
-                mPrefsHelper.getAuthUid()
-        );
-    }
-
-    public Observable<Response<ResetPassResponse>> resetPassword(String email) {
-        return mApiManager.getAsrService().resetPassword(email, Constants.API_RESET_PASS_REDIRECT_URL);
-    }
-
-    public Observable<Response<List<LocationRecord>>> getUserTeamLocationRecordsFromServer() {
-        return mApiManager.getAsrService().getLocationRecords(mPrefsHelper.getCurrentUser().getTeamNumber());
-    }
-
-    public Observable<Response<List<LocationRecord>>> getTeamLocationRecordsFromServer(int teamNumber) {
-        return mApiManager.getAsrService().getLocationRecords(teamNumber);
-    }
-
-    public Observable<Response<List<Team>>> getAllTeams() {
-        return mApiManager.getAsrService().getAllTeams();
-    }
-
-    public Observable<Response<LocationRecord>> postLocationRecordToServer(final LocationRecord locationRecord) {
-        return mImageController.getBase64Image(locationRecord.getImageUri())
-                .flatMap(base64Image ->
-                        mApiManager.getAsrService().postLocationRecord(
-                                mPrefsHelper.getAuthAccessToken(),
-                                mPrefsHelper.getAuthClient(),
-                                mPrefsHelper.getAuthUid(),
-                                new CreateLocationRecordRequest(locationRecord.getLatitude(), locationRecord.getLongitude(),
-                                        locationRecord.getMessage(), base64Image))
-
-                );
-    }
-
-    /* Database / Prefs / Phrasebook / Contact */
 
     public Completable saveToDatabase(List<LocationRecord> response) {
         return mDatabaseHelper.saveToSentLocationsTable(response);
@@ -151,9 +88,8 @@ public class DataManager {
                 .doOnCompleted(mPrefsHelper::clearAuth);
     }
 
-    public void saveAuthorizationResponse(Response<SignInResponse> response) {
-        mPrefsHelper.setAuthorizationHeaders(response.headers());
-        mPrefsHelper.setCurrentUser(response.body().getUser());
+    public void saveUser(User user) {
+        mPrefsHelper.setCurrentUser(user);
     }
 
     public boolean isLoggedWithToken() {

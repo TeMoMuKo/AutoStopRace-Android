@@ -17,8 +17,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
-import pl.temomuko.autostoprace.data.model.Team;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.Team;
 import pl.temomuko.autostoprace.util.LocationInfoProvider;
 
 /**
@@ -58,7 +58,7 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Team currentTeam = mActualTeams.get(position);
         holder.mTeamIdTextView.setText(String.valueOf(currentTeam.getTeamNumber()));
-        LocationRecord lastLocationRecord = currentTeam.getLastLocationRecord();
+        LocationRecord lastLocationRecord = currentTeam.getLastLocation();
         if (lastLocationRecord == null) {
             holder.mLastLocationTextView.setVisibility(View.GONE);
         } else {
@@ -114,7 +114,7 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
 
     public interface OnTeamHintSelectedListener {
 
-        void onTeamHintClick(int teamNumber);
+        void onTeamHintClick(long teamNumber);
     }
 
     public interface TeamFilterResultsListener {
@@ -162,7 +162,7 @@ public class SearchTeamHintsAdapter extends RecyclerView.Adapter<SearchTeamHints
             List<Team> filteredTeamList = new ArrayList<>();
             //noinspection Convert2streamapi
             for (Team team : mAllTeams) {
-                if (Integer.toString(team.getTeamNumber()).startsWith(filterPattern)) {
+                if (Long.toString(team.getTeamNumber()).startsWith(filterPattern)) {
                     filteredTeamList.add(team);
                 }
             }

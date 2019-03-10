@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.Constants;
-import pl.temomuko.autostoprace.data.model.Phrasebook;
+import pl.temomuko.autostoprace.domain.model.Phrasebook;
 import pl.temomuko.autostoprace.injection.AppContext;
 import rx.Single;
 

@@ -15,13 +15,15 @@ import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
-import pl.temomuko.autostoprace.data.model.SignInResponse;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.HttpStatus;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.User;
+import pl.temomuko.autostoprace.domain.repository.Authenticator;
 import pl.temomuko.autostoprace.ui.main.MainMvpView;
 import pl.temomuko.autostoprace.ui.main.MainPresenter;
 import pl.temomuko.autostoprace.util.RxSchedulersOverrideRule;
+import retrofit2.HttpException;
 import retrofit2.Response;
 import rx.Completable;
 import rx.Observable;
@@ -30,6 +32,7 @@ import rx.Single;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,6 +53,7 @@ public class MainPresenterTest {
     @Mock DataManager mMockDataManager;
     @Mock ErrorHandler mMockErrorHandler;
     @Mock PermissionHelper mMockPermissionHelper;
+    @Mock Authenticator authenticator;
     private MainPresenter mMainPresenter;
 
     @Rule
@@ -57,7 +61,7 @@ public class MainPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mMainPresenter = new MainPresenter(mMockDataManager, mMockErrorHandler);
+        mMainPresenter = new MainPresenter(mMockDataManager, mMockErrorHandler, authenticator);
         mMainPresenter.attachView(mMockMainMvpView);
     }
 
@@ -117,12 +121,14 @@ public class MainPresenterTest {
     @Test
     public void testCheckAuthExpiredSession() throws Exception {
         //given
+        User user = mock(User.class);
         when(mMockDataManager.isLoggedWithToken()).thenReturn(true);
-        Response<SignInResponse> response = Response.error(HttpStatus.UNAUTHORIZED,
+        Response response = Response.error(HttpStatus.UNAUTHORIZED,
                 ResponseBody.create(
                         MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), UNAUTHORIZED_RESPONSE
                 ));
-        when(mMockDataManager.validateToken()).thenReturn(Observable.just(response));
+        HttpException exception = new HttpException(response);
+        when(authenticator.validateToken()).thenReturn(Single.error(exception));
         when(mMockDataManager.clearUserData()).thenReturn(Completable.complete());
 
         //when
@@ -133,22 +139,21 @@ public class MainPresenterTest {
         verify(mMockMainMvpView).showSessionExpiredError();
         verify(mMockMainMvpView).disablePostLocationShortcut();
         verify(mMockMainMvpView).startLoginActivity();
-        verify(mMockDataManager, never()).saveAuthorizationResponse(response);
+        verify(mMockDataManager, never()).saveUser(user);
     }
 
     @Test
     public void testCheckAuthSuccess() throws Exception {
         //given
         when(mMockDataManager.isLoggedWithToken()).thenReturn(true);
-        SignInResponse signInResponse = new SignInResponse();
-        Response<SignInResponse> response = Response.success(signInResponse);
-        when(mMockDataManager.validateToken()).thenReturn(Observable.just(response));
+        User user = mock(User.class);
+        when(authenticator.validateToken()).thenReturn(Single.just(user));
 
         //when
         mMainPresenter.checkAuth();
 
         //then
-        verify(mMockDataManager).saveAuthorizationResponse(response);
+        verify(mMockDataManager).saveUser(user);
         verify(mMockDataManager, never()).clearUserData();
         verify(mMockMainMvpView, never()).startLoginActivity();
         verify(mMockMainMvpView, never()).startLauncherActivity();

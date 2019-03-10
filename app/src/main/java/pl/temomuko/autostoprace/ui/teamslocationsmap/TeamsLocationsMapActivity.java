@@ -37,8 +37,8 @@ import pl.temomuko.autostoprace.Constants;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.Event;
 import pl.temomuko.autostoprace.data.local.LocationsViewMode;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
-import pl.temomuko.autostoprace.data.model.Team;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.Team;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.ui.main.Shortcuts;
@@ -211,7 +211,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         mSearchTeamView.setOptionalHintsView(mTeamHintsLinearLayout);
         mSearchTeamView.setOnTeamRequestedListener(new SearchTeamView.OnTeamRequestedListener() {
             @Override
-            public void onTeamRequest(int teamId) {
+            public void onTeamRequest(long teamId) {
                 mTeamsLocationsMapPresenter.loadTeam(teamId);
             }
 
@@ -240,21 +240,21 @@ public class TeamsLocationsMapActivity extends DrawerActivity
                 mIsConsumedUriIntent = true;
             }
         } else if (extras != null && !mIsConsumedToolbarIntent) {
-            changeTeam(extras.getInt(MainActivity.EXTRA_TEAM_NUMBER));
+            changeTeam(extras.getLong(MainActivity.EXTRA_TEAM_NUMBER));
             mIsConsumedToolbarIntent = true;
         }
     }
 
     private void changeTeamFromIntent(@NonNull String teamNumberParameterValue) {
         try {
-            int teamNumber = Integer.parseInt(teamNumberParameterValue.replaceAll("[\\D]", ""));
+            long teamNumber = Long.parseLong(teamNumberParameterValue.replaceAll("[\\D]", ""));
             changeTeam(teamNumber);
         } catch (NumberFormatException e) {
             Log.e(TAG, "Invalid url query param.");
         }
     }
 
-    private void changeTeam(int teamNumber) {
+    private void changeTeam(long teamNumber) {
         mSearchTeamView.setText(String.valueOf(teamNumber));
         mTeamsLocationsMapPresenter.loadTeam(teamNumber);
     }

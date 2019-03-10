@@ -32,7 +32,7 @@ import butterknife.BindView;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.data.Event;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
 import pl.temomuko.autostoprace.service.LocationSyncService;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;

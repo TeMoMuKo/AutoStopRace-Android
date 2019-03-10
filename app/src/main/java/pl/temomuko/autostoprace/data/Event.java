@@ -1,6 +1,6 @@
 package pl.temomuko.autostoprace.data;
 
-import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
 
 /**
  * Created by Rafał Naniewicz on 21.04.2016.

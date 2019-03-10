@@ -3,7 +3,7 @@ package pl.temomuko.autostoprace.data.local.csv;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.temomuko.autostoprace.data.model.ContactField;
+import pl.temomuko.autostoprace.domain.model.ContactField;
 
 /**
  * Created by Rafał Naniewicz on 17.04.2016.

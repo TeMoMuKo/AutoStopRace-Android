@@ -89,7 +89,7 @@ public abstract class DrawerActivity extends BaseActivity implements DrawerMvpVi
     }
 
     @Override
-    public void setupTeamNumberText(int teamNumber) {
+    public void setupTeamNumberText(long teamNumber) {
         ((LinearLayout) mTeamTextView.getParent()).setVisibility(View.VISIBLE);
         mTeamTextView.setText(String.valueOf(teamNumber));
     }

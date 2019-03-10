@@ -1,6 +1,6 @@
 package pl.temomuko.autostoprace.util
 
-import pl.temomuko.autostoprace.data.model.LocationRecord
+import pl.temomuko.autostoprace.domain.model.LocationRecord
 import javax.inject.Inject
 
 class LocationInfoProvider @Inject constructor() {

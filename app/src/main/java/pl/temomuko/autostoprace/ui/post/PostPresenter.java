@@ -15,7 +15,7 @@ import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.local.gms.ApiClientConnectionFailedException;
 import pl.temomuko.autostoprace.data.local.photo.ImageSourceType;
 import pl.temomuko.autostoprace.data.local.photo.PhotoShadowActivity;
-import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
 import pl.temomuko.autostoprace.ui.base.BasePresenter;
 import pl.temomuko.autostoprace.util.AddressUtil;
 import pl.temomuko.autostoprace.util.LocationSettingsUtil;

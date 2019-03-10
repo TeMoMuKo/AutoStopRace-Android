@@ -2,7 +2,7 @@ package pl.temomuko.autostoprace.ui.contact;
 
 import java.util.List;
 
-import pl.temomuko.autostoprace.data.model.ContactField;
+import pl.temomuko.autostoprace.domain.model.ContactField;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 
 /**

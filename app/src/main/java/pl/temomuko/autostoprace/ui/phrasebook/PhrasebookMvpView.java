@@ -2,7 +2,7 @@ package pl.temomuko.autostoprace.ui.phrasebook;
 
 import java.util.List;
 
-import pl.temomuko.autostoprace.data.model.Phrasebook;
+import pl.temomuko.autostoprace.domain.model.Phrasebook;
 import pl.temomuko.autostoprace.ui.base.drawer.DrawerMvpView;
 
 /**

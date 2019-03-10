@@ -1,7 +1,7 @@
 package pl.temomuko.autostoprace;
 
 
-import pl.temomuko.autostoprace.data.model.LocationRecord;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
 
 public final class TestConstants {
 
