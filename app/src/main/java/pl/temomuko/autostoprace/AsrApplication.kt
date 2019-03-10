@@ -9,7 +9,6 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.support.annotation.RequiresApi
 import com.crashlytics.android.Crashlytics
-import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
 import io.fabric.sdk.android.Fabric
 import pl.temomuko.autostoprace.injection.component.ApplicationComponent
@@ -33,7 +32,7 @@ class AsrApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Stetho.initializeWithDefaults(this) //todo use stetho dependency only in debug builds
+        initFlavorConfig(this)
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
