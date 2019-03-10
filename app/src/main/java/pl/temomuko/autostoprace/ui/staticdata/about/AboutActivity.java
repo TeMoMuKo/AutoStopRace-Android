@@ -27,7 +27,6 @@ public class AboutActivity extends BaseActivity {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.btn_go_to_store) Button mGoToStoreButton;
-    @BindView(R.id.tv_about_app) TextView mAboutAppTextView;
     @BindView(R.id.tv_authors) TextView mAuthorsTextView;
     @BindView(R.id.tv_version) TextView mVersionTextView;
 
@@ -36,7 +35,6 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         mVersionTextView.setText(getString(R.string.app_version_format, BuildConfig.VERSION_NAME));
-        mAboutAppTextView.setMovementMethod(LinkMovementMethod.getInstance());
         mAuthorsTextView.setMovementMethod(LinkMovementMethod.getInstance());
         setupToolbarWithBack();
         setupButtonsTextStyleOnPreLollipop();

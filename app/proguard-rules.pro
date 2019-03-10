@@ -152,3 +152,5 @@
 #glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
 
+#models
+-keepclassmembernames class pl.temomuko.autostoprace.**.model.** { *; }
