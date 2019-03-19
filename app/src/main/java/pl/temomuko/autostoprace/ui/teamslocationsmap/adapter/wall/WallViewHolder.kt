@@ -35,13 +35,13 @@ class WallViewHolder(onImageClick: ((Uri) -> Unit)?, override val containerView:
 
     private fun setupImage(photoImageView: ImageView, imageUrl: String?) {
         if (imageUrl != null) {
-            photoImageView.visibility = View.VISIBLE
+            imageContainer.visibility = View.VISIBLE
             Glide.with(photoImageView.context)
                 .load(imageUrl)
                 .into(photoImageView)
         } else {
             photoImageView.setImageDrawable(null)
-            photoImageView.visibility = View.GONE
+            imageContainer.visibility = View.GONE
         }
     }
 }
