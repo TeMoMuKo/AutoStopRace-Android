@@ -387,7 +387,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         if (mWallAdapter.getItemCount() > 0) {
             mWallRecyclerView.scrollToPosition(0);
         }
-        mWallAdapter.setWallItems(wallItems);
+        mWallAdapter.submitList(wallItems);
     }
 
     @Override

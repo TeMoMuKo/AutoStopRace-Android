@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_wall.*
 
-class ViewHolder(onImageClick: ((Uri) -> Unit)?, override val containerView: View) :
+class WallViewHolder(onImageClick: ((Uri) -> Unit)?, override val containerView: View) :
     RecyclerView.ViewHolder(containerView), LayoutContainer {
 
     private var currentItem: WallItem? = null

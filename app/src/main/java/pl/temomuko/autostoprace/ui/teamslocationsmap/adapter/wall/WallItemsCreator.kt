@@ -17,6 +17,7 @@ class WallItemsCreator @Inject constructor(
 
     private fun createWallItem(locationRecord: LocationRecord): WallItem {
         return WallItem(
+            id = locationRecord.id,
             message = locationRecord.message,
             locationInfo = locationInfoProvider.getLocationInfo(locationRecord),
             timeInfo = getTimeInfo(locationRecord.serverReceiptDate),
