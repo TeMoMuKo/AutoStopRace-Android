@@ -2,9 +2,11 @@ package pl.temomuko.autostoprace.domain.repository
 
 import android.net.Uri
 import pl.temomuko.autostoprace.data.remote.model.LocationEntity
+import pl.temomuko.autostoprace.data.remote.model.RaceInfoImagesEntity
 import pl.temomuko.autostoprace.data.remote.model.TeamEntity
 import pl.temomuko.autostoprace.data.remote.model.UserEntity
 import pl.temomuko.autostoprace.domain.model.LocationRecord
+import pl.temomuko.autostoprace.domain.model.RaceInfoImages
 import pl.temomuko.autostoprace.domain.model.Team
 import pl.temomuko.autostoprace.domain.model.User
 
@@ -41,5 +43,12 @@ fun UserEntity.toUser(): User {
         firstName = firstName,
         lastName = lastName,
         email = email
+    )
+}
+
+fun RaceInfoImagesEntity.toRaceInfoImages(): RaceInfoImages {
+    return RaceInfoImages(
+        scheduleImageUrl = scheduleImageUrl,
+        campusMapImageUrl = campusMapImageUrl
     )
 }

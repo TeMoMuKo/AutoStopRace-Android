@@ -13,6 +13,7 @@ import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
 import pl.temomuko.autostoprace.ui.post.PostActivity;
 import pl.temomuko.autostoprace.ui.settings.SettingsFragment;
 import pl.temomuko.autostoprace.ui.staticdata.about.AboutActivity;
+import pl.temomuko.autostoprace.ui.staticdata.image.FullscreenImageActivity;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
 import pl.temomuko.autostoprace.ui.staticdata.partners.PartnersActivity;
 import pl.temomuko.autostoprace.ui.teamslocationsmap.TeamsLocationsMapActivity;
@@ -49,4 +50,6 @@ public interface ActivityComponent {
     void inject(AboutActivity aboutActivity);
 
     void inject(PhotoShadowActivity photoShadowActivity);
+
+    void inject(FullscreenImageActivity fullscreenImageActivity);
 }
