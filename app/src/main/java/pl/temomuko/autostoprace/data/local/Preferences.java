@@ -70,8 +70,8 @@ public class Preferences {
         return mPrefs.getString(PREF_SCHEDULE_URL, "");
     }
 
-    public void setRaceInfoCampusMapUrl(String scheduleUrl) {
-        mPrefs.edit().putString(PREF_CAMPUS_MAP_URL, scheduleUrl).apply();
+    public void setRaceInfoCampusMapUrl(String campusMapUrl) {
+        mPrefs.edit().putString(PREF_CAMPUS_MAP_URL, campusMapUrl).apply();
     }
 
     public String getRaceInfoCampusMapUrl() {
