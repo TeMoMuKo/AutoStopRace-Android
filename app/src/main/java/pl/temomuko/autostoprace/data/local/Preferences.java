@@ -18,7 +18,7 @@ import pl.temomuko.autostoprace.injection.AppContext;
  */
 
 @Singleton
-public class PrefsHelper {
+public class Preferences {
 
     public static final String PREF_FILE_NAME = "asr_pref_file";
     public static final String PREF_AUTH_TOKEN = "auth_token";
@@ -27,11 +27,13 @@ public class PrefsHelper {
     public static final String PREF_LOCATION_SYNC_TIMESTAMP = "pref_location_sync_timestamp";
     public static final String PREF_LOCATIONS_VIEW_MODE = "pref_locations_view_mode";
     private static final String PREF_CURRENT_USER_JSON = "pref_current_user_json";
+    private static final String PREF_SCHEDULE_URL = "pref_schedule_url";
+    private static final String PREF_CAMPUS_MAP_URL = "pref_campus_map_url";
 
     private final SharedPreferences mPrefs;
 
     @Inject
-    public PrefsHelper(@AppContext Context context) {
+    public Preferences(@AppContext Context context) {
         mPrefs = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
     }
 
@@ -58,6 +60,22 @@ public class PrefsHelper {
     public User getCurrentUser() throws JsonSyntaxException {
         String userJson = mPrefs.getString(PREF_CURRENT_USER_JSON, "");
         return new Gson().fromJson(userJson, User.class);
+    }
+
+    public void setRaceInfoScheduleUrl(String scheduleUrl) {
+        mPrefs.edit().putString(PREF_SCHEDULE_URL, scheduleUrl).apply();
+    }
+
+    public String getRaceInfoScheduleUrl() {
+        return mPrefs.getString(PREF_SCHEDULE_URL, "");
+    }
+
+    public void setRaceInfoCampusMapUrl(String scheduleUrl) {
+        mPrefs.edit().putString(PREF_CAMPUS_MAP_URL, scheduleUrl).apply();
+    }
+
+    public String getRaceInfoCampusMapUrl() {
+        return mPrefs.getString(PREF_CAMPUS_MAP_URL, "");
     }
 
     public void setCurrentPhrasebookLanguagePosition(int languagePosition) {
