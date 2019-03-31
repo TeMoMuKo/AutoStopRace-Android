@@ -135,8 +135,8 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     private void openPasswordResetInBrowser() {
         try {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(PASSWORD_RESET_REQUEST_URL));
-            startActivity(browserIntent);
+            Intent passwordResetRequestBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(PASSWORD_RESET_REQUEST_URL));
+            startActivity(passwordResetRequestBrowserIntent);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, R.string.browser_not_found, Toast.LENGTH_SHORT).show();
         }
