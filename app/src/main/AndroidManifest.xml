@@ -97,7 +97,6 @@
 
                 <data android:scheme="https"/>
                 <data android:host="@string/url_map"/>
-                <data android:host="@string/url_map_www"/>
                 <data android:pathPattern="/.*"/>
 
             </intent-filter>
