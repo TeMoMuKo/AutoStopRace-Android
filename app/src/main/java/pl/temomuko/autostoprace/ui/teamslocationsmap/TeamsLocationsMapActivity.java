@@ -238,7 +238,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
             List<String> pathSegments = data.getPathSegments();
             String teamPathValue = pathSegments.get(0);
             String teamNumberPathValue = pathSegments.get(1);
-            if (teamPathValue.equals(Constants.URL_MAP_TEAM_NUMBER_PATH) && teamNumberPathValue != null) {
+            if (Constants.URL_MAP_TEAM_NUMBER_PATH.equals(teamPathValue) && teamNumberPathValue != null) {
                 changeTeamFromIntent(teamNumberPathValue);
                 mIsConsumedUriIntent = true;
             }
