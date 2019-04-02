@@ -4,7 +4,6 @@ import android.util.Base64
 import pl.temomuko.autostoprace.data.local.PrefsHelper
 import pl.temomuko.autostoprace.data.remote.ApiException
 import pl.temomuko.autostoprace.data.remote.AsrService
-import pl.temomuko.autostoprace.data.remote.ErrorHandler
 import pl.temomuko.autostoprace.data.remote.TokenAuthenticationInterceptor
 import pl.temomuko.autostoprace.data.remote.model.UserEntity
 import pl.temomuko.autostoprace.domain.model.User
@@ -39,10 +38,6 @@ class Authenticator @Inject constructor(
     private fun saveAuthToken(response: Response<UserEntity>) {
         val authTokenHeader = response.headers()[TokenAuthenticationInterceptor.TOKEN_HEADER]
         authTokenHeader?.let { prefsHelper.authAccessToken = it }
-    }
-
-    fun resetPassword(email: String): Completable {
-        return asrService.resetPassword(email)
     }
 
     fun validateToken(): Single<User> {

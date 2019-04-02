@@ -38,9 +38,11 @@ android {
     productFlavors {
         prod {
             buildConfigField "String", "API_BASE_URL", '"https://api.autostoprace.pl/"'
+            buildConfigField "String", "APP_BASE_URL", '"https://app.autostoprace.pl/"'
         }
         dev {
             buildConfigField "String", "API_BASE_URL", '"https://dev.api.autostoprace.pl/"'
+            buildConfigField "String", "APP_BASE_URL", '"https://dev.app.autostoprace.pl/"'
             applicationIdSuffix ".dev"
         }
     }

@@ -34,10 +34,6 @@ interface AsrService {
         @Part image: MultipartBody.Part?
     ): Single<LocationEntity>
 
-    //todo implement on backend side
-    @POST("user/password")
-    fun resetPassword(email: String): Completable
-
     @POST("logout")
     fun logout(): Completable
 }

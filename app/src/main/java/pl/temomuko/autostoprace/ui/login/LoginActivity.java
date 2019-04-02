@@ -1,8 +1,10 @@
 package pl.temomuko.autostoprace.ui.login;
 
 import android.app.DialogFragment;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
@@ -17,9 +19,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import pl.temomuko.autostoprace.BuildConfig;
 import pl.temomuko.autostoprace.R;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
-import pl.temomuko.autostoprace.ui.login.resetpass.ResetPassActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.util.DialogFactory;
 import pl.temomuko.autostoprace.util.rx.RxCacheHelper;
@@ -33,6 +35,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     private static final String TAG_HELP_DIALOG_FRAGMENT = "help_dialog_fragment";
     private static final String BUNDLE_IS_PROGRESS_DIALOG_SHOWN = "bundle_is_progress_dialog_shown";
     private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final String PASSWORD_RESET_REQUEST_URL = BuildConfig.APP_BASE_URL + "password-reset/request";
 
     @Inject LoginPresenter mLoginPresenter;
 
@@ -126,15 +129,17 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         });
         mGoToResetPassButton.setOnClickListener(v -> {
             mPasswordEditText.setText(null);
-            startResetPassActivity();
+            openPasswordResetInBrowser();
         });
     }
 
-    private void startResetPassActivity() {
-        Intent intent = new Intent(this, ResetPassActivity.class);
-        String email = mEmailEditText.getText().toString();
-        intent.putExtra(EXTRA_EMAIL, email);
-        startActivity(intent);
+    private void openPasswordResetInBrowser() {
+        try {
+            Intent passwordResetRequestBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(PASSWORD_RESET_REQUEST_URL));
+            startActivity(passwordResetRequestBrowserIntent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.browser_not_found, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void saveProgressDialogState(Bundle outState) {
