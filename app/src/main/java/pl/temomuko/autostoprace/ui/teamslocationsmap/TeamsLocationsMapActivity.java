@@ -195,6 +195,7 @@ public class TeamsLocationsMapActivity extends DrawerActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        mIsConsumedUriIntent = false;
         setupIntent(intent);
     }
 
@@ -234,9 +235,11 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         Uri data = intent.getData();
         Bundle extras = intent.getExtras();
         if (data != null && !mIsConsumedUriIntent) {
-            String teamNumberParameterValue = data.getQueryParameter(Constants.URL_MAP_TEAM_NUMBER_PARAM);
-            if (teamNumberParameterValue != null) {
-                changeTeamFromIntent(teamNumberParameterValue);
+            List<String> pathSegments = data.getPathSegments();
+            String teamPathValue = pathSegments.get(0);
+            String teamNumberPathValue = pathSegments.get(1);
+            if (Constants.URL_MAP_TEAM_NUMBER_PATH.equals(teamPathValue) && teamNumberPathValue != null) {
+                changeTeamFromIntent(teamNumberPathValue);
                 mIsConsumedUriIntent = true;
             }
         } else if (extras != null && !mIsConsumedToolbarIntent) {

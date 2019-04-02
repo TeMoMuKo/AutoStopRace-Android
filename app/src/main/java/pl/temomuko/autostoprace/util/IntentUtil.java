@@ -72,7 +72,7 @@ public final class IntentUtil {
         String destUrl = Constants.URL_MAP;
         String shareMapTitle = context.getString(R.string.msg_teams_locations);
         if (!teamNumberValue.isEmpty()) {
-            destUrl += (Constants.URL_MAP_TEAM_NUMBER_QUERY_KEY + teamNumberValue);
+            destUrl += (Constants.URL_MAP_TEAM_NUMBER_PATH + "/" + teamNumberValue);
             shareMapTitle = context.getString(R.string.msg_team_locations, teamNumberValue);
         }
         Intent intent = new Intent(Intent.ACTION_SEND);

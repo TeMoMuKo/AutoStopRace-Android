@@ -40,10 +40,6 @@ class Authenticator @Inject constructor(
         authTokenHeader?.let { preferences.authAccessToken = it }
     }
 
-    fun resetPassword(email: String): Completable {
-        return asrService.resetPassword(email)
-    }
-
     fun validateToken(): Single<User> {
         return asrService.validateToken()
             .map { it.toUser() }

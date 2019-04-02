@@ -37,9 +37,9 @@
             android:value="@string/GOOGLE_MAPS_KEY"/>
 
         <activity
-            android:name=".ui.staticdata.splash.SplashActivity"
+            android:name=".ui.main.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Translucent.Status">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -50,24 +50,10 @@
         </activity>
 
         <activity
-            android:name=".ui.main.MainActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask">
-        </activity>
-
-        <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleTask"
             android:parentActivityName=".ui.staticdata.launcher.LauncherActivity"
-            android:theme="@style/AppTheme.NormalStatusBar">
-        </activity>
-
-        <activity
-            android:name=".ui.login.resetpass.ResetPassActivity"
-            android:label="@string/title_activity_reset_pass"
-            android:launchMode="singleTask"
-            android:parentActivityName=".ui.login.LoginActivity"
             android:theme="@style/AppTheme.NormalStatusBar">
         </activity>
 
@@ -97,7 +83,6 @@
 
                 <data android:scheme="https"/>
                 <data android:host="@string/url_map"/>
-                <data android:host="@string/url_map_www"/>
                 <data android:pathPattern="/.*"/>
 
             </intent-filter>

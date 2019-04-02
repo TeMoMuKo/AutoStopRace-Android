@@ -14,9 +14,6 @@ public final class Constants {
     /* General / API */
     public static final String DEFAULT_LOCALE = "pl";
 
-    public static final String API_BASE_URL = "https://api.autostoprace.pl/";
-    public static final String API_V3_BASE_URL = API_BASE_URL + "api/v3/";
-
     public static final String JSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String APP_DATE_FORMAT = "d.LL";
     public static final String APP_TIME_FORMAT = "HH:mm";
@@ -26,14 +23,9 @@ public final class Constants {
 
     public static final String GOOGLE_PLAY_BASE_URL = "http://play.google.com/store/apps/details?id=";
 
-    public static final String HEADER_FIELD_TOKEN = "access-token";
-    public static final String HEADER_FIELD_CLIENT = "client";
-    public static final String HEADER_FIELD_UID = "uid";
     public static final String LICENSES_ASSET_URI = "file:///android_asset/licenses.html";
-    public static final String API_RESET_PASS_REDIRECT_URL = "http://autostoprace.pl";
     public static final String URL_MAP = "https://mapa.autostoprace.pl/";
-    public static final String URL_MAP_TEAM_NUMBER_PARAM = "team";
-    public static final String URL_MAP_TEAM_NUMBER_QUERY_KEY = "?" + URL_MAP_TEAM_NUMBER_PARAM + "=";
+    public static final String URL_MAP_TEAM_NUMBER_PATH = "team";
 
     public static final String HEADER_VALUE_APPLICATION_JSON = "application/json";
     public static final int HTTP_CONNECT_TIMEOUT = 10;
