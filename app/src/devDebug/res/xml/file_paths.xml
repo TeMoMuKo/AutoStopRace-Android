@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="my_images_dev_debug"
+        path="Android/data/pl.temomuko.autostoprace.dev.debug/files/Pictures"/>
+</paths>
