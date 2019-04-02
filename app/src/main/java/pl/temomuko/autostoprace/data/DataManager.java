@@ -14,7 +14,7 @@ import javax.inject.Singleton;
 
 import pl.temomuko.autostoprace.data.local.LocationsViewMode;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
-import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.local.Preferences;
 import pl.temomuko.autostoprace.data.local.csv.ContactHelper;
 import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
@@ -38,7 +38,7 @@ import rx.Single;
 @Singleton
 public class DataManager {
 
-    private final PrefsHelper mPrefsHelper;
+    private final Preferences mPreferences;
     private final DatabaseHelper mDatabaseHelper;
     private final GmsLocationHelper mGmsLocationHelper;
     private final PermissionHelper mPermissionHelper;
@@ -48,11 +48,11 @@ public class DataManager {
     private final ImageController mImageController;
 
     @Inject
-    public DataManager(PrefsHelper prefsHelper, DatabaseHelper databaseHelper,
+    public DataManager(Preferences preferences, DatabaseHelper databaseHelper,
                        GmsLocationHelper gmsLocationHelper, PermissionHelper permissionHelper,
                        GeocodingHelper geocodingHelper, PhrasebookHelper phrasebookHelper,
                        ContactHelper contactHelper, ImageController imageController) {
-        mPrefsHelper = prefsHelper;
+        mPreferences = preferences;
         mDatabaseHelper = databaseHelper;
         mGmsLocationHelper = gmsLocationHelper;
         mPermissionHelper = permissionHelper;
@@ -85,19 +85,19 @@ public class DataManager {
 
     public Completable clearUserData() {
         return mDatabaseHelper.clearTables()
-                .doOnCompleted(mPrefsHelper::clearAuth);
+                .doOnCompleted(mPreferences::clearAuth);
     }
 
     public void saveUser(User user) {
-        mPrefsHelper.setCurrentUser(user);
+        mPreferences.setCurrentUser(user);
     }
 
     public boolean isLoggedWithToken() {
-        return !mPrefsHelper.getAuthAccessToken().isEmpty();
+        return !mPreferences.getAuthAccessToken().isEmpty();
     }
 
     public User getCurrentUser() {
-        return mPrefsHelper.getCurrentUser();
+        return mPreferences.getCurrentUser();
     }
 
     public Single<Phrasebook> getPhrasebook() {
@@ -105,11 +105,11 @@ public class DataManager {
     }
 
     public int getCurrentPhrasebookLanguagePosition() {
-        return mPrefsHelper.getCurrentPhrasebookLanguagePosition();
+        return mPreferences.getCurrentPhrasebookLanguagePosition();
     }
 
     public void saveCurrentPhrasebookLanguagePosition(int languagePosition) {
-        mPrefsHelper.setCurrentPhrasebookLanguagePosition(languagePosition);
+        mPreferences.setCurrentPhrasebookLanguagePosition(languagePosition);
     }
 
     public Single<List<ContactField>> getContactFields() {
@@ -117,11 +117,11 @@ public class DataManager {
     }
 
     public void setLastLocationsSyncTimestamp(long timestamp) {
-        mPrefsHelper.setLastLocationsSyncTimestamp(timestamp);
+        mPreferences.setLastLocationsSyncTimestamp(timestamp);
     }
 
     public long getLastLocationSyncTimestamp() {
-        return mPrefsHelper.getLastLocationSyncTimestamp();
+        return mPreferences.getLastLocationSyncTimestamp();
     }
 
     /* Location */
@@ -158,10 +158,10 @@ public class DataManager {
     }
 
     public LocationsViewMode getLocationsViewMode() {
-        return mPrefsHelper.getLocationsViewMode();
+        return mPreferences.getLocationsViewMode();
     }
 
     public void setLocationsViewMode(LocationsViewMode mode) {
-        mPrefsHelper.setLocationsViewMode(mode);
+        mPreferences.setLocationsViewMode(mode);
     }
 }

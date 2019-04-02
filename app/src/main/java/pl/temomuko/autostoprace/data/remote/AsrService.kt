@@ -1,10 +1,7 @@
 package pl.temomuko.autostoprace.data.remote
 
 import okhttp3.MultipartBody
-import pl.temomuko.autostoprace.data.remote.model.CreateLocationRequest
-import pl.temomuko.autostoprace.data.remote.model.LocationEntity
-import pl.temomuko.autostoprace.data.remote.model.TeamEntity
-import pl.temomuko.autostoprace.data.remote.model.UserEntity
+import pl.temomuko.autostoprace.data.remote.model.*
 import retrofit2.Response
 import retrofit2.http.*
 import rx.Completable
@@ -36,4 +33,7 @@ interface AsrService {
 
     @POST("logout")
     fun logout(): Completable
+
+    @GET("raceinfo/images")
+    fun getRaceInfoImages(): Single<RaceInfoImagesEntity>
 }

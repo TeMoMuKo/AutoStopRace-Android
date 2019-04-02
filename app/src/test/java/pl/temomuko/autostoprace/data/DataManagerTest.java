@@ -13,7 +13,7 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import pl.temomuko.autostoprace.TestConstants;
 import pl.temomuko.autostoprace.data.local.PermissionHelper;
-import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.local.Preferences;
 import pl.temomuko.autostoprace.data.local.csv.ContactHelper;
 import pl.temomuko.autostoprace.data.local.csv.PhrasebookHelper;
 import pl.temomuko.autostoprace.data.local.database.DatabaseHelper;
@@ -46,7 +46,7 @@ public class DataManagerTest {
     private static final String FAKE_LAST_NAME = "fake_last_name";
 
     @Mock
-    PrefsHelper mMockPrefsHelper;
+    Preferences mMockPreferences;
     @Mock
     DatabaseHelper mMockDatabaseHelper;
     @Mock
@@ -67,7 +67,7 @@ public class DataManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        mDataManager = new DataManager(mMockPrefsHelper, mMockDatabaseHelper,
+        mDataManager = new DataManager(mMockPreferences, mMockDatabaseHelper,
                 mMockGmsLocationHelper, mMockPermissionHelper, mMockGeocodingHelper, mPhrasebookHelper,
                 mContactHelper, mImageController);
         setupFakeResponseBuilder();
@@ -125,19 +125,19 @@ public class DataManagerTest {
         mDataManager.saveUser(user);
 
         //then
-        verify(mMockPrefsHelper).setCurrentUser(user);
+        verify(mMockPreferences).setCurrentUser(user);
     }
 
     @Test
     public void testIsLoggedWithToken() throws Exception {
         //given
-        when(mMockPrefsHelper.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
+        when(mMockPreferences.getAuthAccessToken()).thenReturn(FAKE_ACCESS_TOKEN);
 
         //assert
         assertTrue(mDataManager.isLoggedWithToken());
 
         //given
-        when(mMockPrefsHelper.getAuthAccessToken()).thenReturn("");
+        when(mMockPreferences.getAuthAccessToken()).thenReturn("");
 
         //assert
         assertFalse(mDataManager.isLoggedWithToken());
@@ -147,7 +147,7 @@ public class DataManagerTest {
     public void testGetCurrentUser() throws Exception {
         //given
         User fakeUser = new User(1, 1, FAKE_FIRST_NAME, FAKE_LAST_NAME, FAKE_EMAIL);
-        when(mMockPrefsHelper.getCurrentUser()).thenReturn(fakeUser);
+        when(mMockPreferences.getCurrentUser()).thenReturn(fakeUser);
 
         //assert
         Assert.assertEquals(fakeUser, mDataManager.getCurrentUser());

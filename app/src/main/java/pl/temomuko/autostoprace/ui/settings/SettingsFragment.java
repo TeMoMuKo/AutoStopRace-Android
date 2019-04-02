@@ -11,7 +11,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import javax.inject.Inject;
 
 import pl.temomuko.autostoprace.R;
-import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.local.Preferences;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 import pl.temomuko.autostoprace.ui.main.Shortcuts;
 import pl.temomuko.autostoprace.ui.staticdata.launcher.LauncherActivity;
@@ -34,7 +34,7 @@ public class SettingsFragment extends PreferenceFragment implements SettingsMvpV
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        mLogoutPreference = findPreference(PrefsHelper.PREF_LOGOUT);
+        mLogoutPreference = findPreference(Preferences.PREF_LOGOUT);
         ((BaseActivity) getActivity()).getActivityComponent().inject(this);
         mSettingsPresenter.attachView(this);
         mSettingsPresenter.setupLogoutPreference();

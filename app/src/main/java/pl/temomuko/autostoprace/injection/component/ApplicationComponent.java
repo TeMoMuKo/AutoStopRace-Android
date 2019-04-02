@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
-import pl.temomuko.autostoprace.data.local.PrefsHelper;
+import pl.temomuko.autostoprace.data.local.Preferences;
 import pl.temomuko.autostoprace.data.local.photo.ImageController;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
 import pl.temomuko.autostoprace.data.remote.AsrService;
@@ -38,7 +38,7 @@ public interface ApplicationComponent {
 
     ErrorHandler errorHandler();
 
-    PrefsHelper prefsHelper();
+    Preferences prefsHelper();
 
     ImageController imageController();
 

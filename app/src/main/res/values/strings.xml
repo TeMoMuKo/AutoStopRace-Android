@@ -127,5 +127,6 @@
     <string name="bottom_menu_map">Mapa</string>
     <string name="bottom_menu_wall">Tablica</string>
     <string name="general_notification_channel_name">Ogólne</string>
+    <string name="error_data_load_failed">Nie udało się załadować danych. Sprawdź swoje połączenie internetowe.</string>
     <string name="browser_not_found">Nie znaleziono przeglądarki umożliwiającej otwarcie linku</string>
 </resources>

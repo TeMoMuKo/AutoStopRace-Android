@@ -1,7 +1,7 @@
 package pl.temomuko.autostoprace.domain.repository
 
 import android.util.Base64
-import pl.temomuko.autostoprace.data.local.PrefsHelper
+import pl.temomuko.autostoprace.data.local.Preferences
 import pl.temomuko.autostoprace.data.remote.ApiException
 import pl.temomuko.autostoprace.data.remote.AsrService
 import pl.temomuko.autostoprace.data.remote.TokenAuthenticationInterceptor
@@ -14,10 +14,10 @@ import javax.inject.Inject
 
 class Authenticator @Inject constructor(
     private val asrService: AsrService,
-    private val prefsHelper: PrefsHelper
+    private val preferences: Preferences
 ) {
     val token: String
-        get() = prefsHelper.authAccessToken
+        get() = preferences.authAccessToken
 
     fun authorize(email: String, password: String): Single<User> {
         val encodedCredentials =
@@ -37,7 +37,7 @@ class Authenticator @Inject constructor(
 
     private fun saveAuthToken(response: Response<UserEntity>) {
         val authTokenHeader = response.headers()[TokenAuthenticationInterceptor.TOKEN_HEADER]
-        authTokenHeader?.let { prefsHelper.authAccessToken = it }
+        authTokenHeader?.let { preferences.authAccessToken = it }
     }
 
     fun validateToken(): Single<User> {
