@@ -30,6 +30,7 @@ import javax.inject.Inject;
 
 import onactivityresult.ActivityResult;
 import onactivityresult.OnActivityResult;
+import pl.temomuko.autostoprace.BuildConfig;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
 
 public class PhotoShadowActivity extends BaseActivity {
@@ -44,8 +45,6 @@ public class PhotoShadowActivity extends BaseActivity {
     private static final String ASPECT_RATIO_X_EXTRA = "aspect_ratio_x_extra";
     private static final String ASPECT_RATIO_Y_EXTRA = "aspect_ratio_y_extra";
     private static final String MAX_HEIGHT_WIDTH_IN_PX_EXTRA = "max_height_width_extra";
-
-    private static final String FILE_PROVIDER_AUTHORITY = "pl.temomuko.autostoprace";
 
     private static final int REQUEST_CODE_GALLERY = 0;
     private static final int REQUEST_CODE_CAMERA = 1;
@@ -148,7 +147,7 @@ public class PhotoShadowActivity extends BaseActivity {
 
     private void cropImageFromGallery(Intent intent) {
         try {
-            Uri destination = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, createCropImageFile());
+            Uri destination = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, createCropImageFile());
             Uri galleryPhoto = intent.getData();
             Intent cropIntent = getCropIntent(galleryPhoto, destination);
             startActivityForResult(cropIntent, REQUEST_CODE_CROP_IMAGE);
@@ -159,7 +158,7 @@ public class PhotoShadowActivity extends BaseActivity {
 
     private void cropImageFromCamera() {
         try {
-            Uri destination = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, createCropImageFile());
+            Uri destination = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, createCropImageFile());
             Intent cropIntent = getCropIntent(cameraPhotoUri, destination);
             startActivityForResult(cropIntent, REQUEST_CODE_CROP_IMAGE);
         } catch (IOException e) {
@@ -229,7 +228,7 @@ public class PhotoShadowActivity extends BaseActivity {
         try {
             cameraPhotoFile = createCameraImageFile();
             cameraPhotoUri = FileProvider.getUriForFile(this,
-                    FILE_PROVIDER_AUTHORITY,
+                    BuildConfig.APPLICATION_ID,
                     cameraPhotoFile);
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraPhotoUri);
