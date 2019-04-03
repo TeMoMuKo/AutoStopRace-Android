@@ -98,6 +98,7 @@ public class MainActivity extends DrawerActivity implements MainMvpView {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getActivityComponent().inject(this);
