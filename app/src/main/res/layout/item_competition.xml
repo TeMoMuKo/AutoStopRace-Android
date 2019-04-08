@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:padding="@dimen/margin_medium"
+              android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:textColor="@color/primary_dark"
+        android:textStyle="bold"
+        tools:text="Nazwa konkursu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_marginTop="@dimen/margin_small"
+        android:textColor="@color/primary_text"
+        tools:text="@tools:sample/lorem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

@@ -5,6 +5,7 @@ import pl.temomuko.autostoprace.data.local.photo.PhotoShadowActivity;
 import pl.temomuko.autostoprace.injection.ActivityScope;
 import pl.temomuko.autostoprace.injection.module.ActivityModule;
 import pl.temomuko.autostoprace.ui.base.BaseActivity;
+import pl.temomuko.autostoprace.ui.competitions.CompetitionsActivity;
 import pl.temomuko.autostoprace.ui.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.login.LoginActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
@@ -49,4 +50,6 @@ public interface ActivityComponent {
     void inject(PhotoShadowActivity photoShadowActivity);
 
     void inject(FullscreenImageActivity fullscreenImageActivity);
+
+    void inject(CompetitionsActivity competitionsActivity);
 }

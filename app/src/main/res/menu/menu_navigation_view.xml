@@ -24,6 +24,11 @@
             android:icon="@drawable/ic_schedule_24dp"
             android:title="@string/title_activity_schedule"/>
         <item
+            android:id="@+id/activity_competitions"
+            android:checked="false"
+            android:icon="@drawable/ic_whatshot_black_24dp"
+            android:title="@string/title_activity_competitions"/>
+        <item
             android:id="@+id/activity_phrasebook"
             android:checked="false"
             android:icon="@drawable/ic_message_black_24dp"
