@@ -36,4 +36,7 @@ interface AsrService {
 
     @GET("raceinfo/images")
     fun getRaceInfoImages(): Single<RaceInfoImagesEntity>
+
+    @GET("raceinfo/competitions")
+    fun getCompetitions(): Single<List<CompetitionEntity>>
 }

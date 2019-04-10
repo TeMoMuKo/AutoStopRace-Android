@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import pl.temomuko.autostoprace.R;
+import pl.temomuko.autostoprace.ui.competitions.CompetitionsActivity;
 import pl.temomuko.autostoprace.ui.contact.ContactActivity;
 import pl.temomuko.autostoprace.ui.main.MainActivity;
 import pl.temomuko.autostoprace.ui.phrasebook.PhrasebookActivity;
@@ -39,6 +40,7 @@ public class NavigationListener implements NavigationView.OnNavigationItemSelect
             new DrawerItemTarget(TeamsLocationsMapActivity.class, R.id.activity_teams),
             new DrawerItemTarget(CampusActivity.class, R.id.activity_campus),
             new DrawerItemTarget(ScheduleActivity.class, R.id.activity_schedule),
+            new DrawerItemTarget(CompetitionsActivity.class, R.id.activity_competitions),
             new DrawerItemTarget(PhrasebookActivity.class, R.id.activity_phrasebook),
             new DrawerItemTarget(ContactActivity.class, R.id.activity_contact),
             new DrawerItemTarget(PartnersActivity.class, R.id.activity_partners),

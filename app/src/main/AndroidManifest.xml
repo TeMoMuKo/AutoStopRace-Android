@@ -115,6 +115,13 @@
         </activity>
 
         <activity
+            android:name=".ui.competitions.CompetitionsActivity"
+            android:label="@string/title_activity_competitions"
+            android:launchMode="singleTask"
+            android:parentActivityName=".ui.main.MainActivity">
+        </activity>
+
+        <activity
             android:name=".ui.contact.ContactActivity"
             android:label="@string/title_activity_contact"
             android:launchMode="singleTask"

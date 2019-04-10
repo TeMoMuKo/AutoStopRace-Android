@@ -1,14 +1,8 @@
 package pl.temomuko.autostoprace.domain.repository
 
 import android.net.Uri
-import pl.temomuko.autostoprace.data.remote.model.LocationEntity
-import pl.temomuko.autostoprace.data.remote.model.RaceInfoImagesEntity
-import pl.temomuko.autostoprace.data.remote.model.TeamEntity
-import pl.temomuko.autostoprace.data.remote.model.UserEntity
-import pl.temomuko.autostoprace.domain.model.LocationRecord
-import pl.temomuko.autostoprace.domain.model.RaceInfoImages
-import pl.temomuko.autostoprace.domain.model.Team
-import pl.temomuko.autostoprace.domain.model.User
+import pl.temomuko.autostoprace.data.remote.model.*
+import pl.temomuko.autostoprace.domain.model.*
 
 fun LocationEntity.toLocationRecord(): LocationRecord {
     val uri = imageUrl?.let { Uri.parse(it) }
@@ -51,4 +45,16 @@ fun RaceInfoImagesEntity.toRaceInfoImages(): RaceInfoImages {
         scheduleImageUrl = scheduleImageUrl,
         campusMapImageUrl = campusMapImageUrl
     )
+}
+
+fun CompetitionEntity.toCompetition(): Competition {
+    return Competition(
+        id = id,
+        name = name,
+        description = description
+    )
+}
+
+fun List<CompetitionEntity>.toCompetitions(): List<Competition> {
+    return map { it.toCompetition() }
 }

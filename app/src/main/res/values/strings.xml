@@ -35,6 +35,7 @@
     <string name="title_activity_teams">Mapa lokalizacji</string>
     <string name="title_activity_campus">Mapa campingu</string>
     <string name="title_activity_schedule">Harmonogram wydarzeń</string>
+    <string name="title_activity_competitions">Konkursy</string>
     <string name="title_activity_phrasebook">Krótkie rozmówki</string>
     <string name="msg_login_to_show_locations">Zaloguj się, żeby zobaczyć lokalizacje swojego teamu</string>
     <string name="title_activity_contact">Kontakt do organizatorów</string>
@@ -129,4 +130,6 @@
     <string name="general_notification_channel_name">Ogólne</string>
     <string name="error_data_load_failed">Nie udało się załadować danych. Sprawdź swoje połączenie internetowe.</string>
     <string name="browser_not_found">Nie znaleziono przeglądarki umożliwiającej otwarcie linku</string>
+    <string name="error_cannot_load_competitions">Nie udało się załadować listy konkursów, sprawdź swoje połączenie internetowe i spróbuj ponownie.</string>
+    <string name="msg_empty_state_competitions">Chwilowo brak konkursów…</string>
 </resources>
