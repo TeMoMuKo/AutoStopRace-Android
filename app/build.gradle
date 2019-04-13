@@ -69,18 +69,19 @@ androidExtensions {
 
 ext {
     versions = [
-            support         : "27.1.1",
-            okhttp          : "3.9.1",
-            retrofit        : "2.5.0",
-            leakcanary      : "1.5.1",
-            butterknife     : "8.8.1",
-            onactivityresult: "0.6.0",
-            playservices    : "11.6.2",
-            googleMaps      : "11.6.2",
-            rxbinding       : "0.4.0",
-            firebase        : "11.6.2",
-            dagger          : "2.14.1",
-            stetho          : "1.5.0"
+            support             : "27.1.1",
+            okhttp              : "3.9.1",
+            retrofit            : "2.5.0",
+            leakcanary          : "1.5.1",
+            butterknife         : "8.8.1",
+            onactivityresult    : "0.6.0",
+            playServicesLocation: "16.0.0",
+            googleMaps          : "16.1.0",
+            rxbinding           : "0.4.0",
+            firebaseCore        : "16.0.8",
+            firebaseMessaging   : "17.6.0",
+            dagger              : "2.14.1",
+            stetho              : "1.5.0"
     ]
 }
 
@@ -126,15 +127,15 @@ dependencies {
     implementation "net.sf.opencsv:opencsv:2.3"
     implementation "com.github.bumptech.glide:glide:3.8.0"
 
-    implementation "com.google.android.gms:play-services-location:$versions.playservices"
+    implementation "com.google.android.gms:play-services-location:$versions.playServicesLocation"
     implementation "com.google.android.gms:play-services-maps:$versions.googleMaps"
     implementation "com.google.maps.android:android-maps-utils:0.5"
     implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
 
     implementation "com.vanniktech:onactivityresult:$versions.onactivityresult"
     kapt "com.vanniktech:onactivityresult-compiler:$versions.onactivityresult"
-    implementation "com.google.firebase:firebase-core:$versions.firebase"
-    implementation "com.google.firebase:firebase-messaging:$versions.firebase"
+    implementation "com.google.firebase:firebase-core:$versions.firebaseCore"
+    implementation "com.google.firebase:firebase-messaging:$versions.firebaseMessaging"
 
     implementation "com.theartofdev.edmodo:android-image-cropper:2.3.1"
 

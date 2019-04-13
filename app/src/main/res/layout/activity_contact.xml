@@ -19,7 +19,7 @@
             android:id="@+id/app_bar"
             android:fitsSystemWindows="true"
             android:layout_width="match_parent"
-            android:layout_height="256dp"
+            android:layout_height="195dp"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <include layout="@layout/contact_collapsing_toolbar"/>
