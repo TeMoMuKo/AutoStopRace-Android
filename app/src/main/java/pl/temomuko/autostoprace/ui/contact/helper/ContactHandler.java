@@ -23,6 +23,7 @@ public class ContactHandler {
     private static final String EMAIL = "email";
     private static final String WEB_PAGE = "web_page";
     private static final String FAN_PAGE = "fan_page";
+    private static final String INSTAGRAM = "instagram";
 
     private final Context mContext;
 
@@ -45,6 +46,8 @@ public class ContactHandler {
                 return R.drawable.ic_public_black_24dp;
             case FAN_PAGE:
                 return R.drawable.ic_fb_logo_24dp;
+            case INSTAGRAM:
+                return R.drawable.ic_instagram;
             default:
                 throw new UnknownFormatFlagsException(contactRowType);
         }
@@ -69,7 +72,10 @@ public class ContactHandler {
                 startWebPageIntent(value);
                 break;
             case FAN_PAGE:
-                startFanPage(value);
+                startFanPageIntent(value);
+                break;
+            case INSTAGRAM:
+                startInstagramIntent(value);
                 break;
         }
     }
@@ -117,7 +123,7 @@ public class ContactHandler {
         }
     }
 
-    private void startFanPage(String fanPageId) throws NoIntentHandlerException {
+    private void startFanPageIntent(String fanPageId) throws NoIntentHandlerException {
         Intent fanPageIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/".concat(fanPageId)));
         IntentUtil.addClearBackStackIntentFlags(fanPageIntent);
         if (fanPageIntent.resolveActivity(mContext.getPackageManager()) != null) {
@@ -125,6 +131,17 @@ public class ContactHandler {
         } else {
             String fanPageAddress = "http://www.facebook.com/".concat(fanPageId);
             startWebPageIntent(fanPageAddress);
+        }
+    }
+
+
+    private void startInstagramIntent(String instagramProfileName) throws NoIntentHandlerException {
+        Intent instagramIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://instagram.com/".concat(instagramProfileName)));
+        IntentUtil.addClearBackStackIntentFlags(instagramIntent);
+        if (instagramIntent.resolveActivity(mContext.getPackageManager()) != null) {
+            mContext.startActivity(instagramIntent);
+        } else {
+            throw new NoIntentHandlerException();
         }
     }
 }
