@@ -79,7 +79,7 @@ ext {
             googleMaps          : "16.1.0",
             rxbinding           : "0.4.0",
             firebaseCore        : "16.0.8",
-            firebaseMessaging   : "17.5.0",
+            firebaseMessaging   : "17.6.0",
             dagger              : "2.14.1",
             stetho              : "1.5.0"
     ]
