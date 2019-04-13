@@ -68,8 +68,7 @@ public class ContactActivity extends DrawerActivity implements ContactMvpView {
     }
 
     private void setupCollapsingToolbar() {
-        Glide.with(this).load(R.drawable.img_team_asr_2018)
-                .placeholder(R.drawable.img_team_asr_placeholder_2018)
+        Glide.with(this).load(R.drawable.team_2019)
                 .centerCrop()
                 .dontAnimate()
                 .into(mCollapsingToolbarBackground);
