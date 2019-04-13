@@ -29,6 +29,8 @@ import pl.temomuko.autostoprace.ui.staticdata.StaticDrawerPresenter;
 
 public class PartnersActivity extends DrawerActivity implements DrawerMvpView {
 
+    public static final String ASR_ORIGIN = "autostoprace.pl";
+
     @Inject StaticDrawerPresenter mPresenter;
 
     @BindView(R.id.partnersWebView) WebView partnersWebView;
@@ -51,9 +53,6 @@ public class PartnersActivity extends DrawerActivity implements DrawerMvpView {
     }
 
     private void setupPartnersWebView() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            partnersWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
         partnersWebView.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
                 hideLoading();
@@ -61,11 +60,11 @@ public class PartnersActivity extends DrawerActivity implements DrawerMvpView {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if(url.contains("autostoprace.pl")) {
+                if(url.contains(ASR_ORIGIN)) {
                     view.loadUrl(url);
                 } else {
-                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(i);
+                    Intent webPageIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(webPageIntent);
                 }
                 return true;
             }
