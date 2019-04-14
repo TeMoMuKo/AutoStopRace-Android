@@ -61,7 +61,6 @@ public class LocationSyncService extends Service {
             return START_NOT_STICKY;
         } else if (!mDataManager.isLoggedWithToken()) {
             LogUtil.i(TAG, "Is not logged in. Service stopped");
-            EventUtil.post(new Event.LocationSyncServiceError(new IOException("Is not logged in.")));
             stopSelf();
             return START_NOT_STICKY;
         }
