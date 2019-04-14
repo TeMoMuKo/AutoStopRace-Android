@@ -44,10 +44,10 @@ public class LocationRecordClusterRenderer extends DefaultClusterRenderer<Locati
 
         if (imageUri == null) {
             snippet = itemSnippet;
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.asr_marker_48dp));
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_stop));
         } else {
             snippet = getMarkerWithPhotoSnippet(itemSnippet);
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.asr_marker_photo_48dp));
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_photo));
         }
 
         markerOptions

@@ -59,8 +59,8 @@
                     class="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    map:cameraTargetLat="46.698443"
-                    map:cameraTargetLng="14.270389"
+                    map:cameraTargetLat="45.0"
+                    map:cameraTargetLng="19.0"
                     map:cameraZoom="5"
                     tools:ignore="MissingPrefix"
                     />

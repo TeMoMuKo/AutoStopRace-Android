@@ -19,6 +19,9 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -286,7 +289,20 @@ public class TeamsLocationsMapActivity extends DrawerActivity
                 mAnimateTeamLocationsUpdate = false;
                 setLocationsForMap(mCurrentTeamLocations);
             }
+            setupStartAndFinishMarkers();
         });
+    }
+
+    private void setupStartAndFinishMarkers() {
+        MarkerOptions start = new MarkerOptions()
+                .position(new LatLng(51.089028, 17.026028))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_start));
+        MarkerOptions finish = new MarkerOptions()
+                .position(new LatLng(38.860047, 23.443563))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_finish));
+
+        mMap.addMarker(start);
+        mMap.addMarker(finish);
     }
 
     private void setupBottomNavigationView() {
