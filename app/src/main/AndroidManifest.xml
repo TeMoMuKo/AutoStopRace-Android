@@ -1,6 +1,6 @@
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pl.temomuko.autostoprace">
+    package="pl.temomuko.autostoprace"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -19,8 +19,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -38,9 +38,9 @@
             android:value="@string/GOOGLE_MAPS_KEY"/>
 
         <activity
-            android:theme="@style/SplashTheme"
             android:name=".ui.main.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -215,6 +215,16 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
+
+        <!--
+         Temporary workaround for using legacy GMS on Android 9
+         (https://developers.google.com/maps/documentation/android-sdk/config#specify_requirement_for_apache_http_legacy_library)
+         Location GMS library has a bug related to high accuracy location request (15.0.0+):
+         https://issuetracker.google.com/issues/118347902?fbclid=IwAR18WPSMM-Q98FxcAgdHgzYvcikQDMKEst_t6rftLraO8qrUVsFmFeFsyF8
+        -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false"/>
 
     </application>
 </manifest>

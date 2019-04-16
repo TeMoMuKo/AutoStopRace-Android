@@ -75,11 +75,11 @@ ext {
             leakcanary          : "1.5.1",
             butterknife         : "8.8.1",
             onactivityresult    : "0.6.0",
-            playServicesLocation: "16.0.0",
-            googleMaps          : "16.1.0",
+            playServicesLocation: "11.6.2",
+            googleMaps          : "11.6.2",
             rxbinding           : "0.4.0",
-            firebaseCore        : "16.0.8",
-            firebaseMessaging   : "17.6.0",
+            firebaseCore        : "11.6.2",
+            firebaseMessaging   : "11.6.2",
             dagger              : "2.14.1",
             stetho              : "1.5.0"
     ]
