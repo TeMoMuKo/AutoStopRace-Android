@@ -239,15 +239,21 @@ public class TeamsLocationsMapActivity extends DrawerActivity
         Bundle extras = intent.getExtras();
         if (data != null && !mIsConsumedUriIntent) {
             List<String> pathSegments = data.getPathSegments();
-            String teamPathValue = pathSegments.get(0);
-            String teamNumberPathValue = pathSegments.get(1);
-            if (Constants.URL_MAP_TEAM_NUMBER_PATH.equals(teamPathValue) && teamNumberPathValue != null) {
-                changeTeamFromIntent(teamNumberPathValue);
-                mIsConsumedUriIntent = true;
+            if (pathSegments.size() == 2) {
+                setTeamNumberFromUrlPath(pathSegments);
             }
         } else if (extras != null && !mIsConsumedToolbarIntent) {
             changeTeam(extras.getLong(MainActivity.EXTRA_TEAM_NUMBER));
             mIsConsumedToolbarIntent = true;
+        }
+    }
+
+    private void setTeamNumberFromUrlPath(List<String> pathSegments) {
+        String teamPathValue = pathSegments.get(0);
+        String teamNumberPathValue = pathSegments.get(1);
+        if (Constants.URL_MAP_TEAM_NUMBER_PATH.equals(teamPathValue) && teamNumberPathValue != null) {
+            changeTeamFromIntent(teamNumberPathValue);
+            mIsConsumedUriIntent = true;
         }
     }
 
