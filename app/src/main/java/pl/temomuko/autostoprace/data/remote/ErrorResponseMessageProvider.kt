@@ -13,8 +13,7 @@ class ErrorResponseMessageProvider @Inject constructor(
 
     fun getErrorFromResponseBody(response: Response<*>): String? {
         return try {
-            val errorBody = response.errorBody()
-            return getErrorResponseConverter().convert(errorBody)?.errorMessage
+            return response.errorBody()?.let { getErrorResponseConverter().convert(it)?.errorMessage }
         } catch (e: Exception) {
             null
         }
