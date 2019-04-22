@@ -44,8 +44,6 @@ public class ErrorHandler {
     public String getMessage(Throwable throwable) {
         if (throwable instanceof HttpException) {
             return getMessageFromHttpCode(((HttpException) throwable).code());
-        } else if (throwable instanceof ApiException) {
-            return getMessageFromHttpCode(((ApiException) throwable).getHttpCode());
         } else if (throwable instanceof TeamNotFoundException) {
             return getTeamNotFoundMessage();
         } else if (throwable instanceof StandardResponseException) {
