@@ -15,10 +15,10 @@ import javax.inject.Inject;
 import pl.temomuko.autostoprace.AsrApplication;
 import pl.temomuko.autostoprace.data.DataManager;
 import pl.temomuko.autostoprace.data.Event;
-import pl.temomuko.autostoprace.domain.model.LocationRecord;
 import pl.temomuko.autostoprace.data.remote.ErrorHandler;
-import pl.temomuko.autostoprace.domain.repository.LocationsRepository;
+import pl.temomuko.autostoprace.domain.model.LocationRecord;
 import pl.temomuko.autostoprace.domain.repository.ApiMappersKt;
+import pl.temomuko.autostoprace.domain.repository.LocationsRepository;
 import pl.temomuko.autostoprace.service.helper.UnsentAndResponseLocationRecordPair;
 import pl.temomuko.autostoprace.util.AndroidComponentUtil;
 import pl.temomuko.autostoprace.util.EventUtil;
@@ -179,7 +179,13 @@ public class LocationSyncService extends Service {
                 LogUtil.i(TAG, "Network is connected.");
                 AndroidComponentUtil.toggleComponent(context, getClass(), false);
                 if (!LocationSyncService.isRunning(context)) {
-                    context.startService(getStartIntent(context));
+                    try {
+                        context.startService(getStartIntent(context));
+                    } catch (IllegalStateException e) {
+                        // ignore when cannot start service from background
+                        // this is a temporary solution, we don't need service here (even foreground service)
+                        // we should use WorkManager for syncing locations
+                    }
                 }
             }
         }
