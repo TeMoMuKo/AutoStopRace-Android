@@ -1,6 +1,7 @@
 package pl.temomuko.autostoprace.domain.repository
 
 import pl.temomuko.autostoprace.data.remote.AsrService
+import pl.temomuko.autostoprace.data.remote.TeamNotFoundException
 import pl.temomuko.autostoprace.data.remote.model.CreateLocationRequest
 import pl.temomuko.autostoprace.data.remote.model.LocationEntity
 import pl.temomuko.autostoprace.domain.MultipartCreator
@@ -31,6 +32,7 @@ class LocationsRepository @Inject constructor(
     fun getTeamLocations(teamNumber: Long): Single<List<LocationRecord>> {
         return asrService.getTeamLocations(teamNumber)
             .map { locations -> locations.map { it.toLocationRecord() } }
+            .onErrorResumeNext(Single.error(TeamNotFoundException()))
     }
 
     fun getUserTeamLocations(): Single<List<LocationRecord>> {

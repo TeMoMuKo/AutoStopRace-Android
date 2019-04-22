@@ -183,31 +183,4 @@ public class TeamsLocationsMapPresenterTest {
         verify(mMockTeamsLocationsMapMvpView).showError(any());
         verify(mMockRxTeamLocationsCacheHelper).clearCache();
     }
-
-    @Test
-    public void testLoadTeamLocationsTeamNotFound() {
-        //given
-        final String teamNotFound = "team not found";
-        Response<List<LocationRecord>> response = Response.error(HttpStatus.NOT_FOUND, ResponseBody.create(
-                MediaType.parse(Constants.HEADER_VALUE_APPLICATION_JSON), "")
-        );
-        HttpException exception = new HttpException(response);
-        when(locationsRepository.getTeamLocations(TEST_TEAM_NUMBER)).thenReturn(Single.error(exception));
-        when(mMockErrorHandler.getMessage(any())).thenReturn(teamNotFound);
-        when(mMockRxTeamLocationsCacheHelper.getRestoredCachedObservable()).thenReturn(
-                Observable.error(new TeamNotFoundException(response))
-        );
-
-        //when
-        mTeamsLocationsMapPresenter.loadTeam(TEST_TEAM_NUMBER);
-
-        //then
-        verify(mMockTeamsLocationsMapMvpView).clearCurrentTeamLocations();
-        verify(mMockTeamsLocationsMapMvpView).setTeamProgress(true);
-        verify(mMockTeamsLocationsMapMvpView).setTeamProgress(false);
-        verify(mMockTeamsLocationsMapMvpView, never()).setLocationsForMap(any());
-        verify(mMockTeamsLocationsMapMvpView, never()).showNoLocationRecordsInfoForMap();
-        verify(mMockTeamsLocationsMapMvpView).showError(teamNotFound);
-        verify(mMockRxTeamLocationsCacheHelper).clearCache();
-    }
 }

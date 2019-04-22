@@ -2,9 +2,7 @@ package pl.temomuko.autostoprace.domain.repository
 
 import android.util.Base64
 import pl.temomuko.autostoprace.data.local.Preferences
-import pl.temomuko.autostoprace.data.remote.ApiException
-import pl.temomuko.autostoprace.data.remote.AsrService
-import pl.temomuko.autostoprace.data.remote.TokenAuthenticationInterceptor
+import pl.temomuko.autostoprace.data.remote.*
 import pl.temomuko.autostoprace.data.remote.model.UserEntity
 import pl.temomuko.autostoprace.domain.model.User
 import retrofit2.Response
@@ -29,7 +27,7 @@ class Authenticator @Inject constructor(
                 if (it.isSuccessful) {
                     it.body()!!.toUser()
                 } else {
-                    throw ApiException(it.code())
+                    throw StandardResponseException(it)
                     //todo handle errors in rx java call adapter
                 }
             }
