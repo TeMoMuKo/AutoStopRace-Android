@@ -5,8 +5,6 @@ import android.util.Patterns;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,7 +14,6 @@ import pl.temomuko.autostoprace.injection.AppContext;
 import pl.temomuko.autostoprace.util.NetworkUtil;
 import retrofit2.HttpException;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by Szymon Kozak on 2016-01-27.
@@ -28,10 +25,15 @@ public class ErrorHandler {
     public static final String TAG = ErrorHandler.class.getSimpleName();
 
     private final Context context;
+    private final ErrorResponseMessageProvider errorResponseMessageProvider;
 
     @Inject
-    public ErrorHandler(@AppContext Context context) {
+    public ErrorHandler(
+            @AppContext Context context,
+            ErrorResponseMessageProvider errorResponseMessageProvider
+    ) {
         this.context = context;
+        this.errorResponseMessageProvider = errorResponseMessageProvider;
     }
 
     public boolean isEmailValid(String email) {
@@ -42,8 +44,6 @@ public class ErrorHandler {
     public String getMessage(Throwable throwable) {
         if (throwable instanceof HttpException) {
             return getMessageFromHttpCode(((HttpException) throwable).code());
-        } else if (throwable instanceof ApiException) {
-            return getMessageFromHttpCode(((ApiException) throwable).getHttpCode());
         } else if (throwable instanceof TeamNotFoundException) {
             return getTeamNotFoundMessage();
         } else if (throwable instanceof StandardResponseException) {
@@ -58,11 +58,11 @@ public class ErrorHandler {
     }
 
     private String getMessageFromHttpResponse(Response<?> response) {
-        List<String> errorsFromResponseBody = getErrorsFromResponseBody(response);
-        if (errorsFromResponseBody.isEmpty()) {
+        String errorMessage = errorResponseMessageProvider.getErrorFromResponseBody(response);
+        if (errorMessage == null) {
             return getMessageFromHttpCode(response.code());
         } else {
-            return errorsFromResponseBody.get(0);
+            return errorMessage;
         }
     }
 
@@ -83,10 +83,6 @@ public class ErrorHandler {
             default:
                 return context.getString(R.string.error_unknown);
         }
-    }
-
-    private List<String> getErrorsFromResponseBody(Response response) {
-        return new ArrayList<>(); //todo specify error response body if necessary
     }
 
     private String getMessageFromRetrofitThrowable(Throwable throwable) {
